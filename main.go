@@ -32,11 +32,10 @@ type Skill struct {
 }
 
 type Attribute struct {
-	Name            string
-	StartingValue   int
-	Value           int
-	MaxValue        int
-	AssociatedSkill Skill
+	Name          string
+	StartingValue int
+	Value         int
+	MaxValue      int
 }
 
 type Investigator struct {
@@ -54,26 +53,26 @@ type Investigator struct {
 	MajorWound       bool `json:"major_wound"`
 	Unconscious      bool `json:"unconscious"`
 	Dying            bool `json:"dying"`
-	Strength         Attribute
-	Constitution     Attribute
-	Dexterity        Attribute
-	Intelligence     Attribute
-	Size             Attribute
-	Power            Attribute
-	Appearance       Attribute
-	Education        Attribute
-	HitPoints        Attribute
-	MagicPoints      Attribute
-	Luck             Attribute
-	Sanity           Attribute
+	STR              Attribute
+	CON              Attribute
+	DEX              Attribute
+	INT              Attribute
+	SIZ              Attribute
+	PWR              Attribute
+	APP              Attribute
+	EDU              Attribute
+	HP               Attribute
+	MP               Attribute
+	LCK              Attribute
+	SAN              Attribute
 	Skills           map[string]Skill
 	Move             int
 	Build            string
 	DamageBonus      string
 }
 
-func (*Investigator) NewInvestigator() Investigator {
-	return Investigator{
+func (*Investigator) NewInvestigator() *Investigator {
+	inv := Investigator{
 		Era:        1,
 		Name:       "John Doe",
 		Residence:  "Boston",
@@ -94,20 +93,107 @@ func (*Investigator) NewInvestigator() Investigator {
 		MajorWound:       false,
 		Unconscious:      false,
 		Dying:            false,
-		Strength:         Attribute{},
-		Constitution:     Attribute{},
-		Dexterity:        Attribute{},
-		Intelligence:     Attribute{},
-		Size:             Attribute{},
-		Power:            Attribute{},
-		Appearance:       Attribute{},
-		Education:        Attribute{},
-		HitPoints:        Attribute{},
-		MagicPoints:      Attribute{},
-		Sanity:           Attribute{},
-		Skills:           BaseModernSkills,
-		Move:             2,
-		Build:            "Big",
-		DamageBonus:      "1D4",
+		STR: Attribute{
+			Name:          "Strength",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		CON: Attribute{
+			Name:          "Constitution",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		DEX: Attribute{
+			Name:          "Dexterity",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		INT: Attribute{
+			Name:          "Intelligence",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		SIZ: Attribute{
+			Name:          "Size",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		PWR: Attribute{
+			Name:          "Power",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		APP: Attribute{
+			Name:          "Appearance",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		EDU: Attribute{
+			Name:          "Education",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		HP: Attribute{
+			Name:          "HitPoints",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		MP: Attribute{
+			Name:          "MagicPoints",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		LCK: Attribute{
+			Name:          "Luck",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		SAN: Attribute{
+			Name:          "Sanity",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		Skills:      BaseModernSkills,
+		Move:        2,
+		Build:       "Big",
+		DamageBonus: "1D4",
 	}
+	inv.Skills["Dodge"] = Skill{
+		Name:         "Dodge",
+		Abbreviation: "Dodge",
+		Default:      inv.DEX.Value / 2,
+		Value:        inv.DEX.Value / 2,
+	}
+	inv.Skills["Idea"] = Skill{
+		Name:         "Idea",
+		Abbreviation: "Idea",
+		Default:      inv.INT.Value / 2,
+		Value:        inv.INT.Value / 2,
+	}
+	inv.Skills["Know"] = Skill{
+		Name:         "Know",
+		Abbreviation: "Know",
+		Default:      inv.EDU.Value / 2,
+		Value:        inv.EDU.Value / 2,
+	}
+	inv.Skills["Language(Own)"] = Skill{
+		Name:         "Language(Own)",
+		Abbreviation: "Language(Own)",
+		Default:      inv.EDU.Value,
+		Value:        inv.EDU.Value,
+	}
+
+	return &inv
 }
