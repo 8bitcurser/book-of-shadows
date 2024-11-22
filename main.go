@@ -1,5 +1,9 @@
 package main
 
+import (
+	"math/rand"
+)
+
 type Era int
 
 const (
@@ -36,6 +40,22 @@ type Attribute struct {
 	StartingValue int
 	Value         int
 	MaxValue      int
+}
+
+func rollD6() int {
+	return rand.Intn(6) + 1
+}
+
+func (a *Attribute) Initialize() {
+	rolled := 0
+	if a.Name == "Size" || a.Name == "Intelligence" || a.Name == "Education" {
+		rolled = (rollD6() + rollD6() + 6) * 5
+	} else {
+		rolled = (rollD6() + rollD6() + rollD6()) * 5
+	}
+
+	a.Value = rolled
+	a.StartingValue = rolled
 }
 
 type Investigator struct {
@@ -170,6 +190,20 @@ func (*Investigator) NewInvestigator() *Investigator {
 		Build:       "Big",
 		DamageBonus: "1D4",
 	}
+
+	inv.STR.Initialize()
+	inv.DEX.Initialize()
+	inv.CON.Initialize()
+	inv.EDU.Initialize()
+	inv.INT.Initialize()
+	inv.SIZ.Initialize()
+	inv.APP.Initialize()
+	inv.LCK.Initialize()
+	// allow re roll
+	if inv.LCK.Value < 45 {
+		inv.LCK.Initialize()
+	}
+
 	inv.Skills["Dodge"] = Skill{
 		Name:         "Dodge",
 		Abbreviation: "Dodge",
