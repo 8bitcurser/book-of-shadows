@@ -28,6 +28,7 @@ type Skill struct {
 	Default      int
 	Value        int
 	Era          []Era
+	Base         int
 }
 
 type Attribute struct {
@@ -38,7 +39,7 @@ type Attribute struct {
 	AssociatedSkill Skill
 }
 
-type Creature struct {
+type Investigator struct {
 	Era              Era
 	Name             string `json:"name"`
 	Residence        string `json:"residence"`
@@ -66,16 +67,49 @@ type Creature struct {
 	Luck             Attribute
 	Sanity           Attribute
 	Skills           map[string]Skill
+	Move             int
+	Build            string
+	DamageBonus      string
 }
 
-var BaseModernSkills = map[string]Skill{
-	"Accounting": {
-		Name:         "Accounting",
-		Abbreviation: "Accounting",
-		Default:      5,
-		Value:        5,
-		Era:          []Era{Twenties, Modern},
-	},
+func (*Investigator) NewInvestigator() Investigator {
+	return Investigator{
+		Era:        1,
+		Name:       "John Doe",
+		Residence:  "Boston",
+		Birthplace: "Dallas TX",
+		Age:        37,
+		ProfilePic: ProfilePic{"/sample/path/env", "profile"},
+		Occupation: Occupation{
+			Name:   "Adventurer",
+			Skills: []string{"Firearms (Handgun)", "Archaeology"},
+		},
+		Archetype: Archetype{
+			Name:   "Indiana Jones",
+			Skills: []string{"History"},
+		},
+		Insane:           false,
+		TemporaryInsane:  false,
+		IndefiniteInsane: false,
+		MajorWound:       false,
+		Unconscious:      false,
+		Dying:            false,
+		Strength:         Attribute{},
+		Constitution:     Attribute{},
+		Dexterity:        Attribute{},
+		Intelligence:     Attribute{},
+		Size:             Attribute{},
+		Power:            Attribute{},
+		Appearance:       Attribute{},
+		Education:        Attribute{},
+		HitPoints:        Attribute{},
+		MagicPoints:      Attribute{},
+		Sanity:           Attribute{},
+		Skills:           BaseModernSkills,
+		Move:             2,
+		Build:            "Big",
+		DamageBonus:      "1D4",
+	}
 }
 
 //func handleConnection(w http.ResponseWriter, r *http.Request) {
