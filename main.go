@@ -64,7 +64,6 @@ type Archetype struct {
 	BonusPoints          int
 	CoreCharacteristic   []Attribute
 	SuggestedOccupations []Occupation
-	Talents              []Talent
 	AmountOfTalents      int
 }
 
@@ -82,6 +81,15 @@ func (i *Investigator) SetHP() {
 	i.HP.Value = hp
 	i.HP.MaxValue = hp
 	i.HP.StartingValue = hp
+
+}
+
+func (i *Investigator) PickRandomTalents() {
+	// ToDo: Need to support archetype talent class or specific talent suggestion
+	for j := 0; j < i.Archetype.AmountOfTalents; j++ {
+		talentName := TalentsList[rand.Intn(len(TalentsList))]
+		i.Talents = append(i.Talents, Talents[talentName])
+	}
 
 }
 
@@ -179,6 +187,7 @@ type Investigator struct {
 	Move             int
 	Build            string
 	DamageBonus      string
+	Talents          []Talent
 }
 
 func NewInvestigator(mode GameMode) *Investigator {
@@ -327,6 +336,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Value:        inv.EDU.Value,
 	}
 
+	inv.PickRandomTalents()
 	return &inv
 }
 

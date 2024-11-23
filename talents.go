@@ -206,3 +206,11 @@ var Talents = map[string]Talent{
 		Type:        Miscellaneous,
 	},
 }
+
+var TalentsList = func() []string {
+	keys := make([]string, 0, len(Talents))
+	for k := range Talents {
+		keys = append(keys, k)
+	}
+	return keys
+}()
