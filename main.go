@@ -340,6 +340,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 	return &inv
 }
 
+// ToDO: Need to support Occupation Assignment + Skill Points Assignament based on Occ & Archetype & Free
 func main() {
 	investigator := NewInvestigator(Pulp)
 	fmt.Println(investigator)
