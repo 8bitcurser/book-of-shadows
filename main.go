@@ -26,6 +26,21 @@ const (
 	Miscellaneous
 )
 
+const (
+	AttrStrength     = "Strength"
+	AttrConstitution = "Constitution"
+	AttrDexterity    = "Dexterity"
+	AttrIntelligence = "Intelligence"
+	AttrSize         = "Size"
+	AttrPower        = "Power"
+	AttrAppearance   = "Appearance"
+	AttrEducation    = "Education"
+	AttrHitPoints    = "HitPoints"
+	AttrMagicPoints  = "MagicPoints"
+	AttrLuck         = "Luck"
+	AttrSanity       = "Sanity"
+)
+
 type Occupation struct {
 	Name   string
 	Skills []string
@@ -62,13 +77,17 @@ type Archetype struct {
 	Name                 string
 	Skills               []string
 	BonusPoints          int
-	CoreCharacteristic   []Attribute
+	CoreCharacteristic   []string
 	SuggestedOccupations []Occupation
 	AmountOfTalents      int
 }
 
 func rollD6() int {
 	return rand.Intn(6) + 1
+}
+
+func coreRoll() int {
+	return (rollD6() + 13) * 5
 }
 
 func (i *Investigator) SetHP() {
@@ -143,16 +162,50 @@ func (i *Investigator) SetMovement() {
 	}
 }
 
-func (a *Attribute) Initialize() {
+func (a *Attribute) Initialize(isCore bool) {
 	rolled := 0
 	if a.Name == "Size" || a.Name == "Intelligence" || a.Name == "Education" {
-		rolled = (rollD6() + rollD6() + 6) * 5
-	} else {
-		rolled = (rollD6() + rollD6() + rollD6()) * 5
-	}
+		if isCore {
+			rolled = coreRoll()
+		} else {
+			rolled = (rollD6() + rollD6() + 6) * 5
+		}
 
+	} else {
+		if isCore {
+			rolled = coreRoll()
+		} else {
+			rolled = (rollD6() + rollD6() + rollD6()) * 5
+		}
+	}
 	a.Value = rolled
 	a.StartingValue = rolled
+}
+
+func (i *Investigator) InitializeAttributes() {
+	// Create a map of all attributes
+	attributes := []*Attribute{
+		&i.STR, &i.CON, &i.DEX, &i.INT, &i.SIZ, &i.POW, &i.APP, &i.EDU,
+	}
+
+	// Create a lookup map for core characteristics for O(1) lookup
+	coreCharacteristics := make(map[string]bool)
+	for _, core := range i.Archetype.CoreCharacteristic {
+		coreCharacteristics[core] = true
+	}
+
+	// Initialize each attribute
+	isPulp := i.GameMode == Pulp // or however you check for pulp mode
+
+	for _, attr := range attributes {
+
+		// An attribute is core if we're in pulp mode AND it's in core characteristics
+		isCore := isPulp && coreCharacteristics[attr.Name]
+
+		// Initialize the attribute
+		attr.Initialize(isCore)
+	}
+
 }
 
 type Investigator struct {
@@ -214,73 +267,73 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Unconscious:      false,
 		Dying:            false,
 		STR: Attribute{
-			Name:          "Strength",
+			Name:          AttrStrength,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		CON: Attribute{
-			Name:          "Constitution",
+			Name:          AttrConstitution,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		DEX: Attribute{
-			Name:          "Dexterity",
+			Name:          AttrDexterity,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		INT: Attribute{
-			Name:          "Intelligence",
+			Name:          AttrIntelligence,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		SIZ: Attribute{
-			Name:          "Size",
+			Name:          AttrSize,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		POW: Attribute{
-			Name:          "Power",
+			Name:          AttrPower,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		APP: Attribute{
-			Name:          "Appearance",
+			Name:          AttrAppearance,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		EDU: Attribute{
-			Name:          "Education",
+			Name:          AttrEducation,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		HP: Attribute{
-			Name:          "HitPoints",
+			Name:          AttrHitPoints,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		MP: Attribute{
-			Name:          "MagicPoints",
+			Name:          AttrMagicPoints,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		LCK: Attribute{
-			Name:          "Luck",
+			Name:          AttrLuck,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
 		},
 		SAN: Attribute{
-			Name:          "Sanity",
+			Name:          AttrSanity,
 			StartingValue: 0,
 			Value:         0,
 			MaxValue:      0,
@@ -291,18 +344,12 @@ func NewInvestigator(mode GameMode) *Investigator {
 		DamageBonus: "1D4",
 	}
 
-	inv.STR.Initialize()
-	inv.DEX.Initialize()
-	inv.CON.Initialize()
-	inv.EDU.Initialize()
-	inv.INT.Initialize()
-	inv.SIZ.Initialize()
-	inv.APP.Initialize()
-	inv.LCK.Initialize()
-	inv.POW.Initialize()
+	inv.InitializeAttributes()
+
+	inv.LCK.Initialize(false)
 	// allow re roll
 	if inv.LCK.Value < 45 {
-		inv.LCK.Initialize()
+		inv.LCK.Initialize(false)
 	}
 	inv.SAN.Value = inv.POW.Value
 	inv.SAN.StartingValue = inv.POW.StartingValue
