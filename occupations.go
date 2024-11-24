@@ -15,4 +15,8 @@ type Occupation struct {
 	Skills            []string
 	SuggestedContacts string
 	SkillPoints       SkillPointFormula
+	CreditRating      struct {
+		Min int
+		Max int
+	}
 }

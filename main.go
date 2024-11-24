@@ -127,7 +127,7 @@ func (i *Investigator) InitializeAttributes() {
 
 }
 
-func (i *Investigator) CalculateSKillPoints() int {
+func (i *Investigator) CalculateOccupationSkillPoints() int {
 	formula := i.Occupation.SkillPoints
 	points := 0
 	for _, skillAttr := range formula.BaseAttributes {
@@ -141,6 +141,26 @@ func (i *Investigator) CalculateSKillPoints() int {
 		points += attrOptional.Value * optional.Multiplier
 	}
 	return points
+}
+
+func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) {
+	skillLimit := 90
+	if i.GameMode == Pulp {
+		skillLimit = 95
+	}
+
+	for assignablePoints > 0 {
+		skillPicked := rand.Intn(len(skills))
+		skill := i.Skills[skills[skillPicked]]
+		if skill.Value <= skillLimit {
+			maxPointForSkill := skillLimit - skill.Value
+			pointsToAssign := rand.Intn(maxPointForSkill) + 1
+			skill.Value += pointsToAssign
+			assignablePoints -= pointsToAssign
+
+		}
+	}
+
 }
 
 type Investigator struct {
@@ -267,7 +287,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 	}
 	inv.PickRandomTalents()
 	// assign occupation
-	// ToDo
+
 	// Initialize Attributes
 	inv.InitializeAttributes()
 	LCK := inv.Attributes[AttrLuck]
@@ -315,6 +335,13 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Value:        EDU.Value,
 	}
 	// assign points
+	occupationPoints := inv.CalculateOccupationSkillPoints()
+	if inv.GameMode == Pulp {
+		archetypePoints := inv.Archetype.BonusPoints
+		inv.AssignSkillPoints(archetypePoints, inv.Archetype.Skills)
+	}
+	inv.AssignSkillPoints(occupationPoints, inv.Occupation.Skills)
+
 	return &inv
 }
 
