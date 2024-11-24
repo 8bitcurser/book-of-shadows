@@ -91,9 +91,10 @@ type Archetype struct {
 	SpecialArchetypeRules SpecialArchetypeRules
 }
 
-func PickRandomArchetype() Archetype {
+func PickRandomArchetype() *Archetype {
 	archetypeName := ArchetypesList[rand.Intn(len(ArchetypesList))]
-	return Archetypes[archetypeName]
+	archetype := Archetypes[archetypeName]
+	return &archetype
 }
 
 func rollD6() int {
@@ -204,10 +205,11 @@ func (i *Investigator) InitializeAttributes() {
 
 	// Create a lookup map for core characteristics for O(1) lookup
 	coreCharacteristics := make(map[string]bool)
-	for _, core := range i.Archetype.CoreCharacteristic {
-		coreCharacteristics[core] = true
+	if i.Archetype != nil {
+		// there is one chore characteristic per each character
+		pickedCore := rand.Intn(len(i.Archetype.CoreCharacteristic))
+		coreCharacteristics[i.Archetype.CoreCharacteristic[pickedCore]] = true
 	}
-
 	// Initialize each attribute
 	isPulp := i.GameMode == Pulp // or however you check for pulp mode
 
@@ -231,7 +233,7 @@ type Investigator struct {
 	Age              int    `json:"age"`
 	ProfilePic       ProfilePic
 	Occupation       Occupation
-	Archetype        Archetype
+	Archetype        *Archetype
 	Insane           bool `json:"insane"`
 	TemporaryInsane  bool `json:"temporary_insane"`
 	IndefiniteInsane bool `json:"indefinite_insane"`
