@@ -32,15 +32,16 @@ func coreRoll() int {
 }
 
 func (i *Investigator) SetHP() {
-	rawHP := i.CON.Value + i.SIZ.Value
+	rawHP := i.Attributes[AttrConstitution].Value + i.Attributes[AttrSize].Value
 	divider := 10
 	if i.GameMode == Pulp {
 		divider = 5
 	}
 	hp := rawHP / divider
-	i.HP.Value = hp
-	i.HP.MaxValue = hp
-	i.HP.StartingValue = hp
+	HP := i.Attributes[AttrHitPoints]
+	HP.Value = hp
+	HP.MaxValue = hp
+	HP.StartingValue = hp
 
 }
 
@@ -72,7 +73,7 @@ var buildDamageTable = []buildDamageRange{
 }
 
 func (i *Investigator) SetBuildAndDMG() {
-	compoundValue := i.STR.Value + i.SIZ.Value
+	compoundValue := i.Attributes[AttrStrength].Value + i.Attributes[AttrSize].Value
 
 	// Handle the special case for very high values first
 	if compoundValue > 524 {
@@ -94,9 +95,9 @@ func (i *Investigator) SetBuildAndDMG() {
 
 func (i *Investigator) SetMovement() {
 	// if both are not greater or lesser than size it means one of the two is
-	if i.DEX.Value < i.SIZ.Value && i.STR.Value < i.SIZ.Value {
+	if i.Attributes[AttrDexterity].Value < i.Attributes[AttrSize].Value && i.Attributes[AttrStrength].Value < i.Attributes[AttrSize].Value {
 		i.Move = 7
-	} else if i.STR.Value > i.SIZ.Value && i.DEX.Value > i.SIZ.Value {
+	} else if i.Attributes[AttrStrength].Value > i.Attributes[AttrSize].Value && i.Attributes[AttrDexterity].Value > i.Attributes[AttrSize].Value {
 		i.Move = 9
 	} else {
 		i.Move = 9
@@ -105,10 +106,6 @@ func (i *Investigator) SetMovement() {
 
 func (i *Investigator) InitializeAttributes() {
 	// Create a map of all attributes
-	attributes := []*Attribute{
-		&i.STR, &i.CON, &i.DEX, &i.INT, &i.SIZ, &i.POW, &i.APP, &i.EDU,
-	}
-
 	// Create a lookup map for core characteristics for O(1) lookup
 	coreCharacteristics := make(map[string]bool)
 	if i.Archetype != nil {
@@ -119,7 +116,7 @@ func (i *Investigator) InitializeAttributes() {
 	// Initialize each attribute
 	isPulp := i.GameMode == Pulp // or however you check for pulp mode
 
-	for _, attr := range attributes {
+	for _, attr := range i.Attributes {
 
 		// An attribute is core if we're in pulp mode AND it's in core characteristics
 		isCore := isPulp && coreCharacteristics[attr.Name]
@@ -128,6 +125,22 @@ func (i *Investigator) InitializeAttributes() {
 		attr.Initialize(isCore)
 	}
 
+}
+
+func (i *Investigator) CalculateSKillPoints() int {
+	formula := i.Occupation.SkillPoints
+	points := 0
+	for _, skillAttr := range formula.BaseAttributes {
+		attr := i.Attributes[skillAttr.Name]
+		points += attr.Value * skillAttr.Multiplier
+	}
+	if len(formula.Options) > 0 {
+		picked := rand.Intn(len(formula.Options))
+		optional := formula.Options[picked]
+		attrOptional := i.Attributes[optional.Name]
+		points += attrOptional.Value * optional.Multiplier
+	}
+	return points
 }
 
 type Investigator struct {
@@ -140,24 +153,13 @@ type Investigator struct {
 	ProfilePic       ProfilePic
 	Occupation       *Occupation
 	Archetype        *Archetype
-	Insane           bool `json:"insane"`
-	TemporaryInsane  bool `json:"temporary_insane"`
-	IndefiniteInsane bool `json:"indefinite_insane"`
-	MajorWound       bool `json:"major_wound"`
-	Unconscious      bool `json:"unconscious"`
-	Dying            bool `json:"dying"`
-	STR              Attribute
-	CON              Attribute
-	DEX              Attribute
-	INT              Attribute
-	SIZ              Attribute
-	POW              Attribute
-	APP              Attribute
-	EDU              Attribute
-	HP               Attribute
-	MP               Attribute
-	LCK              Attribute
-	SAN              Attribute
+	Insane           bool                 `json:"insane"`
+	TemporaryInsane  bool                 `json:"temporary_insane"`
+	IndefiniteInsane bool                 `json:"indefinite_insane"`
+	MajorWound       bool                 `json:"major_wound"`
+	Unconscious      bool                 `json:"unconscious"`
+	Dying            bool                 `json:"dying"`
+	Attributes       map[string]Attribute `json:"attributes"`
 	Skills           map[string]Skill
 	Move             int
 	Build            string
@@ -180,77 +182,79 @@ func NewInvestigator(mode GameMode) *Investigator {
 		MajorWound:       false,
 		Unconscious:      false,
 		Dying:            false,
-		STR: Attribute{
-			Name:          AttrStrength,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		CON: Attribute{
-			Name:          AttrConstitution,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		DEX: Attribute{
-			Name:          AttrDexterity,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		INT: Attribute{
-			Name:          AttrIntelligence,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		SIZ: Attribute{
-			Name:          AttrSize,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		POW: Attribute{
-			Name:          AttrPower,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		APP: Attribute{
-			Name:          AttrAppearance,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		EDU: Attribute{
-			Name:          AttrEducation,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		HP: Attribute{
-			Name:          AttrHitPoints,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		MP: Attribute{
-			Name:          AttrMagicPoints,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		LCK: Attribute{
-			Name:          AttrLuck,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
-		},
-		SAN: Attribute{
-			Name:          AttrSanity,
-			StartingValue: 0,
-			Value:         0,
-			MaxValue:      0,
+		Attributes: map[string]Attribute{
+			AttrStrength: {
+				Name:          AttrStrength,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrConstitution: {
+				Name:          AttrConstitution,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrDexterity: {
+				Name:          AttrDexterity,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrIntelligence: {
+				Name:          AttrIntelligence,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrSize: {
+				Name:          AttrSize,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrPower: {
+				Name:          AttrPower,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrAppearance: {
+				Name:          AttrAppearance,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrEducation: {
+				Name:          AttrEducation,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrHitPoints: {
+				Name:          AttrHitPoints,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrMagicPoints: {
+				Name:          AttrMagicPoints,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrLuck: {
+				Name:          AttrLuck,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrSanity: {
+				Name:          AttrSanity,
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
 		},
 		Skills:      BaseModernSkills,
 		Move:        2,
@@ -266,42 +270,49 @@ func NewInvestigator(mode GameMode) *Investigator {
 	// ToDo
 	// Initialize Attributes
 	inv.InitializeAttributes()
-
-	inv.LCK.Initialize(false)
+	LCK := inv.Attributes[AttrLuck]
+	SAN := inv.Attributes[AttrSanity]
+	POW := inv.Attributes[AttrPower]
+	MP := inv.Attributes[AttrMagicPoints]
+	DEX := inv.Attributes[AttrDexterity]
+	EDU := inv.Attributes[AttrEducation]
+	INT := inv.Attributes[AttrIntelligence]
+	LCK.Initialize(false)
 	// allow re roll
-	if inv.LCK.Value < 45 {
-		inv.LCK.Initialize(false)
+	if LCK.Value < 45 {
+		LCK.Initialize(false)
 	}
-	inv.SAN.Value = inv.POW.Value
-	inv.SAN.StartingValue = inv.POW.StartingValue
+
+	SAN.Value = POW.Value
+	SAN.StartingValue = POW.StartingValue
 	inv.SetHP()
 	inv.SetMovement()
 	inv.SetBuildAndDMG()
-	inv.MP.Value = inv.POW.Value / 5
+	MP.Value = POW.Value / 5
 
 	inv.Skills["Dodge"] = Skill{
 		Name:         "Dodge",
 		Abbreviation: "Dodge",
-		Default:      inv.DEX.Value / 2,
-		Value:        inv.DEX.Value / 2,
+		Default:      DEX.Value / 2,
+		Value:        DEX.Value / 2,
 	}
 	inv.Skills["Idea"] = Skill{
 		Name:         "Idea",
 		Abbreviation: "Idea",
-		Default:      inv.INT.Value / 2,
-		Value:        inv.INT.Value / 2,
+		Default:      INT.Value / 2,
+		Value:        INT.Value / 2,
 	}
 	inv.Skills["Know"] = Skill{
 		Name:         "Know",
 		Abbreviation: "Know",
-		Default:      inv.EDU.Value / 2,
-		Value:        inv.EDU.Value / 2,
+		Default:      EDU.Value / 2,
+		Value:        EDU.Value / 2,
 	}
 	inv.Skills["Language(Own)"] = Skill{
 		Name:         "Language(Own)",
 		Abbreviation: "Language(Own)",
-		Default:      inv.EDU.Value,
-		Value:        inv.EDU.Value,
+		Default:      EDU.Value,
+		Value:        EDU.Value,
 	}
 	// assign points
 	return &inv
