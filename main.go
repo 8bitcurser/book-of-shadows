@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"math/rand"
 )
 
@@ -152,9 +153,22 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 	for assignablePoints > 0 {
 		skillPicked := rand.Intn(len(skills))
 		skill := i.Skills[skills[skillPicked]]
-		if skill.Value <= skillLimit {
-			maxPointForSkill := skillLimit - skill.Value
-			pointsToAssign := rand.Intn(maxPointForSkill) + 1
+		pointsToAssign := 0
+		CR := i.Skills["Credit Rating"]
+		if CR.Value < i.Occupation.CreditRating.Min {
+			creditPointsBase := i.Occupation.CreditRating.Min - CR.Value
+			assignablePoints -= creditPointsBase
+			CR.Value = creditPointsBase
+		}
+		maxPointForSkill := skillLimit
+		if skill.Value <= skillLimit && skill.Name != "Cthulhu Mythos" {
+			if skill.Name == "Credit Rating" {
+				maxPointForSkill = int(math.Min(float64(skillLimit), float64(i.Occupation.CreditRating.Max)))
+				pointsToAssign = rand.Intn(maxPointForSkill) + 1
+			} else {
+				maxPointForSkill = skillLimit - skill.Value
+				pointsToAssign = rand.Intn(maxPointForSkill) + 1
+			}
 			skill.Value += pointsToAssign
 			assignablePoints -= pointsToAssign
 
@@ -341,7 +355,11 @@ func NewInvestigator(mode GameMode) *Investigator {
 		inv.AssignSkillPoints(archetypePoints, inv.Archetype.Skills)
 	}
 	inv.AssignSkillPoints(occupationPoints, inv.Occupation.Skills)
-
+	skillsList := []string
+	for _, v := range inv.Skills {
+		skillsList = append(skillsList, v.Name)
+	}
+	inv.AssignSkillPoints(INT.Value*2, skillsList)
 	return &inv
 }
 
