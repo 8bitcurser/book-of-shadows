@@ -1,5 +1,14 @@
 package main
 
+type Skill struct {
+	Name         string
+	Abbreviation string
+	Default      int
+	Value        int
+	Era          []Era
+	Base         int
+}
+
 var BaseModernSkills = map[string]Skill{
 	"Accounting": {
 		Name:         "Accounting",

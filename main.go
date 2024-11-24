@@ -7,7 +7,6 @@ import (
 
 type Era int
 type GameMode int
-type TalentType int
 
 const (
 	Twenties Era = iota
@@ -19,82 +18,9 @@ const (
 	Pulp
 )
 
-const (
-	Physical TalentType = iota
-	Mental
-	Combat
-	Miscellaneous
-)
-
-const (
-	AttrStrength     = "Strength"
-	AttrConstitution = "Constitution"
-	AttrDexterity    = "Dexterity"
-	AttrIntelligence = "Intelligence"
-	AttrSize         = "Size"
-	AttrPower        = "Power"
-	AttrAppearance   = "Appearance"
-	AttrEducation    = "Education"
-	AttrHitPoints    = "HitPoints"
-	AttrMagicPoints  = "MagicPoints"
-	AttrLuck         = "Luck"
-	AttrSanity       = "Sanity"
-)
-
-type Occupation struct {
-	Name   string
-	Skills []string
-}
-
 type ProfilePic struct {
 	FilePath string
 	FileName string
-}
-
-type Skill struct {
-	Name         string
-	Abbreviation string
-	Default      int
-	Value        int
-	Era          []Era
-	Base         int
-}
-
-type Attribute struct {
-	Name          string
-	StartingValue int
-	Value         int
-	MaxValue      int
-}
-
-type Talent struct {
-	Name        string
-	Description string
-	Type        TalentType
-}
-
-type SpecialArchetypeRules struct {
-	RecommendedTalents []string
-	RequiredTalents    []string
-	Notes              string
-}
-
-type Archetype struct {
-	Name                  string
-	Skills                []string
-	BonusPoints           int
-	CoreCharacteristic    []string
-	SuggestedOccupations  []string
-	AmountOfTalents       int
-	Description           string
-	SuggestedTraits       string
-	SpecialArchetypeRules SpecialArchetypeRules
-}
-
-func PickRandomArchetype() *Archetype {
-	archetypeName := ArchetypesList[rand.Intn(len(ArchetypesList))]
-	archetype := Archetypes[archetypeName]
-	return &archetype
 }
 
 func rollD6() int {
@@ -177,26 +103,6 @@ func (i *Investigator) SetMovement() {
 	}
 }
 
-func (a *Attribute) Initialize(isCore bool) {
-	rolled := 0
-	if a.Name == "Size" || a.Name == "Intelligence" || a.Name == "Education" {
-		if isCore {
-			rolled = coreRoll()
-		} else {
-			rolled = (rollD6() + rollD6() + 6) * 5
-		}
-
-	} else {
-		if isCore {
-			rolled = coreRoll()
-		} else {
-			rolled = (rollD6() + rollD6() + rollD6()) * 5
-		}
-	}
-	a.Value = rolled
-	a.StartingValue = rolled
-}
-
 func (i *Investigator) InitializeAttributes() {
 	// Create a map of all attributes
 	attributes := []*Attribute{
@@ -232,7 +138,7 @@ type Investigator struct {
 	Birthplace       string `json:"birthplace"`
 	Age              int    `json:"age"`
 	ProfilePic       ProfilePic
-	Occupation       Occupation
+	Occupation       *Occupation
 	Archetype        *Archetype
 	Insane           bool `json:"insane"`
 	TemporaryInsane  bool `json:"temporary_insane"`
@@ -261,17 +167,13 @@ type Investigator struct {
 
 func NewInvestigator(mode GameMode) *Investigator {
 	inv := Investigator{
-		Era:        1,
-		GameMode:   mode,
-		Name:       "John Doe",
-		Residence:  "Boston",
-		Birthplace: "Dallas TX",
-		Age:        37,
-		ProfilePic: ProfilePic{"/sample/path/env", "profile"},
-		Occupation: Occupation{
-			Name:   "Adventurer",
-			Skills: []string{"Firearms (Handgun)", "Archaeology"},
-		},
+		Era:              1,
+		GameMode:         mode,
+		Name:             "John Doe",
+		Residence:        "Boston",
+		Birthplace:       "Dallas TX",
+		Age:              37,
+		ProfilePic:       ProfilePic{"/sample/path/env", "profile"},
 		Insane:           false,
 		TemporaryInsane:  false,
 		IndefiniteInsane: false,

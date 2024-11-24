@@ -1,5 +1,20 @@
 package main
 
+type TalentType int
+
+const (
+	Physical TalentType = iota
+	Mental
+	Combat
+	Miscellaneous
+)
+
+type Talent struct {
+	Name        string
+	Description string
+	Type        TalentType
+}
+
 var Talents = map[string]Talent{
 	"Keen Vision": {
 		Name:        "Keen Vision",

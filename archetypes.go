@@ -1,5 +1,31 @@
 package main
 
+import "math/rand"
+
+type SpecialArchetypeRules struct {
+	RecommendedTalents []string
+	RequiredTalents    []string
+	Notes              string
+}
+
+type Archetype struct {
+	Name                  string
+	Skills                []string
+	BonusPoints           int
+	CoreCharacteristic    []string
+	SuggestedOccupations  []string
+	AmountOfTalents       int
+	Description           string
+	SuggestedTraits       string
+	SpecialArchetypeRules SpecialArchetypeRules
+}
+
+func PickRandomArchetype() *Archetype {
+	archetypeName := ArchetypesList[rand.Intn(len(ArchetypesList))]
+	archetype := Archetypes[archetypeName]
+	return &archetype
+}
+
 var Archetypes = map[string]Archetype{
 	"Adventurer": {
 		Name: "Adventurer",
