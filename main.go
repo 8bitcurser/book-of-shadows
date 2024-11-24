@@ -177,6 +177,18 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 
 }
 
+func (i *Investigator) GetSkills() {
+	filteredSkills := map[string]Skill{}
+	for name, skill := range Skills {
+		for _, era := range Skills[name].Era {
+			if era == i.Era {
+				filteredSkills[name] = skill
+			}
+		}
+	}
+	i.Skills = filteredSkills
+}
+
 type Investigator struct {
 	Era              Era
 	GameMode         GameMode
@@ -290,7 +302,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 				MaxValue:      0,
 			},
 		},
-		Skills:      BaseModernSkills,
+		Skills:      map[string]Skill{},
 		Move:        2,
 		Build:       "Big",
 		DamageBonus: "1D4",
@@ -323,7 +335,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 	inv.SetMovement()
 	inv.SetBuildAndDMG()
 	MP.Value = POW.Value / 5
-
+	inv.GetSkills()
 	inv.Skills["Dodge"] = Skill{
 		Name:         "Dodge",
 		Abbreviation: "Dodge",
@@ -355,7 +367,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 		inv.AssignSkillPoints(archetypePoints, inv.Archetype.Skills)
 	}
 	inv.AssignSkillPoints(occupationPoints, inv.Occupation.Skills)
-	skillsList := []string{}
+	var skillsList []string
 	for _, v := range inv.Skills {
 		skillsList = append(skillsList, v.Name)
 	}
@@ -363,7 +375,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 	return &inv
 }
 
-// ToDO: Need to support Occupation Assignment + Skill Points Assignament based on Occ & Archetype & Free
+// ToDO: Need to support Occupation Assignment
 func main() {
 	investigator := NewInvestigator(Pulp)
 	fmt.Println(investigator)

@@ -9,7 +9,7 @@ type Skill struct {
 	Base         int
 }
 
-var BaseModernSkills = map[string]Skill{
+var Skills = map[string]Skill{
 	"Accounting": {
 		Name:         "Accounting",
 		Abbreviation: "Accounting",
