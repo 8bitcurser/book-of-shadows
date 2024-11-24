@@ -11,7 +11,7 @@ var Archetypes = map[string]Archetype{
 			"Survival (any)", "Swim",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"DEX", "APP"}, // Note: rules say "choose either DEX or APP"
+		CoreCharacteristic: []string{AttrDexterity, AttrAppearance}, // Note: rules say "choose either DEX or APP"
 		SuggestedOccupations: []string{
 			"Actor", "Archaeologist", "Athlete", "Aviator",
 			"Bank Robber", "Big Game Hunter", "Cat Burglar",
@@ -37,7 +37,7 @@ var Archetypes = map[string]Archetype{
 			"Mechanical Repair", "Psychology", "Swim", "Throw",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"STR"},
+		CoreCharacteristic: []string{AttrStrength},
 		SuggestedOccupations: []string{
 			"Athlete", "Beat Cop", "Bounty Hunter", "Boxer",
 			"Entertainer", "Gangster", "Hired Muscle", "Hobo",
@@ -69,7 +69,7 @@ var Archetypes = map[string]Archetype{
 			"Stealth", "Survival (any)", "Track",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"INT"},
+		CoreCharacteristic: []string{AttrIntelligence},
 		SuggestedOccupations: []string{
 			"Bank Robber", "Beat Cop", "Bounty Hunter", "Cult Leader",
 			"Drifter", "Exorcist", "Federal Agent", "Gangster",
@@ -94,7 +94,7 @@ var Archetypes = map[string]Archetype{
 			"Natural World", "Occult",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"POW"},
+		CoreCharacteristic: []string{AttrPower},
 		SuggestedOccupations: []string{
 			"Artist", "Author", "Bartender/Waitress", "Priest",
 			"Cult Leader", "Dilettante", "Drifter", "Elected Official",
@@ -127,7 +127,7 @@ var Archetypes = map[string]Archetype{
 			"Operate Heavy Machinery", "Science (any)",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"INT", "EDU"}, // Note: choose either INT or EDU
+		CoreCharacteristic: []string{AttrIntelligence, AttrEducation}, // Note: choose either INT or EDU
 		SuggestedOccupations: []string{
 			"Butler", "Cult Leader", "Doctor of Medicine",
 			"Engineer", "Gentleman/Lady", "Investigative Journalist",
@@ -165,7 +165,7 @@ var Archetypes = map[string]Archetype{
 			"Track",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"DEX", "POW"}, // Note: choose either DEX or POW
+		CoreCharacteristic: []string{AttrDexterity, AttrPower}, // Note: choose either DEX or POW
 		SuggestedOccupations: []string{
 			"Agency Detective",
 			"Archaeologist",
@@ -215,7 +215,7 @@ var Archetypes = map[string]Archetype{
 			"Stealth",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"APP", "INT"}, // Note: choose either APP or INT
+		CoreCharacteristic: []string{AttrAppearance, AttrIntelligence}, // Note: choose either APP or INT
 		SuggestedOccupations: []string{
 			"Actor",
 			"Agency Detective",
@@ -272,7 +272,7 @@ var Archetypes = map[string]Archetype{
 			"Throw",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"INT"},
+		CoreCharacteristic: []string{AttrIntelligence},
 		SuggestedOccupations: []string{
 			"Bartender/Waitress",
 			"Butler",
@@ -322,7 +322,7 @@ var Archetypes = map[string]Archetype{
 			"Throw",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"CON"},
+		CoreCharacteristic: []string{AttrConstitution},
 		SuggestedOccupations: []string{
 			"Agency Detective",
 			"Bank Robber",
@@ -366,7 +366,7 @@ var Archetypes = map[string]Archetype{
 			"Stealth",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"APP"},
+		CoreCharacteristic: []string{AttrAppearance},
 		SuggestedOccupations: []string{
 			"Actor",
 			"Agency Detective",
@@ -410,7 +410,7 @@ var Archetypes = map[string]Archetype{
 			"Track",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"INT", "CON"},
+		CoreCharacteristic: []string{AttrIntelligence, AttrConstitution},
 		SuggestedOccupations: []string{
 			"Agency Detective",
 			"Bank Robber",
@@ -458,7 +458,7 @@ var Archetypes = map[string]Archetype{
 			"Stealth",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"POW"},
+		CoreCharacteristic: []string{AttrPower},
 		SuggestedOccupations: []string{
 			"Artist",
 			"Cult Leader",
@@ -501,7 +501,7 @@ var Archetypes = map[string]Archetype{
 			"Stealth",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"DEX", "APP"},
+		CoreCharacteristic: []string{AttrDexterity, AttrAppearance},
 		SuggestedOccupations: []string{
 			"Artist",
 			"Bank Robber",
@@ -544,7 +544,7 @@ var Archetypes = map[string]Archetype{
 			"Track",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"INT", "CON"}, // Choose either INT or CON
+		CoreCharacteristic: []string{AttrIntelligence, AttrConstitution}, // Choose either INT or CON
 		SuggestedOccupations: []string{
 			"Artist",
 			"Drifter",
@@ -585,7 +585,7 @@ var Archetypes = map[string]Archetype{
 			"Psychology",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"SIZ"}, // Unique core characteristic
+		CoreCharacteristic: []string{AttrSize}, // Unique core characteristic
 		SuggestedOccupations: []string{
 			"Actor",
 			"Artist",
@@ -632,7 +632,7 @@ var Archetypes = map[string]Archetype{
 			"Science (any)",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"EDU"},
+		CoreCharacteristic: []string{AttrEducation},
 		SuggestedOccupations: []string{
 			"Archaeologist",
 			"Author",
@@ -671,7 +671,7 @@ var Archetypes = map[string]Archetype{
 			"Stealth",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"INT"},
+		CoreCharacteristic: []string{AttrIntelligence},
 		SuggestedOccupations: []string{
 			"Agency Detective",
 			"Author",
@@ -716,7 +716,7 @@ var Archetypes = map[string]Archetype{
 			"Track",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"DEX", "CON"}, // Choose either DEX or CON
+		CoreCharacteristic: []string{AttrDexterity, AttrConstitution}, // Choose either DEX or CON
 		SuggestedOccupations: []string{
 			"Author",
 			"Bartender/Waitress",
@@ -773,7 +773,7 @@ var Archetypes = map[string]Archetype{
 			"Survival (any)",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"CON"},
+		CoreCharacteristic: []string{AttrConstitution},
 		SuggestedOccupations: []string{
 			"Athlete", "Beat Cop", "Butler", "Priest",
 			"Chauffeur", "Doctor of Medicine", "Elected Official",
@@ -810,7 +810,7 @@ var Archetypes = map[string]Archetype{
 			"Throw",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"DEX", "APP"},
+		CoreCharacteristic: []string{AttrDexterity, AttrAppearance},
 		SuggestedOccupations: []string{
 			"Actor", "Artist", "Aviator", "Big Game Hunter",
 			"Bounty Hunter", "Dilettante", "Entertainer",
@@ -854,7 +854,7 @@ var Archetypes = map[string]Archetype{
 			"Throw",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"DEX", "POW"},
+		CoreCharacteristic: []string{AttrDexterity, AttrPower},
 		SuggestedOccupations: []string{
 			"Actor", "Athlete", "Aviator", "Bank Robber",
 			"Bounty Hunter", "Cat Burglar", "Dilettante",
@@ -891,7 +891,7 @@ var Archetypes = map[string]Archetype{
 			"Throw",
 		},
 		BonusPoints:        100,
-		CoreCharacteristic: []string{"STR", "SIZ"},
+		CoreCharacteristic: []string{AttrStrength, AttrSize},
 		SuggestedOccupations: []string{
 			"Agency Detective", "Bank Robber", "Beat Cop",
 			"Boxer", "Gangster", "Gun Moll", "Hired Muscle",
