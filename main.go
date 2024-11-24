@@ -91,6 +91,11 @@ type Archetype struct {
 	SpecialArchetypeRules SpecialArchetypeRules
 }
 
+func PickRandomArchetype() Archetype {
+	archetypeName := ArchetypesList[rand.Intn(len(ArchetypesList))]
+	return Archetypes[archetypeName]
+}
+
 func rollD6() int {
 	return rand.Intn(6) + 1
 }
@@ -265,10 +270,6 @@ func NewInvestigator(mode GameMode) *Investigator {
 			Name:   "Adventurer",
 			Skills: []string{"Firearms (Handgun)", "Archaeology"},
 		},
-		Archetype: Archetype{
-			Name:   "Indiana Jones",
-			Skills: []string{"History"},
-		},
 		Insane:           false,
 		TemporaryInsane:  false,
 		IndefiniteInsane: false,
@@ -352,7 +353,14 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Build:       "Big",
 		DamageBonus: "1D4",
 	}
-
+	// assign archetype
+	if mode == Pulp {
+		inv.Archetype = PickRandomArchetype()
+	}
+	inv.PickRandomTalents()
+	// assign occupation
+	// ToDo
+	// Initialize Attributes
 	inv.InitializeAttributes()
 
 	inv.LCK.Initialize(false)
@@ -391,8 +399,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Default:      inv.EDU.Value,
 		Value:        inv.EDU.Value,
 	}
-
-	inv.PickRandomTalents()
+	// assign points
 	return &inv
 }
 

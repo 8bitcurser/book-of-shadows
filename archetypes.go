@@ -904,3 +904,10 @@ var Archetypes = map[string]Archetype{
 		SuggestedTraits: "tough, capable, determined, quick to anger, violent, dirty, corrupt, underhand",
 	},
 }
+var ArchetypesList = func() []string {
+	keys := make([]string, 0, len(Archetypes))
+	for k := range Archetypes {
+		keys = append(keys, k)
+	}
+	return keys
+}()
