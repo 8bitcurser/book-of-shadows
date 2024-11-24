@@ -355,7 +355,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 		inv.AssignSkillPoints(archetypePoints, inv.Archetype.Skills)
 	}
 	inv.AssignSkillPoints(occupationPoints, inv.Occupation.Skills)
-	skillsList := []string
+	skillsList := []string{}
 	for _, v := range inv.Skills {
 		skillsList = append(skillsList, v.Name)
 	}
