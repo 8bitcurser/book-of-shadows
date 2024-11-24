@@ -73,13 +73,22 @@ type Talent struct {
 	Type        TalentType
 }
 
+type SpecialArchetypeRules struct {
+	RecommendedTalents []string
+	RequiredTalents    []string
+	Notes              string
+}
+
 type Archetype struct {
-	Name                 string
-	Skills               []string
-	BonusPoints          int
-	CoreCharacteristic   []string
-	SuggestedOccupations []Occupation
-	AmountOfTalents      int
+	Name                  string
+	Skills                []string
+	BonusPoints           int
+	CoreCharacteristic    []string
+	SuggestedOccupations  []string
+	AmountOfTalents       int
+	Description           string
+	SuggestedTraits       string
+	SpecialArchetypeRules SpecialArchetypeRules
 }
 
 func rollD6() int {
