@@ -10,9 +10,9 @@ const (
 )
 
 type Talent struct {
-	Name        string
-	Description string
-	Type        TalentType
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	Type        TalentType `json:"-"`
 }
 
 func (t Talent) String() string {

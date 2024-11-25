@@ -11,14 +11,14 @@ type SkillPointFormula struct {
 }
 
 type Occupation struct {
-	Name              string
-	Skills            []string
-	SuggestedContacts string
-	SkillPoints       SkillPointFormula
+	Name              string            `json:"name"`
+	Skills            []string          `json:"-"`
+	SuggestedContacts string            `json:"-"`
+	SkillPoints       SkillPointFormula `json:"-"`
 	CreditRating      struct {
 		Min int
 		Max int
-	}
+	} `json:"-"`
 }
 
 func (o *Occupation) String() string {

@@ -18,10 +18,10 @@ const (
 )
 
 type Attribute struct {
-	Name          string
-	StartingValue int
-	Value         int
-	MaxValue      int
+	Name          string `json:"-"`
+	StartingValue int    `json:"-"`
+	Value         int    `json:"value"`
+	MaxValue      int    `json:"-"`
 }
 
 func (a *Attribute) String() string {

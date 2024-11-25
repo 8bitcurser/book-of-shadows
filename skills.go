@@ -3,12 +3,12 @@ package main
 import "fmt"
 
 type Skill struct {
-	Name         string
-	Abbreviation string
-	Default      int
-	Value        int
-	Era          []Era
-	Base         int
+	Name         string `json:"-"`
+	Abbreviation string `json:"-"`
+	Default      int    `json:"-"`
+	Value        int    `json:"value"`
+	Era          []Era  `json:"-"`
+	Base         int    `json:"-"`
 }
 
 func (skill *Skill) String() string {

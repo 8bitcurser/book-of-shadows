@@ -9,15 +9,15 @@ type SpecialArchetypeRules struct {
 }
 
 type Archetype struct {
-	Name                  string
-	Skills                []string
-	BonusPoints           int
-	CoreCharacteristic    []string
-	SuggestedOccupations  []string
-	AmountOfTalents       int
-	Description           string
-	SuggestedTraits       string
-	SpecialArchetypeRules SpecialArchetypeRules
+	Name                  string                `json:"name"`
+	Skills                []string              `json:"-"`
+	BonusPoints           int                   `json:"-"`
+	CoreCharacteristic    []string              `json:"-"`
+	SuggestedOccupations  []string              `json:"-"`
+	AmountOfTalents       int                   `json:"-"`
+	Description           string                `json:"description"`
+	SuggestedTraits       string                `json:"-"`
+	SpecialArchetypeRules SpecialArchetypeRules `json:"-"`
 }
 
 func (a *Archetype) String() string {
