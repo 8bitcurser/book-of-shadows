@@ -43,6 +43,7 @@ func (i *Investigator) SetHP() {
 	HP.Value = hp
 	HP.MaxValue = hp
 	HP.StartingValue = hp
+	i.Attributes[AttrHitPoints] = HP
 
 }
 
@@ -123,7 +124,9 @@ func (i *Investigator) InitializeAttributes() {
 		isCore := isPulp && coreCharacteristics[attr.Name]
 
 		// Initialize the attribute
-		attr.Initialize(isCore)
+		attribute := i.Attributes[attr.Name]
+		attribute.Initialize(isCore)
+		i.Attributes[attr.Name] = attribute
 	}
 
 }
@@ -159,6 +162,7 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 			creditPointsBase := i.Occupation.CreditRating.Min - CR.Value
 			assignablePoints -= creditPointsBase
 			CR.Value = creditPointsBase
+			i.Skills["Credit Rating"] = CR
 		}
 		maxPointForSkill := skillLimit
 		if skill.Value <= skillLimit && skill.Name != "Cthulhu Mythos" {
@@ -171,6 +175,7 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 			}
 			skill.Value += pointsToAssign
 			assignablePoints -= pointsToAssign
+			i.Skills[skill.Name] = skill
 
 		}
 	}
@@ -328,6 +333,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 
 	// Initialize Attributes
 	inv.InitializeAttributes()
+
 	LCK := inv.Attributes[AttrLuck]
 	SAN := inv.Attributes[AttrSanity]
 	POW := inv.Attributes[AttrPower]

@@ -20,6 +20,10 @@ type Archetype struct {
 	SpecialArchetypeRules SpecialArchetypeRules
 }
 
+func (a *Archetype) String() string {
+	return a.Name
+}
+
 func PickRandomArchetype() *Archetype {
 	archetypeName := ArchetypesList[rand.Intn(len(ArchetypesList))]
 	archetype := Archetypes[archetypeName]

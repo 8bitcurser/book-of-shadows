@@ -21,6 +21,10 @@ type Occupation struct {
 	}
 }
 
+func (o *Occupation) String() string {
+	return o.Name
+}
+
 var Occupations = map[string]Occupation{
 	"Archaeologist": {
 		Name: "Archaeologist",

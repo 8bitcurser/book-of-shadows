@@ -32,6 +32,7 @@ func (a *Attribute) Initialize(isCore bool) {
 		}
 
 	} else {
+
 		if isCore {
 			rolled = coreRoll()
 		} else {
