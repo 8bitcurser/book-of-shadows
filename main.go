@@ -189,6 +189,18 @@ func (i *Investigator) GetSkills() {
 	i.Skills = filteredSkills
 }
 
+func (i *Investigator) AssignOccupation() {
+	occupation := rand.Intn(len(OccupationsList))
+	if i.GameMode == Pulp && i.Archetype != nil {
+		if len(i.Archetype.SuggestedOccupations) > 0 {
+			occupation = rand.Intn(len(i.Archetype.SuggestedOccupations))
+		}
+	}
+
+	pickedOccupation := Occupations[OccupationsList[occupation]]
+	i.Occupation = &pickedOccupation
+}
+
 type Investigator struct {
 	Era              Era
 	GameMode         GameMode
@@ -360,6 +372,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Default:      EDU.Value,
 		Value:        EDU.Value,
 	}
+	inv.AssignOccupation()
 	// assign points
 	occupationPoints := inv.CalculateOccupationSkillPoints()
 	if inv.GameMode == Pulp {
