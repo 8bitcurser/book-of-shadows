@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 const (
 	AttrStrength     = "Strength"
 	AttrConstitution = "Constitution"
@@ -20,6 +22,10 @@ type Attribute struct {
 	StartingValue int
 	Value         int
 	MaxValue      int
+}
+
+func (a *Attribute) String() string {
+	return fmt.Sprintf("%v: %v", a.Name, a.Value)
 }
 
 func (a *Attribute) Initialize(isCore bool) {

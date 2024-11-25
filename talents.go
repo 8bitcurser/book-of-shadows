@@ -15,6 +15,10 @@ type Talent struct {
 	Type        TalentType
 }
 
+func (t Talent) String() string {
+	return t.Name
+}
+
 var Talents = map[string]Talent{
 	"Keen Vision": {
 		Name:        "Keen Vision",

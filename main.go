@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"math"
 	"math/rand"
@@ -22,6 +23,10 @@ const (
 type ProfilePic struct {
 	FilePath string
 	FileName string
+}
+
+func (pp *ProfilePic) String() string {
+	return fmt.Sprintf("%v", pp.FilePath)
 }
 
 func rollD6() int {
@@ -206,16 +211,24 @@ func (i *Investigator) AssignOccupation() {
 	i.Occupation = &pickedOccupation
 }
 
+func (i *Investigator) ToJSON() (string, error) {
+	bytes, err := json.Marshal(i)
+	if err != nil {
+		return "", fmt.Errorf("error marshaling investigator: %v", err)
+	}
+	return string(bytes), nil
+}
+
 type Investigator struct {
-	Era              Era
-	GameMode         GameMode
-	Name             string `json:"name"`
-	Residence        string `json:"residence"`
-	Birthplace       string `json:"birthplace"`
-	Age              int    `json:"age"`
-	ProfilePic       ProfilePic
-	Occupation       *Occupation
-	Archetype        *Archetype
+	Era              Era                  `json:"era"`
+	GameMode         GameMode             `json:"game-mode"`
+	Name             string               `json:"name"`
+	Residence        string               `json:"residence"`
+	Birthplace       string               `json:"birthplace"`
+	Age              int                  `json:"age"`
+	ProfilePic       ProfilePic           `json:"profile-pic"`
+	Occupation       *Occupation          `json:"occupation"`
+	Archetype        *Archetype           `json:"archetype"`
 	Insane           bool                 `json:"insane"`
 	TemporaryInsane  bool                 `json:"temporary_insane"`
 	IndefiniteInsane bool                 `json:"indefinite_insane"`
@@ -223,11 +236,11 @@ type Investigator struct {
 	Unconscious      bool                 `json:"unconscious"`
 	Dying            bool                 `json:"dying"`
 	Attributes       map[string]Attribute `json:"attributes"`
-	Skills           map[string]Skill
-	Move             int
-	Build            string
-	DamageBonus      string
-	Talents          []Talent
+	Skills           map[string]Skill     `json:"skills"`
+	Move             int                  `json:"move"`
+	Build            string               `json:"build"`
+	DamageBonus      string               `json:"damage-bonus"`
+	Talents          []Talent             `json:"talents"`
 }
 
 func NewInvestigator(mode GameMode) *Investigator {
@@ -397,5 +410,5 @@ func NewInvestigator(mode GameMode) *Investigator {
 // ToDO: Need to support Occupation Assignment
 func main() {
 	investigator := NewInvestigator(Pulp)
-	fmt.Println(investigator)
+	fmt.Println(investigator.ToJSON())
 }

@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type Skill struct {
 	Name         string
 	Abbreviation string
@@ -7,6 +9,10 @@ type Skill struct {
 	Value        int
 	Era          []Era
 	Base         int
+}
+
+func (skill *Skill) String() string {
+	return fmt.Sprintf("%s (%d)", skill.Abbreviation, skill.Value)
 }
 
 var Skills = map[string]Skill{
