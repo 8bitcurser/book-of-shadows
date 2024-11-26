@@ -24,3 +24,5 @@ go.work.sum
 # env file
 .env
 .env
+
+filled_modernSheet.pdf
