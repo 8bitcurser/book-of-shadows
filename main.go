@@ -162,12 +162,12 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 		skillPicked := rand.Intn(len(skills))
 		skill := i.Skills[skills[skillPicked]]
 		pointsToAssign := 0
-		CR := i.Skills["Credit Rating"]
+		CR := i.Skills["Credit"]
 		if CR.Value < i.Occupation.CreditRating.Min {
 			creditPointsBase := i.Occupation.CreditRating.Min - CR.Value
 			assignablePoints -= creditPointsBase
 			CR.Value = creditPointsBase
-			i.Skills["Credit Rating"] = CR
+			i.Skills["Credit"] = CR
 		}
 		maxPointForSkill := skillLimit
 		if skill.Value <= skillLimit && skill.Name != "Cthulhu Mythos" {
