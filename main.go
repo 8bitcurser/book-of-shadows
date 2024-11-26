@@ -160,7 +160,11 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 
 	for assignablePoints > 0 {
 		skillPicked := rand.Intn(len(skills))
-		skill := i.Skills[skills[skillPicked]]
+		skillFormName := SkillsToFormName[skills[skillPicked]]
+		skill, ok := i.Skills[skillFormName]
+		if !ok {
+			continue
+		}
 		pointsToAssign := 0
 		CR := i.Skills["Credit"]
 		if CR.Value < i.Occupation.CreditRating.Min {
@@ -179,8 +183,9 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 				pointsToAssign = rand.Intn(maxPointForSkill) + 1
 			}
 			skill.Value += pointsToAssign
+
 			assignablePoints -= pointsToAssign
-			i.Skills[skill.Name] = skill
+			i.Skills[skillFormName] = skill
 
 		}
 	}
@@ -208,6 +213,7 @@ func (i *Investigator) AssignOccupation() {
 	}
 
 	pickedOccupation := Occupations[OccupationsList[occupation]]
+	fmt.Println(pickedOccupation)
 	i.Occupation = &pickedOccupation
 }
 
@@ -341,9 +347,10 @@ func NewInvestigator(mode GameMode) *Investigator {
 	if mode == Pulp {
 		inv.Archetype = PickRandomArchetype()
 	}
+
 	inv.PickRandomTalents()
 	// assign occupation
-
+	inv.AssignOccupation()
 	// Initialize Attributes
 	inv.InitializeAttributes()
 	LCK := inv.Attributes[AttrLuck]
@@ -379,29 +386,17 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Default:      DEX.Value / 2,
 		Value:        (DEX.Value / 2),
 	}
-	//inv.Skills["Idea"] = Skill{
-	//	Name:         "Idea",
-	//	Abbreviation: "Idea",
-	//	Default:      INT.Value / 2,
-	//	Value:        INT.Value / 2,
-	//}
-	//inv.Skills["Know"] = Skill{
-	//	Name:         "Know",
-	//	Abbreviation: "Know",
-	//	Default:      EDU.Value / 2,
-	//	Value:        EDU.Value / 2,
-	//}
 	inv.Skills["OwnLanguage"] = Skill{
 		Name:         "Language(Own)",
 		Abbreviation: "Language(Own)",
 		Default:      EDU.Value,
 		Value:        EDU.Value,
 	}
-	inv.AssignOccupation()
 	// assign points
 	occupationPoints := inv.CalculateOccupationSkillPoints()
 	if inv.GameMode == Pulp {
 		archetypePoints := inv.Archetype.BonusPoints
+		fmt.Println(archetypePoints)
 		inv.AssignSkillPoints(archetypePoints, inv.Archetype.Skills)
 	}
 	inv.AssignSkillPoints(occupationPoints, inv.Occupation.Skills)
@@ -409,12 +404,15 @@ func NewInvestigator(mode GameMode) *Investigator {
 	for _, v := range inv.Skills {
 		skillsList = append(skillsList, v.Name)
 	}
+	fmt.Println(INT.Value * 2)
 	inv.AssignSkillPoints(INT.Value*2, skillsList)
 	return &inv
 }
 
-// ToDO: Need to support Occupation Assignment
 func main() {
 	investigator := NewInvestigator(Pulp)
-	PDFExport(investigator)
+	err := PDFExport(investigator)
+	if err != nil {
+		panic(err)
+	}
 }
