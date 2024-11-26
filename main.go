@@ -101,7 +101,7 @@ func (i *Investigator) SetBuildAndDMG() {
 }
 
 func (i *Investigator) SetMovement() {
-	// if both are not greater or lesser than size it means one of the two is
+	// if both are not greater or lesser than size it means one of the two is.
 	if i.Attributes[AttrDexterity].Value < i.Attributes[AttrSize].Value && i.Attributes[AttrStrength].Value < i.Attributes[AttrSize].Value {
 		i.Move = 7
 	} else if i.Attributes[AttrStrength].Value > i.Attributes[AttrSize].Value && i.Attributes[AttrDexterity].Value > i.Attributes[AttrSize].Value {

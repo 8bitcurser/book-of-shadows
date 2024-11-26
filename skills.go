@@ -15,7 +15,7 @@ func (skill *Skill) String() string {
 	return fmt.Sprintf("%s (%d)", skill.Abbreviation, skill.Value)
 }
 
-// the weird skill key names are so they match the pdf form fields
+// the weird skill key names are so they match the pdf form fields.
 var Skills = map[string]Skill{
 	"Accounting": {
 		Name:         "Accounting",

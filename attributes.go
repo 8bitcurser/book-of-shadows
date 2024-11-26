@@ -30,7 +30,7 @@ func (a *Attribute) String() string {
 
 func (a *Attribute) Initialize(isCore bool) {
 	rolled := 0
-	if a.Name == "Size" || a.Name == "Intelligence" || a.Name == "Education" {
+	if a.Name == "SIZ" || a.Name == "INT" || a.Name == "EDU" {
 		if isCore {
 			rolled = coreRoll()
 		} else {
