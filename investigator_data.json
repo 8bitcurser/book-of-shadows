@@ -1,170 +1,590 @@
 [
   {
-    "name": "APP",
-    "value": "65"
-  },
-  {
-    "name": "APP_half",
-    "value": "32"
-  },
-  {
-    "name": "APP_fifth",
-    "value": "13"
-  },
-  {
-    "name": "EDU",
-    "value": "90"
-  },
-  {
-    "name": "EDU_half",
-    "value": "45"
-  },
-  {
-    "name": "EDU_fifth",
-    "value": "18"
-  },
-  {
-    "name": "CurrentSanity",
-    "value": "50"
-  },
-  {
-    "name": "CurrentSanity_half",
-    "value": "25"
-  },
-  {
-    "name": "CurrentSanity_fifth",
-    "value": "10"
-  },
-  {
-    "name": "STR",
-    "value": "20"
-  },
-  {
-    "name": "STR_half",
-    "value": "10"
-  },
-  {
-    "name": "STR_fifth",
-    "value": "4"
-  },
-  {
-    "name": "CON",
-    "value": "30"
-  },
-  {
-    "name": "CON_half",
-    "value": "15"
-  },
-  {
-    "name": "CON_fifth",
-    "value": "6"
-  },
-  {
-    "name": "DEX",
-    "value": "90"
-  },
-  {
-    "name": "DEX_half",
-    "value": "45"
-  },
-  {
-    "name": "DEX_fifth",
-    "value": "18"
-  },
-  {
-    "name": "INT",
-    "value": "90"
-  },
-  {
-    "name": "INT_half",
-    "value": "45"
-  },
-  {
-    "name": "INT_fifth",
-    "value": "18"
-  },
-  {
-    "name": "CurrentLuck",
-    "value": "50"
-  },
-  {
-    "name": "CurrentLuck_half",
-    "value": "25"
-  },
-  {
-    "name": "CurrentLuck_fifth",
-    "value": "10"
-  },
-  {
-    "name": "SIZ",
-    "value": "45"
-  },
-  {
-    "name": "SIZ_half",
-    "value": "22"
-  },
-  {
-    "name": "SIZ_fifth",
-    "value": "9"
-  },
-  {
     "name": "POW",
-    "value": "60"
+    "value": "90"
   },
   {
     "name": "POW_half",
-    "value": "30"
+    "value": "45"
   },
   {
     "name": "POW_fifth",
-    "value": "12"
+    "value": "18"
   },
   {
     "name": "CurrentHP",
-    "value": "15"
+    "value": "28"
   },
   {
     "name": "CurrentHP_half",
-    "value": "7"
+    "value": "14"
   },
   {
     "name": "CurrentHP_fifth",
-    "value": "3"
+    "value": "5"
   },
   {
-    "name": "CurrentMagic",
+    "name": "CurrentSanity",
+    "value": "60"
+  },
+  {
+    "name": "CurrentSanity_half",
+    "value": "30"
+  },
+  {
+    "name": "CurrentSanity_fifth",
+    "value": "12"
+  },
+  {
+    "name": "STR",
     "value": "35"
   },
   {
-    "name": "CurrentMagic_half",
+    "name": "STR_half",
     "value": "17"
   },
   {
-    "name": "CurrentMagic_fifth",
+    "name": "STR_fifth",
     "value": "7"
   },
   {
-    "name": "Skill_Appraise",
+    "name": "DEX",
+    "value": "60"
+  },
+  {
+    "name": "DEX_half",
+    "value": "30"
+  },
+  {
+    "name": "DEX_fifth",
+    "value": "12"
+  },
+  {
+    "name": "INT",
+    "value": "45"
+  },
+  {
+    "name": "INT_half",
+    "value": "22"
+  },
+  {
+    "name": "INT_fifth",
+    "value": "9"
+  },
+  {
+    "name": "SIZ",
+    "value": "70"
+  },
+  {
+    "name": "SIZ_half",
+    "value": "35"
+  },
+  {
+    "name": "SIZ_fifth",
+    "value": "14"
+  },
+  {
+    "name": "APP",
+    "value": "90"
+  },
+  {
+    "name": "APP_half",
+    "value": "45"
+  },
+  {
+    "name": "APP_fifth",
+    "value": "18"
+  },
+  {
+    "name": "EDU",
+    "value": "70"
+  },
+  {
+    "name": "EDU_half",
+    "value": "35"
+  },
+  {
+    "name": "EDU_fifth",
+    "value": "14"
+  },
+  {
+    "name": "CurrentMagic",
+    "value": "65"
+  },
+  {
+    "name": "CurrentMagic_half",
+    "value": "32"
+  },
+  {
+    "name": "CurrentMagic_fifth",
+    "value": "13"
+  },
+  {
+    "name": "CurrentLuck",
+    "value": "45"
+  },
+  {
+    "name": "CurrentLuck_half",
+    "value": "22"
+  },
+  {
+    "name": "CurrentLuck_fifth",
+    "value": "9"
+  },
+  {
+    "name": "CON",
+    "value": "70"
+  },
+  {
+    "name": "CON_half",
+    "value": "35"
+  },
+  {
+    "name": "CON_fifth",
+    "value": "14"
+  },
+  {
+    "name": "Skill_Occult",
     "value": "5"
   },
   {
-    "name": "Skill_Appraise_half",
+    "name": "Skill_Occult_half",
     "value": "2"
   },
   {
-    "name": "Skill_Appraise_fifth",
+    "name": "Skill_Occult_fifth",
     "value": "1"
   },
   {
+    "name": "Skill_Listen",
+    "value": "87"
+  },
+  {
+    "name": "Skill_Listen_half",
+    "value": "43"
+  },
+  {
+    "name": "Skill_Listen_fifth",
+    "value": "17"
+  },
+  {
     "name": "Skill_Psyschology",
-    "value": "10"
+    "value": "92"
   },
   {
     "name": "Skill_Psyschology_half",
-    "value": "5"
+    "value": "46"
   },
   {
     "name": "Skill_Psyschology_fifth",
+    "value": "18"
+  },
+  {
+    "name": "Skill_Swim",
+    "value": "56"
+  },
+  {
+    "name": "Skill_Swim_half",
+    "value": "28"
+  },
+  {
+    "name": "Skill_Swim_fifth",
+    "value": "11"
+  },
+  {
+    "name": "Skill_Locksmith",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Locksmith_half",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Locksmith_fifth",
+    "value": "0"
+  },
+  {
+    "name": "Skill_SpotHidden",
+    "value": "94"
+  },
+  {
+    "name": "Skill_SpotHidden_half",
+    "value": "47"
+  },
+  {
+    "name": "Skill_SpotHidden_fifth",
+    "value": "18"
+  },
+  {
+    "name": "Skill_ArtCraft1",
+    "value": "5"
+  },
+  {
+    "name": "Skill_ArtCraft1_half",
+    "value": "2"
+  },
+  {
+    "name": "Skill_ArtCraft1_fifth",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Drive",
+    "value": "20"
+  },
+  {
+    "name": "Skill_Drive_half",
+    "value": "10"
+  },
+  {
+    "name": "Skill_Drive_fifth",
+    "value": "4"
+  },
+  {
+    "name": "Skill_OwnLanguage",
+    "value": "70"
+  },
+  {
+    "name": "Skill_OwnLanguage_half",
+    "value": "35"
+  },
+  {
+    "name": "Skill_OwnLanguage_fifth",
+    "value": "14"
+  },
+  {
+    "name": "Skill_Survival",
+    "value": "10"
+  },
+  {
+    "name": "Skill_Survival_half",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Survival_fifth",
+    "value": "2"
+  },
+  {
+    "name": "Skill_Fighting (Speciality)",
+    "value": "25"
+  },
+  {
+    "name": "Skill_Fighting (Speciality)_half",
+    "value": "12"
+  },
+  {
+    "name": "Skill_Fighting (Speciality)_fifth",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Psychoanalysis",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Psychoanalysis_half",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Psychoanalysis_fifth",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Computer",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Computer_half",
+    "value": "2"
+  },
+  {
+    "name": "Skill_Computer_fifth",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Anthropology",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Anthropology_half",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Anthropology_fifth",
+    "value": "0"
+  },
+  {
+    "name": "Skill_FastTalk",
+    "value": "5"
+  },
+  {
+    "name": "Skill_FastTalk _half",
+    "value": "2"
+  },
+  {
+    "name": "Skill_FastTalk _fifth",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Stealth",
+    "value": "20"
+  },
+  {
+    "name": "Skill_Stealth_half",
+    "value": "10"
+  },
+  {
+    "name": "Skill_Stealth_fifth",
+    "value": "4"
+  },
+  {
+    "name": "Skill_Electronic",
+    "value": "28"
+  },
+  {
+    "name": "Skill_Electronic_half",
+    "value": "14"
+  },
+  {
+    "name": "Skill_Electronic_fifth",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Dodge",
+    "value": "30"
+  },
+  {
+    "name": "Skill_Dodge_half",
+    "value": "15"
+  },
+  {
+    "name": "Skill_Dodge_fifth",
+    "value": "6"
+  },
+  {
+    "name": "Skill_Pilot",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Pilot_half",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Pilot_fifth",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Firearms (Other)",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Firearms (Other)_half",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Firearms (Other)_fifth",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Sleight",
+    "value": "10"
+  },
+  {
+    "name": "Skill_Sleight_half",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Sleight_fifth",
+    "value": "2"
+  },
+  {
+    "name": "Skill_Medicine",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Medicine_half",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Medicine_fifth",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Charm",
+    "value": "57"
+  },
+  {
+    "name": "Skill_Charm_half",
+    "value": "28"
+  },
+  {
+    "name": "Skill_Charm_fifth",
+    "value": "11"
+  },
+  {
+    "name": "Skill_ElecRepair",
+    "value": "10"
+  },
+  {
+    "name": "Skill_ElecRepair_half",
+    "value": "5"
+  },
+  {
+    "name": "Skill_ElecRepair_fifth",
+    "value": "2"
+  },
+  {
+    "name": "Skill_Intimidate",
+    "value": "15"
+  },
+  {
+    "name": "Skill_Intimidate_half",
+    "value": "7"
+  },
+  {
+    "name": "Skill_Intimidate_fifth",
+    "value": "3"
+  },
+  {
+    "name": "Skill_Credit",
+    "value": "9"
+  },
+  {
+    "name": "Skill_Credit_half",
+    "value": "4"
+  },
+  {
+    "name": "Skill_Credit_fifth",
+    "value": "1"
+  },
+  {
+    "name": "Dodge_Copy",
+    "value": "30"
+  },
+  {
+    "name": "Dodge_Copy_half",
+    "value": "15"
+  },
+  {
+    "name": "Dodge_Copy_fifth",
+    "value": "6"
+  },
+  {
+    "name": "Skill_Navigate",
+    "value": "33"
+  },
+  {
+    "name": "Skill_Navigate_half",
+    "value": "16"
+  },
+  {
+    "name": "Skill_Navigate_fifth",
+    "value": "6"
+  },
+  {
+    "name": "Skill_Cthulhu",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Cthulhu_half",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Cthulhu_fifth",
+    "value": "0"
+  },
+  {
+    "name": "Skill_Climb",
+    "value": "35"
+  },
+  {
+    "name": "Skill_Climb_half",
+    "value": "17"
+  },
+  {
+    "name": "Skill_Climb_fifth",
+    "value": "7"
+  },
+  {
+    "name": "Skill_Language(Other)",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Language(Other)_half",
+    "value": "2"
+  },
+  {
+    "name": "Skill_Language(Other)_fifth",
+    "value": "1"
+  },
+  {
+    "name": "Skill_History",
+    "value": "5"
+  },
+  {
+    "name": "Skill_History_half",
+    "value": "2"
+  },
+  {
+    "name": "Skill_History_fifth",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Fighting",
+    "value": "25"
+  },
+  {
+    "name": "Skill_Fighting_half",
+    "value": "12"
+  },
+  {
+    "name": "Skill_Fighting_fifth",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Law",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Law_half",
+    "value": "2"
+  },
+  {
+    "name": "Skill_Law_fifth",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Disguise",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Disguise_half",
+    "value": "2"
+  },
+  {
+    "name": "Skill_Disguise_fifth",
+    "value": "1"
+  },
+  {
+    "name": "Skill_FirstAid",
+    "value": "95"
+  },
+  {
+    "name": "Skill_FirstAid_half",
+    "value": "47"
+  },
+  {
+    "name": "Skill_FirstAid_fifth",
+    "value": "19"
+  },
+  {
+    "name": "Skill_Persuade",
+    "value": "10"
+  },
+  {
+    "name": "Skill_Persuade_half",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Persuade_fifth",
     "value": "2"
   },
   {
@@ -180,112 +600,28 @@
     "value": "1"
   },
   {
-    "name": "Skill_Navigate",
+    "name": "Skill_NaturalWorld",
     "value": "10"
   },
   {
-    "name": "Skill_Navigate_half",
+    "name": "Skill_NaturalWorld_half",
     "value": "5"
   },
   {
-    "name": "Skill_Navigate_fifth",
+    "name": "Skill_NaturalWorld_fifth",
     "value": "2"
   },
   {
-    "name": "Skill_Fighting",
-    "value": "25"
+    "name": "Skill_Accounting",
+    "value": "75"
   },
   {
-    "name": "Skill_Fighting_half",
-    "value": "12"
+    "name": "Skill_Accounting_half",
+    "value": "37"
   },
   {
-    "name": "Skill_Fighting_fifth",
-    "value": "5"
-  },
-  {
-    "name": "Skill_Language(Other)",
-    "value": "5"
-  },
-  {
-    "name": "Skill_Language(Other)_half",
-    "value": "2"
-  },
-  {
-    "name": "Skill_Language(Other)_fifth",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Persuade",
-    "value": "10"
-  },
-  {
-    "name": "Skill_Persuade_half",
-    "value": "5"
-  },
-  {
-    "name": "Skill_Persuade_fifth",
-    "value": "2"
-  },
-  {
-    "name": "Skill_FastTalk",
-    "value": "65"
-  },
-  {
-    "name": "Skill_FastTalk _half",
-    "value": "32"
-  },
-  {
-    "name": "Skill_FastTalk _fifth",
-    "value": "13"
-  },
-  {
-    "name": "Skill_Science",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Science_half",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Science_fifth",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Climb",
-    "value": "20"
-  },
-  {
-    "name": "Skill_Climb_half",
-    "value": "10"
-  },
-  {
-    "name": "Skill_Climb_fifth",
-    "value": "4"
-  },
-  {
-    "name": "Skill_Firearms (Other)",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Firearms (Other)_half",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Firearms (Other)_fifth",
-    "value": "0"
-  },
-  {
-    "name": "Skill_FirearmsRifles",
-    "value": "25"
-  },
-  {
-    "name": "Skill_FirearmsRifles_half",
-    "value": "12"
-  },
-  {
-    "name": "Skill_FirearmsRifles_fifth",
-    "value": "5"
+    "name": "Skill_Accounting_fifth",
+    "value": "15"
   },
   {
     "name": "Skill_Archaeology",
@@ -300,148 +636,28 @@
     "value": "0"
   },
   {
-    "name": "Skill_Track",
-    "value": "69"
-  },
-  {
-    "name": "Skill_Track_half",
-    "value": "34"
-  },
-  {
-    "name": "Skill_Track_fifth",
-    "value": "13"
-  },
-  {
-    "name": "Skill_Dodge",
-    "value": "45"
-  },
-  {
-    "name": "Skill_Dodge_half",
-    "value": "22"
-  },
-  {
-    "name": "Skill_Dodge_fifth",
-    "value": "9"
-  },
-  {
-    "name": "Skill_Anthropology",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Anthropology_half",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Anthropology_fifth",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Accounting",
-    "value": "5"
-  },
-  {
-    "name": "Skill_Accounting_half",
-    "value": "2"
-  },
-  {
-    "name": "Skill_Accounting_fifth",
-    "value": "1"
-  },
-  {
     "name": "Skill_FirearmsHandguns",
-    "value": "76"
+    "value": "20"
   },
   {
     "name": "Skill_FirearmsHandguns_half",
-    "value": "38"
+    "value": "10"
   },
   {
     "name": "Skill_FirearmsHandguns_fifth",
-    "value": "15"
+    "value": "4"
   },
   {
-    "name": "Skill_Jump",
-    "value": "95"
+    "name": "Skill_MechRepair",
+    "value": "10"
   },
   {
-    "name": "Skill_Jump_half",
-    "value": "47"
-  },
-  {
-    "name": "Skill_Jump_fifth",
-    "value": "19"
-  },
-  {
-    "name": "Skill_Disguise",
+    "name": "Skill_MechRepair_half",
     "value": "5"
   },
   {
-    "name": "Skill_Disguise_half",
+    "name": "Skill_MechRepair_fifth",
     "value": "2"
-  },
-  {
-    "name": "Skill_Disguise_fifth",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Sleight",
-    "value": "91"
-  },
-  {
-    "name": "Skill_Sleight_half",
-    "value": "45"
-  },
-  {
-    "name": "Skill_Sleight_fifth",
-    "value": "18"
-  },
-  {
-    "name": "Skill_Cthulhu",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Cthulhu_half",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Cthulhu_fifth",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Occult",
-    "value": "5"
-  },
-  {
-    "name": "Skill_Occult_half",
-    "value": "2"
-  },
-  {
-    "name": "Skill_Occult_fifth",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Electronic",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Electronic_half",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Electronic_fifth",
-    "value": "0"
-  },
-  {
-    "name": "Skill_FirstAid",
-    "value": "30"
-  },
-  {
-    "name": "Skill_FirstAid_half",
-    "value": "15"
-  },
-  {
-    "name": "Skill_FirstAid_fifth",
-    "value": "6"
   },
   {
     "name": "Skill_Throw",
@@ -456,292 +672,76 @@
     "value": "4"
   },
   {
-    "name": "Skill_Pilot",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Pilot_half",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Pilot_fifth",
-    "value": "0"
-  },
-  {
-    "name": "Skill_NaturalWorld",
-    "value": "10"
-  },
-  {
-    "name": "Skill_NaturalWorld_half",
-    "value": "5"
-  },
-  {
-    "name": "Skill_NaturalWorld_fifth",
-    "value": "2"
-  },
-  {
-    "name": "Skill_Swim",
-    "value": "20"
-  },
-  {
-    "name": "Skill_Swim_half",
-    "value": "10"
-  },
-  {
-    "name": "Skill_Swim_fifth",
-    "value": "4"
-  },
-  {
-    "name": "Skill_Survival",
-    "value": "10"
-  },
-  {
-    "name": "Skill_Survival_half",
-    "value": "5"
-  },
-  {
-    "name": "Skill_Survival_fifth",
-    "value": "2"
-  },
-  {
-    "name": "Skill_SpotHidden",
-    "value": "25"
-  },
-  {
-    "name": "Skill_SpotHidden_half",
-    "value": "12"
-  },
-  {
-    "name": "Skill_SpotHidden_fifth",
-    "value": "5"
-  },
-  {
-    "name": "Skill_Computer",
-    "value": "8"
-  },
-  {
-    "name": "Skill_Computer_half",
-    "value": "4"
-  },
-  {
-    "name": "Skill_Computer_fifth",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Law",
-    "value": "5"
-  },
-  {
-    "name": "Skill_Law_half",
-    "value": "2"
-  },
-  {
-    "name": "Skill_Law_fifth",
-    "value": "1"
-  },
-  {
-    "name": "Skill_MechRepair",
-    "value": "46"
-  },
-  {
-    "name": "Skill_MechRepair_half",
-    "value": "23"
-  },
-  {
-    "name": "Skill_MechRepair_fifth",
-    "value": "9"
-  },
-  {
-    "name": "Skill_History",
-    "value": "5"
-  },
-  {
-    "name": "Skill_History_half",
-    "value": "2"
-  },
-  {
-    "name": "Skill_History_fifth",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Psychoanalysis",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Psychoanalysis_half",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Psychoanalysis_fifth",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Charm",
-    "value": "15"
-  },
-  {
-    "name": "Skill_Charm_half",
-    "value": "7"
-  },
-  {
-    "name": "Skill_Charm_fifth",
-    "value": "3"
-  },
-  {
-    "name": "Skill_ArtCraft1",
-    "value": "5"
-  },
-  {
-    "name": "Skill_ArtCraft1_half",
-    "value": "2"
-  },
-  {
-    "name": "Skill_ArtCraft1_fifth",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Credit",
-    "value": "16"
-  },
-  {
-    "name": "Skill_Credit_half",
-    "value": "8"
-  },
-  {
-    "name": "Skill_Credit_fifth",
-    "value": "3"
-  },
-  {
-    "name": "Skill_Stealth",
-    "value": "93"
-  },
-  {
-    "name": "Skill_Stealth_half",
-    "value": "46"
-  },
-  {
-    "name": "Skill_Stealth_fifth",
-    "value": "18"
-  },
-  {
-    "name": "Skill_Fighting (Speciality)",
-    "value": "25"
-  },
-  {
-    "name": "Skill_Fighting (Speciality)_half",
-    "value": "12"
-  },
-  {
-    "name": "Skill_Fighting (Speciality)_fifth",
-    "value": "5"
-  },
-  {
-    "name": "Dodge_Copy",
-    "value": "45"
-  },
-  {
-    "name": "Dodge_Copy_half",
-    "value": "22"
-  },
-  {
-    "name": "Dodge_Copy_fifth",
-    "value": "9"
-  },
-  {
-    "name": "Skill_ElecRepair",
-    "value": "10"
-  },
-  {
-    "name": "Skill_ElecRepair_half",
-    "value": "5"
-  },
-  {
-    "name": "Skill_ElecRepair_fifth",
-    "value": "2"
-  },
-  {
-    "name": "Skill_Locksmith",
-    "value": "1"
-  },
-  {
-    "name": "Skill_Locksmith_half",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Locksmith_fifth",
-    "value": "0"
-  },
-  {
-    "name": "Skill_Drive",
-    "value": "20"
-  },
-  {
-    "name": "Skill_Drive_half",
-    "value": "10"
-  },
-  {
-    "name": "Skill_Drive_fifth",
-    "value": "4"
-  },
-  {
     "name": "Skill_Library",
-    "value": "31"
+    "value": "20"
   },
   {
     "name": "Skill_Library_half",
-    "value": "15"
+    "value": "10"
   },
   {
     "name": "Skill_Library_fifth",
-    "value": "6"
+    "value": "4"
   },
   {
-    "name": "Skill_Listen",
-    "value": "63"
+    "name": "Skill_Appraise",
+    "value": "5"
   },
   {
-    "name": "Skill_Listen_half",
-    "value": "31"
+    "name": "Skill_Appraise_half",
+    "value": "2"
   },
   {
-    "name": "Skill_Listen_fifth",
-    "value": "12"
-  },
-  {
-    "name": "Skill_Medicine",
+    "name": "Skill_Appraise_fifth",
     "value": "1"
   },
   {
-    "name": "Skill_Medicine_half",
+    "name": "Skill_FirearmsRifles",
+    "value": "25"
+  },
+  {
+    "name": "Skill_FirearmsRifles_half",
+    "value": "12"
+  },
+  {
+    "name": "Skill_FirearmsRifles_fifth",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Jump",
+    "value": "20"
+  },
+  {
+    "name": "Skill_Jump_half",
+    "value": "10"
+  },
+  {
+    "name": "Skill_Jump_fifth",
+    "value": "4"
+  },
+  {
+    "name": "Skill_Track",
+    "value": "10"
+  },
+  {
+    "name": "Skill_Track_half",
+    "value": "5"
+  },
+  {
+    "name": "Skill_Track_fifth",
+    "value": "2"
+  },
+  {
+    "name": "Skill_Science",
+    "value": "1"
+  },
+  {
+    "name": "Skill_Science_half",
     "value": "0"
   },
   {
-    "name": "Skill_Medicine_fifth",
+    "name": "Skill_Science_fifth",
     "value": "0"
-  },
-  {
-    "name": "Skill_OwnLanguage",
-    "value": "90"
-  },
-  {
-    "name": "Skill_OwnLanguage_half",
-    "value": "45"
-  },
-  {
-    "name": "Skill_OwnLanguage_fifth",
-    "value": "18"
-  },
-  {
-    "name": "Skill_Intimidate",
-    "value": "15"
-  },
-  {
-    "name": "Skill_Intimidate_half",
-    "value": "7"
-  },
-  {
-    "name": "Skill_Intimidate_fifth",
-    "value": "3"
   },
   {
     "name": "Investigators_Name",
@@ -749,7 +749,7 @@
   },
   {
     "name": "Occupation",
-    "value": "Street Punk"
+    "value": "Butler"
   },
   {
     "name": "Age",
@@ -765,22 +765,22 @@
   },
   {
     "name": "MOV",
-    "value": "9"
+    "value": "7"
   },
   {
     "name": "DamageBonus",
-    "value": "-1"
+    "value": "None"
   },
   {
     "name": "Build",
-    "value": "-1"
+    "value": ""
   },
   {
     "name": "Archetype",
-    "value": "Sidekick"
+    "value": "Swashbuckler"
   },
   {
     "name": "Pulp Talents",
-    "value": "Heavy Hitter, Alert, "
+    "value": "Psychic Power, Keen Hearing, "
   }
 ]
