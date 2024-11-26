@@ -213,7 +213,6 @@ func (i *Investigator) AssignOccupation() {
 	}
 
 	pickedOccupation := Occupations[OccupationsList[occupation]]
-	fmt.Println(pickedOccupation)
 	i.Occupation = &pickedOccupation
 }
 
@@ -396,7 +395,6 @@ func NewInvestigator(mode GameMode) *Investigator {
 	occupationPoints := inv.CalculateOccupationSkillPoints()
 	if inv.GameMode == Pulp {
 		archetypePoints := inv.Archetype.BonusPoints
-		fmt.Println(archetypePoints)
 		inv.AssignSkillPoints(archetypePoints, inv.Archetype.Skills)
 	}
 	inv.AssignSkillPoints(occupationPoints, inv.Occupation.Skills)
@@ -404,7 +402,6 @@ func NewInvestigator(mode GameMode) *Investigator {
 	for _, v := range inv.Skills {
 		skillsList = append(skillsList, v.Name)
 	}
-	fmt.Println(INT.Value * 2)
 	inv.AssignSkillPoints(INT.Value*2, skillsList)
 	return &inv
 }
