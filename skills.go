@@ -15,6 +15,7 @@ func (skill *Skill) String() string {
 	return fmt.Sprintf("%s (%d)", skill.Abbreviation, skill.Value)
 }
 
+// the weird skill key names are so they match the pdf form fields
 var Skills = map[string]Skill{
 	"Accounting": {
 		Name:         "Accounting",
@@ -48,9 +49,9 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Art/Craft": {
-		Name:         "Art/Craft",
-		Abbreviation: "Art/Craft",
+	"ArtCraft1": {
+		Name:         "ArtCraft",
+		Abbreviation: "ArtCraft",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
@@ -72,14 +73,14 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Computer Use": {
+	"Computer": {
 		Name:         "Computer Use",
 		Abbreviation: "Computer Use",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Modern},
 	},
-	"Credit Rating": {
+	"Credit": {
 		Name:         "Credit Rating",
 		Abbreviation: "Credit Rating",
 		Default:      0,
@@ -87,7 +88,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Cthulhu Mythos": {
+	"Cthulhu": {
 		Name:         "Cthulhu Mythos",
 		Abbreviation: "Cthulhu Mythos",
 		Default:      0,
@@ -103,7 +104,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Drive Auto": {
+	"Drive": {
 		Name:         "Drive Auto",
 		Abbreviation: "Drive Auto",
 		Default:      20,
@@ -111,7 +112,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Electrical Repair": {
+	"ElecRepair": {
 		Name:         "Electrical Repair",
 		Abbreviation: "Elec. Repair",
 		Default:      10,
@@ -119,14 +120,14 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Electronics": {
+	"Electronic": {
 		Name:         "Electronics",
 		Abbreviation: "Electronics",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Modern},
 	},
-	"Fast Talk": {
+	"FastTalk": {
 		Name:         "Fast Talk",
 		Abbreviation: "Fast Talk",
 		Default:      5,
@@ -134,7 +135,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Fighting (Brawl)": {
+	"Fighting": {
 		Name:         "Fighting (Brawl)",
 		Abbreviation: "Fighting",
 		Default:      25,
@@ -158,7 +159,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
 	},
-	"Firearms (Handgun)": {
+	"FirearmsHandguns": {
 		Name:         "Firearms (Handgun)",
 		Abbreviation: "Handgun",
 		Default:      20,
@@ -166,7 +167,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Firearms (Rifle/Shotgun)": {
+	"FirearmsRifles": {
 		Name:         "Firearms (Rifle/Shotgun)",
 		Abbreviation: "Rifle/Shotgun",
 		Default:      25,
@@ -174,7 +175,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"First Aid": {
+	"FirstAid": {
 		Name:         "First Aid",
 		Abbreviation: "First Aid",
 		Default:      30,
@@ -222,7 +223,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Library Use": {
+	"Library": {
 		Name:         "Library Use",
 		Abbreviation: "Library Use",
 		Default:      20,
@@ -246,7 +247,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Mech. Repair": {
+	"MechRepair": {
 		Name:         "Mechanical Repair",
 		Abbreviation: "Mech. Repair",
 		Default:      10,
@@ -262,7 +263,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Natural World": {
+	"NaturalWorld": {
 		Name:         "Natural World",
 		Abbreviation: "Natural World",
 		Default:      10,
@@ -286,7 +287,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Pilot(Machine)": {
+	"Pilot": {
 		Name:         "Pilot(Machine)",
 		Abbreviation: "Pilot(Machine)",
 		Default:      1,
@@ -302,7 +303,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Psychology": {
+	"Psyschology": {
 		Name:         "Psychology",
 		Abbreviation: "Psychology",
 		Default:      10,
@@ -326,7 +327,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
 	},
-	"Sleight of Hand": {
+	"Sleight": {
 		Name:         "Sleight of Hand",
 		Abbreviation: "Sleight",
 		Default:      10,
@@ -334,7 +335,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Spot Hidden": {
+	"SpotHidden": {
 		Name:         "Spot Hidden",
 		Abbreviation: "Spot Hidden",
 		Default:      25,
@@ -350,7 +351,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Survival(Biome)": {
+	"Survival": {
 		Name:         "Survival(Biome)",
 		Abbreviation: "Survival(Biome)",
 		Default:      10,
@@ -377,6 +378,14 @@ var Skills = map[string]Skill{
 	"Track": {
 		Name:         "Track",
 		Abbreviation: "Track",
+		Default:      10,
+		Value:        10,
+		Era:          []Era{Twenties, Modern},
+		Base:         0,
+	},
+	"Navigate": {
+		Name:         "Navigate",
+		Abbreviation: "Navigate",
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},

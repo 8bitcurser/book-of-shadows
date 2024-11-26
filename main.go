@@ -123,15 +123,15 @@ func (i *Investigator) InitializeAttributes() {
 	// Initialize each attribute
 	isPulp := i.GameMode == Pulp // or however you check for pulp mode
 
-	for _, attr := range i.Attributes {
+	for key, _ := range i.Attributes {
 
 		// An attribute is core if we're in pulp mode AND it's in core characteristics
-		isCore := isPulp && coreCharacteristics[attr.Name]
+		isCore := isPulp && coreCharacteristics[key]
 
 		// Initialize the attribute
-		attribute := i.Attributes[attr.Name]
+		attribute := i.Attributes[key]
 		attribute.Initialize(isCore)
-		i.Attributes[attr.Name] = attribute
+		i.Attributes[key] = attribute
 	}
 
 }
@@ -211,36 +211,36 @@ func (i *Investigator) AssignOccupation() {
 	i.Occupation = &pickedOccupation
 }
 
-func (i *Investigator) ToJSON() (string, error) {
+func (i *Investigator) ToJSON() ([]byte, error) {
 	bytes, err := json.Marshal(i)
 	if err != nil {
-		return "", fmt.Errorf("error marshaling investigator: %v", err)
+		return []byte(""), fmt.Errorf("error marshaling investigator: %v", err)
 	}
-	return string(bytes), nil
+	return bytes, nil
 }
 
 type Investigator struct {
-	Era              Era                  `json:"era"`
-	GameMode         GameMode             `json:"game-mode"`
-	Name             string               `json:"name"`
-	Residence        string               `json:"residence"`
-	Birthplace       string               `json:"birthplace"`
-	Age              int                  `json:"age"`
-	ProfilePic       ProfilePic           `json:"profile-pic"`
-	Occupation       *Occupation          `json:"occupation"`
-	Archetype        *Archetype           `json:"archetype"`
+	Era              Era                  `json:"-"`
+	GameMode         GameMode             `json:"-"`
+	Name             string               `json:"Investigators_Name"`
+	Residence        string               `json:"Residence"`
+	Birthplace       string               `json:"Birthplace"`
+	Age              int                  `json:"Age"`
+	ProfilePic       ProfilePic           `json:"Portrait"`
+	Occupation       *Occupation          `json:"Occupation"`
+	Archetype        *Archetype           `json:"Archetype"`
 	Insane           bool                 `json:"insane"`
-	TemporaryInsane  bool                 `json:"temporary_insane"`
-	IndefiniteInsane bool                 `json:"indefinite_insane"`
-	MajorWound       bool                 `json:"major_wound"`
-	Unconscious      bool                 `json:"unconscious"`
-	Dying            bool                 `json:"dying"`
+	TemporaryInsane  bool                 `json:"TempInsanity_Chk Off"`
+	IndefiniteInsane bool                 `json:"IndefInsanity_Chk"`
+	MajorWound       bool                 `json:"MajorWound_Chk"`
+	Unconscious      bool                 `json:"Unconscious_Chk"`
+	Dying            bool                 `json:"Dying_Chk"`
 	Attributes       map[string]Attribute `json:"attributes"`
-	Skills           map[string]Skill     `json:"skills"`
-	Move             int                  `json:"move"`
-	Build            string               `json:"build"`
-	DamageBonus      string               `json:"damage-bonus"`
-	Talents          []Talent             `json:"talents"`
+	Skills           map[string]Skill     `json:"Skill"`
+	Move             int                  `json:"MOV"`
+	Build            string               `json:"Build"`
+	DamageBonus      string               `json:"DamageBonus"`
+	Talents          []Talent             `json:"Pulp-Talents"`
 }
 
 func NewInvestigator(mode GameMode) *Investigator {
@@ -260,73 +260,73 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Dying:            false,
 		Attributes: map[string]Attribute{
 			AttrStrength: {
-				Name:          AttrStrength,
+				Name:          "STR",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrConstitution: {
-				Name:          AttrConstitution,
+				Name:          "CON",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrDexterity: {
-				Name:          AttrDexterity,
+				Name:          "DEX",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrIntelligence: {
-				Name:          AttrIntelligence,
+				Name:          "INT",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrSize: {
-				Name:          AttrSize,
+				Name:          "SIZ",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrPower: {
-				Name:          AttrPower,
+				Name:          "POW",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrAppearance: {
-				Name:          AttrAppearance,
+				Name:          "APP",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrEducation: {
-				Name:          AttrEducation,
+				Name:          "EDU",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrHitPoints: {
-				Name:          AttrHitPoints,
+				Name:          "CurrentHP",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrMagicPoints: {
-				Name:          AttrMagicPoints,
+				Name:          "CurrentMagic",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrLuck: {
-				Name:          AttrLuck,
+				Name:          "CurrentLuck",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
 			},
 			AttrSanity: {
-				Name:          AttrSanity,
+				Name:          "CurrentSanity",
 				StartingValue: 0,
 				Value:         0,
 				MaxValue:      0,
@@ -346,7 +346,6 @@ func NewInvestigator(mode GameMode) *Investigator {
 
 	// Initialize Attributes
 	inv.InitializeAttributes()
-
 	LCK := inv.Attributes[AttrLuck]
 	SAN := inv.Attributes[AttrSanity]
 	POW := inv.Attributes[AttrPower]
@@ -367,25 +366,32 @@ func NewInvestigator(mode GameMode) *Investigator {
 	inv.SetBuildAndDMG()
 	MP.Value = POW.Value / 5
 	inv.GetSkills()
+
+	inv.Skills["Dodge_Copy"] = Skill{
+		Name:         "Dodge_Copy",
+		Abbreviation: "Dodge",
+		Default:      DEX.Value / 2,
+		Value:        (DEX.Value / 2),
+	}
 	inv.Skills["Dodge"] = Skill{
 		Name:         "Dodge",
 		Abbreviation: "Dodge",
 		Default:      DEX.Value / 2,
-		Value:        DEX.Value / 2,
+		Value:        (DEX.Value / 2),
 	}
-	inv.Skills["Idea"] = Skill{
-		Name:         "Idea",
-		Abbreviation: "Idea",
-		Default:      INT.Value / 2,
-		Value:        INT.Value / 2,
-	}
-	inv.Skills["Know"] = Skill{
-		Name:         "Know",
-		Abbreviation: "Know",
-		Default:      EDU.Value / 2,
-		Value:        EDU.Value / 2,
-	}
-	inv.Skills["Language(Own)"] = Skill{
+	//inv.Skills["Idea"] = Skill{
+	//	Name:         "Idea",
+	//	Abbreviation: "Idea",
+	//	Default:      INT.Value / 2,
+	//	Value:        INT.Value / 2,
+	//}
+	//inv.Skills["Know"] = Skill{
+	//	Name:         "Know",
+	//	Abbreviation: "Know",
+	//	Default:      EDU.Value / 2,
+	//	Value:        EDU.Value / 2,
+	//}
+	inv.Skills["OwnLanguage"] = Skill{
 		Name:         "Language(Own)",
 		Abbreviation: "Language(Own)",
 		Default:      EDU.Value,
@@ -410,5 +416,5 @@ func NewInvestigator(mode GameMode) *Investigator {
 // ToDO: Need to support Occupation Assignment
 func main() {
 	investigator := NewInvestigator(Pulp)
-	fmt.Println(investigator.ToJSON())
+	PDFExport(investigator)
 }
