@@ -26,3 +26,7 @@ go.work.sum
 .env
 
 filled_modernSheet.pdf
+
+.DS_Store
+.idea/
+go.mod

@@ -113,7 +113,12 @@ func ConvertInvestigatorToPDFFields(investigator *Investigator) ([]byte, error) 
 	pdfFields = append(pdfFields, PDFField{Name: "MOV", Value: strconv.Itoa(investigator.Move)})
 	pdfFields = append(pdfFields, PDFField{Name: "DamageBonus", Value: investigator.DamageBonus})
 	pdfFields = append(pdfFields, PDFField{Name: "Build", Value: investigator.Build})
-
+	pdfFields = append(pdfFields, PDFField{Name: "Archetype", Value: investigator.Archetype.Name})
+	talents := ""
+	for _, talent := range investigator.Talents {
+		talents += talent.Name + ", "
+	}
+	pdfFields = append(pdfFields, PDFField{Name: "Pulp Talents", Value: talents})
 	// Add more fields as needed
 	return json.MarshalIndent(pdfFields, "", "  ")
 }
