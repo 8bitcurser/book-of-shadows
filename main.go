@@ -26,38 +26,43 @@ func handleHome(c echo.Context) error {
 }
 
 func handleGenerate(c echo.Context) error {
-	// Get game mode from query param, default to Classic
 	mode := models.Classic
 	if c.QueryParam("mode") == "pulp" {
 		mode = models.Pulp
 	}
 
-	// Generate new investigator
 	investigator := models.NewInvestigator(mode)
 
-	return c.JSON(http.StatusOK, Response{
-		Data: investigator,
-	})
+	// Set content type to ensure proper rendering
+	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
+
+	return views.CharacterSheet(investigator).Render(c.Request().Context(), c.Response().Writer)
+}
+
+func handleGetJSON(c echo.Context) error {
+	mode := models.Classic
+	if c.QueryParam("mode") == "pulp" {
+		mode = models.Pulp
+	}
+
+	investigator := models.NewInvestigator(mode)
+	return c.JSON(http.StatusOK, investigator)
 }
 
 func handleExportPDF(c echo.Context) error {
-	// Parse investigator from request body
-	var investigator models.Investigator
-	if err := c.Bind(&investigator); err != nil {
-		return c.JSON(http.StatusBadRequest, Response{
-			Error: "Invalid investigator data",
-		})
+	mode := models.Classic
+	if c.QueryParam("mode") == "pulp" {
+		mode = models.Pulp
 	}
 
-	// Generate PDF
-	err := PDFExport(&investigator)
+	investigator := models.NewInvestigator(mode)
+	err := PDFExport(investigator)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, Response{
-			Error: "Failed to generate PDF",
+		return c.JSON(http.StatusInternalServerError, map[string]string{
+			"error": "Failed to generate PDF",
 		})
 	}
 
-	// Return PDF file
 	return c.File("character_sheet.pdf") // Adjust filename as needed
 }
 
@@ -76,6 +81,7 @@ func main() {
 	e.GET("/", handleHome)
 	e.GET("/api/generate", handleGenerate)
 	e.POST("/api/export-pdf", handleExportPDF)
+	e.POST("/api/get-json", handleGetJSON)
 
 	e.Logger.Fatal(e.Start(":8080"))
 }
