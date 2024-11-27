@@ -1,0 +1,174 @@
+// views/components.templ
+package views
+
+import "book-of-shadows/models"
+
+templ Home() {
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Call of Cthulhu Character Generator</title>
+        <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+        <script src="https://cdn.tailwindcss.com"></script>
+    </head>
+    <body class="bg-gray-100">
+        <div class="container mx-auto px-4 py-8">
+            <header class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-2">Call of Cthulhu Character Generator</h1>
+                <p class="text-gray-600">Generate investigators for your cosmic horror adventures</p>
+            </header>
+
+            <div class="flex justify-center gap-4 mb-8">
+                <select
+                    id="gameMode"
+                    class="rounded border p-2 bg-white"
+                >
+                    <option value="classic">Classic Mode</option>
+                    <option value="pulp">Pulp Mode</option>
+                </select>
+
+                <button
+                    hx-get="/api/generate"
+                    hx-target="#character-sheet"
+                    hx-vals='js:{mode: document.getElementById("gameMode").value}'
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                    Generate Character
+                </button>
+
+                <button
+                    onclick="exportPDF()"
+                    class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+                >
+                    Export PDF
+                </button>
+
+                <button
+                    onclick="exportJSON()"
+                    class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
+                >
+                    Save JSON
+                </button>
+            </div>
+
+            <div
+                id="character-sheet"
+                class="bg-white rounded-lg shadow-lg p-8"
+            >
+                <p class="text-center text-gray-500">
+                    Click "Generate Character" to create a new investigator
+                </p>
+            </div>
+        </div>
+
+        <script>
+            let currentCharacter = null;
+
+            async function exportPDF() {
+                if (!currentCharacter) {
+                    alert('Please generate a character first');
+                    return;
+                }
+
+                try {
+                    const response = await fetch('/api/export-pdf', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(currentCharacter)
+                    });
+
+                    if (!response.ok) throw new Error('Failed to generate PDF');
+
+                    const blob = await response.blob();
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'investigator.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                } catch (error) {
+                    console.error('Error exporting PDF:', error);
+                    alert('Failed to generate PDF');
+                }
+            }
+
+            function exportJSON() {
+                if (!currentCharacter) {
+                    alert('Please generate a character first');
+                    return;
+                }
+
+                const blob = new Blob([JSON.stringify(currentCharacter, null, 2)], {
+                    type: 'application/json'
+                });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'investigator.json';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+
+            htmx.on('htmx:afterSettle', function(evt) {
+                const path = evt.detail.pathInfo?.requestPath || evt.detail.requestConfig?.path;
+                if (path === '/api/generate') {
+                    currentCharacter = JSON.parse(evt.detail.xhr.responseText);
+                }
+            });
+        </script>
+    </body>
+    </html>
+}
+
+templ CharacterSheet(investigator *models.Investigator) {
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div class="character-info">
+            <h2 class="text-2xl font-bold mb-4">{ investigator.Name }</h2>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <p><strong>Occupation:</strong> { investigator.Occupation.Name }</p>
+                    <p><strong>Age:</strong> { string(investigator.Age) }</p>
+                    <p><strong>Residence:</strong> { investigator.Residence }</p>
+                    <p><strong>Birthplace:</strong> { investigator.Birthplace }</p>
+                </div>
+                <div>
+                    <p><strong>Movement:</strong> { string(investigator.Move) }</p>
+                    <p><strong>Build:</strong> { investigator.Build }</p>
+                    <p><strong>Damage Bonus:</strong> { investigator.DamageBonus }</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="attributes">
+            <h3 class="text-xl font-bold mb-2">Attributes</h3>
+            <div class="grid grid-cols-2 gap-2">
+                for _, attr := range investigator.Attributes {
+                    <div class="flex justify-between">
+                        <span>{ attr.Name }:</span>
+                        <span>{ string(attr.Value) }</span>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <div class="skills col-span-full">
+            <h3 class="text-xl font-bold mb-2">Skills</h3>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                for _, skill := range investigator.Skills {
+                    if skill.Name != "" {
+                        <div class="flex justify-between">
+                            <span>{ skill.Name }:</span>
+                            <span>{ string(skill.Value) }%</span>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+    </div>
+}

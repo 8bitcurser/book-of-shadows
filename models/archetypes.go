@@ -1,6 +1,8 @@
-package main
+package models
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 type SpecialArchetypeRules struct {
 	RecommendedTalents []string

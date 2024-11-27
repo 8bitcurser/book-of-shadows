@@ -1,6 +1,8 @@
-package main
+package models
 
-import "fmt"
+import (
+	"fmt"
+)
 
 type Skill struct {
 	Name         string `json:"-"`

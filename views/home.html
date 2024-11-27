@@ -1,0 +1,204 @@
+<!-- views/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Call of Cthulhu Character Generator</title>
+    <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            line-height: 1.5;
+            margin: 0;
+            padding: 2rem;
+            background: #f3f4f6;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .controls {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        .button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            background: #1e40af;
+            color: white;
+        }
+        .button:hover {
+            background: #1e3a8a;
+        }
+        .character-sheet {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .grid {
+            display: grid;
+            gap: 1rem;
+        }
+        @media (min-width: 768px) {
+            .grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1>Call of Cthulhu Character Generator</h1>
+            <p>Generate investigators for your cosmic horror adventures</p>
+        </header>
+        
+        <div class="controls">
+            <select id="gameMode" style="padding: 0.5rem; border-radius: 0.25rem;">
+                <option value="classic">Classic Mode</option>
+                <option value="pulp">Pulp Mode</option>
+            </select>
+            
+            <button
+                hx-get="/api/generate"
+                hx-target="#character-sheet"
+                hx-vals='js:{mode: document.getElementById("gameMode").value}'
+                class="button"
+            >
+                Generate Character
+            </button>
+            
+            <button onclick="exportPDF()" class="button">
+                Export PDF
+            </button>
+            
+            <button onclick="exportJSON()" class="button">
+                Save JSON
+            </button>
+        </div>
+        
+        <div id="character-sheet" class="character-sheet">
+            <!-- Character sheet will be rendered here -->
+            <p style="text-align: center; color: #666;">
+                Click "Generate Character" to create a new investigator
+            </p>
+        </div>
+    </div>
+
+    <script>
+        let currentCharacter = null;
+
+        htmx.on('htmx:afterRequest', function(evt) {
+            if (evt.detail.pathInfo.requestPath === '/api/generate') {
+                const response = JSON.parse(evt.detail.xhr.responseText);
+                if (response.data) {
+                    currentCharacter = response.data;
+                    displayCharacter(response.data);
+                }
+            }
+        });
+
+        function displayCharacter(character) {
+            const sheet = document.getElementById('character-sheet');
+            
+            sheet.innerHTML = `
+                <div class="grid">
+                    <div>
+                        <h2>${character.Investigators_Name}</h2>
+                        <p><strong>Occupation:</strong> ${character.Occupation.Name}</p>
+                        <p><strong>Age:</strong> ${character.Age}</p>
+                        <p><strong>Residence:</strong> ${character.Residence}</p>
+                        <p><strong>Birthplace:</strong> ${character.Birthplace}</p>
+                        <p><strong>Movement:</strong> ${character.MOV}</p>
+                        <p><strong>Build:</strong> ${character.Build}</p>
+                        <p><strong>Damage Bonus:</strong> ${character.DamageBonus}</p>
+                    </div>
+                    
+                    <div>
+                        <h3>Attributes</h3>
+                        ${Object.entries(character.attributes)
+                            .map(([key, attr]) => `
+                                <div style="display: flex; justify-content: space-between;">
+                                    <span>${attr.Name}:</span>
+                                    <span>${attr.Value}</span>
+                                </div>
+                            `).join('')}
+                    </div>
+                    
+                    <div style="grid-column: span 2;">
+                        <h3>Skills</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.5rem;">
+                            ${Object.entries(character.Skill)
+                                .map(([key, skill]) => `
+                                    <div style="display: flex; justify-content: space-between;">
+                                        <span>${skill.Name}:</span>
+                                        <span>${skill.Value}%</span>
+                                    </div>
+                                `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function exportPDF() {
+            if (!currentCharacter) {
+                alert('Please generate a character first');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/export-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(currentCharacter)
+                });
+                
+                if (!response.ok) throw new Error('Failed to generate PDF');
+                
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'investigator.pdf';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch (error) {
+                console.error('Error exporting PDF:', error);
+                alert('Failed to generate PDF');
+            }
+        }
+
+        function exportJSON() {
+            if (!currentCharacter) {
+                alert('Please generate a character first');
+                return;
+            }
+            
+            const blob = new Blob([JSON.stringify(currentCharacter, null, 2)], {
+                type: 'application/json'
+            });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'investigator.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>

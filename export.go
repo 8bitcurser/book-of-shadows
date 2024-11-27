@@ -1,6 +1,7 @@
 package main
 
 import (
+	"book-of-shadows/models"
 	"encoding/json"
 	"fmt"
 	"github.com/joho/godotenv"
@@ -38,7 +39,7 @@ type PDFField struct {
 	Value string `json:"value"`
 }
 
-func ConvertInvestigatorToPDFFields(investigator *Investigator) ([]byte, error) {
+func ConvertInvestigatorToPDFFields(investigator *models.Investigator) ([]byte, error) {
 	pdfFields := []PDFField{}
 
 	// Handle Attributes
@@ -123,7 +124,7 @@ func ConvertInvestigatorToPDFFields(investigator *Investigator) ([]byte, error) 
 	return json.MarshalIndent(pdfFields, "", "  ")
 }
 
-func PDFExport(investigator *Investigator) error {
+func PDFExport(investigator *models.Investigator) error {
 	// Convert investigator to JSON and save to a file
 	_, err := json.MarshalIndent(investigator, "", "  ")
 	if err != nil {
