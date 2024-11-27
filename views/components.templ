@@ -34,7 +34,7 @@ templ Home() {
                         class="rounded border p-2 bg-white"
                     >
                         <option value="classic">Classic Mode</option>
-                        <option value="pulp">Pulp Mode</option>
+                        <option value="pulp" selected>Pulp Mode</option>
                     </select>
 
                     <button
@@ -88,39 +88,119 @@ templ Home() {
                 return JSON.parse(hiddenInput.value);
             }
 
-            function exportJSON() {
-                // Create a new object with the current UI state
-                const currentState = {
+            // First, let's update how we get the current character state when exporting
+            function getCurrentUIState() {
+                const baseCharacter = JSON.parse(document.getElementById('currentCharacter').value);
+                return {
+                    ...baseCharacter, // Keep all original properties
                     Investigators_Name: document.querySelector('input[data-field="name"]').value,
                     Age: parseInt(document.querySelector('input[data-field="age"]').value) || 0,
                     Residence: document.querySelector('input[data-field="residence"]').value,
                     Birthplace: document.querySelector('input[data-field="birthplace"]').value,
-                    // Get current base character data from hidden input for unchangeable values
-                    ...JSON.parse(document.getElementById('currentCharacter').value),
-                    // Override the Skill values with current UI state
-                    Skill: {}
+                    // Update skills with current values while preserving structure
+                    Skill: Object.entries(baseCharacter.Skill).reduce((acc, [key, skill]) => {
+                        const input = document.querySelector(`input[data-skill="${key}"]`);
+                        acc[key] = {
+                            ...skill, // Keep original skill properties
+                            value: input ? parseInt(input.value) || 0 : skill.value
+                        };
+                        return acc;
+                    }, {})
                 };
+            }
 
-                // Get all skill inputs and their current values
-                document.querySelectorAll('input[data-skill]').forEach(input => {
-                    const skillName = input.dataset.skill;
-                    const value = parseInt(input.value) || 0;
-                    currentState.Skill[skillName] = {
-                        ...currentState.Skill[skillName], // Keep other properties if any
-                        value: value
-                    };
-                });
-
+            function exportJSON() {
+                const currentState = getCurrentUIState();
                 const blob = new Blob([JSON.stringify(currentState, null, 2)], {
                     type: 'application/json'
                 });
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = 'investigator.json';
+                a.download = currentState["Investigators_Name"]+'.json';
                 document.body.appendChild(a);
                 a.click();
                 document.body.removeChild(a);
+            }
+
+            async function loadJSON(input) {
+                const file = input.files[0];
+                if (!file) return;
+
+                try {
+                    const text = await file.text();
+                    const character = JSON.parse(text);
+
+                    // Update the hidden input first
+                    document.getElementById('currentCharacter').value = JSON.stringify(character);
+
+                    // Personal Info
+                    document.querySelector('input[data-field="name"]').value = character.Investigators_Name || '';
+                    document.querySelector('input[data-field="age"]').value = character.Age || '';
+                    document.querySelector('input[data-field="residence"]').value = character.Residence || '';
+                    document.querySelector('input[data-field="birthplace"]').value = character.Birthplace || '';
+
+                    // Occupation - handle nested name property
+                    const occupationElement = document.querySelector('[data-field="occupation"]');
+                    if (occupationElement && character.Occupation && character.Occupation.name) {
+                        occupationElement.textContent = character.Occupation.name;
+                    }
+
+                    // Attributes - handle nested value property
+                    const attributeRows = document.querySelectorAll('.bg-gray-50 .grid-cols-2 .flex.justify-between');
+                    attributeRows.forEach(row => {
+                        const attrNameSpan = row.querySelector('span:first-child');
+                        if (attrNameSpan) {
+                            const attrKey = attrNameSpan.textContent;
+                            const attr = character.attributes[attrKey];
+                            if (attr && attr.value !== undefined) {
+                                const valueContainer = row.querySelector('.flex.items-center');
+                                if (valueContainer) {
+                                    const spans = valueContainer.querySelectorAll('span');
+                                    if (spans.length >= 5) {  // Regular, separator, half, separator, fifth
+                                        spans[0].textContent = attr.value;
+                                        spans[2].textContent = Math.floor(attr.value / 2);
+                                        spans[4].textContent = Math.floor(attr.value / 5);
+                                    }
+                                }
+                            }
+                        }
+                    });
+
+                    // Combat Info
+                    document.querySelector('.space-y-2 div:nth-child(1) span:last-child').textContent = character.MOV;
+                    document.querySelector('.space-y-2 div:nth-child(2) span:last-child').textContent = character.Build;
+                    document.querySelector('.space-y-2 div:nth-child(3) span:last-child').textContent = character.DamageBonus;
+
+                    // Skills - handle nested value property
+                    Object.entries(character.Skill).forEach(([skillName, skillData]) => {
+                        const skillInput = document.querySelector(`input[data-skill="${skillName}"]`);
+                        if (skillInput && skillData.value !== undefined) {
+                            skillInput.value = skillData.value;
+                            // Trigger change event to update half/fifth values
+                            skillInput.dispatchEvent(new Event('change'));
+                        }
+                    });
+
+                    // Pulp Talents
+                    const talentsContainer = document.querySelector('.mt-6 .space-y-4');
+                    if (talentsContainer && character["Pulp-Talents"]) {
+                        talentsContainer.innerHTML = character["Pulp-Talents"]
+                            .map(talent => `
+                                <div class="bg-gray-50 p-3 rounded">
+                                    <h3 class="font-bold text-gray-700">${talent.name}</h3>
+                                    <p class="text-gray-600 text-sm mt-1">${talent.description}</p>
+                                </div>
+                            `).join('');
+                    }
+
+                } catch (error) {
+                    console.error('Error loading character:', error);
+                    alert('Failed to load character. Please check the JSON file format.');
+                }
+
+                // Clear the file input
+                input.value = '';
             }
 
             async function exportPDF() {
@@ -219,62 +299,6 @@ templ Home() {
                 }
             }
 
-            async function loadJSON(input) {
-                const file = input.files[0];
-                if (!file) return;
-
-                try {
-                    // Read the file
-                    const text = await file.text();
-                    const character = JSON.parse(text);
-
-                    // Update the hidden input with the new character data
-                    document.getElementById('currentCharacter').value = JSON.stringify(character);
-
-                    // Update basic info
-                    document.querySelector('input[data-field="name"]').value = character.Investigators_Name || '';
-                    document.querySelector('input[data-field="age"]').value = character.Age || '';
-                    document.querySelector('input[data-field="residence"]').value = character.Residence || '';
-                    document.querySelector('input[data-field="birthplace"]').value = character.Birthplace || '';
-                    document.querySelector('input[data-field="occupation"]').value = character.Occupation || '';
-
-                    // Update occupation
-                    // if (character.Occupation) {
-                        //const occupationElement = document.querySelector('p.font-medium');
-                        // if (occupationElement) {
-                       //     occupationElement.textContent = character.Occupation.Name;
-                       // }
-                    // }
-
-
-                    // Update all skills
-                    for (const [skillName, skillData] of Object.entries(character.Skill)) {
-                        const skillInput = document.querySelector(`input[data-skill="${skillName}"]`);
-                        if (skillInput) {
-                            skillInput.value = skillData.value;
-                            // Trigger the recalculation for half and fifth values
-                            skillInput.dispatchEvent(new Event('change'));
-                        }
-                    }
-
-                    // Update info display elements
-                    document.querySelectorAll('[data-display]').forEach(element => {
-                        const field = element.dataset.display;
-                        const value = character[field];
-                        if (value !== undefined) {
-                            element.textContent = value;
-                        }
-                    });
-
-                } catch (error) {
-                    console.error('Error loading character:', error);
-                    alert('Failed to load character. Please check the JSON file format.');
-                }
-
-                // Clear the file input for future use
-                input.value = '';
-            }
-
         </script>
     </body>
     </html>
@@ -296,7 +320,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                     <div>
                         <p class="text-sm text-gray-600">Occupation</p>
-                        <p class="font-medium">{ investigator.Occupation.Name }</p>
+                        <p class="font-medium" data-field="occupation">{ investigator.Occupation.Name }</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">Age</p>
