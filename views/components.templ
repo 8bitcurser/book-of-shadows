@@ -59,6 +59,16 @@ templ Home() {
                     >
                         Save JSON
                     </button>
+
+                    <label class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 cursor-pointer">
+                        Load JSON
+                        <input
+                            type="file"
+                            accept=".json"
+                            onchange="loadJSON(this)"
+                            class="hidden"
+                        />
+                    </label>
                 </div>
 
                 <div id="character-sheet">
@@ -67,7 +77,8 @@ templ Home() {
                     </p>
                 </div>
             </div>
-
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         <script>
             function getCurrentCharacter() {
                 const hiddenInput = document.getElementById('currentCharacter');
@@ -77,46 +88,30 @@ templ Home() {
                 return JSON.parse(hiddenInput.value);
             }
 
-            async function exportPDF() {
-                const character = getCurrentCharacter();
-                if (!character) {
-                    alert('Please generate a character first');
-                    return;
-                }
-
-                try {
-                    const response = await fetch('/api/export-pdf', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(character)
-                    });
-
-                    if (!response.ok) throw new Error('Failed to generate PDF');
-
-                    const blob = await response.blob();
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = 'investigator.pdf';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                } catch (error) {
-                    console.error('Error exporting PDF:', error);
-                    alert('Failed to generate PDF');
-                }
-            }
-
             function exportJSON() {
-                const character = getCurrentCharacter();
-                if (!character) {
-                    alert('Please generate a character first');
-                    return;
-                }
+                // Create a new object with the current UI state
+                const currentState = {
+                    Investigators_Name: document.querySelector('input[data-field="name"]').value,
+                    Age: parseInt(document.querySelector('input[data-field="age"]').value) || 0,
+                    Residence: document.querySelector('input[data-field="residence"]').value,
+                    Birthplace: document.querySelector('input[data-field="birthplace"]').value,
+                    // Get current base character data from hidden input for unchangeable values
+                    ...JSON.parse(document.getElementById('currentCharacter').value),
+                    // Override the Skill values with current UI state
+                    Skill: {}
+                };
 
-                const blob = new Blob([JSON.stringify(character, null, 2)], {
+                // Get all skill inputs and their current values
+                document.querySelectorAll('input[data-skill]').forEach(input => {
+                    const skillName = input.dataset.skill;
+                    const value = parseInt(input.value) || 0;
+                    currentState.Skill[skillName] = {
+                        ...currentState.Skill[skillName], // Keep other properties if any
+                        value: value
+                    };
+                });
+
+                const blob = new Blob([JSON.stringify(currentState, null, 2)], {
                     type: 'application/json'
                 });
                 const url = window.URL.createObjectURL(blob);
@@ -128,7 +123,158 @@ templ Home() {
                 document.body.removeChild(a);
             }
 
-            // No need for the htmx.on handler anymore since we're using the hidden input
+            async function exportPDF() {
+                try {
+                    const element = document.getElementById('character-sheet');
+
+                    // Clone the entire element
+                    const clone = element.cloneNode(true);
+
+                    // Style fixes for the cloned element
+                    clone.style.width = '800px';
+                    clone.style.margin = '0';
+                    clone.style.backgroundColor = '#ffffff';
+                    clone.style.boxShadow = 'none';
+
+                    // Ensure all background colors are explicitly white
+                    clone.querySelectorAll('*').forEach(el => {
+                        el.style.boxShadow = 'none';
+                    });
+
+                    // Only keep bg-gray-50 for specific containers
+                    clone.querySelectorAll('.bg-gray-50').forEach(el => {
+                        el.style.backgroundColor = '#f9fafb';
+                    });
+
+                    // Remove shadow-lg class from all elements
+                    clone.querySelectorAll('.shadow-lg').forEach(el => {
+                        el.classList.remove('shadow-lg');
+                    });
+
+                    // Remove the hidden input
+                    const hiddenInput = clone.querySelector('#currentCharacter');
+                    if (hiddenInput) {
+                        hiddenInput.remove();
+                    }
+
+                    // Replace all inputs with spans
+                    clone.querySelectorAll('input').forEach(input => {
+                        const span = document.createElement('span');
+                        span.textContent = input.value;
+                        span.style.cssText = window.getComputedStyle(input).cssText;
+                        input.parentNode.replaceChild(span, input);
+                    });
+
+                    // Remove tooltips
+                    clone.querySelectorAll('.tooltip').forEach(tooltip => {
+                        tooltip.classList.remove('tooltip');
+                    });
+
+                    // Apply different scales to each page
+                    const firstPage = clone.querySelector('.first-page');
+                    const secondPage = clone.querySelector('.second-page');
+
+                    firstPage.style.transform = 'scale(0.9)';
+                    secondPage.style.transform = 'scale(0.9)';
+                    secondPage.style.pageBreakBefore = 'always';
+
+                    const opt = {
+                        margin: 0,
+                        filename: `character-sheet-${new Date().toISOString()}.pdf`,
+                        image: { type: 'jpeg', quality: 1 },
+                        html2canvas: {
+                            scale: 1,
+                            useCORS: true,
+                            letterRendering: true,
+                            backgroundColor: '#ffffff',
+                            removeContainer: true,
+                            // Additional options to ensure white background
+                            alpha: false,
+                            canvas: null,
+                        },
+                        jsPDF: {
+                            unit: 'mm',
+                            format: 'a4',
+                            orientation: 'portrait',
+                            compress: false,
+                            background: '#ffffff'
+                        }
+                    };
+
+                    // Create temporary container with white background
+                    const container = document.createElement('div');
+                    container.style.backgroundColor = '#ffffff';
+                    container.appendChild(clone);
+                    document.body.appendChild(container);
+
+                    // Generate PDF
+                    await html2pdf().from(clone).set(opt).save();
+
+                    // Clean up
+                    document.body.removeChild(container);
+
+                } catch (error) {
+                    console.error('Error generating PDF:', error);
+                    alert('Failed to generate PDF. Please try again.');
+                }
+            }
+
+            async function loadJSON(input) {
+                const file = input.files[0];
+                if (!file) return;
+
+                try {
+                    // Read the file
+                    const text = await file.text();
+                    const character = JSON.parse(text);
+
+                    // Update the hidden input with the new character data
+                    document.getElementById('currentCharacter').value = JSON.stringify(character);
+
+                    // Update basic info
+                    document.querySelector('input[data-field="name"]').value = character.Investigators_Name || '';
+                    document.querySelector('input[data-field="age"]').value = character.Age || '';
+                    document.querySelector('input[data-field="residence"]').value = character.Residence || '';
+                    document.querySelector('input[data-field="birthplace"]').value = character.Birthplace || '';
+                    document.querySelector('input[data-field="occupation"]').value = character.Occupation || '';
+
+                    // Update occupation
+                    // if (character.Occupation) {
+                        //const occupationElement = document.querySelector('p.font-medium');
+                        // if (occupationElement) {
+                       //     occupationElement.textContent = character.Occupation.Name;
+                       // }
+                    // }
+
+
+                    // Update all skills
+                    for (const [skillName, skillData] of Object.entries(character.Skill)) {
+                        const skillInput = document.querySelector(`input[data-skill="${skillName}"]`);
+                        if (skillInput) {
+                            skillInput.value = skillData.value;
+                            // Trigger the recalculation for half and fifth values
+                            skillInput.dispatchEvent(new Event('change'));
+                        }
+                    }
+
+                    // Update info display elements
+                    document.querySelectorAll('[data-display]').forEach(element => {
+                        const field = element.dataset.display;
+                        const value = character[field];
+                        if (value !== undefined) {
+                            element.textContent = value;
+                        }
+                    });
+
+                } catch (error) {
+                    console.error('Error loading character:', error);
+                    alert('Failed to load character. Please check the JSON file format.');
+                }
+
+                // Clear the file input for future use
+                input.value = '';
+            }
+
         </script>
     </body>
     </html>
@@ -137,105 +283,243 @@ templ Home() {
 
 templ CharacterSheet(investigator *models.Investigator) {
     @hidden(investigator)
-    <div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <div class="border-b-2 pb-4 mb-6">
-            <h1 class="text-3xl font-bold text-gray-800">{ investigator.Name }</h1>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                <div>
-                    <p class="text-sm text-gray-600">Occupation</p>
-                    <p class="font-medium">{ investigator.Occupation.Name }</p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-600">Age</p>
-                    <p class="font-medium">{ strconv.Itoa(investigator.Age) }</p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-600">Residence</p>
-                    <p class="font-medium">{ investigator.Residence }</p>
-                </div>
-                <div>
-                    <p class="text-sm text-gray-600">Birthplace</p>
-                    <p class="font-medium">{ investigator.Birthplace }</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-6">
-            <div class="bg-gray-50 p-4 rounded-lg md:col-span-2">
-                <h2 class="text-xl font-bold mb-4 text-gray-700">Attributes</h2>
-                <div class="grid grid-cols-2 gap-x-6 gap-y-2">
-                    for key, attr := range investigator.Attributes {
-                        <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
-                            <span class="font-medium text-gray-600 w-[40%]">{ key }</span>
-                            <div class="flex items-center w-[60%] justify-end">
-                                <span class="tooltip cursor-help w-[50px] text-right" title="Regular">{ strconv.Itoa(attr.Value) }</span>
-                                <span class="text-gray-300 w-[20px] text-center">|</span>
-                                <span class="tooltip cursor-help w-[50px] text-right" title="Half value">{ strconv.Itoa(attr.Value/2) }</span>
-                                <span class="text-gray-300 w-[20px] text-center">|</span>
-                                <span class="tooltip cursor-help w-[50px] text-right" title="Fifth value">{ strconv.Itoa(attr.Value/5) }</span>
-                            </div>
-                        </div>
-                    }
-                </div>
-            </div>
-
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <h2 class="text-xl font-bold mb-4 text-gray-700">Combat</h2>
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium text-gray-600">Movement</span>
-                        <span>{ strconv.Itoa(investigator.Move) }</span>
+    <div id="character-sheet" class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+        <div class="first-page">
+            <div class="border-b-2 pb-4 mb-6">
+                <input
+                    type="text"
+                    class="text-3xl font-bold text-gray-800 w-full border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none mb-4 bg-transparent"
+                    value={ investigator.Name }
+                    data-field="name"
+                    onchange="updatePersonalInfo(this)"
+                />
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                    <div>
+                        <p class="text-sm text-gray-600">Occupation</p>
+                        <p class="font-medium">{ investigator.Occupation.Name }</p>
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium text-gray-600">Build</span>
-                        <span>{ investigator.Build }</span>
+                    <div>
+                        <p class="text-sm text-gray-600">Age</p>
+                        <input
+                            type="number"
+                            class="font-medium w-20 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none"
+                            value={ strconv.Itoa(investigator.Age) }
+                            data-field="age"
+                            onchange="updatePersonalInfo(this)"
+                        />
                     </div>
-                    <div class="flex justify-between items-center">
-                        <span class="font-medium text-gray-600">DB</span>
-                        <span>{ investigator.DamageBonus }</span>
+                    <div>
+                        <p class="text-sm text-gray-600">Residence</p>
+                        <input
+                            type="text"
+                            class="font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none"
+                            value={ investigator.Residence }
+                            data-field="residence"
+                            onchange="updatePersonalInfo(this)"
+                        />
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Birthplace</p>
+                        <input
+                            type="text"
+                            class="font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none"
+                            value={ investigator.Birthplace }
+                            data-field="birthplace"
+                            onchange="updatePersonalInfo(this)"
+                        />
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="mt-6">
-            <h2 class="text-xl font-bold mb-4 text-gray-700">Skills</h2>
-            <div class="bg-gray-50 p-4 rounded-lg">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
-                    for _, skill := range sortSkills(investigator.Skills) {
-                        if skill.Name != "" && skill.Name != "Dodge_Copy" {
+            <div class="grid md:grid-cols-3 gap-6">
+                <div class="bg-gray-50 p-4 rounded-lg md:col-span-2">
+                    <h2 class="text-xl font-bold mb-4 text-gray-700">Attributes</h2>
+                    <div class="grid grid-cols-2 gap-x-6 gap-y-2">
+                        for key, attr := range investigator.Attributes {
                             <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
-                                <span class="font-medium text-gray-600 w-[40%]">{ skill.Name }</span>
+                                <span class="font-medium text-gray-600 w-[40%]">{ key }</span>
                                 <div class="flex items-center w-[60%] justify-end">
-                                    <span class="tooltip cursor-help w-[50px] text-right" title="Regular">{ strconv.Itoa(skill.Value) }%</span>
+                                    <span class="tooltip cursor-help w-[50px] text-right" title="Regular">{ strconv.Itoa(attr.Value) }</span>
                                     <span class="text-gray-300 w-[20px] text-center">|</span>
-                                    <span class="tooltip cursor-help w-[50px] text-right" title="Half value">{ strconv.Itoa(skill.Value/2) }%</span>
+                                    <span class="tooltip cursor-help w-[50px] text-right" title="Half value">{ strconv.Itoa(attr.Value/2) }</span>
                                     <span class="text-gray-300 w-[20px] text-center">|</span>
-                                    <span class="tooltip cursor-help w-[50px] text-right" title="Fifth value">{ strconv.Itoa(skill.Value/5) }%</span>
+                                    <span class="tooltip cursor-help w-[50px] text-right" title="Fifth value">{ strconv.Itoa(attr.Value/5) }</span>
                                 </div>
                             </div>
                         }
-                    }
+                    </div>
+                </div>
+
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h2 class="text-xl font-bold mb-4 text-gray-700">Combat</h2>
+                    <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-600">Movement</span>
+                            <span>{ strconv.Itoa(investigator.Move) }</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-600">Build</span>
+                            <span>{ investigator.Build }</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-600">DB</span>
+                            <span>{ investigator.DamageBonus }</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            if len(investigator.Talents) > 0 {
+                <div class="mt-6">
+                    <h2 class="text-xl font-bold mb-4 text-gray-700">Pulp Talents</h2>
+                    <div class="space-y-4">
+                        for _, talent := range investigator.Talents {
+                            <div class="bg-gray-50 p-3 rounded">
+                                <h3 class="font-bold text-gray-700">{ talent.Name }</h3>
+                                <p class="text-gray-600 text-sm mt-1">{ talent.Description }</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+
+        </div>
+
+        <div class="second-page mt-6 pt-0">
+            <div class="mt-0">
+                <h2 class="text-xl font-bold mb-4 text-gray-700">Skills</h2>
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                        for _, skill := range sortSkills(investigator.Skills) {
+                            if skill.Name != "" && skill.Name != "Dodge_Copy" {
+                                <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
+                                    <span class="font-medium text-gray-600 w-[40%]">{ skill.Name }</span>
+                                    <div class="flex items-center w-[60%] justify-end">
+                                        <input
+                                            type="number"
+                                            class="tooltip cursor-pointer w-[50px] text-right bg-white border rounded px-1"
+                                            value={ strconv.Itoa(skill.Value) }
+                                            data-skill={ skill.Name }
+                                            onchange="recalculateValues(this, 'skill')"
+                                            title="Regular"
+                                            min="0"
+                                        />
+                                        <span class="text-gray-300 w-[20px] text-center">|</span>
+                                        <span class="tooltip cursor-help w-[50px] text-right" title="Half value" data-half>{ strconv.Itoa(skill.Value/2) }</span>
+                                        <span class="text-gray-300 w-[20px] text-center">|</span>
+                                        <span class="tooltip cursor-help w-[50px] text-right" title="Fifth value" data-fifth>{ strconv.Itoa(skill.Value/5) }</span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
                 </div>
             </div>
         </div>
-
-        if len(investigator.Talents) > 0 {
-            <div class="mt-6">
-                <h2 class="text-xl font-bold mb-4 text-gray-700">Pulp Talents</h2>
-                <div class="space-y-4">
-                    for _, talent := range investigator.Talents {
-                        <div class="bg-gray-50 p-3 rounded">
-                            <h3 class="font-bold text-gray-700">{ talent.Name }</h3>
-                            <p class="text-gray-600 text-sm mt-1">{ talent.Description }</p>
-                        </div>
-                    }
-                </div>
-            </div>
-        }
     </div>
+    <script>
+        function recalculateValues(input, type) {
+            const value = parseInt(input.value) || 0;
+            const container = input.parentElement;
+            const halfSpan = container.querySelector('[data-half]');
+            const fifthSpan = container.querySelector('[data-fifth]');
+
+            // Update the half and fifth values
+            halfSpan.textContent = Math.floor(value / 2);
+            fifthSpan.textContent = Math.floor(value / 5);
+
+            // Update the character data in the hidden input
+            const characterData = JSON.parse(document.getElementById('currentCharacter').value);
+
+            if (type === 'attribute') {
+                const attrName = input.dataset.attribute;
+                characterData.attributes[attrName].value = value;
+            } else if (type === 'skill') {
+                const skillName = input.dataset.skill;
+                characterData.Skill[skillName].value = value;
+            }
+
+            document.getElementById('currentCharacter').value = JSON.stringify(characterData);
+        }
+
+        // Add input validation
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input[type="number"]');
+            inputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    let value = parseInt(this.value) || 0;
+                    // Optional: Clamp values between 0 and 100
+                    value = Math.min(Math.max(value, 0), 95);
+                    this.value = value;
+                });
+            });
+        });
+
+        function updatePersonalInfo(input) {
+            const field = input.dataset.field;
+            const value = field === 'age' ? parseInt(input.value) || 0 : input.value;
+
+            // Get the current character data
+            const characterData = JSON.parse(document.getElementById('currentCharacter').value);
+
+            // Update the appropriate field
+            switch(field) {
+                case 'name':
+                    characterData.Investigators_Name = value;
+                    break;
+                case 'age':
+                    characterData.Age = value;
+                    break;
+                case 'residence':
+                    characterData.Residence = value;
+                    break;
+                case 'birthplace':
+                    characterData.Birthplace = value;
+                    break;
+            }
+
+            // Save the updated data back to the hidden input
+            document.getElementById('currentCharacter').value = JSON.stringify(characterData);
+        }
+
+        // Add input validation for age
+        document.addEventListener('DOMContentLoaded', function() {
+            const ageInput = document.querySelector('input[data-field="age"]');
+            ageInput.addEventListener('input', function() {
+                let value = parseInt(this.value) || 0;
+                // Optional: Set reasonable age limits
+                value = Math.min(Math.max(value, 15), 100);
+                this.value = value;
+            });
+        });
+    </script>
 
     <style>
+        @media print {
+            //.second-page {
+              //  page-break-before: always;
+            //}
+            .second-page {
+                        margin-top: 0 !important;
+                        padding-top: 0 !important;
+                    }
+
+                    .second-page .grid {
+                        gap: 0.25rem !important; // Tighter spacing for skills
+                    }
+            /* Rest of your print styles */
+            #character-sheet {
+                margin: 0;
+                padding: 20px;
+            }
+
+            .tooltip::after {
+                display: none !important;
+            }
+
+            * {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+        }
         .tooltip {
             position: relative;
         }
