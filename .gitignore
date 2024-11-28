@@ -31,6 +31,7 @@ filled_modernSheet.pdf
 .idea/
 go.mod
 
-scripts/venv/*
+scripts/venv/
 *.pyc
 __pycache__/
+__init__.py
