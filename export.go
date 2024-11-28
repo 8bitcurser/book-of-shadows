@@ -25,11 +25,6 @@ func NewPdfProcessor() (*PdfProcessor, error) {
 	// Find Python executable
 	pythonPath := filepath.Join("scripts", "venv", "bin", "python3")
 
-	// Create scripts directory if it doesn't exist
-	if err := os.MkdirAll("scripts", 0755); err != nil {
-		return nil, fmt.Errorf("failed to create scripts directory: %v", err)
-	}
-
 	// Set script path
 	scriptPath := filepath.Join("scripts", "exporter.py")
 
