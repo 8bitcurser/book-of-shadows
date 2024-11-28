@@ -30,3 +30,7 @@ filled_modernSheet.pdf
 .DS_Store
 .idea/
 go.mod
+
+scripts/venv/*
+*.pyc
+__pycache__/

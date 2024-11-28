@@ -1,25 +1,14 @@
 package main
 
-//func main() {
-//	investigator := NewInvestigator(Pulp)
-//	err := PDFExport(investigator)
-//	if err != nil {
-//		panic(err)
-//	}
-//}
-
 import (
 	"book-of-shadows/models"
 	"book-of-shadows/views"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"net/http"
+	"os"
+	"path/filepath"
 )
-
-type Response struct {
-	Data  interface{} `json:"data,omitempty"`
-	Error string      `json:"error,omitempty"`
-}
 
 func handleHome(c echo.Context) error {
 	return views.Home().Render(c.Request().Context(), c.Response().Writer)
@@ -50,23 +39,23 @@ func handleGetJSON(c echo.Context) error {
 }
 
 func handleExportPDF(c echo.Context) error {
-	mode := models.Classic
-	if c.QueryParam("mode") == "pulp" {
-		mode = models.Pulp
-	}
+	//mode := models.Classic
+	//if c.QueryParam("mode") == "pulp" {
+	//	mode = models.Pulp
+	//}
 
-	investigator := models.NewInvestigator(mode)
-	err := PDFExport(investigator)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, map[string]string{
-			"error": "Failed to generate PDF",
-		})
-	}
+	investigator := models.NewInvestigator(models.Pulp)
+	PDFExport(
+		"/Users/tommyboy/Projects/book-of-shadows/modernSheet.pdf",
+		"/Users/tommyboy/Projects/book-of-shadows/filledModernSheet.pdf",
+		investigator)
 
-	return c.File("character_sheet.pdf") // Adjust filename as needed
+	return c.File("filledModernSheet.pdf")
 }
 
 func main() {
+	// Update the PYTHONPATH in your Go code
+	os.Setenv("PYTHONPATH", filepath.Join(os.Getenv("PYTHONPATH"), "./scripts"))
 	e := echo.New()
 
 	// Middleware

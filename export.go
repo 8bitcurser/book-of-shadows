@@ -4,205 +4,121 @@ import (
 	"book-of-shadows/models"
 	"encoding/json"
 	"fmt"
-	"github.com/joho/godotenv"
-	"github.com/unidoc/unipdf/v3/annotator"
-	"github.com/unidoc/unipdf/v3/common/license"
-	"github.com/unidoc/unipdf/v3/fjson"
-	"github.com/unidoc/unipdf/v3/model"
-	"log"
 	"os"
+	"os/exec"
+	"path/filepath"
 	"strconv"
 )
 
-func init() {
-	// Load the .env file.
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-
-	// Get the API key from the environment variable
-	apiKey := os.Getenv("UNIDOC_LICENSE_API_KEY")
-	if apiKey == "" {
-		log.Fatal("UNIDOC_LICENSE_API_KEY not set in .env file")
-	}
-
-	// Set the metered license
-	err = license.SetMeteredKey(apiKey)
-	if err != nil {
-		log.Fatalf("Error setting metered key: %v", err)
-	}
+type ProcessingOptions struct {
+	InputPath  string            `json:"input_path"`
+	OutputPath string            `json:"output_path"`
+	Metadata   map[string]string `json:"metadata"`
 }
 
-type PDFField struct {
-	Name  string `json:"name"`
-	Value string `json:"value"`
+type PdfProcessor struct {
+	pythonPath string
+	scriptPath string
 }
 
-func ConvertInvestigatorToPDFFields(investigator *models.Investigator) ([]byte, error) {
-	pdfFields := []PDFField{}
+func NewPdfProcessor() (*PdfProcessor, error) {
+	// Find Python executable
+	pythonPath := filepath.Join("scripts", "venv", "bin", "python3")
 
+	// Create scripts directory if it doesn't exist
+	if err := os.MkdirAll("scripts", 0755); err != nil {
+		return nil, fmt.Errorf("failed to create scripts directory: %v", err)
+	}
+
+	// Set script path
+	scriptPath := filepath.Join("scripts", "exporter.py")
+
+	return &PdfProcessor{
+		pythonPath: pythonPath,
+		scriptPath: scriptPath,
+	}, nil
+}
+
+func (p *PdfProcessor) ProcessPdf(options ProcessingOptions) error {
+	// Convert options to JSON string
+	optionsJSON, err := json.Marshal(options)
+	if err != nil {
+		return fmt.Errorf("failed to marshal options: %v", err)
+	}
+
+	// Run Python script with JSON data as argument
+	cmd := exec.Command(p.pythonPath, p.scriptPath, string(optionsJSON))
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("failed to run Python script: %v", err)
+	}
+
+	return nil
+}
+
+func PDFExport(input, output string, investigator *models.Investigator) error {
+	data := ConvertInvestigatorToMap(investigator)
+	processor, err := NewPdfProcessor()
+	if err != nil {
+		return fmt.Errorf("failed to initialize processor: %v", err)
+	}
+
+	options := ProcessingOptions{
+		InputPath:  input,
+		OutputPath: output,
+		Metadata:   data,
+	}
+
+	if err := processor.ProcessPdf(options); err != nil {
+		return fmt.Errorf("failed to process PDF: %v", err)
+	}
+
+	return nil
+}
+
+func ConvertInvestigatorToMap(investigator *models.Investigator) map[string]string {
+	data := make(map[string]string)
 	// Handle Attributes
 	for key, attr := range investigator.Attributes {
 		attrName := investigator.Attributes[key]
-		pdfFields = append(pdfFields, PDFField{
-			Name:  attrName.Name,
-			Value: strconv.Itoa(attr.Value),
-		})
-		// Add fields for half and fifth values
-		pdfFields = append(pdfFields, PDFField{
-			Name:  attrName.Name + "_half",
-			Value: strconv.Itoa(attr.Value / 2),
-		})
-		pdfFields = append(pdfFields, PDFField{
-			Name:  attrName.Name + "_fifth",
-			Value: strconv.Itoa(attr.Value / 5),
-		})
+		data[attrName.Name] = strconv.Itoa(attr.Value)
+		data[attrName.Name+"_half"] = strconv.Itoa(attr.Value / 2)
+		data[attrName.Name+"_fifth"] = strconv.Itoa(attr.Value / 5)
 	}
 
 	// Handle Skills
 	for name, skill := range investigator.Skills {
 		if name == "Dodge_Copy" {
-			pdfFields = append(pdfFields, PDFField{
-				Name:  name,
-				Value: strconv.Itoa(skill.Value),
-			})
-			pdfFields = append(pdfFields, PDFField{
-				Name:  name + "_half",
-				Value: strconv.Itoa(skill.Value / 2),
-			})
-			pdfFields = append(pdfFields, PDFField{
-				Name:  name + "_fifth",
-				Value: strconv.Itoa(skill.Value / 5),
-			})
+			data[name] = strconv.Itoa(skill.Value)
+			data[name+"_half"] = strconv.Itoa(skill.Value / 2)
+			data[name+"_fifth"] = strconv.Itoa(skill.Value / 5)
 		} else if name == "FastTalk" {
-			pdfFields = append(pdfFields, PDFField{
-				Name:  "Skill_" + name,
-				Value: strconv.Itoa(skill.Value),
-			})
-			pdfFields = append(pdfFields, PDFField{
-				Name:  "Skill_" + name + " _half",
-				Value: strconv.Itoa(skill.Value / 2),
-			})
-			pdfFields = append(pdfFields, PDFField{
-				Name:  "Skill_" + name + " _fifth",
-				Value: strconv.Itoa(skill.Value / 5),
-			})
+			data["Skill_"+name] = strconv.Itoa(skill.Value)
+			data["Skill_"+name+" _half"] = strconv.Itoa(skill.Value / 2)
+			data["Skill_"+name+" _fifth"] = strconv.Itoa(skill.Value / 5)
 		} else {
-			pdfFields = append(pdfFields, PDFField{
-				Name:  "Skill_" + name,
-				Value: strconv.Itoa(skill.Value),
-			})
-			// Add fields for half and fifth values
-			pdfFields = append(pdfFields, PDFField{
-				Name:  "Skill_" + name + "_half",
-				Value: strconv.Itoa(skill.Value / 2),
-			})
-			pdfFields = append(pdfFields, PDFField{
-				Name:  "Skill_" + name + "_fifth",
-				Value: strconv.Itoa(skill.Value / 5),
-			})
+			data["Skill_"+name] = strconv.Itoa(skill.Value)
+			data["Skill_"+name+"_half"] = strconv.Itoa(skill.Value / 2)
+			data["Skill_"+name+"_fifth"] = strconv.Itoa(skill.Value / 5)
 		}
 	}
 
 	// Handle other fields
-	pdfFields = append(pdfFields, PDFField{Name: "Investigators_Name", Value: investigator.Name})
-	pdfFields = append(pdfFields, PDFField{Name: "Occupation", Value: investigator.Occupation.Name})
-	pdfFields = append(pdfFields, PDFField{Name: "Age", Value: strconv.Itoa(investigator.Age)})
-	pdfFields = append(pdfFields, PDFField{Name: "Residence", Value: investigator.Residence})
-	pdfFields = append(pdfFields, PDFField{Name: "Birthplace", Value: investigator.Birthplace})
-	pdfFields = append(pdfFields, PDFField{Name: "MOV", Value: strconv.Itoa(investigator.Move)})
-	pdfFields = append(pdfFields, PDFField{Name: "DamageBonus", Value: investigator.DamageBonus})
-	pdfFields = append(pdfFields, PDFField{Name: "Build", Value: investigator.Build})
-	pdfFields = append(pdfFields, PDFField{Name: "Archetype", Value: investigator.Archetype.Name})
+	data["Investigators_Name"] = investigator.Name
+	data["Occupation"] = investigator.Occupation.Name
+	data["Age"] = strconv.Itoa(investigator.Age)
+	data["Residence"] = investigator.Residence
+	data["Birthplace"] = investigator.Birthplace
+	data["MOV"] = strconv.Itoa(investigator.Move)
+	data["DamageBonus"] = investigator.DamageBonus
+	data["Build"] = investigator.Build
+	data["Archetype"] = investigator.Archetype.Name
 	talents := ""
 	for _, talent := range investigator.Talents {
 		talents += talent.Name + ", "
 	}
-	pdfFields = append(pdfFields, PDFField{Name: "Pulp Talents", Value: talents})
-	// Add more fields as needed
-	return json.MarshalIndent(pdfFields, "", "  ")
-}
-
-func PDFExport(investigator *models.Investigator) error {
-	// Convert investigator to JSON and save to a file
-	_, err := json.MarshalIndent(investigator, "", "  ")
-	if err != nil {
-		return fmt.Errorf("error marshaling investigator to JSON: %v", err)
-	}
-	pdfFieldsJSON, err := ConvertInvestigatorToPDFFields(investigator)
-	if err != nil {
-		fmt.Printf("Error converting to PDF fields: %v\n", err)
-		return err
-	}
-	//
-	jsonPath := "investigator_data.json"
-	err = os.WriteFile(jsonPath, pdfFieldsJSON, 0644)
-	if err != nil {
-		return fmt.Errorf("error writing JSON to file: %v", err)
-	}
-
-	inputPath := "modernSheet.pdf"
-	fdata, err := fjson.LoadFromPDFFile(inputPath)
-	if err != nil {
-		return fmt.Errorf("error loading input file: %v", err)
-	}
-	_, err = fdata.JSON()
-	if err != nil {
-		return fmt.Errorf("error marshalling input file: %v", err)
-	}
-	outputPath := "filled_modernSheet.pdf"
-
-	err = fillFields(inputPath, jsonPath, outputPath)
-	if err != nil {
-		return fmt.Errorf("error filling fields: %v", err)
-	}
-
-	fmt.Printf("Success, output written to %s\n", outputPath)
-	return nil
-}
-
-func fillFields(inputPath, jsonPath, outputPath string) error {
-	_, err := os.ReadFile(jsonPath)
-	if err != nil {
-		fmt.Printf("Error reading file: %v\n", err)
-		return err
-	}
-
-	fdata, err := fjson.LoadFromJSONFile(jsonPath)
-	if err != nil {
-		fmt.Printf("Error loading JSON: %v\n", err)
-		return err
-	}
-
-	f, err := os.Open(inputPath)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-
-	pdfReader, err := model.NewPdfReader(f)
-	if err != nil {
-		return err
-	}
-	fieldAppearance := annotator.FieldAppearance{OnlyIfMissing: true, RegenerateTextFields: true}
-	// Populate the form data.
-	err = pdfReader.AcroForm.FillWithAppearance(fdata, fieldAppearance)
-	if err != nil {
-		return err
-	}
-
-	opt := &model.ReaderToWriterOpts{
-		SkipAcroForm: false,
-	}
-
-	pdfWriter, err := pdfReader.ToWriter(opt)
-	if err != nil {
-		return err
-	}
-
-	if err := pdfWriter.WriteToFile(outputPath); err != nil {
-		return err
-	}
-	return nil
+	data["Pulp Talents"] = talents
+	return data
 }

@@ -348,9 +348,9 @@ func NewInvestigator(mode GameMode) *Investigator {
 	// assign archetype
 	if mode == Pulp {
 		inv.Archetype = PickRandomArchetype()
+		inv.PickRandomTalents()
 	}
 
-	inv.PickRandomTalents()
 	// assign occupation
 	inv.AssignOccupation()
 	// Initialize Attributes
