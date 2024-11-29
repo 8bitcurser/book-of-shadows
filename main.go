@@ -3,6 +3,7 @@ package main
 import (
 	"book-of-shadows/models"
 	"book-of-shadows/views"
+	"encoding/json"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	"net/http"
@@ -37,17 +38,20 @@ func handleGetJSON(c echo.Context) error {
 }
 
 func handleExportPDF(c echo.Context) error {
-	mode := models.Pulp
-	if c.QueryParam("mode") == "classic" {
-		mode = models.Classic
+
+	data := make(map[string]string)
+	if err := json.NewDecoder(c.Request().Body).Decode(&data); err != nil {
+		return c.JSON(http.StatusBadRequest, map[string]string{
+			"error": "Invalid JSON data: " + err.Error(),
+		})
 	}
 
-	investigator := models.NewInvestigator(mode)
-	investigatorPDF := "./static/" + investigator.Name + ".pdf"
+	//investigator := models.NewInvestigator(mode)
+	investigatorPDF := "./static/" + data["Investigator_Name"] + ".pdf"
 	err := PDFExport(
 		"./static/modernSheet.pdf",
 		investigatorPDF,
-		investigator)
+		data)
 	if err != nil {
 		return err
 	}
@@ -68,7 +72,7 @@ func main() {
 	// Routes
 	e.GET("/", handleHome)
 	e.GET("/api/generate", handleGenerate)
-	e.GET("/api/export-pdf", handleExportPDF)
+	e.POST("/api/export-pdf", handleExportPDF)
 	e.POST("/api/get-json", handleGetJSON)
 
 	e.Logger.Fatal(e.Start(":8080"))

@@ -53,8 +53,9 @@ func (p *PdfProcessor) ProcessPdf(options ProcessingOptions) error {
 	return nil
 }
 
-func PDFExport(input, output string, investigator *models.Investigator) error {
-	data := ConvertInvestigatorToMap(investigator)
+func PDFExport(input, output string, payload map[string]string) error {
+	//data := ConvertInvestigatorToMap(investigator)
+	data := payload
 	processor, err := NewPdfProcessor()
 	if err != nil {
 		return fmt.Errorf("failed to initialize processor: %v", err)

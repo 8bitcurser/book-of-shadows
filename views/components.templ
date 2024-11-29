@@ -54,6 +54,13 @@ templ Home() {
                     </button>
 
                     <button
+                        onclick="exportPDFPrime()"
+                        class="bg-green-300 text-white px-4 py-2 rounded hover:bg-green-400"
+                    >
+                        Export PDF Premium
+                    </button>
+
+                    <button
                         onclick="exportJSON()"
                         class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
                     >
@@ -89,7 +96,7 @@ templ Home() {
             }
 
             // First, let's update how we get the current character state when exporting
-            function getCurrentUIState() {
+            function getCurrentUIState(){
                 const baseCharacter = JSON.parse(document.getElementById('currentCharacter').value);
                 return {
                     ...baseCharacter, // Keep all original properties
@@ -201,6 +208,107 @@ templ Home() {
 
                 // Clear the file input
                 input.value = '';
+            }
+            async function exportPDFPrime() {
+                const currentState = getCurrentUIState();
+                const flatState = {};
+                // Handle basic string/number fields directly
+                flatState.Investigators_Name = currentState.Investigators_Name;
+                flatState.Residence = currentState.Residence;
+                flatState.Birthplace = currentState.Birthplace;
+                flatState.Age = String(currentState.Age);
+                flatState.MOV = String(currentState.MOV);
+                flatState.Build = currentState.Build;
+                flatState.DamageBonus = currentState.DamageBonus;
+
+                // Handle Occupation
+                if (currentState.Occupation?.name) {
+                    flatState.Occupation = currentState.Occupation.name;
+                }
+
+                // Handle Archetype
+                if (currentState.Archetype?.name) {
+                    flatState.Archetype = currentState.Archetype.name;
+                }
+
+                // Attribute name mapping
+                const attributeMapping = {
+                    'Strength': 'STR',
+                    'Dexterity': 'DEX',
+                    'Appearance': 'APP',
+                    'Constitution': 'CON',
+                    'Power': 'POW',
+                    'Education': 'EDU',
+                    'Intelligence': 'INT',
+                    'Size': 'SIZ',
+                    'MagicPoints': 'CurrentMagic',
+                    'Sanity': 'CurrentSanity',
+                    'HitPoints': 'CurrentHP',
+                    'Luck': 'CurrentLuck'
+                };
+
+                // Handle Attributes
+                if (currentState.attributes) {
+                    Object.entries(currentState.attributes).forEach(([name, attr]) => {
+                        if (attr.Value || attr.value) {
+                            const value = attr.Value || attr.value;
+                            const mappedName = attributeMapping[name] || name;
+                            flatState[mappedName] = String(value);
+                            flatState[`${mappedName}_half`] = String(Math.floor(value / 2));
+                            flatState[`${mappedName}_fifth`] = String(Math.floor(value / 5));
+                        }
+                    });
+                }
+
+                // Handle Skills
+                if (currentState.Skill) {
+                    Object.entries(currentState.Skill).forEach(([name, skill]) => {
+                        if (name === "Dodge_Copy") {
+                            flatState[name] = String(skill.Value || skill.value);
+                            flatState[`${name}_half`] = String(Math.floor((skill.Value || skill.value) / 2));
+                            flatState[`${name}_fifth`] = String(Math.floor((skill.Value || skill.value) / 5));
+                        } else if (name === "FastTalk") {
+                            const skillKey = `Skill_${name}`;
+                            flatState[skillKey] = String(skill.value)
+                            flatState[`${skillKey} _half`] = String(Math.floor((skill.value / 2)));
+                            flatState[`${skillKey} _fifth`] = String(Math.floor((skill.value / 5)));
+                        } else {
+                            const skillKey = `Skill_${name}`;
+                            flatState[skillKey] = String(skill.Value || skill.value);
+                            flatState[`${skillKey}_half`] = String(Math.floor((skill.Value || skill.value) / 2));
+                            flatState[`${skillKey}_fifth`] = String(Math.floor((skill.Value || skill.value) / 5));
+                        }
+                    });
+                }
+
+                // Handle Pulp Talents
+                if (Array.isArray(currentState["Pulp-Talents"])) {
+                    flatState["Pulp Talents"] = currentState["Pulp-Talents"]
+                        .map(talent => talent.name)
+                        .join(", ") + ", ";
+                }
+
+                const response = await fetch('/api/export-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(flatState)
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${flatState.Investigators_Name || 'character'}.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                window.URL.revokeObjectURL(url);
             }
 
             async function exportPDF() {
