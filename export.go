@@ -54,7 +54,6 @@ func (p *PdfProcessor) ProcessPdf(options ProcessingOptions) error {
 }
 
 func PDFExport(input, output string, payload map[string]string) error {
-	//data := ConvertInvestigatorToMap(investigator)
 	data := payload
 	processor, err := NewPdfProcessor()
 	if err != nil {

@@ -15,11 +15,10 @@ templ Home() {
             <title>Call of Cthulhu Character Generator</title>
             <script src="https://unpkg.com/htmx.org@1.9.10"></script>
             <script src="https://cdn.tailwindcss.com"></script>
-            <style>
-                body {
-                    background-color: #f3f4f6;
-                }
-            </style>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+            <script src="/static/character-utils.js"></script>
+
         </head>
         <body class="min-h-screen py-8">
             <div class="container mx-auto px-4">
@@ -46,22 +45,17 @@ templ Home() {
                         Generate Character
                     </button>
 
+                    <!--<button id="exportPdfBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Export PDF</button>-->
+
                     <button
-                        onclick="exportPDF()"
+                        id="exportPdfPrimeBtn"
                         class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                     >
                         Export PDF
                     </button>
 
                     <button
-                        onclick="exportPDFPrime()"
-                        class="bg-green-300 text-white px-4 py-2 rounded hover:bg-green-400"
-                    >
-                        Export PDF Premium
-                    </button>
-
-                    <button
-                        onclick="exportJSON()"
+                        id="exportJsonBtn"
                         class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
                     >
                         Save JSON
@@ -72,7 +66,7 @@ templ Home() {
                         <input
                             type="file"
                             accept=".json"
-                            onchange="loadJSON(this)"
+                            id="loadJsonInput"
                             class="hidden"
                         />
                     </label>
@@ -84,331 +78,7 @@ templ Home() {
                     </p>
                 </div>
             </div>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-        <script>
-            function getCurrentCharacter() {
-                const hiddenInput = document.getElementById('currentCharacter');
-                if (!hiddenInput || !hiddenInput.value) {
-                    return null;
-                }
-                return JSON.parse(hiddenInput.value);
-            }
-
-            // First, let's update how we get the current character state when exporting
-            function getCurrentUIState(){
-                const baseCharacter = JSON.parse(document.getElementById('currentCharacter').value);
-                return {
-                    ...baseCharacter, // Keep all original properties
-                    Investigators_Name: document.querySelector('input[data-field="name"]').value,
-                    Age: parseInt(document.querySelector('input[data-field="age"]').value) || 0,
-                    Residence: document.querySelector('input[data-field="residence"]').value,
-                    Birthplace: document.querySelector('input[data-field="birthplace"]').value,
-                    // Update skills with current values while preserving structure
-                    Skill: Object.entries(baseCharacter.Skill).reduce((acc, [key, skill]) => {
-                        const input = document.querySelector(`input[data-skill="${key}"]`);
-                        acc[key] = {
-                            ...skill, // Keep original skill properties
-                            value: input ? parseInt(input.value) || 0 : skill.value
-                        };
-                        return acc;
-                    }, {})
-                };
-            }
-
-            function exportJSON() {
-                const currentState = getCurrentUIState();
-                const blob = new Blob([JSON.stringify(currentState, null, 2)], {
-                    type: 'application/json'
-                });
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = currentState["Investigators_Name"]+'.json';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }
-
-            async function loadJSON(input) {
-                const file = input.files[0];
-                if (!file) return;
-
-                try {
-                    const text = await file.text();
-                    const character = JSON.parse(text);
-
-                    // Update the hidden input first
-                    document.getElementById('currentCharacter').value = JSON.stringify(character);
-
-                    // Personal Info
-                    document.querySelector('input[data-field="name"]').value = character.Investigators_Name || '';
-                    document.querySelector('input[data-field="age"]').value = character.Age || '';
-                    document.querySelector('input[data-field="residence"]').value = character.Residence || '';
-                    document.querySelector('input[data-field="birthplace"]').value = character.Birthplace || '';
-
-                    // Occupation - handle nested name property
-                    const occupationElement = document.querySelector('[data-field="occupation"]');
-                    if (occupationElement && character.Occupation && character.Occupation.name) {
-                        occupationElement.textContent = character.Occupation.name;
-                    }
-
-                    // Attributes - handle nested value property
-                    const attributeRows = document.querySelectorAll('.bg-gray-50 .grid-cols-2 .flex.justify-between');
-                    attributeRows.forEach(row => {
-                        const attrNameSpan = row.querySelector('span:first-child');
-                        if (attrNameSpan) {
-                            const attrKey = attrNameSpan.textContent;
-                            const attr = character.attributes[attrKey];
-                            if (attr && attr.value !== undefined) {
-                                const valueContainer = row.querySelector('.flex.items-center');
-                                if (valueContainer) {
-                                    const spans = valueContainer.querySelectorAll('span');
-                                    if (spans.length >= 5) {  // Regular, separator, half, separator, fifth
-                                        spans[0].textContent = attr.value;
-                                        spans[2].textContent = Math.floor(attr.value / 2);
-                                        spans[4].textContent = Math.floor(attr.value / 5);
-                                    }
-                                }
-                            }
-                        }
-                    });
-
-                    // Combat Info
-                    document.querySelector('.space-y-2 div:nth-child(1) span:last-child').textContent = character.MOV;
-                    document.querySelector('.space-y-2 div:nth-child(2) span:last-child').textContent = character.Build;
-                    document.querySelector('.space-y-2 div:nth-child(3) span:last-child').textContent = character.DamageBonus;
-
-                    // Skills - handle nested value property
-                    Object.entries(character.Skill).forEach(([skillName, skillData]) => {
-                        const skillInput = document.querySelector(`input[data-skill="${skillName}"]`);
-                        if (skillInput && skillData.value !== undefined) {
-                            skillInput.value = skillData.value;
-                            // Trigger change event to update half/fifth values
-                            skillInput.dispatchEvent(new Event('change'));
-                        }
-                    });
-
-                    // Pulp Talents
-                    const talentsContainer = document.querySelector('.mt-6 .space-y-4');
-                    if (talentsContainer && character["Pulp-Talents"]) {
-                        talentsContainer.innerHTML = character["Pulp-Talents"]
-                            .map(talent => `
-                                <div class="bg-gray-50 p-3 rounded">
-                                    <h3 class="font-bold text-gray-700">${talent.name}</h3>
-                                    <p class="text-gray-600 text-sm mt-1">${talent.description}</p>
-                                </div>
-                            `).join('');
-                    }
-
-                } catch (error) {
-                    console.error('Error loading character:', error);
-                    alert('Failed to load character. Please check the JSON file format.');
-                }
-
-                // Clear the file input
-                input.value = '';
-            }
-            async function exportPDFPrime() {
-                const currentState = getCurrentUIState();
-                const flatState = {};
-                // Handle basic string/number fields directly
-                flatState.Investigators_Name = currentState.Investigators_Name;
-                flatState.Residence = currentState.Residence;
-                flatState.Birthplace = currentState.Birthplace;
-                flatState.Age = String(currentState.Age);
-                flatState.MOV = String(currentState.MOV);
-                flatState.Build = currentState.Build;
-                flatState.DamageBonus = currentState.DamageBonus;
-
-                // Handle Occupation
-                if (currentState.Occupation?.name) {
-                    flatState.Occupation = currentState.Occupation.name;
-                }
-
-                // Handle Archetype
-                if (currentState.Archetype?.name) {
-                    flatState.Archetype = currentState.Archetype.name;
-                }
-
-                // Attribute name mapping
-                const attributeMapping = {
-                    'Strength': 'STR',
-                    'Dexterity': 'DEX',
-                    'Appearance': 'APP',
-                    'Constitution': 'CON',
-                    'Power': 'POW',
-                    'Education': 'EDU',
-                    'Intelligence': 'INT',
-                    'Size': 'SIZ',
-                    'MagicPoints': 'CurrentMagic',
-                    'Sanity': 'CurrentSanity',
-                    'HitPoints': 'CurrentHP',
-                    'Luck': 'CurrentLuck'
-                };
-
-                // Handle Attributes
-                if (currentState.attributes) {
-                    Object.entries(currentState.attributes).forEach(([name, attr]) => {
-                        if (attr.Value || attr.value) {
-                            const value = attr.Value || attr.value;
-                            const mappedName = attributeMapping[name] || name;
-                            flatState[mappedName] = String(value);
-                            flatState[`${mappedName}_half`] = String(Math.floor(value / 2));
-                            flatState[`${mappedName}_fifth`] = String(Math.floor(value / 5));
-                        }
-                    });
-                }
-
-                // Handle Skills
-                if (currentState.Skill) {
-                    Object.entries(currentState.Skill).forEach(([name, skill]) => {
-                        if (name === "Dodge_Copy") {
-                            flatState[name] = String(skill.Value || skill.value);
-                            flatState[`${name}_half`] = String(Math.floor((skill.Value || skill.value) / 2));
-                            flatState[`${name}_fifth`] = String(Math.floor((skill.Value || skill.value) / 5));
-                        } else if (name === "FastTalk") {
-                            const skillKey = `Skill_${name}`;
-                            flatState[skillKey] = String(skill.value)
-                            flatState[`${skillKey} _half`] = String(Math.floor((skill.value / 2)));
-                            flatState[`${skillKey} _fifth`] = String(Math.floor((skill.value / 5)));
-                        } else {
-                            const skillKey = `Skill_${name}`;
-                            flatState[skillKey] = String(skill.Value || skill.value);
-                            flatState[`${skillKey}_half`] = String(Math.floor((skill.Value || skill.value) / 2));
-                            flatState[`${skillKey}_fifth`] = String(Math.floor((skill.Value || skill.value) / 5));
-                        }
-                    });
-                }
-
-                // Handle Pulp Talents
-                if (Array.isArray(currentState["Pulp-Talents"])) {
-                    flatState["Pulp Talents"] = currentState["Pulp-Talents"]
-                        .map(talent => talent.name)
-                        .join(", ") + ", ";
-                }
-
-                const response = await fetch('/api/export-pdf', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(flatState)
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `${flatState.Investigators_Name || 'character'}.pdf`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                window.URL.revokeObjectURL(url);
-            }
-
-            async function exportPDF() {
-                try {
-                    const element = document.getElementById('character-sheet');
-
-                    // Clone the entire element
-                    const clone = element.cloneNode(true);
-
-                    // Style fixes for the cloned element
-                    clone.style.width = '800px';
-                    clone.style.margin = '0';
-                    clone.style.backgroundColor = '#ffffff';
-                    clone.style.boxShadow = 'none';
-
-                    // Ensure all background colors are explicitly white
-                    clone.querySelectorAll('*').forEach(el => {
-                        el.style.boxShadow = 'none';
-                    });
-
-                    // Only keep bg-gray-50 for specific containers
-                    clone.querySelectorAll('.bg-gray-50').forEach(el => {
-                        el.style.backgroundColor = '#f9fafb';
-                    });
-
-                    // Remove shadow-lg class from all elements
-                    clone.querySelectorAll('.shadow-lg').forEach(el => {
-                        el.classList.remove('shadow-lg');
-                    });
-
-                    // Remove the hidden input
-                    const hiddenInput = clone.querySelector('#currentCharacter');
-                    if (hiddenInput) {
-                        hiddenInput.remove();
-                    }
-
-                    // Replace all inputs with spans
-                    clone.querySelectorAll('input').forEach(input => {
-                        const span = document.createElement('span');
-                        span.textContent = input.value;
-                        span.style.cssText = window.getComputedStyle(input).cssText;
-                        input.parentNode.replaceChild(span, input);
-                    });
-
-                    // Remove tooltips
-                    clone.querySelectorAll('.tooltip').forEach(tooltip => {
-                        tooltip.classList.remove('tooltip');
-                    });
-
-                    // Apply different scales to each page
-                    const firstPage = clone.querySelector('.first-page');
-                    const secondPage = clone.querySelector('.second-page');
-
-                    firstPage.style.transform = 'scale(0.9)';
-                    secondPage.style.transform = 'scale(0.9)';
-                    secondPage.style.pageBreakBefore = 'always';
-
-                    const opt = {
-                        margin: 0,
-                        filename: `character-sheet-${new Date().toISOString()}.pdf`,
-                        image: { type: 'jpeg', quality: 1 },
-                        html2canvas: {
-                            scale: 1,
-                            useCORS: true,
-                            letterRendering: true,
-                            backgroundColor: '#ffffff',
-                            removeContainer: true,
-                            // Additional options to ensure white background
-                            alpha: false,
-                            canvas: null,
-                        },
-                        jsPDF: {
-                            unit: 'mm',
-                            format: 'a4',
-                            orientation: 'portrait',
-                            compress: false,
-                            background: '#ffffff'
-                        }
-                    };
-
-                    // Create temporary container with white background
-                    const container = document.createElement('div');
-                    container.style.backgroundColor = '#ffffff';
-                    container.appendChild(clone);
-                    document.body.appendChild(container);
-
-                    // Generate PDF
-                    await html2pdf().from(clone).set(opt).save();
-
-                    // Clean up
-                    document.body.removeChild(container);
-
-                } catch (error) {
-                    console.error('Error generating PDF:', error);
-                    alert('Failed to generate PDF. Please try again.');
-                }
-            }
-
-        </script>
-    </body>
+        </body>
     </html>
 }
 
@@ -423,7 +93,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                     class="text-3xl font-bold text-gray-800 w-full border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none mb-4 bg-transparent"
                     value={ investigator.Name }
                     data-field="name"
-                    onchange="updatePersonalInfo(this)"
+                    onchange="characterUtils.updatePersonalInfo(this)"
                 />
                 <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
                     <div>
@@ -437,7 +107,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                             class="font-medium w-20 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none"
                             value={ strconv.Itoa(investigator.Age) }
                             data-field="age"
-                            onchange="updatePersonalInfo(this)"
+                            onchange="characterUtils.updatePersonalInfo(this)"
                         />
                     </div>
                     <div>
@@ -447,7 +117,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                             class="font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none"
                             value={ investigator.Residence }
                             data-field="residence"
-                            onchange="updatePersonalInfo(this)"
+                            onchange="characterUtils.updatePersonalInfo(this)"
                         />
                     </div>
                     <div>
@@ -457,7 +127,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                             class="font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none"
                             value={ investigator.Birthplace }
                             data-field="birthplace"
-                            onchange="updatePersonalInfo(this)"
+                            onchange="characterUtils.updatePersonalInfo(this)"
                         />
                     </div>
                 </div>
@@ -470,7 +140,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                             <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
                                 <span class="font-medium text-gray-600 w-[40%]">{ key }</span>
                                 <div class="flex items-center w-[60%] justify-end">
-                                    <span class="tooltip cursor-help w-[50px] text-right" title="Regular">{ strconv.Itoa(attr.Value) }</span>
+                                    <span class="tooltip cursor-help w-[50px] text-right" data-attr={key} title="Regular">{ strconv.Itoa(attr.Value) }</span>
                                     <span class="text-gray-300 w-[20px] text-center">|</span>
                                     <span class="tooltip cursor-help w-[50px] text-right" title="Half value">{ strconv.Itoa(attr.Value/2) }</span>
                                     <span class="text-gray-300 w-[20px] text-center">|</span>
@@ -530,7 +200,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                                             class="tooltip cursor-pointer w-[50px] text-right bg-white border rounded px-1"
                                             value={ strconv.Itoa(skill.Value) }
                                             data-skill={ skill.Name }
-                                            onchange="recalculateValues(this, 'skill')"
+                                            onchange="characterUtils.recalculateValues(this, 'skill')"
                                             title="Regular"
                                             min="0"
                                         />
@@ -547,82 +217,6 @@ templ CharacterSheet(investigator *models.Investigator) {
             </div>
         </div>
     </div>
-    <script>
-        function recalculateValues(input, type) {
-            const value = parseInt(input.value) || 0;
-            const container = input.parentElement;
-            const halfSpan = container.querySelector('[data-half]');
-            const fifthSpan = container.querySelector('[data-fifth]');
-
-            // Update the half and fifth values
-            halfSpan.textContent = Math.floor(value / 2);
-            fifthSpan.textContent = Math.floor(value / 5);
-
-            // Update the character data in the hidden input
-            const characterData = JSON.parse(document.getElementById('currentCharacter').value);
-
-            if (type === 'attribute') {
-                const attrName = input.dataset.attribute;
-                characterData.attributes[attrName].value = value;
-            } else if (type === 'skill') {
-                const skillName = input.dataset.skill;
-                characterData.Skill[skillName].value = value;
-            }
-
-            document.getElementById('currentCharacter').value = JSON.stringify(characterData);
-        }
-
-        // Add input validation
-        document.addEventListener('DOMContentLoaded', function() {
-            const inputs = document.querySelectorAll('input[type="number"]');
-            inputs.forEach(input => {
-                input.addEventListener('input', function() {
-                    let value = parseInt(this.value) || 0;
-                    // Optional: Clamp values between 0 and 100
-                    value = Math.min(Math.max(value, 0), 95);
-                    this.value = value;
-                });
-            });
-        });
-
-        function updatePersonalInfo(input) {
-            const field = input.dataset.field;
-            const value = field === 'age' ? parseInt(input.value) || 0 : input.value;
-
-            // Get the current character data
-            const characterData = JSON.parse(document.getElementById('currentCharacter').value);
-
-            // Update the appropriate field
-            switch(field) {
-                case 'name':
-                    characterData.Investigators_Name = value;
-                    break;
-                case 'age':
-                    characterData.Age = value;
-                    break;
-                case 'residence':
-                    characterData.Residence = value;
-                    break;
-                case 'birthplace':
-                    characterData.Birthplace = value;
-                    break;
-            }
-
-            // Save the updated data back to the hidden input
-            document.getElementById('currentCharacter').value = JSON.stringify(characterData);
-        }
-
-        // Add input validation for age
-        document.addEventListener('DOMContentLoaded', function() {
-            const ageInput = document.querySelector('input[data-field="age"]');
-            ageInput.addEventListener('input', function() {
-                let value = parseInt(this.value) || 0;
-                // Optional: Set reasonable age limits
-                value = Math.min(Math.max(value, 15), 100);
-                this.value = value;
-            });
-        });
-    </script>
 
     <style>
         @media print {

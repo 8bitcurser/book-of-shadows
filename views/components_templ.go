@@ -36,7 +36,7 @@ func Home() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Call of Cthulhu Character Generator</title><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://cdn.tailwindcss.com\"></script><style>\n                body {\n                    background-color: #f3f4f6;\n                }\n            </style></head><body class=\"min-h-screen py-8\"><div class=\"container mx-auto px-4\"><header class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold mb-2\">Call of Cthulhu Character Generator</h1><p class=\"text-gray-600\">Generate investigators for your cosmic horror adventures</p></header><div class=\"flex justify-center gap-4 mb-8\"><select id=\"gameMode\" class=\"rounded border p-2 bg-white\"><option value=\"classic\">Classic Mode</option> <option value=\"pulp\" selected>Pulp Mode</option></select> <button hx-get=\"/api/generate\" hx-target=\"#character-sheet\" hx-vals=\"js:{mode: document.getElementById(&#34;gameMode&#34;).value}\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Generate Character</button> <button onclick=\"exportPDF()\" class=\"bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700\">Export PDF</button> <button onclick=\"exportPDFPrime()\" class=\"bg-green-300 text-white px-4 py-2 rounded hover:bg-green-400\">Export PDF Premium</button> <button onclick=\"exportJSON()\" class=\"bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700\">Save JSON</button> <label class=\"bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 cursor-pointer\">Load JSON <input type=\"file\" accept=\".json\" onchange=\"loadJSON(this)\" class=\"hidden\"></label></div><div id=\"character-sheet\"><p class=\"text-center text-gray-500\">Click \"Generate Character\" to create a new investigator</p></div></div><script src=\"https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script><script>\n            function getCurrentCharacter() {\n                const hiddenInput = document.getElementById('currentCharacter');\n                if (!hiddenInput || !hiddenInput.value) {\n                    return null;\n                }\n                return JSON.parse(hiddenInput.value);\n            }\n\n            // First, let's update how we get the current character state when exporting\n            function getCurrentUIState(){\n                const baseCharacter = JSON.parse(document.getElementById('currentCharacter').value);\n                return {\n                    ...baseCharacter, // Keep all original properties\n                    Investigators_Name: document.querySelector('input[data-field=\"name\"]').value,\n                    Age: parseInt(document.querySelector('input[data-field=\"age\"]').value) || 0,\n                    Residence: document.querySelector('input[data-field=\"residence\"]').value,\n                    Birthplace: document.querySelector('input[data-field=\"birthplace\"]').value,\n                    // Update skills with current values while preserving structure\n                    Skill: Object.entries(baseCharacter.Skill).reduce((acc, [key, skill]) => {\n                        const input = document.querySelector(`input[data-skill=\"${key}\"]`);\n                        acc[key] = {\n                            ...skill, // Keep original skill properties\n                            value: input ? parseInt(input.value) || 0 : skill.value\n                        };\n                        return acc;\n                    }, {})\n                };\n            }\n\n            function exportJSON() {\n                const currentState = getCurrentUIState();\n                const blob = new Blob([JSON.stringify(currentState, null, 2)], {\n                    type: 'application/json'\n                });\n                const url = window.URL.createObjectURL(blob);\n                const a = document.createElement('a');\n                a.href = url;\n                a.download = currentState[\"Investigators_Name\"]+'.json';\n                document.body.appendChild(a);\n                a.click();\n                document.body.removeChild(a);\n            }\n\n            async function loadJSON(input) {\n                const file = input.files[0];\n                if (!file) return;\n\n                try {\n                    const text = await file.text();\n                    const character = JSON.parse(text);\n\n                    // Update the hidden input first\n                    document.getElementById('currentCharacter').value = JSON.stringify(character);\n\n                    // Personal Info\n                    document.querySelector('input[data-field=\"name\"]').value = character.Investigators_Name || '';\n                    document.querySelector('input[data-field=\"age\"]').value = character.Age || '';\n                    document.querySelector('input[data-field=\"residence\"]').value = character.Residence || '';\n                    document.querySelector('input[data-field=\"birthplace\"]').value = character.Birthplace || '';\n\n                    // Occupation - handle nested name property\n                    const occupationElement = document.querySelector('[data-field=\"occupation\"]');\n                    if (occupationElement && character.Occupation && character.Occupation.name) {\n                        occupationElement.textContent = character.Occupation.name;\n                    }\n\n                    // Attributes - handle nested value property\n                    const attributeRows = document.querySelectorAll('.bg-gray-50 .grid-cols-2 .flex.justify-between');\n                    attributeRows.forEach(row => {\n                        const attrNameSpan = row.querySelector('span:first-child');\n                        if (attrNameSpan) {\n                            const attrKey = attrNameSpan.textContent;\n                            const attr = character.attributes[attrKey];\n                            if (attr && attr.value !== undefined) {\n                                const valueContainer = row.querySelector('.flex.items-center');\n                                if (valueContainer) {\n                                    const spans = valueContainer.querySelectorAll('span');\n                                    if (spans.length >= 5) {  // Regular, separator, half, separator, fifth\n                                        spans[0].textContent = attr.value;\n                                        spans[2].textContent = Math.floor(attr.value / 2);\n                                        spans[4].textContent = Math.floor(attr.value / 5);\n                                    }\n                                }\n                            }\n                        }\n                    });\n\n                    // Combat Info\n                    document.querySelector('.space-y-2 div:nth-child(1) span:last-child').textContent = character.MOV;\n                    document.querySelector('.space-y-2 div:nth-child(2) span:last-child').textContent = character.Build;\n                    document.querySelector('.space-y-2 div:nth-child(3) span:last-child').textContent = character.DamageBonus;\n\n                    // Skills - handle nested value property\n                    Object.entries(character.Skill).forEach(([skillName, skillData]) => {\n                        const skillInput = document.querySelector(`input[data-skill=\"${skillName}\"]`);\n                        if (skillInput && skillData.value !== undefined) {\n                            skillInput.value = skillData.value;\n                            // Trigger change event to update half/fifth values\n                            skillInput.dispatchEvent(new Event('change'));\n                        }\n                    });\n\n                    // Pulp Talents\n                    const talentsContainer = document.querySelector('.mt-6 .space-y-4');\n                    if (talentsContainer && character[\"Pulp-Talents\"]) {\n                        talentsContainer.innerHTML = character[\"Pulp-Talents\"]\n                            .map(talent => `\n                                <div class=\"bg-gray-50 p-3 rounded\">\n                                    <h3 class=\"font-bold text-gray-700\">${talent.name}</h3>\n                                    <p class=\"text-gray-600 text-sm mt-1\">${talent.description}</p>\n                                </div>\n                            `).join('');\n                    }\n\n                } catch (error) {\n                    console.error('Error loading character:', error);\n                    alert('Failed to load character. Please check the JSON file format.');\n                }\n\n                // Clear the file input\n                input.value = '';\n            }\n            async function exportPDFPrime() {\n                const currentState = getCurrentUIState();\n                const flatState = {};\n                // Handle basic string/number fields directly\n                flatState.Investigators_Name = currentState.Investigators_Name;\n                flatState.Residence = currentState.Residence;\n                flatState.Birthplace = currentState.Birthplace;\n                flatState.Age = String(currentState.Age);\n                flatState.MOV = String(currentState.MOV);\n                flatState.Build = currentState.Build;\n                flatState.DamageBonus = currentState.DamageBonus;\n\n                // Handle Occupation\n                if (currentState.Occupation?.name) {\n                    flatState.Occupation = currentState.Occupation.name;\n                }\n\n                // Handle Archetype\n                if (currentState.Archetype?.name) {\n                    flatState.Archetype = currentState.Archetype.name;\n                }\n\n                // Attribute name mapping\n                const attributeMapping = {\n                    'Strength': 'STR',\n                    'Dexterity': 'DEX',\n                    'Appearance': 'APP',\n                    'Constitution': 'CON',\n                    'Power': 'POW',\n                    'Education': 'EDU',\n                    'Intelligence': 'INT',\n                    'Size': 'SIZ',\n                    'MagicPoints': 'CurrentMagic',\n                    'Sanity': 'CurrentSanity',\n                    'HitPoints': 'CurrentHP',\n                    'Luck': 'CurrentLuck'\n                };\n\n                // Handle Attributes\n                if (currentState.attributes) {\n                    Object.entries(currentState.attributes).forEach(([name, attr]) => {\n                        if (attr.Value || attr.value) {\n                            const value = attr.Value || attr.value;\n                            const mappedName = attributeMapping[name] || name;\n                            flatState[mappedName] = String(value);\n                            flatState[`${mappedName}_half`] = String(Math.floor(value / 2));\n                            flatState[`${mappedName}_fifth`] = String(Math.floor(value / 5));\n                        }\n                    });\n                }\n\n                // Handle Skills\n                if (currentState.Skill) {\n                    Object.entries(currentState.Skill).forEach(([name, skill]) => {\n                        if (name === \"Dodge_Copy\") {\n                            flatState[name] = String(skill.Value || skill.value);\n                            flatState[`${name}_half`] = String(Math.floor((skill.Value || skill.value) / 2));\n                            flatState[`${name}_fifth`] = String(Math.floor((skill.Value || skill.value) / 5));\n                        } else if (name === \"FastTalk\") {\n                            const skillKey = `Skill_${name}`;\n                            flatState[skillKey] = String(skill.value)\n                            flatState[`${skillKey} _half`] = String(Math.floor((skill.value / 2)));\n                            flatState[`${skillKey} _fifth`] = String(Math.floor((skill.value / 5)));\n                        } else {\n                            const skillKey = `Skill_${name}`;\n                            flatState[skillKey] = String(skill.Value || skill.value);\n                            flatState[`${skillKey}_half`] = String(Math.floor((skill.Value || skill.value) / 2));\n                            flatState[`${skillKey}_fifth`] = String(Math.floor((skill.Value || skill.value) / 5));\n                        }\n                    });\n                }\n\n                // Handle Pulp Talents\n                if (Array.isArray(currentState[\"Pulp-Talents\"])) {\n                    flatState[\"Pulp Talents\"] = currentState[\"Pulp-Talents\"]\n                        .map(talent => talent.name)\n                        .join(\", \") + \", \";\n                }\n\n                const response = await fetch('/api/export-pdf', {\n                    method: 'POST',\n                    headers: {\n                        'Content-Type': 'application/json',\n                    },\n                    body: JSON.stringify(flatState)\n                });\n\n                if (!response.ok) {\n                    throw new Error(`HTTP error! status: ${response.status}`);\n                }\n\n                const blob = await response.blob();\n                const url = window.URL.createObjectURL(blob);\n                const a = document.createElement('a');\n                a.href = url;\n                a.download = `${flatState.Investigators_Name || 'character'}.pdf`;\n                document.body.appendChild(a);\n                a.click();\n                document.body.removeChild(a);\n                window.URL.revokeObjectURL(url);\n            }\n\n            async function exportPDF() {\n                try {\n                    const element = document.getElementById('character-sheet');\n\n                    // Clone the entire element\n                    const clone = element.cloneNode(true);\n\n                    // Style fixes for the cloned element\n                    clone.style.width = '800px';\n                    clone.style.margin = '0';\n                    clone.style.backgroundColor = '#ffffff';\n                    clone.style.boxShadow = 'none';\n\n                    // Ensure all background colors are explicitly white\n                    clone.querySelectorAll('*').forEach(el => {\n                        el.style.boxShadow = 'none';\n                    });\n\n                    // Only keep bg-gray-50 for specific containers\n                    clone.querySelectorAll('.bg-gray-50').forEach(el => {\n                        el.style.backgroundColor = '#f9fafb';\n                    });\n\n                    // Remove shadow-lg class from all elements\n                    clone.querySelectorAll('.shadow-lg').forEach(el => {\n                        el.classList.remove('shadow-lg');\n                    });\n\n                    // Remove the hidden input\n                    const hiddenInput = clone.querySelector('#currentCharacter');\n                    if (hiddenInput) {\n                        hiddenInput.remove();\n                    }\n\n                    // Replace all inputs with spans\n                    clone.querySelectorAll('input').forEach(input => {\n                        const span = document.createElement('span');\n                        span.textContent = input.value;\n                        span.style.cssText = window.getComputedStyle(input).cssText;\n                        input.parentNode.replaceChild(span, input);\n                    });\n\n                    // Remove tooltips\n                    clone.querySelectorAll('.tooltip').forEach(tooltip => {\n                        tooltip.classList.remove('tooltip');\n                    });\n\n                    // Apply different scales to each page\n                    const firstPage = clone.querySelector('.first-page');\n                    const secondPage = clone.querySelector('.second-page');\n\n                    firstPage.style.transform = 'scale(0.9)';\n                    secondPage.style.transform = 'scale(0.9)';\n                    secondPage.style.pageBreakBefore = 'always';\n\n                    const opt = {\n                        margin: 0,\n                        filename: `character-sheet-${new Date().toISOString()}.pdf`,\n                        image: { type: 'jpeg', quality: 1 },\n                        html2canvas: {\n                            scale: 1,\n                            useCORS: true,\n                            letterRendering: true,\n                            backgroundColor: '#ffffff',\n                            removeContainer: true,\n                            // Additional options to ensure white background\n                            alpha: false,\n                            canvas: null,\n                        },\n                        jsPDF: {\n                            unit: 'mm',\n                            format: 'a4',\n                            orientation: 'portrait',\n                            compress: false,\n                            background: '#ffffff'\n                        }\n                    };\n\n                    // Create temporary container with white background\n                    const container = document.createElement('div');\n                    container.style.backgroundColor = '#ffffff';\n                    container.appendChild(clone);\n                    document.body.appendChild(container);\n\n                    // Generate PDF\n                    await html2pdf().from(clone).set(opt).save();\n\n                    // Clean up\n                    document.body.removeChild(container);\n\n                } catch (error) {\n                    console.error('Error generating PDF:', error);\n                    alert('Failed to generate PDF. Please try again.');\n                }\n            }\n\n        </script></body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Call of Cthulhu Character Generator</title><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://cdn.tailwindcss.com\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script><script src=\"/static/character-utils.js\"></script></head><body class=\"min-h-screen py-8\"><div class=\"container mx-auto px-4\"><header class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold mb-2\">Call of Cthulhu Character Generator</h1><p class=\"text-gray-600\">Generate investigators for your cosmic horror adventures</p></header><div class=\"flex justify-center gap-4 mb-8\"><select id=\"gameMode\" class=\"rounded border p-2 bg-white\"><option value=\"classic\">Classic Mode</option> <option value=\"pulp\" selected>Pulp Mode</option></select> <button hx-get=\"/api/generate\" hx-target=\"#character-sheet\" hx-vals=\"js:{mode: document.getElementById(&#34;gameMode&#34;).value}\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Generate Character</button><!--<button id=\"exportPdfBtn\" class=\"bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700\">Export PDF</button>--><button id=\"exportPdfPrimeBtn\" class=\"bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700\">Export PDF</button> <button id=\"exportJsonBtn\" class=\"bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700\">Save JSON</button> <label class=\"bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 cursor-pointer\">Load JSON <input type=\"file\" accept=\".json\" id=\"loadJsonInput\" class=\"hidden\"></label></div><div id=\"character-sheet\"><p class=\"text-center text-gray-500\">Click \"Generate Character\" to create a new investigator</p></div></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -76,20 +76,20 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 424, Col: 45}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 94, Col: 45}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-field=\"name\" onchange=\"updatePersonalInfo(this)\"><div class=\"grid grid-cols-2 md:grid-cols-4 gap-4 mt-4\"><div><p class=\"text-sm text-gray-600\">Occupation</p><p class=\"font-medium\" data-field=\"occupation\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-field=\"name\" onchange=\"characterUtils.updatePersonalInfo(this)\"><div class=\"grid grid-cols-2 md:grid-cols-4 gap-4 mt-4\"><div><p class=\"text-sm text-gray-600\">Occupation</p><p class=\"font-medium\" data-field=\"occupation\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Occupation.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 431, Col: 101}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 101, Col: 101}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -102,39 +102,39 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Age))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 438, Col: 66}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 108, Col: 66}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-field=\"age\" onchange=\"updatePersonalInfo(this)\"></div><div><p class=\"text-sm text-gray-600\">Residence</p><input type=\"text\" class=\"font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-field=\"age\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div><div><p class=\"text-sm text-gray-600\">Residence</p><input type=\"text\" class=\"font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Residence)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 448, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 118, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-field=\"residence\" onchange=\"updatePersonalInfo(this)\"></div><div><p class=\"text-sm text-gray-600\">Birthplace</p><input type=\"text\" class=\"font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-field=\"residence\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div><div><p class=\"text-sm text-gray-600\">Birthplace</p><input type=\"text\" class=\"font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Birthplace)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 458, Col: 59}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 128, Col: 59}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-field=\"birthplace\" onchange=\"updatePersonalInfo(this)\"></div></div></div><div class=\"grid md:grid-cols-3 gap-6\"><div class=\"bg-gray-50 p-4 rounded-lg md:col-span-2\"><h2 class=\"text-xl font-bold mb-4 text-gray-700\">Attributes</h2><div class=\"grid grid-cols-2 gap-x-6 gap-y-2\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-field=\"birthplace\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div></div></div><div class=\"grid md:grid-cols-3 gap-6\"><div class=\"bg-gray-50 p-4 rounded-lg md:col-span-2\"><h2 class=\"text-xl font-bold mb-4 text-gray-700\">Attributes</h2><div class=\"grid grid-cols-2 gap-x-6 gap-y-2\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -146,22 +146,35 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var8 string
 			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(key)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 471, Col: 85}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 141, Col: 85}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span><div class=\"flex items-center w-[60%] justify-end\"><span class=\"tooltip cursor-help w-[50px] text-right\" title=\"Regular\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</span><div class=\"flex items-center w-[60%] justify-end\"><span class=\"tooltip cursor-help w-[50px] text-right\" data-attr=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var9 string
-			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value))
+			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(key)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 473, Col: 132}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 143, Col: 104}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" title=\"Regular\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var10 string
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 143, Col: 148}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -169,12 +182,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var10 string
-			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 2))
+			var templ_7745c5c3_Var11 string
+			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 2))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 475, Col: 137}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 145, Col: 137}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -182,12 +195,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var11 string
-			templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 5))
+			var templ_7745c5c3_Var12 string
+			templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 5))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 477, Col: 138}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 147, Col: 138}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -200,12 +213,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Move))
+		var templ_7745c5c3_Var13 string
+		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Move))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 489, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 159, Col: 67}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -213,12 +226,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var13 string
-		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Build)
+		var templ_7745c5c3_Var14 string
+		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Build)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 493, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 163, Col: 54}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -226,12 +239,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var14 string
-		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.DamageBonus)
+		var templ_7745c5c3_Var15 string
+		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.DamageBonus)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 497, Col: 60}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 167, Col: 60}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -249,12 +262,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var15 string
-				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(talent.Name)
+				var templ_7745c5c3_Var16 string
+				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(talent.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 508, Col: 81}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 178, Col: 81}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -262,12 +275,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var16 string
-				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(talent.Description)
+				var templ_7745c5c3_Var17 string
+				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(talent.Description)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 509, Col: 90}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 179, Col: 90}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -291,12 +304,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var17 string
-				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
+				var templ_7745c5c3_Var18 string
+				templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 526, Col: 96}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 196, Col: 96}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -304,12 +317,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var18 string
-				templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value))
+				var templ_7745c5c3_Var19 string
+				templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 531, Col: 77}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 201, Col: 77}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -317,25 +330,25 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var19 string
-				templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 532, Col: 67}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" onchange=\"recalculateValues(this, &#39;skill&#39;)\" title=\"Regular\" min=\"0\"> <span class=\"text-gray-300 w-[20px] text-center\">|</span> <span class=\"tooltip cursor-help w-[50px] text-right\" title=\"Half value\" data-half>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
 				var templ_7745c5c3_Var20 string
-				templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 2))
+				templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 538, Col: 152}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 202, Col: 67}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" onchange=\"characterUtils.recalculateValues(this, &#39;skill&#39;)\" title=\"Regular\" min=\"0\"> <span class=\"text-gray-300 w-[20px] text-center\">|</span> <span class=\"tooltip cursor-help w-[50px] text-right\" title=\"Half value\" data-half>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var21 string
+				templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 2))
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 208, Col: 152}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -343,12 +356,12 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var21 string
-				templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 5))
+				var templ_7745c5c3_Var22 string
+				templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 5))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 540, Col: 154}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 210, Col: 154}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -358,7 +371,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				}
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></div></div><script>\n        function recalculateValues(input, type) {\n            const value = parseInt(input.value) || 0;\n            const container = input.parentElement;\n            const halfSpan = container.querySelector('[data-half]');\n            const fifthSpan = container.querySelector('[data-fifth]');\n\n            // Update the half and fifth values\n            halfSpan.textContent = Math.floor(value / 2);\n            fifthSpan.textContent = Math.floor(value / 5);\n\n            // Update the character data in the hidden input\n            const characterData = JSON.parse(document.getElementById('currentCharacter').value);\n\n            if (type === 'attribute') {\n                const attrName = input.dataset.attribute;\n                characterData.attributes[attrName].value = value;\n            } else if (type === 'skill') {\n                const skillName = input.dataset.skill;\n                characterData.Skill[skillName].value = value;\n            }\n\n            document.getElementById('currentCharacter').value = JSON.stringify(characterData);\n        }\n\n        // Add input validation\n        document.addEventListener('DOMContentLoaded', function() {\n            const inputs = document.querySelectorAll('input[type=\"number\"]');\n            inputs.forEach(input => {\n                input.addEventListener('input', function() {\n                    let value = parseInt(this.value) || 0;\n                    // Optional: Clamp values between 0 and 100\n                    value = Math.min(Math.max(value, 0), 95);\n                    this.value = value;\n                });\n            });\n        });\n\n        function updatePersonalInfo(input) {\n            const field = input.dataset.field;\n            const value = field === 'age' ? parseInt(input.value) || 0 : input.value;\n\n            // Get the current character data\n            const characterData = JSON.parse(document.getElementById('currentCharacter').value);\n\n            // Update the appropriate field\n            switch(field) {\n                case 'name':\n                    characterData.Investigators_Name = value;\n                    break;\n                case 'age':\n                    characterData.Age = value;\n                    break;\n                case 'residence':\n                    characterData.Residence = value;\n                    break;\n                case 'birthplace':\n                    characterData.Birthplace = value;\n                    break;\n            }\n\n            // Save the updated data back to the hidden input\n            document.getElementById('currentCharacter').value = JSON.stringify(characterData);\n        }\n\n        // Add input validation for age\n        document.addEventListener('DOMContentLoaded', function() {\n            const ageInput = document.querySelector('input[data-field=\"age\"]');\n            ageInput.addEventListener('input', function() {\n                let value = parseInt(this.value) || 0;\n                // Optional: Set reasonable age limits\n                value = Math.min(Math.max(value, 15), 100);\n                this.value = value;\n            });\n        });\n    </script><style>\n        @media print {\n            //.second-page {\n              //  page-break-before: always;\n            //}\n            .second-page {\n                        margin-top: 0 !important;\n                        padding-top: 0 !important;\n                    }\n\n                    .second-page .grid {\n                        gap: 0.25rem !important; // Tighter spacing for skills\n                    }\n            /* Rest of your print styles */\n            #character-sheet {\n                margin: 0;\n                padding: 20px;\n            }\n\n            .tooltip::after {\n                display: none !important;\n            }\n\n            * {\n                -webkit-print-color-adjust: exact !important;\n                print-color-adjust: exact !important;\n            }\n        }\n        .tooltip {\n            position: relative;\n        }\n        .tooltip:hover::after {\n            content: attr(title);\n            position: absolute;\n            bottom: 100%;\n            left: 50%;\n            transform: translateX(-50%);\n            padding: 4px 8px;\n            background: #1a202c;\n            color: white;\n            border-radius: 4px;\n            font-size: 12px;\n            white-space: nowrap;\n            z-index: 10;\n        }\n    </style>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div></div></div><style>\n        @media print {\n            //.second-page {\n              //  page-break-before: always;\n            //}\n            .second-page {\n                        margin-top: 0 !important;\n                        padding-top: 0 !important;\n                    }\n\n                    .second-page .grid {\n                        gap: 0.25rem !important; // Tighter spacing for skills\n                    }\n            /* Rest of your print styles */\n            #character-sheet {\n                margin: 0;\n                padding: 20px;\n            }\n\n            .tooltip::after {\n                display: none !important;\n            }\n\n            * {\n                -webkit-print-color-adjust: exact !important;\n                print-color-adjust: exact !important;\n            }\n        }\n        .tooltip {\n            position: relative;\n        }\n        .tooltip:hover::after {\n            content: attr(title);\n            position: absolute;\n            bottom: 100%;\n            left: 50%;\n            transform: translateX(-50%);\n            padding: 4px 8px;\n            background: #1a202c;\n            color: white;\n            border-radius: 4px;\n            font-size: 12px;\n            white-space: nowrap;\n            z-index: 10;\n        }\n    </style>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -382,21 +395,21 @@ func hidden(investigator *models.Investigator) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var22 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var22 == nil {
-			templ_7745c5c3_Var22 = templ.NopComponent
+		templ_7745c5c3_Var23 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var23 == nil {
+			templ_7745c5c3_Var23 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input type=\"hidden\" id=\"currentCharacter\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var23 string
-		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(mustJson(investigator))
+		var templ_7745c5c3_Var24 string
+		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(mustJson(investigator))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 679, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 273, Col: 38}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
