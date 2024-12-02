@@ -4,46 +4,51 @@ import (
 	"book-of-shadows/models"
 	"book-of-shadows/views"
 	"encoding/json"
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"log"
 	"net/http"
 )
 
-func handleHome(c echo.Context) error {
-	return views.Home().Render(c.Request().Context(), c.Response().Writer)
+func handleHome(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	component := views.Home()
+	err := component.Render(r.Context(), w)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
-func handleGenerate(c echo.Context) error {
+func handleGenerate(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	modeQParam := r.URL.Query().Get("mode")
 	mode := models.Pulp
-	if c.QueryParam("mode") == "classic" {
+	if modeQParam == "classic" {
 		mode = models.Classic
 	}
 
 	investigator := models.NewInvestigator(mode)
 
-	// Set content type to ensure proper rendering
-	c.Response().Header().Set(echo.HeaderContentType, echo.MIMETextHTML)
-
-	return views.CharacterSheet(investigator).Render(c.Request().Context(), c.Response().Writer)
-}
-
-func handleGetJSON(c echo.Context) error {
-	mode := models.Pulp
-	if c.QueryParam("mode") == "classic" {
-		mode = models.Classic
+	components := views.CharacterSheet(investigator)
+	err := components.Render(r.Context(), w)
+	if err != nil {
+		log.Println(err)
 	}
-
-	investigator := models.NewInvestigator(mode)
-	return c.JSON(http.StatusOK, investigator)
 }
 
-func handleExportPDF(c echo.Context) error {
-
+func handleExportPDF(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
 	data := make(map[string]string)
-	if err := json.NewDecoder(c.Request().Body).Decode(&data); err != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{
-			"error": "Invalid JSON data: " + err.Error(),
-		})
+	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
+		http.Error(w, "Invalid JSON", http.StatusBadRequest)
+		return
 	}
 
 	//investigator := models.NewInvestigator(mode)
@@ -53,27 +58,21 @@ func handleExportPDF(c echo.Context) error {
 		investigatorPDF,
 		data)
 	if err != nil {
-		return err
+		http.Error(w, "Error generating PDF: "+err.Error(), http.StatusInternalServerError)
+		return
 	}
-	return c.File(investigatorPDF)
+	w.Header().Set("Content-Type", "application/pdf")
+	w.Header().Set("Content-Disposition", "attachment; filename="+data["Investigator_Name"]+".pdf")
+	http.ServeFile(w, r, investigatorPDF)
 }
 
 func main() {
-	e := echo.New()
-
-	// Middleware
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-	e.Use(middleware.CORS())
-
-	// Static files
-	e.Static("/static", "static")
-
-	// Routes
-	e.GET("/", handleHome)
-	e.GET("/api/generate", handleGenerate)
-	e.POST("/api/export-pdf", handleExportPDF)
-	e.POST("/api/get-json", handleGetJSON)
-
-	e.Logger.Fatal(e.Start(":8080"))
+	// routes
+	http.HandleFunc("/", handleHome)
+	http.HandleFunc("/api/generate", handleGenerate)
+	http.HandleFunc("/api/export-pdf", handleExportPDF)
+	log.Println("Server starting on :8080")
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal(err)
+	}
 }
