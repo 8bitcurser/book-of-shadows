@@ -32,7 +32,10 @@ def process_pdf(options_json):
             writer.update_page_form_field_values(
                 writer.pages[0], metadata
             )
-
+            new_meta = {f'/{k}': v for k,v in metadata.items()}
+            writer.add_metadata(
+                new_meta
+            )
             # Save the modified PDF
             with open(output_path, 'wb') as output_file:
                 writer.write(output_file)

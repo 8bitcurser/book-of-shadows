@@ -17,6 +17,7 @@ templ Home() {
             <script src="https://cdn.tailwindcss.com"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
             <script src="/static/character-utils.js"></script>
 
         </head>
@@ -54,19 +55,14 @@ templ Home() {
                         Export PDF
                     </button>
 
-                    <button
-                        id="exportJsonBtn"
-                        class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
-                    >
-                        Save JSON
-                    </button>
+                    <!--<button id="exportJsonBtn" class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700">Save JSON</button>-->
 
                     <label class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 cursor-pointer">
-                        Load JSON
+                        Load PDF
                         <input
                             type="file"
-                            accept=".json"
-                            id="loadJsonInput"
+                            accept=".pdf"
+                            id="loadPDFInput"
                             class="hidden"
                         />
                     </label>
@@ -156,15 +152,15 @@ templ CharacterSheet(investigator *models.Investigator) {
                     <div class="space-y-2">
                         <div class="flex justify-between items-center">
                             <span class="font-medium text-gray-600">Movement</span>
-                            <span>{ strconv.Itoa(investigator.Move) }</span>
+                            <p data-field="move">{ strconv.Itoa(investigator.Move) }</p>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="font-medium text-gray-600">Build</span>
-                            <span>{ investigator.Build }</span>
+                            <p data-field="build">{ investigator.Build }</p>
                         </div>
                         <div class="flex justify-between items-center">
                             <span class="font-medium text-gray-600">DB</span>
-                            <span>{ investigator.DamageBonus }</span>
+                            <p data-field="dmgbonus">{ investigator.DamageBonus }</p>
                         </div>
                     </div>
                 </div>
@@ -199,7 +195,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                                             type="number"
                                             class="tooltip cursor-pointer w-[50px] text-right bg-white border rounded px-1"
                                             value={ strconv.Itoa(skill.Value) }
-                                            data-skill={ skill.Name }
+                                            data-skill={ models.SkillsToFormName[skill.Name] }
                                             onchange="characterUtils.recalculateValues(this, 'skill')"
                                             title="Regular"
                                             min="0"
