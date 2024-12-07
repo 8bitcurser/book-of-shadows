@@ -68,6 +68,10 @@ const characterUtils = {
             flatState["Pulp Talents"] = baseCharacter["Pulp-Talents"]
                 .map(talent => talent.name)
                 .join(", ") + ", ";
+
+            flatState["Pulp Talents Descriptions"] = baseCharacter["Pulp-Talents"]
+                .map(talent => talent.description)
+                .join("~ ") + "~ ";
         }
 
         return flatState;
@@ -93,41 +97,41 @@ const characterUtils = {
     //     }
     // },
 
+    // async exportPDF() {
+    //     try {
+    //         const element = document.getElementById('character-sheet');
+    //         if (!element) {
+    //             throw new Error('Character sheet not found');
+    //         }
+    //
+    //         const clone = element.cloneNode(true);
+    //         this.preparePDFElement(clone);
+    //
+    //         const opt = {
+    //             margin: 0,
+    //             filename: 'character-sheet.pdf',
+    //             image: { type: 'jpeg', quality: 1 },
+    //             html2canvas: {
+    //                 scale: 1,
+    //                 useCORS: true,
+    //                 letterRendering: true,
+    //                 backgroundColor: '#ffffff'
+    //             },
+    //             jsPDF: {
+    //                 unit: 'mm',
+    //                 format: 'a4',
+    //                 orientation: 'portrait'
+    //             }
+    //         };
+    //
+    //         await html2pdf().from(clone).set(opt).save();
+    //     } catch (error) {
+    //         console.error('Error generating PDF:', error);
+    //         alert('Failed to generate PDF. Please try again.');
+    //     }
+    // },
+
     async exportPDF() {
-        try {
-            const element = document.getElementById('character-sheet');
-            if (!element) {
-                throw new Error('Character sheet not found');
-            }
-
-            const clone = element.cloneNode(true);
-            this.preparePDFElement(clone);
-
-            const opt = {
-                margin: 0,
-                filename: 'character-sheet.pdf',
-                image: { type: 'jpeg', quality: 1 },
-                html2canvas: {
-                    scale: 1,
-                    useCORS: true,
-                    letterRendering: true,
-                    backgroundColor: '#ffffff'
-                },
-                jsPDF: {
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
-                }
-            };
-
-            await html2pdf().from(clone).set(opt).save();
-        } catch (error) {
-            console.error('Error generating PDF:', error);
-            alert('Failed to generate PDF. Please try again.');
-        }
-    },
-
-    async exportPDFPrime() {
         try {
             const currentState = this.getCurrentUIState();
             const response = await fetch('/api/export-pdf', {
@@ -157,18 +161,18 @@ const characterUtils = {
         }
     },
 
-    preparePDFElement(element) {
-        element.style.width = '800px';
-        element.style.backgroundColor = '#ffffff';
-
-        element.querySelectorAll('input').forEach(input => {
-            const span = document.createElement('span');
-            span.textContent = input.value;
-            input.parentNode.replaceChild(span, input);
-        });
-
-        return element;
-    },
+    // preparePDFElement(element) {
+    //     element.style.width = '800px';
+    //     element.style.backgroundColor = '#ffffff';
+    //
+    //     element.querySelectorAll('input').forEach(input => {
+    //         const span = document.createElement('span');
+    //         span.textContent = input.value;
+    //         input.parentNode.replaceChild(span, input);
+    //     });
+    //
+    //     return element;
+    // },
 
     recalculateValues(input, type) {
         const value = parseInt(input.value) || 0;
@@ -251,8 +255,8 @@ const characterUtils = {
 
     initializeEventListeners() {
         const buttonHandlers = {
-            'exportPdfBtn': () => this.exportPDF(),
-            'exportPdfPrimeBtn': () => this.exportPDFPrime()
+            //'exportPdfBtn': () => this.exportPDF(),
+            'exportPdf': () => this.exportPDF()
             // 'exportJsonBtn': () => this.exportJSON()
         };
 
@@ -425,6 +429,31 @@ const characterUtils = {
                 span.textContent = metadata[short];
             }
         });
+
+
+        // Update talents
+        const talentsDiv = document.querySelector(`div[data-field="talents"]`);
+
+        // clean old talents
+        const existingDivs = talentsDiv.querySelectorAll('div');
+        existingDivs.forEach(div => div.remove());
+        metadata[`Pulp Talents`].split(', ').forEach((talent)=>{
+            if (talent !== "") {
+                const newStructure = document.createElement('div');
+                const newH3 = document.createElement('h3');
+                const idx = metadata[`Pulp Talents`].split(', ').indexOf(talent)
+                const description = metadata[`Pulp Talents Descriptions`].split('~ ' )[idx]
+                const newP = document.createElement('p');
+                newStructure.className = "bg-gray-50 p-3 rounded"
+                newH3.className = "font-bold text-gray-700"
+                newH3.innerText = talent
+                newP.innerText = description
+                newP.className = "text-gray-600 text-sm mt-1"
+                newStructure.appendChild(newH3)
+                newStructure.appendChild(newP)
+                talentsDiv.appendChild(newStructure)
+            }
+        })
     }
 };
 

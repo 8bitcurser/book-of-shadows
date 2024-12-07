@@ -49,7 +49,7 @@ templ Home() {
                     <!--<button id="exportPdfBtn" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Export PDF</button>-->
 
                     <button
-                        id="exportPdfPrimeBtn"
+                        id="exportPdf"
                         class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
                     >
                         Export PDF
@@ -91,10 +91,14 @@ templ CharacterSheet(investigator *models.Investigator) {
                     data-field="name"
                     onchange="characterUtils.updatePersonalInfo(this)"
                 />
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-5 mt-5">
                     <div>
                         <p class="text-sm text-gray-600">Occupation</p>
                         <p class="font-medium" data-field="occupation">{ investigator.Occupation.Name }</p>
+                    </div>
+                    <div>
+                        <p class="text-sm text-gray-600">Archetype</p>
+                        <p class="font-medium" data-field="occupation">{ investigator.Archetype.Name }</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">Age</p>
@@ -168,7 +172,7 @@ templ CharacterSheet(investigator *models.Investigator) {
             if len(investigator.Talents) > 0 {
                 <div class="mt-6">
                     <h2 class="text-xl font-bold mb-4 text-gray-700">Pulp Talents</h2>
-                    <div class="space-y-4">
+                    <div class="space-y-4" data-field="talents">
                         for _, talent := range investigator.Talents {
                             <div class="bg-gray-50 p-3 rounded">
                                 <h3 class="font-bold text-gray-700">{ talent.Name }</h3>

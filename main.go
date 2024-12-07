@@ -8,6 +8,7 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
@@ -66,6 +67,10 @@ func handleExportPDF(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/pdf")
 	w.Header().Set("Content-Disposition", "attachment; filename="+data["Investigator_Name"]+".pdf")
 	http.ServeFile(w, r, investigatorPDF)
+	err = os.Remove(investigatorPDF)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func handleImportJSON(w http.ResponseWriter, r *http.Request) {
