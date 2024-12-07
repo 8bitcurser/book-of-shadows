@@ -77,60 +77,6 @@ const characterUtils = {
         return flatState;
     },
 
-    // exportJSON() {
-    //     try {
-    //         const currentState = this.getCurrentUIState();
-    //         const blob = new Blob([JSON.stringify(currentState, null, 2)], {
-    //             type: 'application/json'
-    //         });
-    //         const url = window.URL.createObjectURL(blob);
-    //         const a = document.createElement('a');
-    //         a.href = url;
-    //         a.download = currentState["Investigators_Name"] + '.json';
-    //         document.body.appendChild(a);
-    //         a.click();
-    //         document.body.removeChild(a);
-    //         window.URL.revokeObjectURL(url);
-    //     } catch (error) {
-    //         console.error('Error exporting JSON:', error);
-    //         alert('Failed to export character data.');
-    //     }
-    // },
-
-    // async exportPDF() {
-    //     try {
-    //         const element = document.getElementById('character-sheet');
-    //         if (!element) {
-    //             throw new Error('Character sheet not found');
-    //         }
-    //
-    //         const clone = element.cloneNode(true);
-    //         this.preparePDFElement(clone);
-    //
-    //         const opt = {
-    //             margin: 0,
-    //             filename: 'character-sheet.pdf',
-    //             image: { type: 'jpeg', quality: 1 },
-    //             html2canvas: {
-    //                 scale: 1,
-    //                 useCORS: true,
-    //                 letterRendering: true,
-    //                 backgroundColor: '#ffffff'
-    //             },
-    //             jsPDF: {
-    //                 unit: 'mm',
-    //                 format: 'a4',
-    //                 orientation: 'portrait'
-    //             }
-    //         };
-    //
-    //         await html2pdf().from(clone).set(opt).save();
-    //     } catch (error) {
-    //         console.error('Error generating PDF:', error);
-    //         alert('Failed to generate PDF. Please try again.');
-    //     }
-    // },
-
     async exportPDF() {
         try {
             const currentState = this.getCurrentUIState();
@@ -161,18 +107,6 @@ const characterUtils = {
         }
     },
 
-    // preparePDFElement(element) {
-    //     element.style.width = '800px';
-    //     element.style.backgroundColor = '#ffffff';
-    //
-    //     element.querySelectorAll('input').forEach(input => {
-    //         const span = document.createElement('span');
-    //         span.textContent = input.value;
-    //         input.parentNode.replaceChild(span, input);
-    //     });
-    //
-    //     return element;
-    // },
 
     recalculateValues(input, type) {
         const value = parseInt(input.value) || 0;
@@ -255,9 +189,7 @@ const characterUtils = {
 
     initializeEventListeners() {
         const buttonHandlers = {
-            //'exportPdfBtn': () => this.exportPDF(),
             'exportPdf': () => this.exportPDF()
-            // 'exportJsonBtn': () => this.exportJSON()
         };
 
         Object.entries(buttonHandlers).forEach(([id, handler]) => {
