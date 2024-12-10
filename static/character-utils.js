@@ -32,12 +32,11 @@ const characterUtils = {
             POW: parseInt(document.querySelector('span[data-attr="POW"]')?.textContent) || 0,
             SIZ: parseInt(document.querySelector('span[data-attr="SIZ"]')?.textContent) || 0,
             EDU: parseInt(document.querySelector('span[data-attr="EDU"]')?.textContent) || 0,
-            CurrentMagic: parseInt(document.querySelector('span[data-attr="CurrentMagic"]')?.textContent) || 0,
-            CurrentHP: parseInt(document.querySelector('span[data-attr="CurrentHP"]')?.textContent) || 0,
-            CurrentSanity: parseInt(document.querySelector('span[data-attr="CurrentSanity"]')?.textContent) || 0,
-            CurrentLuck: parseInt(document.querySelector('span[data-attr="CurrentLuck"]')?.textContent) || 0
+            CurrentMagic: parseInt(document.querySelector('input[data-attr="CurrentMagic"]')?.value) || 0,
+            CurrentHP: parseInt(document.querySelector('input[data-attr="CurrentHP"]')?.value) || 0,
+            CurrentSanity: parseInt(document.querySelector('input[data-attr="CurrentSanity"]')?.value) || 0,
+            CurrentLuck: parseInt(document.querySelector('input[data-attr="CurrentLuck"]')?.value) || 0
         };
-
         // Add each attribute with its half and fifth values
         Object.entries(attributes).forEach(([key, value]) => {
             flatState[key] = String(value);
@@ -348,7 +347,7 @@ const characterUtils = {
         });
 
         // Update attribute spans
-        const attributeMap = [
+        const attributes = [
             'STR',
             'DEX',
             'INT',
@@ -359,13 +358,25 @@ const characterUtils = {
             'EDU'
         ]
 
-        Object.entries(attributeMap).forEach(([attr]) => {
-            attr = attributeMap[attr]
+        Object.entries(attributes).forEach(([attr]) => {
+            attr = attributes[attr]
             const span = document.querySelector(`span[data-attr="${attr}"]`);
 
             if (span && metadata[attr]) {
                 span.textContent = metadata[attr];
                 this.recalculateValues(span, 'attribute');
+            }
+        });
+
+        // health, sanity, luck, mp
+        const derivativeAttrs = ["CurrentHP", "CurrentMagic", "CurrentLuck", "CurrentSanity"]
+        Object.entries(derivativeAttrs).forEach(([attr]) => {
+            attr = derivativeAttrs[attr]
+            const input = document.querySelector(`input[data-attr="${attr}"]`);
+            const value = metadata[attr]
+            if (input && value) {
+                input.value = value;
+                this.recalculateValues(input, 'skill');
             }
         });
 

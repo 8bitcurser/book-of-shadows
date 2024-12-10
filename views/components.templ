@@ -5,6 +5,7 @@ import "book-of-shadows/models"
 import "encoding/json"
 import "strconv"
 import "sort"
+import "strings"
 
 templ Home() {
     <!DOCTYPE html>
@@ -132,16 +133,18 @@ templ CharacterSheet(investigator *models.Investigator) {
                     <h2 class="text-xl font-bold mb-4 text-gray-700">Attributes</h2>
                     <div class="grid grid-cols-2 gap-x-6 gap-y-2">
                         for _, attr := range investigator.Attributes {
-                            <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
-                                <span class="font-medium text-gray-600 w-[40%]">{ attr.Name }</span>
-                                <div class="flex items-center w-[60%] justify-end">
-                                    <span class="tooltip cursor-help w-[50px] text-right" data-attr={attr.Name} title="Regular">{ strconv.Itoa(attr.Value) }</span>
-                                    <span class="text-gray-300 w-[20px] text-center">|</span>
-                                    <span class="tooltip cursor-help w-[50px] text-right" title="Half value" data-half>{ strconv.Itoa(attr.Value/2) }</span>
-                                    <span class="text-gray-300 w-[20px] text-center">|</span>
-                                    <span class="tooltip cursor-help w-[50px] text-right" title="Fifth value" data-fifth>{ strconv.Itoa(attr.Value/5) }</span>
+                            if (!strings.HasPrefix(attr.Name, "Current")) {
+                                <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
+                                    <span class="font-medium text-gray-600 w-[40%]">{ attr.Name }</span>
+                                    <div class="flex items-center w-[60%] justify-end">
+                                        <span class="tooltip cursor-help w-[50px] text-right" data-attr={attr.Name} title="Regular">{ strconv.Itoa(attr.Value) }</span>
+                                        <span class="text-gray-300 w-[20px] text-center">|</span>
+                                        <span class="tooltip cursor-help w-[50px] text-right" title="Half value" data-half>{ strconv.Itoa(attr.Value/2) }</span>
+                                        <span class="text-gray-300 w-[20px] text-center">|</span>
+                                        <span class="tooltip cursor-help w-[50px] text-right" title="Fifth value" data-fifth>{ strconv.Itoa(attr.Value/5) }</span>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         }
                     </div>
                 </div>
@@ -149,6 +152,50 @@ templ CharacterSheet(investigator *models.Investigator) {
                 <div class="bg-gray-50 p-4 rounded-lg">
                     <h2 class="text-xl font-bold mb-4 text-gray-700">Combat</h2>
                     <div class="space-y-2">
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-600">HP</span>
+                            <input
+                                type="number"
+                                class="cursor-pointer w-[50px] text-left bg-white border rounded px-1"
+                                value={ strconv.Itoa(investigator.Attributes["HitPoints"].Value) }
+                                data-attr={investigator.Attributes["HitPoints"].Name}
+                                title="CurrentHP"
+                                min="0"
+                            />
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-600">MP</span>
+                            <input
+                                type="number"
+                                class="cursor-pointer w-[50px] text-left bg-white border rounded px-1"
+                                value={ strconv.Itoa(investigator.Attributes["MagicPoints"].Value) }
+                                data-attr={investigator.Attributes["MagicPoints"].Name}
+                                title="CurrentHP"
+                                min="0"
+                            />
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-600">Luck</span>
+                            <input
+                                type="number"
+                                class="cursor-pointer w-[50px] text-left bg-white border rounded px-1"
+                                value={ strconv.Itoa(investigator.Attributes["Luck"].Value) }
+                                data-attr={ investigator.Attributes["Luck"].Name }
+                                title="CurrentHP"
+                                min="0"
+                            />
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium text-gray-600">Sanity</span>
+                            <input
+                                type="number"
+                                class="cursor-pointer w-[50px] text-left bg-white border rounded px-1"
+                                value={ strconv.Itoa(investigator.Attributes["Sanity"].Value) }
+                                data-attr={ investigator.Attributes["Sanity"].Name }
+                                title="CurrentHP"
+                                min="0"
+                            />
+                        </div>
                         <div class="flex justify-between items-center">
                             <span class="font-medium text-gray-600">Movement</span>
                             <p data-field="move">{ strconv.Itoa(investigator.Move) }</p>
