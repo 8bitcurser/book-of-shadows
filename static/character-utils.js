@@ -107,9 +107,14 @@ const characterUtils = {
         }
     },
 
-
     recalculateValues(input, type) {
-        const value = parseInt(input.value) || 0;
+        let value = 0
+        if (type === 'attribute') {
+            value = parseInt(input.textContent) || 0
+        } else {
+            value = parseInt(input.value) || 0;
+        }
+        console.log(value)
         const container = input.parentElement;
         const halfSpan = container.querySelector('[data-half]');
         const fifthSpan = container.querySelector('[data-fifth]');
@@ -312,10 +317,10 @@ const characterUtils = {
                 // archetype is not being shown yet
                 switch (preSetField) {
                     case 'archetype':
-                        paragraph.innerText = metadata.Occupation || '';
+                        paragraph.innerText = metadata.Archetype || '';
                         break;
                     case 'occupation':
-                        paragraph.innerText = metadata.Archetype || '0';
+                        paragraph.innerText = metadata.Occupation || '0';
                         break;
                     case 'move':
                         paragraph.innerText = metadata.MOV || '0';
@@ -336,7 +341,8 @@ const characterUtils = {
             if (key.startsWith('Skill_') && !key.includes('_half') && !key.includes('_fifth')) {
                 const skillName = key.replace('Skill_', '');
                 const input = document.querySelector(`input[data-skill="${skillName}"]`);
-                if (input) {
+                const value = metadata[key]
+                if (input && value) {
                     input.value = value;
                     this.recalculateValues(input, 'skill');
                 }
@@ -359,6 +365,7 @@ const characterUtils = {
             const span = document.querySelector(`span[data-attr="${full}"]`);
             if (span && metadata[short]) {
                 span.textContent = metadata[short];
+                this.recalculateValues(span, 'attribute');
             }
         });
 

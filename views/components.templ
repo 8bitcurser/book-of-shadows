@@ -93,7 +93,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">Archetype</p>
-                        <p class="font-medium" data-field="occupation">{ investigator.Archetype.Name }</p>
+                        <p class="font-medium" data-field="archetype">{ investigator.Archetype.Name }</p>
                     </div>
                     <div>
                         <p class="text-sm text-gray-600">Age</p>
@@ -137,9 +137,9 @@ templ CharacterSheet(investigator *models.Investigator) {
                                 <div class="flex items-center w-[60%] justify-end">
                                     <span class="tooltip cursor-help w-[50px] text-right" data-attr={key} title="Regular">{ strconv.Itoa(attr.Value) }</span>
                                     <span class="text-gray-300 w-[20px] text-center">|</span>
-                                    <span class="tooltip cursor-help w-[50px] text-right" title="Half value">{ strconv.Itoa(attr.Value/2) }</span>
+                                    <span class="tooltip cursor-help w-[50px] text-right" title="Half value" data-half>{ strconv.Itoa(attr.Value/2) }</span>
                                     <span class="text-gray-300 w-[20px] text-center">|</span>
-                                    <span class="tooltip cursor-help w-[50px] text-right" title="Fifth value">{ strconv.Itoa(attr.Value/5) }</span>
+                                    <span class="tooltip cursor-help w-[50px] text-right" title="Fifth value" data-fifth>{ strconv.Itoa(attr.Value/5) }</span>
                                 </div>
                             </div>
                         }
