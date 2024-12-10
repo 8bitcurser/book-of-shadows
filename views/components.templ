@@ -131,11 +131,11 @@ templ CharacterSheet(investigator *models.Investigator) {
                 <div class="bg-gray-50 p-4 rounded-lg md:col-span-2">
                     <h2 class="text-xl font-bold mb-4 text-gray-700">Attributes</h2>
                     <div class="grid grid-cols-2 gap-x-6 gap-y-2">
-                        for key, attr := range investigator.Attributes {
+                        for _, attr := range investigator.Attributes {
                             <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
-                                <span class="font-medium text-gray-600 w-[40%]">{ key }</span>
+                                <span class="font-medium text-gray-600 w-[40%]">{ attr.Name }</span>
                                 <div class="flex items-center w-[60%] justify-end">
-                                    <span class="tooltip cursor-help w-[50px] text-right" data-attr={key} title="Regular">{ strconv.Itoa(attr.Value) }</span>
+                                    <span class="tooltip cursor-help w-[50px] text-right" data-attr={attr.Name} title="Regular">{ strconv.Itoa(attr.Value) }</span>
                                     <span class="text-gray-300 w-[20px] text-center">|</span>
                                     <span class="tooltip cursor-help w-[50px] text-right" title="Half value" data-half>{ strconv.Itoa(attr.Value/2) }</span>
                                     <span class="text-gray-300 w-[20px] text-center">|</span>

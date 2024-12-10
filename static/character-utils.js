@@ -24,18 +24,18 @@ const characterUtils = {
 
         // Add attributes with their half and fifth values
         const attributes = {
-            STR: parseInt(document.querySelector('span[data-attr="Strength"]')?.textContent) || 0,
-            DEX: parseInt(document.querySelector('span[data-attr="Dexterity"]')?.textContent) || 0,
-            INT: parseInt(document.querySelector('span[data-attr="Intelligence"]')?.textContent) || 0,
-            CON: parseInt(document.querySelector('span[data-attr="Constitution"]')?.textContent) || 0,
-            APP: parseInt(document.querySelector('span[data-attr="Appearance"]')?.textContent) || 0,
-            POW: parseInt(document.querySelector('span[data-attr="Power"]')?.textContent) || 0,
-            SIZ: parseInt(document.querySelector('span[data-attr="Size"]')?.textContent) || 0,
-            EDU: parseInt(document.querySelector('span[data-attr="Education"]')?.textContent) || 0,
-            CurrentMagic: parseInt(document.querySelector('span[data-attr="MagicPoints"]')?.textContent) || 0,
-            CurrentHP: parseInt(document.querySelector('span[data-attr="HitPoints"]')?.textContent) || 0,
-            CurrentSanity: parseInt(document.querySelector('span[data-attr="Sanity"]')?.textContent) || 0,
-            CurrentLuck: parseInt(document.querySelector('span[data-attr="Luck"]')?.textContent) || 0
+            STR: parseInt(document.querySelector('span[data-attr="STR"]')?.textContent) || 0,
+            DEX: parseInt(document.querySelector('span[data-attr="DEX"]')?.textContent) || 0,
+            INT: parseInt(document.querySelector('span[data-attr="INT"]')?.textContent) || 0,
+            CON: parseInt(document.querySelector('span[data-attr="CON"]')?.textContent) || 0,
+            APP: parseInt(document.querySelector('span[data-attr="APP"]')?.textContent) || 0,
+            POW: parseInt(document.querySelector('span[data-attr="POW"]')?.textContent) || 0,
+            SIZ: parseInt(document.querySelector('span[data-attr="SIZ"]')?.textContent) || 0,
+            EDU: parseInt(document.querySelector('span[data-attr="EDU"]')?.textContent) || 0,
+            CurrentMagic: parseInt(document.querySelector('span[data-attr="CurrentMagic"]')?.textContent) || 0,
+            CurrentHP: parseInt(document.querySelector('span[data-attr="CurrentHP"]')?.textContent) || 0,
+            CurrentSanity: parseInt(document.querySelector('span[data-attr="CurrentSanity"]')?.textContent) || 0,
+            CurrentLuck: parseInt(document.querySelector('span[data-attr="CurrentLuck"]')?.textContent) || 0
         };
 
         // Add each attribute with its half and fifth values
@@ -114,7 +114,6 @@ const characterUtils = {
         } else {
             value = parseInt(input.value) || 0;
         }
-        console.log(value)
         const container = input.parentElement;
         const halfSpan = container.querySelector('[data-half]');
         const fifthSpan = container.querySelector('[data-fifth]');
@@ -336,7 +335,6 @@ const characterUtils = {
             }
         });
         // Update skill inputs
-
         Object.entries(metadata).forEach(([key, value]) => {
             if (key.startsWith('Skill_') && !key.includes('_half') && !key.includes('_fifth')) {
                 const skillName = key.replace('Skill_', '');
@@ -350,21 +348,23 @@ const characterUtils = {
         });
 
         // Update attribute spans
-        const attributeMap = {
-            STR: 'Strength',
-            DEX: 'Dexterity',
-            INT: 'Intelligence',
-            CON: 'Constitution',
-            APP: 'Appearance',
-            POW: 'Power',
-            SIZ: 'Size',
-            EDU: 'Education'
-        };
+        const attributeMap = [
+            'STR',
+            'DEX',
+            'INT',
+            'CON',
+            'APP',
+            'POW',
+            'SIZ',
+            'EDU'
+        ]
 
-        Object.entries(attributeMap).forEach(([short, full]) => {
-            const span = document.querySelector(`span[data-attr="${full}"]`);
-            if (span && metadata[short]) {
-                span.textContent = metadata[short];
+        Object.entries(attributeMap).forEach(([attr]) => {
+            attr = attributeMap[attr]
+            const span = document.querySelector(`span[data-attr="${attr}"]`);
+
+            if (span && metadata[attr]) {
+                span.textContent = metadata[attr];
                 this.recalculateValues(span, 'attribute');
             }
         });
