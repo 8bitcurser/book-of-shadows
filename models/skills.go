@@ -10,7 +10,7 @@ type Skill struct {
 	Default      int    `json:"-"`
 	Value        int    `json:"value"`
 	Era          []Era  `json:"-"`
-	Base         int    `json:"-"`
+	Base         int    `json:"isBase"`
 }
 
 func (skill *Skill) String() string {

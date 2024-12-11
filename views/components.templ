@@ -25,23 +25,15 @@ templ Home() {
         <body class="min-h-screen py-8">
             <div class="container mx-auto px-4">
                 <header class="text-center mb-8">
-                    <h1 class="text-4xl font-bold mb-2">Call of Cthulhu Character Generator</h1>
+                    <h1 class="text-4xl font-bold mb-2">Call of Cthulhu Pulp Character Generator</h1>
                     <p class="text-gray-600">Generate investigators for your cosmic horror adventures</p>
                 </header>
 
                 <div class="flex justify-center gap-4 mb-8">
-                    <select
-                        id="gameMode"
-                        class="rounded border p-2 bg-white"
-                    >
-                        <option value="classic">Classic Mode</option>
-                        <option value="pulp" selected>Pulp Mode</option>
-                    </select>
-
                     <button
                         hx-get="/api/generate"
                         hx-target="#character-sheet"
-                        hx-vals='js:{mode: document.getElementById("gameMode").value}'
+                        hx-vals='js:{mode: "pulp"}'
                         class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
                     >
                         Generate Character
@@ -235,7 +227,11 @@ templ CharacterSheet(investigator *models.Investigator) {
                         for _, skill := range sortSkills(investigator.Skills) {
                             if skill.Name != "" && skill.Name != "Dodge_Copy" {
                                 <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
-                                    <span class="font-medium text-gray-600 w-[40%]">{ skill.Name }</span>
+                                    if (skill.Base > 0) {
+                                        <input type="text" aria-label={ skill.Name } class="font-medium text-gray-600 w-[40%]" value={ skill.Name }></input>
+                                    } else {
+                                        <span class="font-medium text-gray-600 w-[40%]">{ skill.Name }</span>
+                                    }
                                     <div class="flex items-center w-[60%] justify-end">
                                         <input
                                             type="number"
