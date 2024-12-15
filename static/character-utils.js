@@ -162,34 +162,6 @@ const characterUtils = {
         document.getElementById('currentCharacter').value = JSON.stringify(characterData);
     },
 
-    async loadPDF(input) {
-        if (!input.files?.length) return;
-
-        try {
-            const file = input.files[0];
-            const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            let metadata = await pdf.getMetadata();
-            metadata = metadata.info.Custom
-
-            const hiddenInput = document.getElementById('currentCharacter');
-            if (hiddenInput) {
-                // Convert the flat metadata structure into the expected character format
-                const formattedCharacter = this.formatCharacterData(metadata);
-                hiddenInput.value = JSON.stringify(formattedCharacter);
-            }
-
-            // Update all the form fields
-            this.updateFormFields(metadata);
-
-            // Trigger HTMX reload of the character sheet
-            htmx.trigger('#character-sheet', 'load');
-        } catch (error) {
-            console.error('Error loading JSON:', error);
-            alert('Failed to load character data.');
-        }
-    },
-
     initializeEventListeners() {
         const buttonHandlers = {
             'exportPdf': () => this.exportPDF()
@@ -205,10 +177,10 @@ const characterUtils = {
             }
         });
 
-        const fileInput = document.getElementById('loadPDFInput');
-        if (fileInput) {
-            fileInput.addEventListener('change', () => this.loadPDF(fileInput));
-        }
+        const fileInput = document.getElementsByClassName('loadPDFInput')[0];
+        fileInput.addEventListener('change', function(e) {
+            characterUtils.handlePDFLoad(e.target);
+        });
 
         this.initializeInputHandlers();
     },
@@ -227,183 +199,34 @@ const characterUtils = {
         });
     },
 
-    formatCharacterData(metadata) {
-        // Create a properly structured character object
+    async handlePDFLoad(inputElement) {
+        if (!inputElement.files?.length) return;
 
-        const character = {
-            name: metadata.Investigators_Name || '',
-            age: metadata.Age || '0',
-            residence: metadata.Residence || '',
-            birthplace: metadata.Birthplace || '',
-            occupation: metadata.Occupation || '' ,
-            archetype: metadata.Archetype || '' ,
-            MOV: metadata.MOV || '0',
-            Build: metadata.Build || '',
-            DamageBonus: metadata.DamageBonus || '',
-            Skill: {}
-        };
+        try {
+            const file = inputElement.files[0];
+            const arrayBuffer = await file.arrayBuffer();
+            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+            const metadata = await pdf.getMetadata();
 
-        // Process skills
-        Object.entries(metadata).forEach(([key, value]) => {
-            if (key.startsWith('Skill_') && !key.includes('_half') && !key.includes('_fifth')) {
-                const skillName = key.replace('Skill_', '');
-                character.Skill[skillName] = {
-                    value: parseInt(value) || 0
-                };
+            const response = await fetch('/api/import-json', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(metadata.info.Custom)
+            });
+            if (!response.ok) {
+                throw new Error('Server responded with error');
             }
-        });
 
-        // Process attributes
-        const attributeMap = {
-            STR: 'Strength',
-            DEX: 'Dexterity',
-            INT: 'Intelligence',
-            CON: 'Constitution',
-            APP: 'Appearance',
-            POW: 'Power',
-            SIZ: 'Size',
-            EDU: 'Education'
-        };
+            // Get the HTML response and update the character sheet
+            const html = await response.text();
+            document.getElementById('character-sheet').innerHTML = html;
 
-        character.attributes = {};
-        Object.entries(attributeMap).forEach(([short, full]) => {
-            if (metadata[short]) {
-                character.attributes[full] = {
-                    value: parseInt(metadata[short]) || 0
-                };
-            }
-        });
-
-        // Process Pulp Talents if they exist
-        if (metadata['Pulp Talents']) {
-            character['Pulp-Talents'] = metadata['Pulp Talents']
-                .split(',')
-                .filter(talent => talent.trim())
-                .map(talent => ({ name: talent.trim() }));
+        } catch (error) {
+            console.error('Error loading PDF:', error);
+            alert('Failed to load character data.');
         }
-
-        return character;
-    },
-
-    updateFormFields(metadata) {
-        // Update basic info fields
-        const fields = ['name', 'age', 'residence', 'birthplace'];
-        fields.forEach(field => {
-            const input = document.querySelector(`input[data-field="${field}"]`);
-            if (input) {
-                switch (field) {
-                    case 'name':
-                        input.value = metadata.Investigators_Name || '';
-                        break;
-                    case 'age':
-                        input.value = metadata.Age || '0';
-                        break;
-                    case 'residence':
-                        input.value = metadata.Residence || '';
-                        break;
-                    case 'birthplace':
-                        input.value = metadata.Birthplace || '';
-                        break;
-
-                }
-            }
-        });
-        const preSetFields = ['occupation', 'archetype', 'move', 'dmgbonus', 'build']
-        preSetFields.forEach(preSetField => {
-            const paragraph = document.querySelector(`p[data-field="${preSetField}"]`);
-            if (paragraph) {
-                // archetype is not being shown yet
-                switch (preSetField) {
-                    case 'archetype':
-                        paragraph.innerText = metadata.Archetype || '';
-                        break;
-                    case 'occupation':
-                        paragraph.innerText = metadata.Occupation || '0';
-                        break;
-                    case 'move':
-                        paragraph.innerText = metadata.MOV || '0';
-                        break;
-                    case 'dmgbonus':
-                        paragraph.innerText = metadata.DamageBonus || '';
-                        break;
-                    case 'build':
-                        paragraph.innerText = metadata.Build || '';
-                        break;
-
-                }
-            }
-        });
-        // Update skill inputs
-        Object.entries(metadata).forEach(([key, value]) => {
-            if (key.startsWith('Skill_') && !key.includes('_half') && !key.includes('_fifth')) {
-                const skillName = key.replace('Skill_', '');
-                const input = document.querySelector(`input[data-skill="${skillName}"]`);
-                const value = metadata[key]
-                if (input && value) {
-                    input.value = value;
-                    this.recalculateValues(input, 'skill');
-                }
-            }
-        });
-
-        // Update attribute spans
-        const attributes = [
-            'STR',
-            'DEX',
-            'INT',
-            'CON',
-            'APP',
-            'POW',
-            'SIZ',
-            'EDU'
-        ]
-
-        Object.entries(attributes).forEach(([attr]) => {
-            attr = attributes[attr]
-            const span = document.querySelector(`span[data-attr="${attr}"]`);
-
-            if (span && metadata[attr]) {
-                span.textContent = metadata[attr];
-                this.recalculateValues(span, 'attribute');
-            }
-        });
-
-        // health, sanity, luck, mp
-        const derivativeAttrs = ["CurrentHP", "CurrentMagic", "CurrentLuck", "CurrentSanity"]
-        Object.entries(derivativeAttrs).forEach(([attr]) => {
-            attr = derivativeAttrs[attr]
-            const input = document.querySelector(`input[data-attr="${attr}"]`);
-            const value = metadata[attr]
-            if (input && value) {
-                input.value = value;
-                this.recalculateValues(input, 'skill');
-            }
-        });
-
-
-        // Update talents
-        const talentsDiv = document.querySelector(`div[data-field="talents"]`);
-
-        // clean old talents
-        const existingDivs = talentsDiv.querySelectorAll('div');
-        existingDivs.forEach(div => div.remove());
-        metadata[`Pulp Talents`].split(', ').forEach((talent)=>{
-            if (talent !== "") {
-                const newStructure = document.createElement('div');
-                const newH3 = document.createElement('h3');
-                const idx = metadata[`Pulp Talents`].split(', ').indexOf(talent)
-                const description = metadata[`Pulp Talents Descriptions`].split('~ ' )[idx]
-                const newP = document.createElement('p');
-                newStructure.className = "bg-gray-50 p-3 rounded"
-                newH3.className = "font-bold text-gray-700"
-                newH3.innerText = talent
-                newP.innerText = description
-                newP.className = "text-gray-600 text-sm mt-1"
-                newStructure.appendChild(newH3)
-                newStructure.appendChild(newP)
-                talentsDiv.appendChild(newStructure)
-            }
-        })
     }
 };
 
@@ -412,14 +235,10 @@ if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
         characterUtils.initializeEventListeners();
     });
+
 } else {
     characterUtils.initializeEventListeners();
 }
-
-// Handle HTMX content updates
-document.body.addEventListener('htmx:afterSwap', () => {
-    characterUtils.initializeInputHandlers();
-});
 
 
 // Make utils available globally

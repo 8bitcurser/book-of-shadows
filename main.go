@@ -79,19 +79,19 @@ func handleImportJSON(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	body, err := io.ReadAll(r.Body)
+	bodyIO, err := io.ReadAll(r.Body)
+	defer r.Body.Close()
 	if err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 	}
-	defer r.Body.Close()
-	inv, err := serializers.FromJSON(body)
+	inv, err := serializers.FromJSON(bodyIO)
 	if err != nil {
 		http.Error(w, "Invalid JSON", http.StatusBadRequest)
 		return
 	}
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	err = json.NewEncoder(w).Encode(inv)
+	w.Header().Set("Content-Type", "text/html")
+	components := views.CharacterSheet(inv)
+	err = components.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)
 	}

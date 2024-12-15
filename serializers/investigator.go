@@ -9,16 +9,17 @@ import (
 
 type InvestigatorSerializer struct {
 	// Basic Info
-	Name        string `json:"Investigators_Name"`
-	Age         string `json:"Age"`
-	Residence   string `json:"Residence"`
-	Birthplace  string `json:"Birthplace"`
-	Occupation  string `json:"Occupation"`
-	Archetype   string `json:"Archetype"`
-	MOV         string `json:"MOV"`
-	Build       string `json:"Build"`
-	DamageBonus string `json:"DamageBonus"`
-	PulpTalents string `json:"Pulp Talents"`
+	Name                    string `json:"Investigators_Name"`
+	Age                     string `json:"Age"`
+	Residence               string `json:"Residence"`
+	Birthplace              string `json:"Birthplace"`
+	Occupation              string `json:"Occupation"`
+	Archetype               string `json:"Archetype"`
+	MOV                     string `json:"MOV"`
+	Build                   string `json:"Build"`
+	DamageBonus             string `json:"DamageBonus"`
+	PulpTalents             string `json:"Pulp Talents"`
+	PulpTalentsDescriptions string `json:"Pulp Talents Descriptions"`
 
 	// Status
 	Insane           string `json:"insane"`
@@ -120,6 +121,8 @@ func (s *InvestigatorSerializer) UnmarshalJSON(data []byte) error {
 				s.DamageBonus = value
 			case "Pulp Talents":
 				s.PulpTalents = value
+			case "Pulp Talents Descriptions":
+				s.PulpTalentsDescriptions = value
 			case "STR":
 				s.STR = value
 			case "DEX":
@@ -178,22 +181,26 @@ func (s *InvestigatorSerializer) ToInvestigator() *models.Investigator {
 
 	// Convert attributes
 	attributeMap := map[string]string{
-		"Strength":     s.STR,
-		"Dexterity":    s.DEX,
-		"Power":        s.POW,
-		"Constitution": s.CON,
-		"Appearance":   s.APP,
-		"Education":    s.EDU,
-		"Size":         s.SIZ,
-		"Intelligence": s.INT,
-		"HitPoints":    s.CurrentHP,
-		"MagicPoints":  s.CurrentMagic,
-		"Sanity":       s.CurrentSanity,
-		"Luck":         s.CurrentLuck,
+		"STR":                s.STR,
+		"DEX":                s.DEX,
+		"POW":                s.POW,
+		"CON":                s.CON,
+		"APP":                s.APP,
+		"EDU":                s.EDU,
+		"SIZ":                s.SIZ,
+		"INT":                s.INT,
+		"CurrentHitPoints":   s.CurrentHP,
+		"CurrentMagicPoints": s.CurrentMagic,
+		"CurrentSanity":      s.CurrentSanity,
+		"CurrentLuck":        s.CurrentLuck,
 	}
 
 	for key, value := range attributeMap {
-		inv.Attributes[key] = models.Attribute{Value: strToInt(value)}
+		if strings.HasPrefix(key, "Current") {
+			inv.Attributes[strings.Replace(key, "Current", "", 1)] = models.Attribute{Name: key, Value: strToInt(value)}
+		} else {
+			inv.Attributes[key] = models.Attribute{Name: key, Value: strToInt(value)}
+		}
 	}
 
 	// Convert skills
@@ -206,13 +213,13 @@ func (s *InvestigatorSerializer) ToInvestigator() *models.Investigator {
 			}
 		}
 	}
-
 	// Convert Pulp Talents
 	if s.PulpTalents != "" {
 		talents := strings.Split(strings.TrimSuffix(s.PulpTalents, ", "), ", ")
-		for _, t := range talents {
+		description := strings.Split(strings.TrimSuffix(s.PulpTalentsDescriptions, "~ "), "~ ")
+		for i, t := range talents {
 			if t != "" {
-				inv.Talents = append(inv.Talents, models.Talent{Name: t})
+				inv.Talents = append(inv.Talents, models.Talent{Name: t, Description: description[i]})
 			}
 		}
 	}
@@ -223,6 +230,7 @@ func (s *InvestigatorSerializer) ToInvestigator() *models.Investigator {
 // FromJSON creates an Investigator from JSON data
 func FromJSON(data []byte) (*models.Investigator, error) {
 	var serializer InvestigatorSerializer
+
 	if err := json.Unmarshal(data, &serializer); err != nil {
 		return nil, err
 	}
