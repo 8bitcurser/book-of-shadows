@@ -221,6 +221,7 @@ func (i *Investigator) AssignOccupation() {
 
 func (i *Investigator) ToJSON() ([]byte, error) {
 	bytes, err := json.Marshal(i)
+
 	if err != nil {
 		return []byte(""), fmt.Errorf("error marshaling investigator: %v", err)
 	}
