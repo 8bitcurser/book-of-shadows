@@ -122,11 +122,7 @@ func handleDeleteInvestigator(w http.ResponseWriter, r *http.Request) {
 	}
 	key := strings.TrimPrefix(r.URL.Path, "/api/delete-investigator/")
 	cm := storage.NewInvestigatorCookieConfig()
-	// Log existing cookies
-	log.Println("Current cookies:")
-	for _, cookie := range r.Cookies() {
-		log.Printf("- %s: %s", cookie.Name, cookie.Value)
-	}
+
 	cm.DeleteInvestigatorCookie(w, key)
 
 	w.WriteHeader(http.StatusOK)

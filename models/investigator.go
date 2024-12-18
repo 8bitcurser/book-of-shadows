@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
+	"slices"
 )
 
 type Era int
@@ -160,8 +161,8 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 
 	for assignablePoints > 0 {
 		skillPicked := rand.Intn(len(skills))
-		skillFormName := SkillsToFormName[skills[skillPicked]]
-		skill, ok := i.Skills[skillFormName]
+		skillName := skills[skillPicked]
+		skill, ok := i.Skills[skillName]
 		if !ok {
 			continue
 		}
@@ -188,7 +189,7 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 			skill.Value += pointsToAssign
 
 			assignablePoints -= pointsToAssign
-			i.Skills[skillFormName] = skill
+			i.Skills[skillName] = skill
 
 		}
 	}
@@ -389,9 +390,10 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Default:      DEX.Value / 2,
 		Value:        (DEX.Value / 2),
 	}
-	inv.Skills["OwnLanguage"] = Skill{
+	inv.Skills["Language(Own)"] = Skill{
 		Name:         "Language(Own)",
 		Abbreviation: "Language(Own)",
+		FormName:     "OwnLanguage",
 		Default:      EDU.Value,
 		Value:        EDU.Value,
 	}
@@ -401,7 +403,26 @@ func NewInvestigator(mode GameMode) *Investigator {
 		archetypePoints := inv.Archetype.BonusPoints
 		inv.AssignSkillPoints(archetypePoints, inv.Archetype.Skills)
 	}
-	inv.AssignSkillPoints(occupationPoints, inv.Occupation.Skills)
+	occupationSkills := []string{}
+
+	for _, skillReq := range inv.Occupation.SkillRequirements {
+		if skillReq.Type == "required" {
+			occupationSkills = append(occupationSkills, skillReq.Skill)
+		} else {
+			picked := []int{}
+			for i := 0; i < skillReq.SkillChoice.NumRequired; i++ {
+				choice := rand.Intn(len(skillReq.SkillChoice.Skills))
+				if slices.Contains(picked, choice) {
+					continue
+				} else {
+					picked = append(picked, choice)
+					occupationSkills = append(occupationSkills, skillReq.SkillChoice.Skills[choice])
+				}
+			}
+		}
+	}
+
+	inv.AssignSkillPoints(occupationPoints, occupationSkills)
 	var skillsList []string
 	for _, v := range inv.Skills {
 		skillsList = append(skillsList, v.Name)

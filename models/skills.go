@@ -6,6 +6,7 @@ import (
 
 type Skill struct {
 	Name         string `json:"-"`
+	FormName     string `json:"form_name"`
 	Abbreviation string `json:"-"`
 	Default      int    `json:"-"`
 	Value        int    `json:"value"`
@@ -17,19 +18,20 @@ func (skill *Skill) String() string {
 	return fmt.Sprintf("%s (%d)", skill.Abbreviation, skill.Value)
 }
 
-// the weird skill key names are so they match the pdf form fields.
 var Skills = map[string]Skill{
 	"Accounting": {
 		Name:         "Accounting",
 		Abbreviation: "Accounting",
+		FormName:     "Accounting",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
 	"Anthropology": {
-		Name:         "Accounting",
-		Abbreviation: "Accounting",
+		Name:         "Anthropology",
+		Abbreviation: "Anthropology",
+		FormName:     "Anthropology",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
@@ -38,6 +40,7 @@ var Skills = map[string]Skill{
 	"Appraise": {
 		Name:         "Appraise",
 		Abbreviation: "Appraise",
+		FormName:     "Appraise",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
@@ -46,14 +49,16 @@ var Skills = map[string]Skill{
 	"Archaeology": {
 		Name:         "Archaeology",
 		Abbreviation: "Archaeology",
+		FormName:     "Archaeology",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"ArtCraft1": {
+	"ArtCraft": {
 		Name:         "ArtCraft",
 		Abbreviation: "ArtCraft",
+		FormName:     "ArtCraft1",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
@@ -62,6 +67,7 @@ var Skills = map[string]Skill{
 	"Charm": {
 		Name:         "Charm",
 		Abbreviation: "Charm",
+		FormName:     "Charm",
 		Default:      15,
 		Value:        15,
 		Era:          []Era{Twenties, Modern},
@@ -70,29 +76,34 @@ var Skills = map[string]Skill{
 	"Climb": {
 		Name:         "Climb",
 		Abbreviation: "Climb",
+		FormName:     "Climb",
 		Default:      20,
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Computer": {
+	"Computer Use": {
 		Name:         "Computer Use",
 		Abbreviation: "Computer Use",
+		FormName:     "Computer",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Modern},
+		Base:         0,
 	},
-	"Credit": {
+	"Credit Rating": {
 		Name:         "Credit Rating",
 		Abbreviation: "Credit Rating",
+		FormName:     "Credit",
 		Default:      0,
 		Value:        0,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Cthulhu": {
+	"Cthulhu Mythos": {
 		Name:         "Cthulhu Mythos",
 		Abbreviation: "Cthulhu Mythos",
+		FormName:     "Cthulhu",
 		Default:      0,
 		Value:        0,
 		Era:          []Era{Twenties, Modern},
@@ -101,45 +112,52 @@ var Skills = map[string]Skill{
 	"Disguise": {
 		Name:         "Disguise",
 		Abbreviation: "Disguise",
+		FormName:     "Disguise",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Drive": {
+	"Drive Auto": {
 		Name:         "Drive Auto",
 		Abbreviation: "Drive Auto",
+		FormName:     "Drive",
 		Default:      20,
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"ElecRepair": {
+	"Electrical Repair": {
 		Name:         "Electrical Repair",
 		Abbreviation: "Elec. Repair",
+		FormName:     "ElecRepair",
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Electronic": {
+	"Electronics": {
 		Name:         "Electronics",
 		Abbreviation: "Electronics",
+		FormName:     "Electronic",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Modern},
+		Base:         0,
 	},
-	"FastTalk": {
+	"Fast Talk": {
 		Name:         "Fast Talk",
 		Abbreviation: "Fast Talk",
+		FormName:     "FastTalk",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Fighting": {
+	"Fighting (Brawl)": {
 		Name:         "Fighting (Brawl)",
 		Abbreviation: "Fighting",
+		FormName:     "Fighting",
 		Default:      25,
 		Value:        25,
 		Era:          []Era{Twenties, Modern},
@@ -148,6 +166,7 @@ var Skills = map[string]Skill{
 	"Fighting (Speciality)": {
 		Name:         "Fighting (Speciality)",
 		Abbreviation: "Fighting (Speciality)",
+		FormName:     "Fighting (Speciality)",
 		Default:      25,
 		Value:        25,
 		Era:          []Era{Twenties, Modern},
@@ -156,30 +175,34 @@ var Skills = map[string]Skill{
 	"Firearms (Other)": {
 		Name:         "Firearms (Other)",
 		Abbreviation: "Firearms (Other)",
+		FormName:     "Firearms (Other)",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
 	},
-	"FirearmsHandguns": {
+	"Firearms (Handgun)": {
 		Name:         "Firearms (Handgun)",
 		Abbreviation: "Handgun",
+		FormName:     "FirearmsHandguns",
 		Default:      20,
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"FirearmsRifles": {
+	"Firearms (Rifle/Shotgun)": {
 		Name:         "Firearms (Rifle/Shotgun)",
 		Abbreviation: "Rifle/Shotgun",
+		FormName:     "FirearmsRifles",
 		Default:      25,
 		Value:        25,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"FirstAid": {
+	"First Aid": {
 		Name:         "First Aid",
 		Abbreviation: "First Aid",
+		FormName:     "FirstAid",
 		Default:      30,
 		Value:        30,
 		Era:          []Era{Twenties, Modern},
@@ -188,6 +211,7 @@ var Skills = map[string]Skill{
 	"History": {
 		Name:         "History",
 		Abbreviation: "History",
+		FormName:     "History",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
@@ -196,6 +220,7 @@ var Skills = map[string]Skill{
 	"Intimidate": {
 		Name:         "Intimidate",
 		Abbreviation: "Intimidate",
+		FormName:     "Intimidate",
 		Default:      15,
 		Value:        15,
 		Era:          []Era{Twenties, Modern},
@@ -204,6 +229,7 @@ var Skills = map[string]Skill{
 	"Jump": {
 		Name:         "Jump",
 		Abbreviation: "Jump",
+		FormName:     "Jump",
 		Default:      20,
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
@@ -212,6 +238,7 @@ var Skills = map[string]Skill{
 	"Language(Other)": {
 		Name:         "Language(Other)",
 		Abbreviation: "Language(Other)",
+		FormName:     "OtherLanguage2",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
@@ -220,14 +247,16 @@ var Skills = map[string]Skill{
 	"Law": {
 		Name:         "Law",
 		Abbreviation: "Law",
+		FormName:     "Law",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Library": {
+	"Library Use": {
 		Name:         "Library Use",
 		Abbreviation: "Library Use",
+		FormName:     "Library",
 		Default:      20,
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
@@ -236,6 +265,7 @@ var Skills = map[string]Skill{
 	"Listen": {
 		Name:         "Listen",
 		Abbreviation: "Listen",
+		FormName:     "Listen",
 		Default:      20,
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
@@ -244,14 +274,16 @@ var Skills = map[string]Skill{
 	"Locksmith": {
 		Name:         "Locksmith",
 		Abbreviation: "Locksmith",
+		FormName:     "Locksmith",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"MechRepair": {
+	"Mechanical Repair": {
 		Name:         "Mechanical Repair",
 		Abbreviation: "Mech. Repair",
+		FormName:     "MechRepair",
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
@@ -260,14 +292,16 @@ var Skills = map[string]Skill{
 	"Medicine": {
 		Name:         "Medicine",
 		Abbreviation: "Medicine",
+		FormName:     "Medicine",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"NaturalWorld": {
+	"Natural World": {
 		Name:         "Natural World",
 		Abbreviation: "Natural World",
+		FormName:     "NaturalWorld",
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
@@ -276,6 +310,7 @@ var Skills = map[string]Skill{
 	"Occult": {
 		Name:         "Occult",
 		Abbreviation: "Occult",
+		FormName:     "Occult",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
@@ -284,14 +319,16 @@ var Skills = map[string]Skill{
 	"Persuade": {
 		Name:         "Persuade",
 		Abbreviation: "Persuade",
+		FormName:     "Persuade",
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Pilot": {
+	"Pilot(Machine)": {
 		Name:         "Pilot(Machine)",
 		Abbreviation: "Pilot(Machine)",
+		FormName:     "Pilot",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
@@ -300,14 +337,16 @@ var Skills = map[string]Skill{
 	"Psychoanalysis": {
 		Name:         "Psychoanalysis",
 		Abbreviation: "Psychoanalysis",
+		FormName:     "Psychoanalysis",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Psyschology": {
+	"Psychology": {
 		Name:         "Psychology",
 		Abbreviation: "Psychology",
+		FormName:     "Psyschology", // Note: Original key has a typo
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
@@ -316,30 +355,34 @@ var Skills = map[string]Skill{
 	"Ride": {
 		Name:         "Ride",
 		Abbreviation: "Ride",
+		FormName:     "Ride",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Science": {
+	"Science(Base)": {
 		Name:         "Science(Base)",
 		Abbreviation: "Science",
+		FormName:     "Science",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
 	},
-	"Sleight": {
+	"Sleight of Hand": {
 		Name:         "Sleight of Hand",
 		Abbreviation: "Sleight",
+		FormName:     "Sleight",
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"SpotHidden": {
+	"Spot Hidden": {
 		Name:         "Spot Hidden",
 		Abbreviation: "Spot Hidden",
+		FormName:     "SpotHidden",
 		Default:      25,
 		Value:        25,
 		Era:          []Era{Twenties, Modern},
@@ -348,14 +391,16 @@ var Skills = map[string]Skill{
 	"Stealth": {
 		Name:         "Stealth",
 		Abbreviation: "Stealth",
+		FormName:     "Stealth",
 		Default:      20,
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Survival": {
+	"Survival(Biome)": {
 		Name:         "Survival(Biome)",
 		Abbreviation: "Survival(Biome)",
+		FormName:     "Survival",
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
@@ -364,6 +409,7 @@ var Skills = map[string]Skill{
 	"Swim": {
 		Name:         "Swim",
 		Abbreviation: "Swim",
+		FormName:     "Swim",
 		Default:      20,
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
@@ -372,6 +418,7 @@ var Skills = map[string]Skill{
 	"Throw": {
 		Name:         "Throw",
 		Abbreviation: "Throw",
+		FormName:     "Throw",
 		Default:      20,
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
@@ -380,6 +427,7 @@ var Skills = map[string]Skill{
 	"Track": {
 		Name:         "Track",
 		Abbreviation: "Track",
+		FormName:     "Track",
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
@@ -388,58 +436,10 @@ var Skills = map[string]Skill{
 	"Navigate": {
 		Name:         "Navigate",
 		Abbreviation: "Navigate",
+		FormName:     "Navigate",
 		Default:      10,
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-}
-
-var SkillsToFormName = map[string]string{
-	"Accounting":               "Accounting",
-	"Appraise":                 "Appraise",
-	"Archaeology":              "Archaeology",
-	"ArtCraft":                 "ArtCraft1",
-	"Charm":                    "Charm",
-	"Climb":                    "Climb",
-	"Computer Use":             "Computer",
-	"Credit Rating":            "Credit",
-	"Cthulhu Mythos":           "Cthulhu",
-	"Disguise":                 "Disguise",
-	"Drive Auto":               "Drive",
-	"Electrical Repair":        "ElecRepair",
-	"Electronics":              "Electronic",
-	"Fast Talk":                "FastTalk",
-	"Fighting (Brawl)":         "Fighting",
-	"Fighting (Speciality)":    "Fighting (Speciality)",
-	"Firearms (Other)":         "Firearms (Other)",
-	"Firearms (Handgun)":       "FirearmsHandguns",
-	"Firearms (Rifle/Shotgun)": "FirearmsRifles",
-	"First Aid":                "FirstAid",
-	"History":                  "History",
-	"Intimidate":               "Intimidate",
-	"Jump":                     "Jump",
-	"Language(Other)":          "Language(Other)",
-	"Law":                      "Law",
-	"Library Use":              "Library",
-	"Listen":                   "Listen",
-	"Locksmith":                "Locksmith",
-	"Mechanical Repair":        "MechRepair",
-	"Medicine":                 "Medicine",
-	"Natural World":            "NaturalWorld",
-	"Occult":                   "Occult",
-	"Persuade":                 "Persuade",
-	"Pilot(Machine)":           "Pilot",
-	"Psychoanalysis":           "Psychoanalysis",
-	"Psychology":               "Psyschology",
-	"Ride":                     "Ride",
-	"Science(Base)":            "Science",
-	"Sleight of Hand":          "Sleight",
-	"Spot Hidden":              "SpotHidden",
-	"Stealth":                  "Stealth",
-	"Survival(Biome)":          "Survival",
-	"Swim":                     "Swim",
-	"Throw":                    "Throw",
-	"Track":                    "Track",
-	"Navigate":                 "Navigate",
 }

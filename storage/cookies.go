@@ -100,8 +100,6 @@ func (c *CookiesConfig) DeleteInvestigatorCookie(w http.ResponseWriter, id strin
 	}
 
 	http.SetCookie(w, &cookie)
-
-	log.Printf("Set deletion cookie for: %s", cookieName)
 }
 
 func (c *CookiesConfig) ListInvestigators(r *http.Request) (map[string]*models.Investigator, error) {

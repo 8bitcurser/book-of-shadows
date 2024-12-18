@@ -493,9 +493,9 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var31 string
-				templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(models.SkillsToFormName[skill.Name])
+				templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(skill.FormName)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 250, Col: 92}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 250, Col: 71}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 				if templ_7745c5c3_Err != nil {

@@ -247,7 +247,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                                             type="number"
                                             class="tooltip cursor-pointer w-[50px] text-right bg-white border rounded px-1"
                                             value={ strconv.Itoa(skill.Value) }
-                                            data-skill={ models.SkillsToFormName[skill.Name] }
+                                            data-skill={ skill.FormName }
                                             onchange="characterUtils.recalculateValues(this, 'skill')"
                                             title="Regular"
                                             min="0"
