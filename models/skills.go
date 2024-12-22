@@ -5,11 +5,11 @@ import (
 )
 
 type Skill struct {
-	Name         string `json:"-"`
-	FormName     string `json:"form_name"`
+	Name         string `json:"Name"`
+	FormName     string `json:"FormName"`
 	Abbreviation string `json:"-"`
 	Default      int    `json:"-"`
-	Value        int    `json:"value"`
+	Value        int    `json:"Value"`
 	Era          []Era  `json:"-"`
 	Base         int    `json:"isBase"`
 }

@@ -1,36 +1,36 @@
 package models
 
 type BaseSkillAttribute struct {
-	Name       string
-	Multiplier int
+	Name       string `json:"Name"`
+	Multiplier int    `json:"Multiplier"`
 }
 
 type SkillPointFormula struct {
-	BaseAttributes []BaseSkillAttribute // For handling multiple base attributes
-	Options        []BaseSkillAttribute // Optional OR cases
+	BaseAttributes []BaseSkillAttribute `json:"BaseAttributes"` // For handling multiple base attributes
+	Options        []BaseSkillAttribute `json:"Options"`        // Optional OR cases
 }
 
 type SkillChoice struct {
-	NumRequired int      // Number of skills that must be chosen from the group
-	Skills      []string // List of skills to choose from
+	NumRequired int      `json:"NumRequired"` // Number of skills that must be chosen from the group
+	Skills      []string `json:"Skills"`      // List of skills to choose from
 }
 
 // SkillRequirement represents either a required skill or a choice between skills
 type SkillRequirement struct {
-	Type        string      // "required" or "choice"
-	Skill       string      // Used when Type is "required"
-	SkillChoice SkillChoice // Used when Type is "choice"
+	Type        string      `json:"Type"`        // "required" or "choice"
+	Skill       string      `json:"Skill"`       // Used when Type is "required"
+	SkillChoice SkillChoice `json:"SkillChoice"` // Used when Type is "choice"
 }
 
 type Occupation struct {
-	Name              string
-	SkillRequirements []SkillRequirement
-	SuggestedContacts string
-	SkillPoints       SkillPointFormula
+	Name              string             `json:"Name"`
+	SkillRequirements []SkillRequirement `json:"SkillRequirements"`
+	SuggestedContacts string             `json:"SuggestedContacts"`
+	SkillPoints       SkillPointFormula  `json:"SkillPoints"`
 	CreditRating      struct {
 		Min int
 		Max int
-	}
+	} `json:"CreditRating"`
 }
 
 func (o *Occupation) String() string {
@@ -107,7 +107,7 @@ var Occupations = map[string]Occupation{
 	"Author": {
 		Name: "Author",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art (Literature)"},
+			{Type: "required", Skill: "ArtCraft (Literature)"},
 			{Type: "required", Skill: "History"},
 			{Type: "required", Skill: "Library Use"},
 			{

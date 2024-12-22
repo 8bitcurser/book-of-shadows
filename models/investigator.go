@@ -245,8 +245,8 @@ type Investigator struct {
 	MajorWound       bool                 `json:"MajorWound_Chk"`
 	Unconscious      bool                 `json:"Unconscious_Chk"`
 	Dying            bool                 `json:"Dying_Chk"`
-	Attributes       map[string]Attribute `json:"attributes"`
-	Skills           map[string]Skill     `json:"Skill"`
+	Attributes       map[string]Attribute `json:"Attributes"`
+	Skills           map[string]Skill     `json:"Skills"`
 	Move             int                  `json:"MOV"`
 	Build            string               `json:"Build"`
 	DamageBonus      string               `json:"DamageBonus"`

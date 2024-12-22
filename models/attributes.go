@@ -20,9 +20,9 @@ const (
 )
 
 type Attribute struct {
-	Name          string `json:"-"`
+	Name          string `json:"Name"`
 	StartingValue int    `json:"-"`
-	Value         int    `json:"value"`
+	Value         int    `json:"Value"`
 	MaxValue      int    `json:"-"`
 }
 
