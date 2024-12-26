@@ -47,7 +47,7 @@ var Occupations = map[string]Occupation{
 			{Type: "required", Skill: "Library Use"},
 			{Type: "required", Skill: "Spot Hidden"},
 			{Type: "required", Skill: "Mechanical Repair"},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
@@ -70,7 +70,7 @@ var Occupations = map[string]Occupation{
 	"Artist": {
 		Name: "Artist",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft"},
+			{Type: "required", Skill: "ArtCraft"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
@@ -85,7 +85,7 @@ var Occupations = map[string]Occupation{
 					Skills:      []string{"Charm", "Fast Talk", "Intimidate", "Persuade"},
 				},
 			},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 			{Type: "required", Skill: "Psychology"},
 			{Type: "required", Skill: "Spot Hidden"},
 		},
@@ -117,8 +117,8 @@ var Occupations = map[string]Occupation{
 					Skills:      []string{"Natural World", "Occult"},
 				},
 			},
-			{Type: "required", Skill: "Other Language"},
-			{Type: "required", Skill: "Own Language"},
+			{Type: "required", Skill: "Language(Other)"},
+			{Type: "required", Skill: "Language(Own)"},
 			{Type: "required", Skill: "Psychology"},
 		},
 		SuggestedContacts: "publishers, critics, historians, etc",
@@ -140,7 +140,7 @@ var Occupations = map[string]Occupation{
 			{Type: "required", Skill: "Listen"},
 			{Type: "required", Skill: "Mechanical Repair"},
 			{Type: "required", Skill: "Navigate"},
-			{Type: "required", Skill: "Pilot (Aircraft)"},
+			{Type: "required", Skill: "Pilot(Aircraft)"},
 			{Type: "required", Skill: "Spot Hidden"},
 		},
 		SuggestedContacts: "old military contacts, other pilots, airfield mechanics, businessmen",
@@ -198,7 +198,7 @@ var Occupations = map[string]Occupation{
 					Skills:      []string{"Charm", "Fast Talk", "Intimidate", "Persuade"},
 				},
 			},
-			{Type: "required", Skill: "Fighting (Brawl)"},
+			{Type: "required", Skill: "Fighting(Brawl)"},
 			{Type: "required", Skill: "Listen"},
 			{Type: "required", Skill: "Psychology"},
 			{Type: "required", Skill: "Spot Hidden"},
@@ -218,7 +218,7 @@ var Occupations = map[string]Occupation{
 	"Beat Cop": {
 		Name: "Beat Cop",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Fighting (Brawl)"},
+			{Type: "required", Skill: "Fighting(Brawl)"},
 			{Type: "required", Skill: "Firearms"},
 			{Type: "required", Skill: "First Aid"},
 			{
@@ -267,13 +267,13 @@ var Occupations = map[string]Occupation{
 			},
 			{Type: "required", Skill: "Natural World"},
 			{Type: "required", Skill: "Navigate"},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 			{Type: "required", Skill: "Survival"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
 					NumRequired: 1,
-					Skills:      []string{"Science (Biology)", "Science (Botany)"},
+					Skills:      []string{"Science(Biology)", "Science(Botany)"},
 				},
 			},
 			{Type: "required", Skill: "Stealth"},
@@ -343,7 +343,7 @@ var Occupations = map[string]Occupation{
 		Name: "Boxer/Wrestler",
 		SkillRequirements: []SkillRequirement{
 			{Type: "required", Skill: "Dodge"},
-			{Type: "required", Skill: "Fighting (Brawl)"},
+			{Type: "required", Skill: "Fighting(Brawl)"},
 			{Type: "required", Skill: "Intimidate"},
 			{Type: "required", Skill: "Jump"},
 			{Type: "required", Skill: "Psychology"},
@@ -371,10 +371,10 @@ var Occupations = map[string]Occupation{
 					Skills:      []string{"Accounting", "Appraise"},
 				},
 			},
-			{Type: "required", Skill: "Art/Craft"}, // Note: Any craft type allowed
+			{Type: "required", Skill: "ArtCraft"}, // Note: Any craft type allowed
 			{Type: "required", Skill: "First Aid"},
 			{Type: "required", Skill: "Listen"},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 			{Type: "required", Skill: "Psychology"},
 			{Type: "required", Skill: "Spot Hidden"},
 		},
@@ -451,12 +451,12 @@ var Occupations = map[string]Occupation{
 		Name: "Confidence Trickster",
 		SkillRequirements: []SkillRequirement{
 			{Type: "required", Skill: "Appraise"},
-			{Type: "required", Skill: "Art/Craft (Acting)"},
+			{Type: "required", Skill: "ArtCraft Acting)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
 					NumRequired: 1,
-					Skills:      []string{"Law", "Other Language"},
+					Skills:      []string{"Law", "Language(Other)"},
 				},
 			},
 			{Type: "required", Skill: "Listen"},
@@ -490,7 +490,7 @@ var Occupations = map[string]Occupation{
 				Type: "choice",
 				SkillChoice: SkillChoice{
 					NumRequired: 1,
-					Skills:      []string{"Art/Craft", "Disguise"},
+					Skills:      []string{"ArtCraft", "Disguise"},
 				},
 			},
 			{Type: "required", Skill: "Appraise"},
@@ -565,9 +565,9 @@ var Occupations = map[string]Occupation{
 	"Dilettante": {
 		Name: "Dilettante",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft"},
+			{Type: "required", Skill: "ArtCraft"},
 			{Type: "required", Skill: "Firearms"},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 			{Type: "required", Skill: "Ride"},
 			{
 				Type: "choice",
@@ -594,10 +594,10 @@ var Occupations = map[string]Occupation{
 		SkillRequirements: []SkillRequirement{
 			{Type: "required", Skill: "First Aid"},
 			{Type: "required", Skill: "Medicine"},
-			{Type: "required", Skill: "Other Language (Latin)"},
+			{Type: "required", Skill: "Language(Latin)"},
 			{Type: "required", Skill: "Psychology"},
-			{Type: "required", Skill: "Science (Biology)"},
-			{Type: "required", Skill: "Science (Pharmacy)"},
+			{Type: "required", Skill: "Science(Biology)"},
+			{Type: "required", Skill: "Science(Pharmacy)"},
 		},
 		SuggestedContacts: "other physicians, medical workers, patients, and ex-patients",
 		SkillPoints: SkillPointFormula{
@@ -650,7 +650,7 @@ var Occupations = map[string]Occupation{
 			{Type: "required", Skill: "Intimidate"},
 			{Type: "required", Skill: "Fast Talk"},
 			{Type: "required", Skill: "Listen"},
-			{Type: "required", Skill: "Own Language"},
+			{Type: "required", Skill: "Language(Own)"},
 			{Type: "required", Skill: "Persuade"},
 			{Type: "required", Skill: "Psychology"},
 		},
@@ -670,13 +670,13 @@ var Occupations = map[string]Occupation{
 	"Engineer": {
 		Name: "Engineer",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft (Technical Drawing)"},
+			{Type: "required", Skill: "ArtCraft(Technical Drawing)"},
 			{Type: "required", Skill: "Electrical Repair"},
 			{Type: "required", Skill: "Library Use"},
 			{Type: "required", Skill: "Mechanical Repair"},
 			{Type: "required", Skill: "Operate Heavy Machinery"},
-			{Type: "required", Skill: "Science (Chemistry)"},
-			{Type: "required", Skill: "Science (Physics)"},
+			{Type: "required", Skill: "Science(Chemistry)"},
+			{Type: "required", Skill: "Science(Physics)"},
 		},
 		SuggestedContacts: "business or military workers, local government, architects",
 		SkillPoints: SkillPointFormula{
@@ -693,7 +693,7 @@ var Occupations = map[string]Occupation{
 	"Entertainer": {
 		Name: "Entertainer",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft"}, // Acting, Singer, Comedian, etc.
+			{Type: "required", Skill: "ArtCraft"}, // Acting, Singer, Comedian, etc.
 			{Type: "required", Skill: "Disguise"},
 			{
 				Type: "choice",
@@ -726,7 +726,7 @@ var Occupations = map[string]Occupation{
 			{Type: "required", Skill: "Library Use"},
 			{Type: "required", Skill: "Listen"},
 			{Type: "required", Skill: "Occult"},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 			{Type: "required", Skill: "Psychology"},
 		},
 		SuggestedContacts: "Religious organizations",
@@ -756,7 +756,7 @@ var Occupations = map[string]Occupation{
 			{Type: "required", Skill: "Jump"},
 			{Type: "required", Skill: "Natural World"},
 			{Type: "required", Skill: "Navigate"},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 			{Type: "required", Skill: "Survival"},
 		},
 		SuggestedContacts: "major libraries, universities, museums, wealthy patrons, other explorers, publishers, foreign government officials, local tribespeople",
@@ -779,7 +779,7 @@ var Occupations = map[string]Occupation{
 		Name: "Federal Agent",
 		SkillRequirements: []SkillRequirement{
 			{Type: "required", Skill: "Drive Auto"},
-			{Type: "required", Skill: "Fighting (Brawl)"},
+			{Type: "required", Skill: "Fighting(Brawl)"},
 			{Type: "required", Skill: "Firearms"},
 			{Type: "required", Skill: "Law"},
 			{Type: "required", Skill: "Persuade"},
@@ -802,7 +802,7 @@ var Occupations = map[string]Occupation{
 		Name: "Gambler",
 		SkillRequirements: []SkillRequirement{
 			{Type: "required", Skill: "Accounting"},
-			{Type: "required", Skill: "Art/Craft (Acting)"},
+			{Type: "required", Skill: "ArtCraft(Acting)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
@@ -900,7 +900,7 @@ var Occupations = map[string]Occupation{
 			{Type: "required", Skill: "Fighting"},
 			{Type: "required", Skill: "First Aid"},
 			{Type: "required", Skill: "Mechanical Repair"},
-			{Type: "required", Skill: "Operate Heavy Machinery"},
+			{Type: "required", Skill: "Operate Heavy Machinery"}, // Custom
 			{Type: "required", Skill: "Throw"},
 		},
 		SuggestedContacts: "other workers and supervisors within their industry",
@@ -924,8 +924,8 @@ var Occupations = map[string]Occupation{
 		SkillRequirements: []SkillRequirement{
 			{Type: "required", Skill: "Accounting"},
 			{Type: "required", Skill: "Library Use"},
-			{Type: "required", Skill: "Other Language"},
-			{Type: "required", Skill: "Own Language"},
+			{Type: "required", Skill: "Language(Other)"},
+			{Type: "required", Skill: "Language(Own)"},
 		},
 		SuggestedContacts: "booksellers, community groups, specialist researchers",
 		SkillPoints: SkillPointFormula{
@@ -942,7 +942,7 @@ var Occupations = map[string]Occupation{
 	"Mechanic": {
 		Name: "Mechanic",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft"}, // Carpentry, Welding, Plumbing, etc.
+			{Type: "required", Skill: "ArtCraft"}, // Carpentry, Welding, Plumbing, etc.
 			{Type: "required", Skill: "Climb"},
 			{Type: "required", Skill: "Drive Auto"},
 			{Type: "required", Skill: "Electrical Repair"},
@@ -996,7 +996,7 @@ var Occupations = map[string]Occupation{
 	"Missionary": {
 		Name: "Missionary",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft"},
+			{Type: "required", Skill: "ArtCraft"},
 			{Type: "required", Skill: "First Aid"},
 			{Type: "required", Skill: "Mechanical Repair"},
 			{Type: "required", Skill: "Medicine"},
@@ -1024,7 +1024,7 @@ var Occupations = map[string]Occupation{
 	"Musician": {
 		Name: "Musician",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft (Instrument)"},
+			{Type: "required", Skill: "ArtCraft(Instrument)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
@@ -1065,8 +1065,8 @@ var Occupations = map[string]Occupation{
 				},
 			},
 			{Type: "required", Skill: "Psychology"},
-			{Type: "required", Skill: "Science (Biology)"},
-			{Type: "required", Skill: "Science (Chemistry)"},
+			{Type: "required", Skill: "Science(Biology)"},
+			{Type: "required", Skill: "Science(Chemistry)"},
 			{Type: "required", Skill: "Spot Hidden"},
 		},
 		SuggestedContacts: "hospital workers, physicians, community workers",
@@ -1095,8 +1095,8 @@ var Occupations = map[string]Occupation{
 				},
 			},
 			{Type: "required", Skill: "Occult"},
-			{Type: "required", Skill: "Other Language"},
-			{Type: "required", Skill: "Science (Astronomy)"},
+			{Type: "required", Skill: "Language(Other)"},
+			{Type: "required", Skill: "Science(Astronomy)"},
 		},
 		SuggestedContacts: "libraries, occult societies or fraternities, other occultists",
 		SkillPoints: SkillPointFormula{
@@ -1114,11 +1114,11 @@ var Occupations = map[string]Occupation{
 		Name: "Parapsychologist",
 		SkillRequirements: []SkillRequirement{
 			{Type: "required", Skill: "Anthropology"},
-			{Type: "required", Skill: "Art/Craft (Photography)"},
+			{Type: "required", Skill: "ArtCraft(Photography)"},
 			{Type: "required", Skill: "History"},
 			{Type: "required", Skill: "Library Use"},
 			{Type: "required", Skill: "Occult"},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 			{Type: "required", Skill: "Psychology"},
 		},
 		SuggestedContacts: "universities, parapsychological societies, clients",
@@ -1136,7 +1136,7 @@ var Occupations = map[string]Occupation{
 	"Photographer": {
 		Name: "Photographer",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft (Photography)"},
+			{Type: "required", Skill: "ArtCraft(Photography)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
@@ -1145,7 +1145,7 @@ var Occupations = map[string]Occupation{
 				},
 			},
 			{Type: "required", Skill: "Psychology"},
-			{Type: "required", Skill: "Science (Chemistry)"},
+			{Type: "required", Skill: "Science(Chemistry)"},
 			{Type: "required", Skill: "Stealth"},
 			{Type: "required", Skill: "Spot Hidden"},
 		},
@@ -1168,7 +1168,7 @@ var Occupations = map[string]Occupation{
 				Type: "choice",
 				SkillChoice: SkillChoice{
 					NumRequired: 1,
-					Skills:      []string{"Art/Craft (Acting)", "Disguise"},
+					Skills:      []string{"ArtCraft(Acting)", "Disguise"},
 				},
 			},
 			{Type: "required", Skill: "Firearms"},
@@ -1207,7 +1207,7 @@ var Occupations = map[string]Occupation{
 			{Type: "required", Skill: "History"},
 			{Type: "required", Skill: "Library Use"},
 			{Type: "required", Skill: "Listen"},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
@@ -1232,7 +1232,7 @@ var Occupations = map[string]Occupation{
 	"Private Investigator": {
 		Name: "Private Investigator",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft (Photography)"},
+			{Type: "required", Skill: "ArtCraft(Photography)"},
 			{Type: "required", Skill: "Disguise"},
 			{Type: "required", Skill: "Law"},
 			{Type: "required", Skill: "Library Use"},
@@ -1266,8 +1266,8 @@ var Occupations = map[string]Occupation{
 		Name: "Professor",
 		SkillRequirements: []SkillRequirement{
 			{Type: "required", Skill: "Library Use"},
-			{Type: "required", Skill: "Other Language"},
-			{Type: "required", Skill: "Own Language"},
+			{Type: "required", Skill: "Language(Other)"},
+			{Type: "required", Skill: "Language(Own)"},
 			{Type: "required", Skill: "Psychology"},
 		},
 		SuggestedContacts: "scholars, universities, libraries",
@@ -1313,10 +1313,10 @@ var Occupations = map[string]Occupation{
 	"Reporter": {
 		Name: "Reporter",
 		SkillRequirements: []SkillRequirement{
-			{Type: "required", Skill: "Art/Craft (Acting)"},
+			{Type: "required", Skill: "ArtCraft(Acting)"},
 			{Type: "required", Skill: "History"},
 			{Type: "required", Skill: "Listen"},
-			{Type: "required", Skill: "Own Language"},
+			{Type: "required", Skill: "Language(Own)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
@@ -1354,8 +1354,8 @@ var Occupations = map[string]Occupation{
 			{Type: "required", Skill: "Firearms"},
 			{Type: "required", Skill: "First Aid"},
 			{Type: "required", Skill: "Navigate"},
-			{Type: "required", Skill: "Pilot (Boat)"},
-			{Type: "required", Skill: "Survival (Sea)"},
+			{Type: "required", Skill: "Pilot(Boat)"},
+			{Type: "required", Skill: "Survival(Sea)"},
 			{Type: "required", Skill: "Swim"},
 		},
 		SuggestedContacts: "military, veterans' associations",
@@ -1383,8 +1383,8 @@ var Occupations = map[string]Occupation{
 					Skills:      []string{"Computer Use", "Library Use"},
 				},
 			},
-			{Type: "required", Skill: "Other Language"},
-			{Type: "required", Skill: "Own Language"},
+			{Type: "required", Skill: "Language(Other)"},
+			{Type: "required", Skill: "Language(Own)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
@@ -1414,7 +1414,7 @@ var Occupations = map[string]Occupation{
 				Type: "choice",
 				SkillChoice: SkillChoice{
 					NumRequired: 1,
-					Skills:      []string{"Art/Craft (Typing)", "Art/Craft (Short Hand)"},
+					Skills:      []string{"ArtCraft(Typing)", "ArtCraft(Short Hand)"},
 				},
 			},
 			{
@@ -1424,7 +1424,7 @@ var Occupations = map[string]Occupation{
 					Skills:      []string{"Charm", "Fast Talk", "Intimidate", "Persuade"},
 				},
 			},
-			{Type: "required", Skill: "Own Language"},
+			{Type: "required", Skill: "Language(Own)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{
@@ -1489,7 +1489,7 @@ var Occupations = map[string]Occupation{
 				Type: "choice",
 				SkillChoice: SkillChoice{
 					NumRequired: 1,
-					Skills:      []string{"Art/Craft (Acting)", "Disguise"},
+					Skills:      []string{"ArtCraft(Acting)", "Disguise"},
 				},
 			},
 			{Type: "required", Skill: "Firearms"},
@@ -1562,7 +1562,7 @@ var Occupations = map[string]Occupation{
 				Type: "choice",
 				SkillChoice: SkillChoice{
 					NumRequired: 1,
-					Skills:      []string{"Own Language", "Other Language"},
+					Skills:      []string{"Language(Own)", "Language(Other)"},
 				},
 			},
 			{Type: "required", Skill: "Library Use"},
@@ -1625,7 +1625,7 @@ var Occupations = map[string]Occupation{
 					Skills:      []string{"Charm", "Fast Talk", "Intimidate", "Persuade"},
 				},
 			},
-			{Type: "required", Skill: "Fighting (Brawl)"},
+			{Type: "required", Skill: "Fighting(Brawl)"},
 			{Type: "required", Skill: "Law"},
 			{Type: "required", Skill: "Listen"},
 			{Type: "required", Skill: "Operate Heavy Machinery"},
@@ -1657,7 +1657,7 @@ var Occupations = map[string]Occupation{
 			},
 			{Type: "required", Skill: "Natural World"},
 			{Type: "required", Skill: "Occult"},
-			{Type: "required", Skill: "Other Language"},
+			{Type: "required", Skill: "Language(Other)"},
 		},
 		SuggestedContacts: "tribespeople, occult or spiritual fraternities, wealthy patrons",
 		SkillPoints: SkillPointFormula{

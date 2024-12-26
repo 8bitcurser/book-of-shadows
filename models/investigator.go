@@ -164,7 +164,24 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 		skillName := skills[skillPicked]
 		skill, ok := i.Skills[skillName]
 		if !ok {
+			// if skillName has ( )
+			// 	look among categories skills base 1 for prefix
+			// 	if no cat then create custom skill
+			// 	if cat create new skill with base and correct form name count
+			// else
+			// 	look among categories skills base 1 for prefix
+			//  iterate over those that share same prefix pick X amount
+			//  assign points to them
+			//  if no cat then create custom skill operate heavy machinery
+			//  will happen for firearms probably also fighting
+
 			continue
+		}
+		if skill.Base == 1 {
+			// if skillName has ( )
+			// if it has ( ) create the skill with the correct
+			// form name else pick among those that share the same cat
+			// will happen for firearms probably also fighting
 		}
 		pointsToAssign := 0
 		CR := i.Skills["Credit"]

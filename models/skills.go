@@ -12,6 +12,7 @@ type Skill struct {
 	Value        int    `json:"Value"`
 	Era          []Era  `json:"-"`
 	Base         int    `json:"isBase"`
+	Category     string `json:"Category"`
 }
 
 func (skill *Skill) String() string {
@@ -58,7 +59,7 @@ var Skills = map[string]Skill{
 	"ArtCraft": {
 		Name:         "ArtCraft",
 		Abbreviation: "ArtCraft",
-		FormName:     "ArtCraft1",
+		FormName:     "ArtCraft1", // supports 1 more ArtCraft2
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
@@ -148,13 +149,13 @@ var Skills = map[string]Skill{
 	"Fast Talk": {
 		Name:         "Fast Talk",
 		Abbreviation: "Fast Talk",
-		FormName:     "FastTalk",
+		FormName:     "FastTalk ",
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Fighting (Brawl)": {
+	"Fighting(Brawl)": {
 		Name:         "Fighting (Brawl)",
 		Abbreviation: "Fighting",
 		FormName:     "Fighting",
@@ -162,26 +163,27 @@ var Skills = map[string]Skill{
 		Value:        25,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		Category:     "Fighting",
 	},
-	"Fighting (Speciality)": {
-		Name:         "Fighting (Speciality)",
-		Abbreviation: "Fighting (Speciality)",
-		FormName:     "Fighting (Speciality)",
+	"Fighting": {
+		Name:         "Fighting",
+		Abbreviation: "Fighting",
+		FormName:     "Fighting1",
 		Default:      25,
 		Value:        25,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
 	},
-	"Firearms (Other)": {
-		Name:         "Firearms (Other)",
-		Abbreviation: "Firearms (Other)",
-		FormName:     "Firearms (Other)",
+	"Firearms": {
+		Name:         "Firearms",
+		Abbreviation: "Firearms",
+		FormName:     "Firearms",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
 	},
-	"Firearms (Handgun)": {
+	"Firearms(Handgun)": {
 		Name:         "Firearms (Handgun)",
 		Abbreviation: "Handgun",
 		FormName:     "FirearmsHandguns",
@@ -189,8 +191,9 @@ var Skills = map[string]Skill{
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		Category:     "Firearms",
 	},
-	"Firearms (Rifle/Shotgun)": {
+	"Firearms(Rifle/Shotgun)": {
 		Name:         "Firearms (Rifle/Shotgun)",
 		Abbreviation: "Rifle/Shotgun",
 		FormName:     "FirearmsRifles",
@@ -198,6 +201,7 @@ var Skills = map[string]Skill{
 		Value:        25,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		Category:     "Firearms",
 	},
 	"First Aid": {
 		Name:         "First Aid",
@@ -235,10 +239,10 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Language(Other)": {
-		Name:         "Language(Other)",
-		Abbreviation: "Language(Other)",
-		FormName:     "OtherLanguage2",
+	"Language": {
+		Name:         "Language",
+		Abbreviation: "Language",
+		FormName:     "OtherLanguage", // holds up to 3
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
@@ -325,9 +329,9 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Pilot(Machine)": {
-		Name:         "Pilot(Machine)",
-		Abbreviation: "Pilot(Machine)",
+	"Pilot": {
+		Name:         "Pilot",
+		Abbreviation: "Pilot",
 		FormName:     "Pilot",
 		Default:      1,
 		Value:        1,
@@ -361,14 +365,14 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Science(Base)": {
-		Name:         "Science(Base)",
+	"Science": {
+		Name:         "Science",
 		Abbreviation: "Science",
 		FormName:     "Science",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
-		Base:         1,
+		Base:         1, // Can hold up to 3  Science, Science1, ...2,
 	},
 	"Sleight of Hand": {
 		Name:         "Sleight of Hand",
@@ -397,9 +401,9 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 	},
-	"Survival(Biome)": {
-		Name:         "Survival(Biome)",
-		Abbreviation: "Survival(Biome)",
+	"Survival": {
+		Name:         "Survival",
+		Abbreviation: "Survival",
 		FormName:     "Survival",
 		Default:      10,
 		Value:        10,
