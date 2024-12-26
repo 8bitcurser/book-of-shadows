@@ -13,6 +13,7 @@ type Skill struct {
 	Era          []Era  `json:"-"`
 	Base         int    `json:"isBase"`
 	Category     string `json:"Category"`
+	NeedsFormDef int    `json:"needsFormDef"`
 }
 
 func (skill *Skill) String() string {
@@ -156,7 +157,7 @@ var Skills = map[string]Skill{
 		Base:         0,
 	},
 	"Fighting(Brawl)": {
-		Name:         "Fighting (Brawl)",
+		Name:         "Fighting(Brawl)",
 		Abbreviation: "Fighting",
 		FormName:     "Fighting",
 		Default:      25,
@@ -184,7 +185,7 @@ var Skills = map[string]Skill{
 		Base:         1,
 	},
 	"Firearms(Handgun)": {
-		Name:         "Firearms (Handgun)",
+		Name:         "Firearms(Handgun)",
 		Abbreviation: "Handgun",
 		FormName:     "FirearmsHandguns",
 		Default:      20,
