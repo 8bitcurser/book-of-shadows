@@ -195,7 +195,7 @@ var Skills = map[string]Skill{
 		Category:     "Firearms",
 	},
 	"Firearms(Rifle/Shotgun)": {
-		Name:         "Firearms (Rifle/Shotgun)",
+		Name:         "Firearms(Rifle/Shotgun)",
 		Abbreviation: "Rifle/Shotgun",
 		FormName:     "FirearmsRifles",
 		Default:      25,

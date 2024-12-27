@@ -3,7 +3,6 @@ package models
 import (
 	"encoding/json"
 	"fmt"
-	"log"
 	"math"
 	"math/rand"
 	"slices"
@@ -160,15 +159,13 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 	if i.GameMode == Pulp {
 		skillLimit = 95
 	}
-
 	for assignablePoints > 0 {
 		skillPicked := rand.Intn(len(skills))
 		skillName := skills[skillPicked]
 		skill, ok := i.Skills[skillName]
-		if !ok {
+		if !ok || skill.Base == 1 {
 			continue
 		}
-
 		pointsToAssign := 0
 		CR := i.Skills["Credit"]
 		if CR.Value < i.Occupation.CreditRating.Min {
@@ -221,6 +218,111 @@ func (i *Investigator) AssignOccupation() {
 
 	pickedOccupation := Occupations[OccupationsList[occupation]]
 	i.Occupation = &pickedOccupation
+}
+
+func (i *Investigator) addMissingSkills(skills *[]string) {
+	for _, occ := range *skills {
+		_, ok := i.Skills[occ]
+		if ok {
+			continue
+		}
+
+		if strings.Contains(occ, "(") {
+			// Capture prefix example ArtCraft(Painting) ArtCraft
+			prefix, _, _ := strings.Cut(occ, "(")
+			matches := make([]Skill, 0)
+			// find all the skills that have that category
+			for _, v := range i.Skills {
+				if v.Category == prefix && v.Base == 0 {
+					matches = append(matches, v)
+				}
+			}
+			// if several matched pick one
+			if len(matches) > 0 {
+				matchPick := rand.Intn(len(matches))
+				skillMatched := matches[matchPick]
+				skill, _ := i.Skills[skillMatched.Name]
+				occ = skill.Name
+
+			} else {
+				baseSkill := Skill{}
+				for s, v := range i.Skills {
+					if s == prefix && v.Base == 1 {
+						baseSkill = i.Skills[v.Name]
+						break
+					}
+				}
+				if baseSkill.Name != "" {
+					// handle form names 1, 2, 3 ... etc
+					i.Skills[occ] = Skill{
+						Name:         occ,
+						Abbreviation: occ,
+						FormName:     baseSkill.FormName,
+						Default:      baseSkill.Default,
+						Value:        baseSkill.Value,
+						Era:          baseSkill.Era,
+						Base:         0,
+						Category:     prefix,
+						NeedsFormDef: 1,
+					}
+				} else {
+					i.Skills[occ] = Skill{
+						Name:         occ,
+						Abbreviation: occ,
+						FormName:     "Custom1",
+						Default:      1,
+						Value:        1,
+						Era:          []Era{Twenties, Modern},
+						Base:         0,
+						NeedsFormDef: 1,
+					}
+				}
+			}
+
+		} else {
+			matches := make([]Skill, 0)
+			for _, v := range i.Skills {
+				if strings.HasPrefix(v.Name, occ) {
+					matches = append(matches, v)
+				}
+			}
+
+			// if several matched pick one
+			if len(matches) > 0 {
+				newName := fmt.Sprintf("%s(%s)", occ, "Any")
+				matchPick := rand.Intn(len(matches))
+				skillMatched := matches[matchPick]
+				skill, _ := i.Skills[skillMatched.Name]
+				if skill.Base == 1 {
+					i.Skills[newName] = Skill{
+						Name:         newName,
+						Abbreviation: newName,
+						FormName:     fmt.Sprintf("%s%s", skill.FormName, "1"),
+						Default:      skill.Default,
+						Value:        skill.Value,
+						Era:          []Era{Twenties, Modern},
+						Base:         0,
+						NeedsFormDef: 1,
+					}
+
+				}
+				occ = newName
+
+			} else {
+				i.Skills[occ] = Skill{
+					Name:         occ,
+					Abbreviation: occ,
+					FormName:     "Custom1",
+					Default:      1,
+					Value:        1,
+					Era:          []Era{Twenties, Modern},
+					Base:         0,
+					NeedsFormDef: 1,
+				}
+			}
+		}
+	}
+
 }
 
 func (i *Investigator) ToJSON() ([]byte, error) {
@@ -404,87 +506,16 @@ func NewInvestigator(mode GameMode) *Investigator {
 	occupationPoints := inv.CalculateOccupationSkillPoints()
 	if inv.GameMode == Pulp {
 		archetypePoints := inv.Archetype.BonusPoints
+		inv.addMissingSkills(&inv.Archetype.Skills)
 		inv.AssignSkillPoints(archetypePoints, inv.Archetype.Skills)
 	}
-	occupationSkills := []string{}
+	occupationSkills := make([]string, 0)
 
 	for _, skillReq := range inv.Occupation.SkillRequirements {
 		if skillReq.Type == "required" {
-			if strings.Contains(skillReq.Skill, "(") {
-				// Capture prefix example ArtCraft(Painting) ArtCraft
-				prefix, _, _ := strings.Cut(skillReq.Skill, "(")
-
-				matches := make([]Skill, 0)
-				// find all the skills that have that category
-				for _, v := range inv.Skills {
-					if v.Category == prefix && v.Base == 0 {
-						matches = append(matches, v)
-					}
-				}
-				// if several matched pick one
-				if len(matches) > 0 {
-					matchPick := rand.Intn(len(matches))
-					skillMatched := matches[matchPick]
-					skill, _ := inv.Skills[skillMatched.Name]
-					skillReq.Skill = skill.Name
-
-				} else {
-					baseSkill := Skill{}
-					for s, v := range inv.Skills {
-						if strings.HasPrefix(s, prefix) && v.Base == 1 {
-							baseSkill = inv.Skills[v.Name]
-							break
-						}
-					}
-					if baseSkill.Name != "" {
-						// handle form names 1, 2, 3 ... etc
-						inv.Skills[skillReq.Skill] = Skill{
-							Name:         skillReq.Skill,
-							Abbreviation: skillReq.Skill,
-							FormName:     baseSkill.FormName,
-							Default:      baseSkill.Default,
-							Value:        baseSkill.Value,
-							Era:          baseSkill.Era,
-							Base:         0,
-							Category:     prefix,
-							NeedsFormDef: 1,
-						}
-					} else {
-						inv.Skills[skillReq.Skill] = Skill{
-							Name:         skillReq.Skill,
-							Abbreviation: skillReq.Skill,
-							FormName:     "Custom1",
-							Default:      1,
-							Value:        1,
-							Era:          []Era{Twenties, Modern},
-							Base:         0,
-							NeedsFormDef: 1,
-						}
-					}
-				}
-
-			} else {
-				matches := make([]Skill, 0)
-				for _, v := range inv.Skills {
-					if v.Category == skillReq.Skill && v.Base == 0 {
-						matches = append(matches, v)
-					}
-				}
-
-				// if several matched pick one
-				if len(matches) > 0 {
-					matchPick := rand.Intn(len(matches))
-					skillMatched := matches[matchPick]
-					skill, _ := inv.Skills[skillMatched.Name]
-					skillReq.Skill = skill.Name
-
-				} else {
-					log.Printf("[ERROR] Unknown skill: %s", skillReq.Skill)
-				}
-			}
 			occupationSkills = append(occupationSkills, skillReq.Skill)
 		} else {
-			picked := []int{}
+			picked := make([]int, 0)
 			for i := 0; i < skillReq.SkillChoice.NumRequired; i++ {
 				choice := rand.Intn(len(skillReq.SkillChoice.Skills))
 				if slices.Contains(picked, choice) {
@@ -496,12 +527,13 @@ func NewInvestigator(mode GameMode) *Investigator {
 			}
 		}
 	}
+	inv.addMissingSkills(&occupationSkills)
 
 	inv.AssignSkillPoints(occupationPoints, occupationSkills)
 	var skillsList []string
-	for _, v := range inv.Skills {
-		if v.Base == 0 {
-			skillsList = append(skillsList, v.Name)
+	for s, v := range inv.Skills {
+		if v.Name != "Cthulhu Mythos" && v.Name != "Dodge_Copy" {
+			skillsList = append(skillsList, s)
 		}
 	}
 	inv.AssignSkillPoints(INT.Value*2, skillsList)

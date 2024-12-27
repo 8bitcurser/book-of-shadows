@@ -451,7 +451,7 @@ var Occupations = map[string]Occupation{
 		Name: "Confidence Trickster",
 		SkillRequirements: []SkillRequirement{
 			{Type: "required", Skill: "Appraise"},
-			{Type: "required", Skill: "ArtCraft Acting)"},
+			{Type: "required", Skill: "ArtCraft(Acting)"},
 			{
 				Type: "choice",
 				SkillChoice: SkillChoice{

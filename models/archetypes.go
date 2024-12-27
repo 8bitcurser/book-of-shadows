@@ -37,10 +37,10 @@ var Archetypes = map[string]Archetype{
 		Name: "Adventurer",
 		Skills: []string{
 			"Climb", "Diving", "Drive Auto", "First Aid",
-			"Fighting (any)", "Firearms (any)", "Jump",
-			"Language Other (any)", "Mechanical Repair",
-			"Pilot (any)", "Ride", "Stealth",
-			"Survival (any)", "Swim",
+			"Fighting", "Firearms", "Jump",
+			"Language(Other)", "Mechanical Repair",
+			"Pilot", "Ride", "Stealth",
+			"Survival", "Swim",
 		},
 		BonusPoints:        100,
 		CoreCharacteristic: []string{AttrDexterity, AttrAppearance}, // Note: rules say "choose either DEX or APP"
@@ -65,7 +65,7 @@ var Archetypes = map[string]Archetype{
 			"Beefcakes come in two varieties: the caring, silent type, or the " +
 			"brazen loud-mouth.",
 		Skills: []string{
-			"Climb", "Fighting (Brawl)", "Intimidate", "Listen",
+			"Climb", "Fighting(Brawl)", "Intimidate", "Listen",
 			"Mechanical Repair", "Psychology", "Swim", "Throw",
 		},
 		BonusPoints:        100,
@@ -95,10 +95,10 @@ var Archetypes = map[string]Archetype{
 			"reality they are merciless and will go to any length to fulfill " +
 			"what they see as their goal.",
 		Skills: []string{
-			"Art/Craft (Acting)", "Disguise", "Fighting (any)",
-			"Firearms (any)", "First Aid", "History", "Intimidate",
+			"ArtCraft(Acting)", "Disguise", "Fighting",
+			"Firearms", "First Aid", "History", "Intimidate",
 			"Law", "Listen", "Mechanical Repair", "Psychology",
-			"Stealth", "Survival (any)", "Track",
+			"Stealth", "Survival", "Track",
 		},
 		BonusPoints:        100,
 		CoreCharacteristic: []string{AttrIntelligence},
@@ -121,8 +121,8 @@ var Archetypes = map[string]Archetype{
 			"\"what could be,\" wishing to right wrongs or improve the world " +
 			"around them.",
 		Skills: []string{
-			"Art/Craft (any)", "Charm", "History",
-			"Language Other (any)", "Library Use", "Listen",
+			"ArtCraft", "Charm", "History",
+			"Language(Other)", "Library Use", "Listen",
 			"Natural World", "Occult",
 		},
 		BonusPoints:        100,
@@ -154,9 +154,9 @@ var Archetypes = map[string]Archetype{
 			"see Weird Science on page 86 for details.",
 		Skills: []string{
 			"Anthropology", "Appraise", "Computer Use",
-			"Electrical Repair", "Language Other (any)",
+			"Electrical Repair", "Language(Other)",
 			"Library Use", "Mechanical Repair",
-			"Operate Heavy Machinery", "Science (any)",
+			"Operate Heavy Machinery", "Science",
 		},
 		BonusPoints:        100,
 		CoreCharacteristic: []string{AttrIntelligence, AttrEducation}, // Note: choose either INT or EDU
@@ -184,16 +184,16 @@ var Archetypes = map[string]Archetype{
 			"Anthropology",
 			"Archaeology",
 			"Climb",
-			"Fighting (Brawl)",
+			"Fighting(Brawl)",
 			"First Aid",
 			"Jump",
-			"Language Other (any)",
+			"Language(Other)",
 			"Natural World",
 			"Navigate",
-			"Pilot (any)",
+			"Pilot",
 			"Ride",
 			"Stealth",
-			"Survival (any)",
+			"Survival",
 			"Track",
 		},
 		BonusPoints:        100,
@@ -229,18 +229,18 @@ var Archetypes = map[string]Archetype{
 			"cunning, the femme fatale is not shy of getting her hands dirty " +
 			"and is a capable foe. Neither is she foolhardy, and she will wait " +
 			"until her web is constructed before dealing out a sudden and " +
-			"well-timed assault (be it mental or physical). A classic pulp " +
+			"well-timed assault(be it mental or physical). A classic pulp " +
 			"archetype, the femme fatale could as easily be termed homme " +
 			"fatale if so desired.",
 		Skills: []string{
-			"Art/Craft (Acting)",
+			"ArtCraft(Acting)",
 			"Appraise",
 			"Charm",
 			"Disguise",
 			"Drive Auto",
 			"Fast Talk",
-			"Fighting (Brawl)",
-			"Firearms (Handgun)",
+			"Fighting(Brawl)",
+			"Firearms(Handgun)",
 			"Listen",
 			"Psychology",
 			"Sleight of Hand",
@@ -293,8 +293,8 @@ var Archetypes = map[string]Archetype{
 			"or otherwise; see Weird Science on page 86 for details.",
 		Skills: []string{
 			"Appraise",
-			"Art/Craft (any)",
-			"Fighting (Brawl)",
+			"ArtCraft",
+			"Fighting(Brawl)",
 			"Drive Auto",
 			"Electrical Repair",
 			"Locksmith",
@@ -339,9 +339,9 @@ var Archetypes = map[string]Archetype{
 			"downright nasty; however, in order to fight for justice, they " +
 			"can be just as nasty as they need to be.",
 		Skills: []string{
-			"Art/Craft (any)",
-			"Fighting (Brawl)",
-			"Firearms (any)",
+			"ArtCraft",
+			"Fighting(Brawl)",
+			"Firearms",
 			"Drive Auto",
 			"Fast Talk",
 			"Intimidate",
@@ -375,22 +375,22 @@ var Archetypes = map[string]Archetype{
 	"Harlequin": {
 		Name: "Harlequin",
 		Description: "While similar to the femme fatale, the harlequin does not " +
-			"like to get their hands dirty (if they can help it). Usually " +
+			"like to get their hands dirty(if they can help it). Usually " +
 			"possessing a magnetic personality, although not necessarily " +
 			"classically beautiful, such types find enjoyment in manipulating " +
 			"others to do their bidding, and often hide their own agendas " +
 			"behind outright lies or subtle deceptions. Sometimes they " +
-			"are committed to a cause (personal or otherwise), or act like " +
+			"are committed to a cause(personal or otherwise), or act like " +
 			"agents of chaos, delighting in watching how people react to " +
 			"the situations they construe.",
 		Skills: []string{
-			"Art/Craft (Acting)",
+			"ArtCraft(Acting)",
 			"Charm",
 			"Climb",
 			"Disguise",
 			"Fast Talk",
 			"Jump",
-			"Language Other (any)",
+			"Language(Other)",
 			"Listen",
 			"Persuade",
 			"Psychology",
@@ -429,15 +429,16 @@ var Archetypes = map[string]Archetype{
 			"moment, despising the reckless behavior of the unwary.",
 		Skills: []string{
 			"Animal Handling",
-			"Fighting (any)",
-			"Firearms (Rifle and/or Handgun)",
+			"Fighting",
+			"Firearms(Rifle/Shotgun)",
+			"Firearms(Handgun)",
 			"First Aid",
 			"Listen",
 			"Natural World",
 			"Navigate",
 			"Spot Hidden",
 			"Stealth",
-			"Survival (any)",
+			"Survival",
 			"Swim",
 			"Track",
 		},
@@ -474,15 +475,15 @@ var Archetypes = map[string]Archetype{
 			"from those who would call them \"witch,\" while others are " +
 			"considered charlatans and little more than sideshow freaks. " +
 			"Such heroes must take the Psychic talent, allowing them to " +
-			"invest skill points in one or more psychic skills (see Psychic " +
+			"invest skill points in one or more psychic skills(see Psychic " +
 			"Powers, page 83).",
 		Skills: []string{
-			"Art/Craft (any)",
-			"Science (Astronomy)",
+			"ArtCraft",
+			"Science(Astronomy)",
 			"Disguise",
 			"History",
 			"Hypnosis",
-			"Language Other (any)",
+			"Language(Other)",
 			"Natural World",
 			"Occult",
 			"Psychology",
@@ -521,7 +522,7 @@ var Archetypes = map[string]Archetype{
 			"loveable and careless.",
 		Skills: []string{
 			"Appraise",
-			"Art/Craft (any)",
+			"ArtCraft",
 			"Charm",
 			"Disguise",
 			"Fast Talk",
@@ -562,17 +563,17 @@ var Archetypes = map[string]Archetype{
 			"or a different way of approaching things; utilizing forgotten, " +
 			"secret, or alien knowledge.",
 		Skills: []string{
-			"Art/Craft (any)",
+			"ArtCraft",
 			"Animal Handling",
-			"Fighting (any)",
+			"Fighting",
 			"First Aid",
 			"Intimidate",
-			"Language Other (any)",
+			"Language(Other)",
 			"Listen",
 			"Medicine",
 			"Navigation",
 			"Stealth",
-			"Survival (any)",
+			"Survival",
 			"Track",
 		},
 		BonusPoints:        100,
@@ -608,10 +609,10 @@ var Archetypes = map[string]Archetype{
 			"the center of attention and a friend to all.",
 		Skills: []string{
 			"Appraise",
-			"Art/Craft (any)",
+			"ArtCraft",
 			"Charm",
 			"Fast Talk",
-			"Language Other (any)",
+			"Language(Other)",
 			"Listen",
 			"Spot Hidden",
 			"Psychology",
@@ -656,12 +657,12 @@ var Archetypes = map[string]Archetype{
 			"Anthropology",
 			"Cryptography",
 			"History",
-			"Language Other (any)",
+			"Language(Other)",
 			"Library Use",
 			"Medicine",
 			"Natural World",
 			"Occult",
-			"Science (any)",
+			"Science",
 		},
 		BonusPoints:        100,
 		CoreCharacteristic: []string{AttrEducation},
@@ -677,7 +678,7 @@ var Archetypes = map[string]Archetype{
 		AmountOfTalents: 2,
 		SuggestedTraits: "studious, bookish, superiority complex, condescending, loner, fussy, speaks too quickly, pensive",
 		SpecialArchetypeRules: SpecialArchetypeRules{
-			Notes: "Always begins the game as a non-believer of the Mythos (see Chapter 9: Sanity, Call of Cthulhu Rulebook)",
+			Notes: "Always begins the game as a non-believer of the Mythos(see Chapter 9: Sanity, Call of Cthulhu Rulebook)",
 		},
 	},
 
@@ -698,7 +699,7 @@ var Archetypes = map[string]Archetype{
 			"Listen",
 			"Occult",
 			"Psychology",
-			"Science (any)",
+			"Science",
 			"Spot Hidden",
 			"Stealth",
 		},
@@ -729,7 +730,7 @@ var Archetypes = map[string]Archetype{
 			"the center of attention. Alternatively, the sidekick wishes to " +
 			"belong, to be the hero but is overshadowed by their peers or " +
 			"mentor. Subordinate sidekicks can at times struggle against " +
-			"their (usually) self-imposed restraints, venturing off on flights " +
+			"their(usually) self-imposed restraints, venturing off on flights " +
 			"of fancy that mostly just get them into trouble. Sidekicks " +
 			"usually possess a strong moral code of duty and responsibility.",
 		Skills: []string{
@@ -743,7 +744,7 @@ var Archetypes = map[string]Archetype{
 			"Listen",
 			"Navigate",
 			"Photography",
-			"Science (any)",
+			"Science",
 			"Stealth",
 			"Track",
 		},
@@ -790,8 +791,8 @@ var Archetypes = map[string]Archetype{
 		Skills: []string{
 			"Accounting",
 			"Drive Auto",
-			"Fighting (any)",
-			"Firearms (Handgun)",
+			"Fighting",
+			"Firearms(Handgun)",
 			"First Aid",
 			"History",
 			"Intimidate",
@@ -802,7 +803,7 @@ var Archetypes = map[string]Archetype{
 			"Psychology",
 			"Ride",
 			"Spot Hidden",
-			"Survival (any)",
+			"Survival",
 		},
 		BonusPoints:        100,
 		CoreCharacteristic: []string{AttrConstitution},
@@ -828,15 +829,15 @@ var Archetypes = map[string]Archetype{
 			"at heart, a swashbuckler possesses a strong code of honor but " +
 			"is prone to reckless behavior",
 		Skills: []string{
-			"Art/Craft (any)",
+			"ArtCraft",
 			"Charm",
 			"Climb",
-			"Fighting (any)",
+			"Fighting",
 			"Jump",
-			"Language Other (any)",
+			"Language(Other)",
 			"Mechanical Repair",
 			"Navigate",
-			"Pilot (any)",
+			"Pilot",
 			"Stealth",
 			"Swim",
 			"Throw",
@@ -869,7 +870,7 @@ var Archetypes = map[string]Archetype{
 			"fault, they cannot understand why no one else is prepared to " +
 			"take the same risks as they do.",
 		Skills: []string{
-			"Art/Craft (any)",
+			"ArtCraft",
 			"Charm",
 			"Climb",
 			"Diving",
@@ -878,10 +879,10 @@ var Archetypes = map[string]Archetype{
 			"Jump",
 			"Mechanical Repair",
 			"Navigate",
-			"Pilot (any)",
+			"Pilot",
 			"Ride",
 			"Stealth",
-			"Survival (any)",
+			"Survival",
 			"Swim",
 			"Throw",
 		},
@@ -913,8 +914,8 @@ var Archetypes = map[string]Archetype{
 			"authority, and ready to play as dirty as the next guy.",
 		Skills: []string{
 			"Drive Auto",
-			"Fighting (Brawl)",
-			"Firearms (any)",
+			"Fighting(Brawl)",
+			"Firearms",
 			"Intimidate",
 			"Listen",
 			"Mechanical Repair",
