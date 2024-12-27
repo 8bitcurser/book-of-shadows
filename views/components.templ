@@ -46,18 +46,12 @@ templ Home() {
                     >
                         List Investigators
                     </button>
-                    <button
-                        id="exportPdf"
-                        class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
-                    >
-                        Export PDF
-                    </button>
 
                     <button
                         class="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
                         onclick="document.getElementsByClassName('loadPDFInput')[0].click()"
                     >
-                        Load PDF
+                        Import PDF
                     </button>
                     <input
                         type="file"
@@ -332,9 +326,21 @@ templ InvestigatorsList(investigators map[string]*models.Investigator) {
                         hx-delete={fmt.Sprintf("/api/delete-investigator/%s", key)}
                         hx-target="closest div"
                         class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
+                        hx-confirm="Are you sure?"
                     >
                         Delete
                     </button>
+                    <button
+                        hx-swap="none"
+                        onclick={ templ.ComponentScript{
+                            Name: "characterUtils.exportPDF",
+                            Call: fmt.Sprintf("characterUtils.exportPDF(event, '%s')", key),
+                        }}
+                        class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
+                    >
+                        PDF
+                    </button>
+
                 </div>
             </div>
         }

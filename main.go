@@ -5,7 +5,7 @@ import (
 	"book-of-shadows/serializers"
 	"book-of-shadows/storage"
 	"book-of-shadows/views"
-	"encoding/json"
+	"fmt"
 	"io"
 	"log"
 	"net/http"
@@ -52,28 +52,36 @@ func handleExportPDF(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := make(map[string]string)
-	if err := json.NewDecoder(r.Body).Decode(&data); err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
+	key := strings.TrimPrefix(r.URL.Path, "/api/export-pdf/")
+	if key == "" {
+		http.Error(w, "No investigator Key passed", http.StatusBadRequest)
 	}
+	cm := storage.NewInvestigatorCookieConfig()
+	investigator, err := cm.GetInvestigatorCookie(r, key)
 
-	investigatorPDF := "./static/" + data["Investigators_Name"] + ".pdf"
+	if err != nil {
+		log.Println(err)
+	}
+	data = ConvertInvestigatorToMap(investigator)
+	fileName := fmt.Sprintf("%s.pdf", strings.ReplaceAll(data["Investigators_Name"], " ", "_"))
+	investigatorPDF := "./static/" + fileName
 
-	err := PDFExport(
+	err = PDFExport(
 		"./static/modernSheet.pdf",
 		investigatorPDF,
 		data)
+
 	if err != nil {
 		http.Error(w, "Error generating PDF: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 	w.Header().Set("Content-Type", "application/pdf")
-	w.Header().Set("Content-Disposition", "attachment; filename="+data["Investigator_Name"]+".pdf")
+	w.Header().Set("Content-Disposition", "attachment; filename="+fileName)
+
 	http.ServeFile(w, r, investigatorPDF)
-	err = os.Remove(investigatorPDF)
-	if err != nil {
-		log.Println(err)
-	}
+
+	defer os.Remove(investigatorPDF)
+
 }
 
 func handleImportJSON(w http.ResponseWriter, r *http.Request) {
@@ -153,7 +161,7 @@ func main() {
 	// routes
 	http.HandleFunc("/", handleHome)
 	http.HandleFunc("/api/generate", handleGenerate)
-	http.HandleFunc("/api/export-pdf", handleExportPDF)
+	http.HandleFunc("/api/export-pdf/", handleExportPDF)
 	http.HandleFunc("/api/import-json", handleImportJSON)
 	http.HandleFunc("/api/list-investigators", handleListInvestigators)
 	http.HandleFunc("/api/delete-investigator/", handleDeleteInvestigator)

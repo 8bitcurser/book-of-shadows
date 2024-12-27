@@ -183,6 +183,9 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 				maxPointForSkill = skillLimit - skill.Value
 				if maxPointForSkill <= 0 {
 					continue
+				} else if maxPointForSkill > 80 {
+					// avoid big initial stat dumping
+					maxPointForSkill -= 10
 				}
 				pointsToAssign = rand.Intn(maxPointForSkill) + 1
 			}

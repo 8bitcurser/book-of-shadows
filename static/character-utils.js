@@ -76,15 +76,15 @@ const characterUtils = {
         return flatState;
     },
 
-    async exportPDF() {
+    async exportPDF(evt, key) {
         try {
-            const currentState = this.getCurrentUIState();
-            const response = await fetch('/api/export-pdf', {
+
+            const response = await fetch('/api/export-pdf/' + key, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(currentState)
+                body: JSON.stringify({})
             });
 
             if (!response.ok) {
@@ -95,7 +95,7 @@ const characterUtils = {
             const url = window.URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = `${currentState.Investigators_Name || 'character'}.pdf`;
+            a.download = "investigator.pdf";
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
