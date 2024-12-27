@@ -2,11 +2,9 @@ package main
 
 import (
 	"book-of-shadows/models"
-	"book-of-shadows/serializers"
 	"book-of-shadows/storage"
 	"book-of-shadows/views"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
@@ -84,31 +82,6 @@ func handleExportPDF(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func handleImportJSON(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
-	bodyIO, err := io.ReadAll(r.Body)
-	defer r.Body.Close()
-	if err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-	}
-	inv, err := serializers.FromJSON(bodyIO)
-	if err != nil {
-		http.Error(w, "Invalid JSON", http.StatusBadRequest)
-		return
-	}
-	w.Header().Set("Content-Type", "text/html")
-	components := views.CharacterSheet(inv)
-	err = components.Render(r.Context(), w)
-	if err != nil {
-		log.Println(err)
-	}
-
-}
-
 func handleListInvestigators(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -162,7 +135,6 @@ func main() {
 	http.HandleFunc("/", handleHome)
 	http.HandleFunc("/api/generate", handleGenerate)
 	http.HandleFunc("/api/export-pdf/", handleExportPDF)
-	http.HandleFunc("/api/import-json", handleImportJSON)
 	http.HandleFunc("/api/list-investigators", handleListInvestigators)
 	http.HandleFunc("/api/delete-investigator/", handleDeleteInvestigator)
 	http.HandleFunc("/api/get-investigator/", handleGetInvestigator)

@@ -177,11 +177,6 @@ const characterUtils = {
             }
         });
 
-        const fileInput = document.getElementsByClassName('loadPDFInput')[0];
-        fileInput.addEventListener('change', function(e) {
-            characterUtils.handlePDFLoad(e.target);
-        });
-
         this.initializeInputHandlers();
     },
 
@@ -198,36 +193,6 @@ const characterUtils = {
             });
         });
     },
-
-    async handlePDFLoad(inputElement) {
-        if (!inputElement.files?.length) return;
-
-        try {
-            const file = inputElement.files[0];
-            const arrayBuffer = await file.arrayBuffer();
-            const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
-            const metadata = await pdf.getMetadata();
-
-            const response = await fetch('/api/import-json', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(metadata.info.Custom)
-            });
-            if (!response.ok) {
-                throw new Error('Server responded with error');
-            }
-
-            // Get the HTML response and update the character sheet
-            const html = await response.text();
-            document.getElementById('character-sheet').innerHTML = html;
-
-        } catch (error) {
-            console.error('Error loading PDF:', error);
-            alert('Failed to load character data.');
-        }
-    }
 };
 
 // Initialize only once when the page loads
