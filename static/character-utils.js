@@ -79,7 +79,7 @@ const characterUtils = {
     async exportPDF(evt, key) {
         try {
 
-            const response = await fetch('/api/export-pdf/' + key, {
+            const response = await fetch('/api/investigator/export/' + key, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

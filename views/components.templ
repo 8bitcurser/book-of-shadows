@@ -40,7 +40,7 @@ templ Home() {
                         Generate Character
                     </button>
                     <button
-                        hx-get="/api/list-investigators"
+                        hx-get="/api/investigators/list"
                         hx-target="#character-sheet"
                         class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
                     >
@@ -305,14 +305,14 @@ templ InvestigatorsList(investigators map[string]*models.Investigator) {
                 <p class="text-gray-600">{ inv.Occupation.Name }</p>
                 <div class="mt-4 flex gap-2">
                     <button
-                        hx-get={fmt.Sprintf("/api/get-investigator/%s", key)}
+                        hx-get={fmt.Sprintf("/api/investigator/%s", key)}
                         hx-target="#character-sheet"
                         class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
                     >
                         Load
                     </button>
                     <button
-                        hx-delete={fmt.Sprintf("/api/delete-investigator/%s", key)}
+                        hx-delete={fmt.Sprintf("/api/investigator/delete/%s", key)}
                         hx-target="closest div"
                         class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
                         hx-confirm="Are you sure?"

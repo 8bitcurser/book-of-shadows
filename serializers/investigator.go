@@ -236,3 +236,26 @@ func FromJSON(data []byte) (*models.Investigator, error) {
 	}
 	return serializer.ToInvestigator(), nil
 }
+
+var validUpdateSections = []string{
+	"combat",
+	"personalInfo",
+	"skills",
+}
+
+type UpdateRequestSerializer struct {
+	Section string `json:"section"`
+	Field   string `json:"field"`
+	Value   any    `json:"value"`
+}
+
+func (u *UpdateRequestSerializer) IsValid() bool {
+	valid := false
+	for _, section := range validUpdateSections {
+		if u.Section == section {
+			valid = true
+			break
+		}
+	}
+	return valid
+}

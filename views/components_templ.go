@@ -38,7 +38,7 @@ func Home() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Call of Cthulhu Character Generator</title><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://cdn.tailwindcss.com\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js\"></script><script src=\"/static/character-utils.js\"></script></head><body class=\"min-h-screen py-8\"><div class=\"container mx-auto px-4\"><header class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold mb-2\">Call of Cthulhu Pulp Character Generator</h1><p class=\"text-gray-600\">Generate investigators for your cosmic horror adventures</p></header><div class=\"flex justify-center gap-4 mb-8\"><button hx-get=\"/api/generate\" hx-target=\"#character-sheet\" hx-vals=\"js:{mode: &#34;pulp&#34;}\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Generate Character</button> <button hx-get=\"/api/list-investigators\" hx-target=\"#character-sheet\" class=\"bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700\">List Investigators</button></div><div id=\"character-sheet\"><p class=\"text-center text-gray-500\">Click \"Generate Character\" to create a new investigator</p></div></div></body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Call of Cthulhu Character Generator</title><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://cdn.tailwindcss.com\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js\"></script><script src=\"/static/character-utils.js\"></script></head><body class=\"min-h-screen py-8\"><div class=\"container mx-auto px-4\"><header class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold mb-2\">Call of Cthulhu Pulp Character Generator</h1><p class=\"text-gray-600\">Generate investigators for your cosmic horror adventures</p></header><div class=\"flex justify-center gap-4 mb-8\"><button hx-get=\"/api/generate\" hx-target=\"#character-sheet\" hx-vals=\"js:{mode: &#34;pulp&#34;}\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Generate Character</button> <button hx-get=\"/api/investigators/list\" hx-target=\"#character-sheet\" class=\"bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700\">List Investigators</button></div><div id=\"character-sheet\"><p class=\"text-center text-gray-500\">Click \"Generate Character\" to create a new investigator</p></div></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -598,9 +598,9 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var37 string
-			templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/get-investigator/%s", key))
+			templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", key))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 308, Col: 76}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 308, Col: 72}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
 			if templ_7745c5c3_Err != nil {
@@ -611,9 +611,9 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var38 string
-			templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/delete-investigator/%s", key))
+			templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", key))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 315, Col: 82}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 315, Col: 75}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 			if templ_7745c5c3_Err != nil {

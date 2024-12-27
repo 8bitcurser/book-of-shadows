@@ -50,7 +50,7 @@ func handleExportPDF(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	data := make(map[string]string)
-	key := strings.TrimPrefix(r.URL.Path, "/api/export-pdf/")
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/export/")
 	if key == "" {
 		http.Error(w, "No investigator Key passed", http.StatusBadRequest)
 	}
@@ -101,7 +101,7 @@ func handleDeleteInvestigator(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodDelete {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
-	key := strings.TrimPrefix(r.URL.Path, "/api/delete-investigator/")
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/delete/")
 	cm := storage.NewInvestigatorCookieConfig()
 
 	cm.DeleteInvestigatorCookie(w, key)
@@ -110,11 +110,26 @@ func handleDeleteInvestigator(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPut {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/update/")
+	cm := storage.NewInvestigatorCookieConfig()
+	investigator, err := cm.GetInvestigatorCookie(r, key)
+	if err != nil {
+		log.Println(err)
+	}
+	body := r.Body
+	fmt.Println(investigator, body)
+
+}
+
 func handleGetInvestigator(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
-	key := strings.TrimPrefix(r.URL.Path, "/api/get-investigator/")
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
 
@@ -134,10 +149,11 @@ func main() {
 	// routes
 	http.HandleFunc("/", handleHome)
 	http.HandleFunc("/api/generate", handleGenerate)
-	http.HandleFunc("/api/export-pdf/", handleExportPDF)
-	http.HandleFunc("/api/list-investigators", handleListInvestigators)
-	http.HandleFunc("/api/delete-investigator/", handleDeleteInvestigator)
-	http.HandleFunc("/api/get-investigator/", handleGetInvestigator)
+	http.HandleFunc("/api/investigator/export/", handleExportPDF)
+	http.HandleFunc("/api/investigators/list", handleListInvestigators)
+	http.HandleFunc("/api/investigator/delete/", handleDeleteInvestigator)
+	http.HandleFunc("/api/investigator/update/", handleUpdateInvestigator)
+	http.HandleFunc("/api/investigator/", handleGetInvestigator)
 	log.Println("Server starting on :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
