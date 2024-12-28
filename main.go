@@ -120,6 +120,7 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/update/")
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
+
 	if err != nil || investigator == nil {
 		http.Error(w, "Investigator cookie missing", http.StatusNotFound)
 	}
@@ -137,7 +138,7 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			http.Error(w, "Skill not found", http.StatusNotFound)
 		}
-		skill.Value = serializer.Value.(int)
+		skill.Value = int(serializer.Value.(float64))
 		investigator.Skills[serializer.Field] = skill
 	case "personalInfo":
 		switch serializer.Field {
@@ -157,7 +158,7 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			http.Error(w, "Attribute not found", http.StatusNotFound)
 		}
-		attr.Value = serializer.Value.(int)
+		attr.Value = int(serializer.Value.(float64))
 		investigator.Attributes[serializer.Field] = attr
 	default:
 		http.Error(w, "Unknown section", http.StatusBadRequest)

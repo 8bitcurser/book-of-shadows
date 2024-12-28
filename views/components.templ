@@ -67,9 +67,10 @@ templ CharacterSheet(investigator *models.Investigator) {
             <div class="border-b-2 pb-4 mb-6">
                 <input
                     type="text"
+                    id={ investigator.ID }
                     class="text-3xl font-bold text-gray-800 w-full border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none mb-4 bg-transparent"
                     value={ investigator.Name }
-                    data-field="name"
+                    data-field="Name"
                     onchange="characterUtils.updatePersonalInfo(this)"
                 />
                 <div class="grid grid-cols-2 md:grid-cols-5 gap-5 mt-5">
@@ -87,7 +88,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                             type="number"
                             class="font-medium w-20 bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none"
                             value={ strconv.Itoa(investigator.Age) }
-                            data-field="age"
+                            data-field="Age"
                             onchange="characterUtils.updatePersonalInfo(this)"
                         />
                     </div>
@@ -97,7 +98,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                             type="text"
                             class="font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none"
                             value={ investigator.Residence }
-                            data-field="residence"
+                            data-field="Residence"
                             onchange="characterUtils.updatePersonalInfo(this)"
                         />
                     </div>
@@ -107,7 +108,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                             type="text"
                             class="font-medium w-full bg-transparent border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none"
                             value={ investigator.Birthplace }
-                            data-field="birthplace"
+                            data-field="Birthplace"
                             onchange="characterUtils.updatePersonalInfo(this)"
                         />
                     </div>
@@ -143,9 +144,10 @@ templ CharacterSheet(investigator *models.Investigator) {
                                 type="number"
                                 class="cursor-pointer w-[50px] text-left bg-white border rounded px-1"
                                 value={ strconv.Itoa(investigator.Attributes["HitPoints"].Value) }
-                                data-attr={investigator.Attributes["HitPoints"].Name}
+                                data-attr="HitPoints"
                                 title="CurrentHP"
                                 min="0"
+                                onchange="characterUtils.recalculateValues(this, 'attribute')"
                             />
                         </div>
                         <div class="flex justify-between items-center">
@@ -154,9 +156,10 @@ templ CharacterSheet(investigator *models.Investigator) {
                                 type="number"
                                 class="cursor-pointer w-[50px] text-left bg-white border rounded px-1"
                                 value={ strconv.Itoa(investigator.Attributes["MagicPoints"].Value) }
-                                data-attr={investigator.Attributes["MagicPoints"].Name}
-                                title="CurrentHP"
+                                data-attr="MagicPoints"
+                                title="CurrentMP"
                                 min="0"
+                                onchange="characterUtils.recalculateValues(this, 'attribute')"
                             />
                         </div>
                         <div class="flex justify-between items-center">
@@ -165,9 +168,10 @@ templ CharacterSheet(investigator *models.Investigator) {
                                 type="number"
                                 class="cursor-pointer w-[50px] text-left bg-white border rounded px-1"
                                 value={ strconv.Itoa(investigator.Attributes["Luck"].Value) }
-                                data-attr={ investigator.Attributes["Luck"].Name }
-                                title="CurrentHP"
+                                data-attr="Luck"
+                                title="CurrentLuck"
                                 min="0"
+                                onchange="characterUtils.recalculateValues(this, 'attribute')"
                             />
                         </div>
                         <div class="flex justify-between items-center">
@@ -176,8 +180,9 @@ templ CharacterSheet(investigator *models.Investigator) {
                                 type="number"
                                 class="cursor-pointer w-[50px] text-left bg-white border rounded px-1"
                                 value={ strconv.Itoa(investigator.Attributes["Sanity"].Value) }
-                                data-attr={ investigator.Attributes["Sanity"].Name }
-                                title="CurrentHP"
+                                data-attr="Sanity"
+                                title="CurrentSanity"
+                                onchange="characterUtils.recalculateValues(this, 'attribute')"
                                 min="0"
                             />
                         </div>
@@ -230,7 +235,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                                             type="number"
                                             class="tooltip cursor-pointer w-[50px] text-right bg-white border rounded px-1"
                                             value={ strconv.Itoa(skill.Value) }
-                                            data-skill={ skill.FormName }
+                                            data-skill={ skill.Name }
                                             onchange="characterUtils.recalculateValues(this, 'skill')"
                                             title="Regular"
                                             min="0"

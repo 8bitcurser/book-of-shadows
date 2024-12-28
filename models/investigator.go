@@ -340,6 +340,7 @@ func (i *Investigator) ToJSON() ([]byte, error) {
 }
 
 type Investigator struct {
+	ID               string               `json:"id"`
 	Era              Era                  `json:"-"`
 	GameMode         GameMode             `json:"-"`
 	Name             string               `json:"Investigators_Name"`

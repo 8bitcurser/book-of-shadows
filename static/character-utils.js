@@ -106,13 +106,14 @@ const characterUtils = {
         }
     },
 
-    recalculateValues(input, type) {
+    async recalculateValues(input, type) {
         let value = 0
-        if (type === 'attribute') {
-            value = parseInt(input.textContent) || 0
-        } else {
-            value = parseInt(input.value) || 0;
-        }
+        // if (type === 'attribute') {
+        //     value = parseInt(input.textContent) || 0
+        // } else {
+        //     value = parseInt(input.value) || 0;
+        // }
+        value = parseInt(input.value) || 0;
         const container = input.parentElement;
         const halfSpan = container.querySelector('[data-half]');
         const fifthSpan = container.querySelector('[data-fifth]');
@@ -122,43 +123,56 @@ const characterUtils = {
 
         const characterData = this.getCurrentCharacter();
         if (!characterData) return;
-
         if (type === 'attribute') {
-            const attrName = input.dataset.attribute;
+            const attrName = input.dataset.attr;
             if (characterData.attributes?.[attrName]) {
                 characterData.attributes[attrName].value = value;
             }
+            await this.updateInvestigator(
+                "combat",
+                attrName,
+                value
+            )
         } else if (type === 'skill') {
             const skillName = input.dataset.skill;
             if (characterData.Skill?.[skillName]) {
                 characterData.Skill[skillName].value = value;
             }
+            await this.updateInvestigator(
+                "skills",
+                skillName,
+                value
+            )
         }
 
         document.getElementById('currentCharacter').value = JSON.stringify(characterData);
     },
 
-    updatePersonalInfo(input) {
+    async updatePersonalInfo(input) {
         const field = input.dataset.field;
         const value = field === 'age' ? parseInt(input.value) || 0 : input.value;
         const characterData = this.getCurrentCharacter();
         if (!characterData) return;
 
         switch(field) {
-            case 'name':
+            case 'Name':
                 characterData.Investigators_Name = value;
                 break;
-            case 'age':
+            case 'Age':
                 characterData.Age = value;
                 break;
-            case 'residence':
+            case 'Residence':
                 characterData.Residence = value;
                 break;
-            case 'birthplace':
+            case 'Birthplace':
                 characterData.Birthplace = value;
                 break;
         }
-
+        await this.updateInvestigator(
+            "personalInfo",
+            field,
+            value
+        )
         document.getElementById('currentCharacter').value = JSON.stringify(characterData);
     },
 
@@ -194,6 +208,31 @@ const characterUtils = {
         });
     },
 
+    async updateInvestigator(section, field, value) {
+        try {
+            const cookieId = document.querySelector('input[data-field="Name"]').id
+            const response = await fetch(`/api/investigator/update/${cookieId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    section: section,
+                    field: field,
+                    value: value
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            return await response.json();
+        } catch (error) {
+            console.error('Error updating investigator:', error);
+            throw error;
+        }
+    },
 
 };
 

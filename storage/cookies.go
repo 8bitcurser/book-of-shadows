@@ -30,6 +30,8 @@ func (c *CookiesConfig) SaveInvestigatorCookie(w http.ResponseWriter, inv *model
 	id := fmt.Sprintf(
 		"%d_%s", time.Now().Unix(), strings.ToLower(strings.ReplaceAll(inv.Name, " ", "_")),
 	)
+	id = c.Prefix + id
+	inv.ID = id
 	data, err := inv.ToJSON()
 	if err != nil {
 		fmt.Errorf("Failed to marshal investigator %s", err)
@@ -44,7 +46,7 @@ func (c *CookiesConfig) SaveInvestigatorCookie(w http.ResponseWriter, inv *model
 	writer.Close()
 	encodedValue := base64.URLEncoding.EncodeToString(compressed.Bytes())
 	cookie := &http.Cookie{
-		Name:     c.Prefix + id,
+		Name:     id,
 		Value:    encodedValue,
 		Path:     "/",
 		MaxAge:   c.MaxAge,
@@ -59,11 +61,11 @@ func (c *CookiesConfig) GetInvestigatorCookie(r *http.Request, id string) (*mode
 	for _, cookie := range r.Cookies() {
 		if strings.HasPrefix(cookie.Name, c.Prefix) {
 			if cookie.Name == id {
+
 				data, err := base64.URLEncoding.DecodeString(cookie.Value)
 				if err != nil {
 					continue // Skip invalid cookies
 				}
-
 				reader, err := gzip.NewReader(bytes.NewReader(data))
 				if err != nil {
 					return nil, fmt.Errorf("failed to create gzip reader: %w", err)
@@ -74,7 +76,6 @@ func (c *CookiesConfig) GetInvestigatorCookie(r *http.Request, id string) (*mode
 				if err != nil {
 					return nil, fmt.Errorf("failed to decompress data: %w", err)
 				}
-
 				var character models.Investigator
 				if err := json.Unmarshal(decompressed, &character); err != nil {
 					continue // Skip invalid character data
