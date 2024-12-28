@@ -159,6 +159,14 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 	if i.GameMode == Pulp {
 		skillLimit = 95
 	}
+	CR := i.Skills["Credit Rating"]
+	if CR.Value < i.Occupation.CreditRating.Min {
+		creditPointsBase := i.Occupation.CreditRating.Min - CR.Value
+		assignablePoints -= creditPointsBase
+		CR.Value = creditPointsBase
+		i.Skills["Credit Rating"] = CR
+	}
+
 	for assignablePoints > 0 {
 		skillPicked := rand.Intn(len(skills))
 		skillName := skills[skillPicked]
@@ -167,34 +175,28 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 			continue
 		}
 		pointsToAssign := 0
-		CR := i.Skills["Credit"]
-		if CR.Value < i.Occupation.CreditRating.Min {
-			creditPointsBase := i.Occupation.CreditRating.Min - CR.Value
-			assignablePoints -= creditPointsBase
-			CR.Value = creditPointsBase
-			i.Skills["Credit"] = CR
-		}
 		maxPointForSkill := skillLimit
-		if skill.Value <= skillLimit && skill.Name != "Cthulhu Mythos" {
-			if skill.Name == "Credit Rating" {
-				maxPointForSkill = int(math.Min(float64(skillLimit), float64(i.Occupation.CreditRating.Max)))
-				pointsToAssign = rand.Intn(maxPointForSkill) + 1
-			} else {
-				maxPointForSkill = skillLimit - skill.Value
-				if maxPointForSkill <= 0 {
-					continue
-				} else if maxPointForSkill > 80 {
-					// avoid big initial stat dumping
-					maxPointForSkill -= 10
-				}
-				pointsToAssign = rand.Intn(maxPointForSkill) + 1
-			}
-			skill.Value += pointsToAssign
-
-			assignablePoints -= pointsToAssign
-			i.Skills[skillName] = skill
-
+		if skill.Value > skillLimit || skill.Name == "Cthulhu Mythos" {
+			continue
 		}
+		if skill.Name == "Credit Rating" {
+			maxPointForSkill = int(math.Min(float64(skillLimit), float64(i.Occupation.CreditRating.Max)))
+			pointsToAssign = rand.Intn(maxPointForSkill) + 1
+		} else {
+			maxPointForSkill = skillLimit - skill.Value
+			if maxPointForSkill <= 0 {
+				continue
+			} else if maxPointForSkill > 80 {
+				// avoid big initial stat dumping
+				maxPointForSkill -= 10
+			}
+			pointsToAssign = rand.Intn(maxPointForSkill) + 1
+		}
+		skill.Value += pointsToAssign
+
+		assignablePoints -= pointsToAssign
+		i.Skills[skillName] = skill
+
 	}
 
 }
@@ -489,12 +491,14 @@ func NewInvestigator(mode GameMode) *Investigator {
 	inv.Skills["Dodge_Copy"] = Skill{
 		Name:         "Dodge_Copy",
 		Abbreviation: "Dodge",
+		FormName:     "Dodge_Copy",
 		Default:      DEX.Value / 2,
 		Value:        (DEX.Value / 2),
 	}
 	inv.Skills["Dodge"] = Skill{
 		Name:         "Dodge",
 		Abbreviation: "Dodge",
+		FormName:     "Dodge",
 		Default:      DEX.Value / 2,
 		Value:        (DEX.Value / 2),
 	}

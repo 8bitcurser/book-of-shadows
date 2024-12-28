@@ -85,19 +85,15 @@ func ConvertInvestigatorToMap(investigator *models.Investigator) map[string]stri
 
 	// Handle Skills
 	for name, skill := range investigator.Skills {
-		if name == "Dodge_Copy" {
-			data[name] = strconv.Itoa(skill.Value)
-			data[name+"_half"] = strconv.Itoa(skill.Value / 2)
-			data[name+"_fifth"] = strconv.Itoa(skill.Value / 5)
-		} else if name == "FastTalk" {
-			data["Skill_"+name] = strconv.Itoa(skill.Value)
-			data["Skill_"+name+" _half"] = strconv.Itoa(skill.Value / 2)
-			data["Skill_"+name+" _fifth"] = strconv.Itoa(skill.Value / 5)
-		} else {
-			data["Skill_"+name] = strconv.Itoa(skill.Value)
-			data["Skill_"+name+"_half"] = strconv.Itoa(skill.Value / 2)
-			data["Skill_"+name+"_fifth"] = strconv.Itoa(skill.Value / 5)
+		formField := skill.FormName
+		if skill.NeedsFormDef == 1 {
+			data["SkillDef_"+formField] = name
 		}
+
+		data["Skill_"+formField] = strconv.Itoa(skill.Value)
+		data["Skill_"+formField+"_half"] = strconv.Itoa(skill.Value / 2)
+		data["Skill_"+formField+"_fifth"] = strconv.Itoa(skill.Value / 5)
+
 	}
 
 	// Handle other fields
