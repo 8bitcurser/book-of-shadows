@@ -2,9 +2,12 @@ package main
 
 import (
 	"book-of-shadows/models"
+	"book-of-shadows/serializers"
 	"book-of-shadows/storage"
 	"book-of-shadows/views"
+	"encoding/json"
 	"fmt"
+	"io"
 	"log"
 	"net/http"
 	"os"
@@ -117,11 +120,49 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/update/")
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
-	if err != nil {
-		log.Println(err)
+	if err != nil || investigator == nil {
+		http.Error(w, "Investigator cookie missing", http.StatusNotFound)
 	}
-	body := r.Body
-	fmt.Println(investigator, body)
+
+	body, err := io.ReadAll(r.Body)
+	defer r.Body.Close()
+	var serializer serializers.UpdateRequestSerializer
+	if err := json.Unmarshal(body, &serializer); err != nil {
+		http.Error(w, "Bad request", http.StatusBadRequest)
+	}
+
+	switch serializer.Section {
+	case "skills":
+		skill, ok := investigator.Skills[serializer.Field]
+		if !ok {
+			http.Error(w, "Skill not found", http.StatusNotFound)
+		}
+		skill.Value = serializer.Value.(int)
+		investigator.Skills[serializer.Field] = skill
+	case "personalInfo":
+		switch serializer.Field {
+		case "Name":
+			investigator.Name = serializer.Value.(string)
+		case "Age":
+			investigator.Age = serializer.Value.(int)
+		case "Residence":
+			investigator.Residence = serializer.Value.(string)
+		case "Birthplace":
+			investigator.Birthplace = serializer.Value.(string)
+		default:
+			http.Error(w, "Unsupported field", http.StatusNotFound)
+		}
+	case "combat":
+		attr, ok := investigator.Attributes[serializer.Field]
+		if !ok {
+			http.Error(w, "Attribute not found", http.StatusNotFound)
+		}
+		attr.Value = serializer.Value.(int)
+		investigator.Attributes[serializer.Field] = attr
+	default:
+		http.Error(w, "Unknown section", http.StatusBadRequest)
+	}
+	cm.UpdateInvestigatorCookie(w, key, investigator)
 
 }
 

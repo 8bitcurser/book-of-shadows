@@ -193,6 +193,8 @@ const characterUtils = {
             });
         });
     },
+
+
 };
 
 // Initialize only once when the page loads

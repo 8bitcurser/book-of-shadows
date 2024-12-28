@@ -131,3 +131,30 @@ func (c *CookiesConfig) ListInvestigators(r *http.Request) (map[string]*models.I
 	}
 	return characters, nil
 }
+
+func (c *CookiesConfig) UpdateInvestigatorCookie(w http.ResponseWriter, id string, inv *models.Investigator) {
+	data, err := inv.ToJSON()
+	if err != nil {
+		fmt.Errorf("Failed to marshal investigator %s", err)
+	}
+	var compressed bytes.Buffer
+	writer := gzip.NewWriter(&compressed)
+	_, err = writer.Write(data)
+	if err != nil {
+		log.Printf("Failed to compress data: %s", err)
+		return
+	}
+	writer.Close()
+	encodedValue := base64.URLEncoding.EncodeToString(compressed.Bytes())
+	cookie := &http.Cookie{
+		Name:     id,
+		Value:    encodedValue,
+		Path:     "/",
+		MaxAge:   c.MaxAge,
+		HttpOnly: true,
+		Secure:   true,
+		SameSite: http.SameSiteStrictMode,
+	}
+	http.SetCookie(w, cookie)
+
+}
