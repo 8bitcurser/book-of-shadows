@@ -10,40 +10,38 @@ COPY . .
 # Download dependencies
 RUN go get
 
-
 # Build the application
 RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+
 
 # Final stage
 FROM alpine:latest
 
 WORKDIR /app
-
+ENV PYTHONUNBUFFERED=1
 # Install Python3 and venv
 RUN apk add --no-cache \
     python3 \
     py3-pip \
     python3-dev \
-    py3-virtualenv \
     gcc \
-    musl-dev
+    musl-dev && ln -sf python3 /usr/bin/python
 
 # Copy the binary from builder
 COPY --from=builder /app/main .
-# Copy static files, templates, and scripts
 COPY --from=builder /app/static ./static
 COPY --from=builder /app/views ./views
 COPY --from=builder /app/scripts ./scripts
 COPY --from=builder /app/serializers ./serializers
 COPY --from=builder /app/models ./models
 COPY --from=builder /app/storage ./storage
-COPY --from=builder /app/investigator_data.json .
+COPY --from=builder /app/export.go ./export.go
 
-# Create and activate virtual environment
-RUN python3 -m venv scripts/venv
-# Install requirements
+
 WORKDIR /app/scripts
-RUN source venv/bin/activate && pip install -r requirements.txt
+# Create and activate virtual environment
+RUN pip3 install --break-system-packages -r requirements.txt
+
 WORKDIR /app
 
 # Expose the port your app runs on
