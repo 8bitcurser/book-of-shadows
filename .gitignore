@@ -31,6 +31,7 @@ filled_modernSheet.pdf
 .idea/
 go.mod
 
+scripts/venv/
 venv/
 venv
 venv/*

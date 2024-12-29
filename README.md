@@ -1,9 +1,11 @@
 ## Setup
 
 1. `go get`
-2. `source ./scripts/venv/bin/activate`
-3. `pip3 install -r requirements.txt`
-3. `go build book-of-shadows`
+2. `cd scripts`
+3. `python3 -m venv venv`
+4. `source ./scripts/venv/bin/activate`
+5. `pip3 install -r requirements.txt`
+6. `go build book-of-shadows`
 
 ## Current Features
 
