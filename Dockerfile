@@ -20,7 +20,14 @@ FROM alpine:latest
 WORKDIR /app
 
 # Install Python3 and venv
-RUN apk add --no-cache python3 py3-pip python3-dev
+RUN apk add --no-cache \
+    python3 \
+    py3-pip \
+    python3-dev \
+    py3-virtualenv \
+    gcc \
+    musl-dev \
+    python3-venv
 
 # Copy the binary from builder
 COPY --from=builder /app/main .
