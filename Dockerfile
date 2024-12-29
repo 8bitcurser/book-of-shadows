@@ -30,13 +30,17 @@ COPY --from=builder /app/main .
 COPY --from=builder /app/static ./static
 COPY --from=builder /app/views ./views
 COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/serializers ./serializers
+COPY --from=builder /app/models ./models
+COPY --from=builder /app/storage ./storage
 COPY --from=builder /app/investigator_data.json .
 
 # Create and activate virtual environment
 RUN python3 -m venv scripts/venv
 # Install requirements
-COPY requirements.txt .
-RUN source scripts/venv/bin/activate && pip install -r scripts/requirements.txt
+WORKDIR /app/scripts
+RUN source venv/bin/activate && pip install -r requirements.txt
+WORKDIR /app
 
 # Expose the port your app runs on
 EXPOSE 8080
