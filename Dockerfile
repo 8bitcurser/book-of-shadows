@@ -36,7 +36,7 @@ COPY --from=builder /app/investigator_data.json .
 RUN python3 -m venv scripts/venv
 # Install requirements
 COPY requirements.txt .
-RUN source scripts/venv/bin/activate && pip install -r requirements.txt
+RUN source scripts/venv/bin/activate && pip install -r scripts/requirements.txt
 
 # Expose the port your app runs on
 EXPOSE 8080
