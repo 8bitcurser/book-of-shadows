@@ -26,8 +26,7 @@ RUN apk add --no-cache \
     python3-dev \
     py3-virtualenv \
     gcc \
-    musl-dev \
-    python3-venv
+    musl-dev
 
 # Copy the binary from builder
 COPY --from=builder /app/main .
