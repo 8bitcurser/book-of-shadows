@@ -23,7 +23,7 @@ type PdfProcessor struct {
 
 func NewPdfProcessor() (*PdfProcessor, error) {
 	// Find Python executable
-	pythonPath := filepath.Join("scripts", "venv", "bin", "python3")
+	pythonPath := filepath.Join("python3")
 
 	// Set script path
 	scriptPath := filepath.Join("scripts", "exporter.py")
