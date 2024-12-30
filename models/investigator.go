@@ -483,10 +483,12 @@ func NewInvestigator(mode GameMode) *Investigator {
 
 	SAN.Value = POW.Value
 	SAN.StartingValue = POW.StartingValue
+	inv.Attributes[AttrSanity] = SAN
 	inv.SetHP()
 	inv.SetMovement()
 	inv.SetBuildAndDMG()
 	MP.Value = POW.Value / 5
+	inv.Attributes[AttrMagicPoints] = MP
 	inv.GetSkills()
 
 	inv.Skills["Dodge_Copy"] = Skill{

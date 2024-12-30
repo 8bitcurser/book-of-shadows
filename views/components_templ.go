@@ -580,7 +580,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"closest div\" class=\"bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700\" hx-confirm=\"Are you sure?\">Delete</button> ")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"closest div\" class=\"bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700\" hx-confirm=\"Are you sure?\">Delete</button><div hx-trigger=\"deleted from:body\" hx-get=\"/api/investigators\" hx-trigger=\"deleted from:body\" hx-target=\"#investigators-list\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -644,7 +644,7 @@ func hidden(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var38 string
 		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(mustJson(investigator))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 350, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 358, Col: 38}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {

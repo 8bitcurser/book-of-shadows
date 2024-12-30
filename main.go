@@ -108,7 +108,7 @@ func handleDeleteInvestigator(w http.ResponseWriter, r *http.Request) {
 	cm := storage.NewInvestigatorCookieConfig()
 
 	cm.DeleteInvestigatorCookie(w, key)
-
+	w.Header().Set("HX-Trigger", "deleted")
 	w.WriteHeader(http.StatusOK)
 
 }
