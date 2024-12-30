@@ -4,6 +4,7 @@ import (
 	"book-of-shadows/models"
 	"bytes"
 	"compress/gzip"
+	"encoding/base32"
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
@@ -131,6 +132,53 @@ func (c *CookiesConfig) ListInvestigators(r *http.Request) (map[string]*models.I
 		}
 	}
 	return characters, nil
+}
+
+func (c *CookiesConfig) ExportInvestigatorsList(r *http.Request) (string, error) {
+	cookies := make(map[string]string)
+	for _, cookie := range r.Cookies() {
+		if strings.HasPrefix(cookie.Name, c.Prefix) {
+			cookies[cookie.Name] = cookie.Value
+
+		}
+	}
+	data, err := json.Marshal(cookies)
+	if err != nil {
+		fmt.Errorf("Failed to marshal investigators %s", err)
+	}
+
+	encodedValue := base32.StdEncoding.EncodeToString(data)
+	return encodedValue, nil
+
+}
+
+func (c *CookiesConfig) ImportInvestigatorsList(w http.ResponseWriter, encodedData string) error {
+	data, err := base32.StdEncoding.DecodeString(encodedData)
+	if err != nil {
+		return err
+	}
+
+	var cookies map[string]string
+	if err = json.Unmarshal(data, &cookies); err != nil {
+
+		return fmt.Errorf("failed to unmarshal: %w", err)
+	}
+
+	// Set cookies
+	for name, value := range cookies {
+
+		cookie := &http.Cookie{
+			Name:     name,
+			Value:    value,
+			Path:     "/",
+			MaxAge:   c.MaxAge,
+			HttpOnly: true,
+			Secure:   true,
+			SameSite: http.SameSiteStrictMode,
+		}
+		http.SetCookie(w, cookie)
+	}
+	return nil
 }
 
 func (c *CookiesConfig) UpdateInvestigatorCookie(w http.ResponseWriter, id string, inv *models.Investigator) {

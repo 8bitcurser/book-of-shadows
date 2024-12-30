@@ -37,6 +37,29 @@ const characterUtils = {
         }
     },
 
+    async importInvestigators() {
+        try {
+            const key = document.getElementById('importCode').value
+            const response = await fetch('/api/investigator/list/import/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "ImportCode": key
+                })
+            });
+
+            if (!response.ok) {
+                throw new Error('PDF export failed');
+            }
+
+        } catch (error) {
+            console.error('Importing Investigators:', error);
+            alert('Failed to export PDF. Please try again.');
+        }
+    },
+
     async recalculateValues(input, type) {
         let value = 0
         // if (type === 'attribute') {

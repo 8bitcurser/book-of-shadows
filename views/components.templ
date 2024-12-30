@@ -14,7 +14,7 @@ templ Home() {
         <head>
             <meta charset="UTF-8"/>
             <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-            <title>Call of Cthulhu Character Generator</title>
+            <title>Corbitt Files</title>
             <script src="https://unpkg.com/htmx.org@1.9.10"></script>
             <script src="https://cdn.tailwindcss.com"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
@@ -26,7 +26,7 @@ templ Home() {
         <body class="min-h-screen py-8">
             <div class="container mx-auto px-4">
                 <header class="text-center mb-8">
-                    <h1 class="text-4xl font-bold mb-2">Call of Cthulhu Pulp Character Generator</h1>
+                    <h1 class="text-4xl font-bold mb-2">Corbitt Files Investigator Generator</h1>
                     <p class="text-gray-600">Generate investigators for your cosmic horror adventures</p>
                 </header>
 
@@ -40,7 +40,7 @@ templ Home() {
                         Generate Character
                     </button>
                     <button
-                        hx-get="/api/investigators/list"
+                        hx-get="/api/investigator/list"
                         hx-target="#character-sheet"
                         class="bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700"
                     >
@@ -303,6 +303,71 @@ templ CharacterSheet(investigator *models.Investigator) {
 
 
 templ InvestigatorsList(investigators map[string]*models.Investigator) {
+        <div class="mb-4 flex justify-end gap-2">
+            <button
+                onclick="document.getElementById('exportModal').classList.remove('hidden')"
+                class="bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700">Export</button>
+            <button
+                onclick="document.getElementById('importModal').classList.remove('hidden')"
+                class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700">Import</button>
+        </div>
+
+        // Export Modal
+        <div id="exportModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                <div class="mt-3 text-center">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Export Investigators</h3>
+                    <div class="mt-2 px-7 py-3">
+                        <textarea id="exportCode" class="w-full h-32 p-2 border rounded" readonly
+                            hx-get="/api/investigator/list/export"
+                            hx-trigger="load"
+                            hx-swap="innerHTML"></textarea>
+                    </div>
+                    <div class="flex justify-center gap-2">
+                        <button
+                            onclick="navigator.clipboard.writeText(document.getElementById('exportCode').value); document.getElementById('exportModal').classList.add('hidden')"
+                            class="bg-blue-500 text-white px-4 py-2 rounded">Copy & Close</button>
+                        <button
+                            onclick="document.getElementById('exportModal').classList.add('hidden')"
+                            class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        // Import Modal
+    <div id="importModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full">
+        <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-lg leading-6 font-medium text-gray-900">Import Investigators</h3>
+                <div class="mt-2 px-7 py-3">
+                    <textarea id="importCode" class="w-full h-32 p-2 border rounded" placeholder="Paste export code here"></textarea>
+                </div>
+                <div class="flex justify-center gap-2">
+                    <button
+                        onclick="characterUtils.importInvestigators(); document.getElementById('importModal').classList.add('hidden')"
+                        class="bg-green-500 text-white px-4 py-2 rounded"
+                        hx-swap="none">Import</button>
+                    <button
+                        onclick="document.getElementById('importModal').classList.add('hidden')"
+                        class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                    <div
+                        hx-get="/api/investigator/list"
+                        hx-trigger="import from:body"
+                        hx-target="#character-sheet"
+                    >
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div
+        id="refresh-list"
+        hx-get="/api/investigator/list"
+        hx-trigger="import from:body"
+        hx-target="#character-sheet"
+        hx-swap="innerHTML"
+    ></div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         for key, inv := range investigators {
             <div class="bg-white p-4 rounded-lg shadow">
@@ -325,12 +390,11 @@ templ InvestigatorsList(investigators map[string]*models.Investigator) {
                         Delete
                     </button>
                     <div
-                            hx-trigger="deleted from:body"
-                            hx-get="/api/investigators/list"
-                            hx-trigger="deleted from:body"
-                            hx-target="#character-sheet"
-                        >
-                        </div>
+                        hx-get="/api/investigator/list"
+                        hx-trigger="deleted from:body"
+                        hx-target="#character-sheet"
+                    >
+                    </div>
                     <button
                         hx-swap="none"
                         onclick={ templ.ComponentScript{

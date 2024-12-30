@@ -38,7 +38,7 @@ func Home() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Call of Cthulhu Character Generator</title><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://cdn.tailwindcss.com\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js\"></script><script src=\"/static/character-utils.js\"></script></head><body class=\"min-h-screen py-8\"><div class=\"container mx-auto px-4\"><header class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold mb-2\">Call of Cthulhu Pulp Character Generator</h1><p class=\"text-gray-600\">Generate investigators for your cosmic horror adventures</p></header><div class=\"flex justify-center gap-4 mb-8\"><button hx-get=\"/api/generate\" hx-target=\"#character-sheet\" hx-vals=\"js:{mode: &#34;pulp&#34;}\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Generate Character</button> <button hx-get=\"/api/investigators/list\" hx-target=\"#character-sheet\" class=\"bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700\">List Investigators</button></div><div id=\"character-sheet\"><p class=\"text-center text-gray-500\">Click \"Generate Character\" to create a new investigator</p></div></div></body></html>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<!doctype html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><title>Corbitt Files</title><script src=\"https://unpkg.com/htmx.org@1.9.10\"></script><script src=\"https://cdn.tailwindcss.com\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js\"></script><script src=\"https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js\"></script><script src=\"/static/character-utils.js\"></script></head><body class=\"min-h-screen py-8\"><div class=\"container mx-auto px-4\"><header class=\"text-center mb-8\"><h1 class=\"text-4xl font-bold mb-2\">Corbitt Files Investigator Generator</h1><p class=\"text-gray-600\">Generate investigators for your cosmic horror adventures</p></header><div class=\"flex justify-center gap-4 mb-8\"><button hx-get=\"/api/generate\" hx-target=\"#character-sheet\" hx-vals=\"js:{mode: &#34;pulp&#34;}\" class=\"bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700\">Generate Character</button> <button hx-get=\"/api/investigator/list\" hx-target=\"#character-sheet\" class=\"bg-yellow-600 text-white px-4 py-2 rounded hover:bg-yellow-700\">List Investigators</button></div><div id=\"character-sheet\"><p class=\"text-center text-gray-500\">Click \"Generate Character\" to create a new investigator</p></div></div></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -523,7 +523,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			templ_7745c5c3_Var31 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mb-4 flex justify-end gap-2\"><button onclick=\"document.getElementById(&#39;exportModal&#39;).classList.remove(&#39;hidden&#39;)\" class=\"bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700\">Export</button> <button onclick=\"document.getElementById(&#39;importModal&#39;).classList.remove(&#39;hidden&#39;)\" class=\"bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700\">Import</button></div><div id=\"exportModal\" class=\"hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full\"><div class=\"relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white\"><div class=\"mt-3 text-center\"><h3 class=\"text-lg leading-6 font-medium text-gray-900\">Export Investigators</h3><div class=\"mt-2 px-7 py-3\"><textarea id=\"exportCode\" class=\"w-full h-32 p-2 border rounded\" readonly hx-get=\"/api/investigator/list/export\" hx-trigger=\"load\" hx-swap=\"innerHTML\"></textarea></div><div class=\"flex justify-center gap-2\"><button onclick=\"navigator.clipboard.writeText(document.getElementById(&#39;exportCode&#39;).value); document.getElementById(&#39;exportModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-blue-500 text-white px-4 py-2 rounded\">Copy & Close</button> <button onclick=\"document.getElementById(&#39;exportModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-gray-500 text-white px-4 py-2 rounded\">Cancel</button></div></div></div></div><div id=\"importModal\" class=\"hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full\"><div class=\"relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white\"><div class=\"mt-3 text-center\"><h3 class=\"text-lg leading-6 font-medium text-gray-900\">Import Investigators</h3><div class=\"mt-2 px-7 py-3\"><textarea id=\"importCode\" class=\"w-full h-32 p-2 border rounded\" placeholder=\"Paste export code here\"></textarea></div><div class=\"flex justify-center gap-2\"><button onclick=\"characterUtils.importInvestigators(); document.getElementById(&#39;importModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-green-500 text-white px-4 py-2 rounded\" hx-swap=\"none\">Import</button> <button onclick=\"document.getElementById(&#39;importModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-gray-500 text-white px-4 py-2 rounded\">Cancel</button><div hx-get=\"/api/investigator/list\" hx-trigger=\"import from:body\" hx-target=\"#character-sheet\"></div></div></div></div></div><div id=\"refresh-list\" hx-get=\"/api/investigator/list\" hx-trigger=\"import from:body\" hx-target=\"#character-sheet\" hx-swap=\"innerHTML\"></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -535,7 +535,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var32 string
 			templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 309, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 374, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 			if templ_7745c5c3_Err != nil {
@@ -548,7 +548,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var33 string
 			templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 310, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 375, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 			if templ_7745c5c3_Err != nil {
@@ -561,7 +561,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var34 string
 			templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", key))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 313, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 378, Col: 72}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 			if templ_7745c5c3_Err != nil {
@@ -574,13 +574,13 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var35 string
 			templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/delete/%s", key))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 320, Col: 82}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 385, Col: 82}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"closest div\" class=\"bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700\" hx-confirm=\"Are you sure?\">Delete</button><div hx-trigger=\"deleted from:body\" hx-get=\"/api/investigators/list\" hx-trigger=\"deleted from:body\" hx-target=\"#character-sheet\"></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"closest div\" class=\"bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700\" hx-confirm=\"Are you sure?\">Delete</button><div hx-get=\"/api/investigator/list\" hx-trigger=\"deleted from:body\" hx-target=\"#character-sheet\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -644,7 +644,7 @@ func hidden(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var38 string
 		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(mustJson(investigator))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 358, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 422, Col: 38}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {
