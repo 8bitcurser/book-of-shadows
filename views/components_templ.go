@@ -580,7 +580,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"closest div\" class=\"bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700\" hx-confirm=\"Are you sure?\">Delete</button><div hx-trigger=\"deleted from:body\" hx-get=\"/api/investigators\" hx-trigger=\"deleted from:body\" hx-target=\"#investigators-list\"></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"closest div\" class=\"bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700\" hx-confirm=\"Are you sure?\">Delete</button><div hx-trigger=\"deleted from:body\" hx-get=\"/api/investigators/list\" hx-trigger=\"deleted from:body\" hx-target=\"#character-sheet\"></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
