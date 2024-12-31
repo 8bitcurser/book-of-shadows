@@ -19,7 +19,7 @@ type SQLiteDB struct {
 }
 
 func (s *SQLiteDB) Init() {
-	db, err := sql.Open("sqlite3", "/data/exports.db")
+	db, err := sql.Open("sqlite3", "data/exports.db")
 	if err != nil {
 		log.Fatal(err)
 	}
