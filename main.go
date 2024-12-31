@@ -9,6 +9,7 @@ import (
 func main() {
 	conn := storage.SQLiteDB{}
 	conn.Init()
+	conn.StartCleanupRoutine()
 	defer conn.DB.Close()
 
 	fileServer := http.FileServer(http.Dir("static"))

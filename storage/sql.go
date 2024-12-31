@@ -19,7 +19,7 @@ type SQLiteDB struct {
 }
 
 func (s *SQLiteDB) Init() {
-	db, err := sql.Open("sqlite3", "exports.db")
+	db, err := sql.Open("sqlite3", "/data/exports.db")
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -44,4 +44,17 @@ func (s *SQLiteDB) GetExport(id string) (string, error) {
 	var data string
 	err := s.DB.QueryRow(`SELECT data FROM  exports WHERE id = ?`, id).Scan(&data)
 	return data, err
+}
+
+func (s *SQLiteDB) StartCleanupRoutine() {
+	ticker := time.NewTicker(24 * time.Hour)
+	go func() {
+		for range ticker.C {
+			_, err := s.DB.Exec(`DELETE FROM exports WHERE created_at < ?`,
+				time.Now().Add(-24*time.Hour))
+			if err != nil {
+				log.Printf("Cleanup error: %v", err)
+			}
+		}
+	}()
 }
