@@ -53,6 +53,9 @@ const characterUtils = {
             if (!response.ok) {
                 throw new Error('PDF export failed');
             }
+            // Close modal and trigger HTMX refresh
+            document.getElementById('importModal').classList.add('hidden');
+            htmx.trigger('body', 'import');
 
         } catch (error) {
             console.error('Importing Investigators:', error);

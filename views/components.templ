@@ -347,16 +347,12 @@ templ InvestigatorsList(investigators map[string]*models.Investigator) {
                     <button
                         onclick="characterUtils.importInvestigators(); document.getElementById('importModal').classList.add('hidden')"
                         class="bg-green-500 text-white px-4 py-2 rounded"
-                        hx-swap="none">Import</button>
+                        hx-swap="none">
+                        Import
+                    </button>
                     <button
                         onclick="document.getElementById('importModal').classList.add('hidden')"
                         class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
-                    <div
-                        hx-get="/api/investigator/list"
-                        hx-trigger="import from:body"
-                        hx-target="#character-sheet"
-                    >
-                    </div>
                 </div>
             </div>
         </div>

@@ -523,7 +523,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			templ_7745c5c3_Var31 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mb-4 flex justify-end gap-2\"><button onclick=\"document.getElementById(&#39;exportModal&#39;).classList.remove(&#39;hidden&#39;)\" class=\"bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700\">Export</button> <button onclick=\"document.getElementById(&#39;importModal&#39;).classList.remove(&#39;hidden&#39;)\" class=\"bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700\">Import</button></div><div id=\"exportModal\" class=\"hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full\"><div class=\"relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white\"><div class=\"mt-3 text-center\"><h3 class=\"text-lg leading-6 font-medium text-gray-900\">Export Investigators</h3><div class=\"mt-2 px-7 py-3\"><textarea id=\"exportCode\" class=\"w-full h-32 p-2 border rounded\" readonly hx-get=\"/api/investigator/list/export\" hx-trigger=\"load\" hx-swap=\"innerHTML\"></textarea></div><div class=\"flex justify-center gap-2\"><button onclick=\"navigator.clipboard.writeText(document.getElementById(&#39;exportCode&#39;).value); document.getElementById(&#39;exportModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-blue-500 text-white px-4 py-2 rounded\">Copy & Close</button> <button onclick=\"document.getElementById(&#39;exportModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-gray-500 text-white px-4 py-2 rounded\">Cancel</button></div></div></div></div><div id=\"importModal\" class=\"hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full\"><div class=\"relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white\"><div class=\"mt-3 text-center\"><h3 class=\"text-lg leading-6 font-medium text-gray-900\">Import Investigators</h3><div class=\"mt-2 px-7 py-3\"><textarea id=\"importCode\" class=\"w-full h-32 p-2 border rounded\" placeholder=\"Paste export code here\"></textarea></div><div class=\"flex justify-center gap-2\"><button onclick=\"characterUtils.importInvestigators(); document.getElementById(&#39;importModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-green-500 text-white px-4 py-2 rounded\" hx-swap=\"none\">Import</button> <button onclick=\"document.getElementById(&#39;importModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-gray-500 text-white px-4 py-2 rounded\">Cancel</button><div hx-get=\"/api/investigator/list\" hx-trigger=\"import from:body\" hx-target=\"#character-sheet\"></div></div></div></div></div><div id=\"refresh-list\" hx-get=\"/api/investigator/list\" hx-trigger=\"import from:body\" hx-target=\"#character-sheet\" hx-swap=\"innerHTML\"></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mb-4 flex justify-end gap-2\"><button onclick=\"document.getElementById(&#39;exportModal&#39;).classList.remove(&#39;hidden&#39;)\" class=\"bg-purple-600 text-white px-3 py-1 rounded hover:bg-purple-700\">Export</button> <button onclick=\"document.getElementById(&#39;importModal&#39;).classList.remove(&#39;hidden&#39;)\" class=\"bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700\">Import</button></div><div id=\"exportModal\" class=\"hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full\"><div class=\"relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white\"><div class=\"mt-3 text-center\"><h3 class=\"text-lg leading-6 font-medium text-gray-900\">Export Investigators</h3><div class=\"mt-2 px-7 py-3\"><textarea id=\"exportCode\" class=\"w-full h-32 p-2 border rounded\" readonly hx-get=\"/api/investigator/list/export\" hx-trigger=\"load\" hx-swap=\"innerHTML\"></textarea></div><div class=\"flex justify-center gap-2\"><button onclick=\"navigator.clipboard.writeText(document.getElementById(&#39;exportCode&#39;).value); document.getElementById(&#39;exportModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-blue-500 text-white px-4 py-2 rounded\">Copy & Close</button> <button onclick=\"document.getElementById(&#39;exportModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-gray-500 text-white px-4 py-2 rounded\">Cancel</button></div></div></div></div><div id=\"importModal\" class=\"hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full\"><div class=\"relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white\"><div class=\"mt-3 text-center\"><h3 class=\"text-lg leading-6 font-medium text-gray-900\">Import Investigators</h3><div class=\"mt-2 px-7 py-3\"><textarea id=\"importCode\" class=\"w-full h-32 p-2 border rounded\" placeholder=\"Paste export code here\"></textarea></div><div class=\"flex justify-center gap-2\"><button onclick=\"characterUtils.importInvestigators(); document.getElementById(&#39;importModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-green-500 text-white px-4 py-2 rounded\" hx-swap=\"none\">Import</button> <button onclick=\"document.getElementById(&#39;importModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-gray-500 text-white px-4 py-2 rounded\">Cancel</button></div></div></div></div><div id=\"refresh-list\" hx-get=\"/api/investigator/list\" hx-trigger=\"import from:body\" hx-target=\"#character-sheet\" hx-swap=\"innerHTML\"></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -535,7 +535,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var32 string
 			templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 374, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 370, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 			if templ_7745c5c3_Err != nil {
@@ -548,7 +548,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var33 string
 			templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 375, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 371, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 			if templ_7745c5c3_Err != nil {
@@ -561,7 +561,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var34 string
 			templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", key))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 378, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 374, Col: 72}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 			if templ_7745c5c3_Err != nil {
@@ -574,7 +574,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var35 string
 			templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/delete/%s", key))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 385, Col: 82}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 381, Col: 82}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 			if templ_7745c5c3_Err != nil {
@@ -644,7 +644,7 @@ func hidden(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var38 string
 		templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(mustJson(investigator))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 422, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 418, Col: 38}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 		if templ_7745c5c3_Err != nil {
