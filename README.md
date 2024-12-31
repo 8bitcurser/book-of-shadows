@@ -28,6 +28,15 @@ I don't want to store any personal information from the users, this is a tool
 that must stay free forever. Chaosium does not allow any profit from this projects
 therefor I didn't want to incur in costs I would not be able to cost.
 
+## But there is a data folder and I see some sqlite dependencies on the Docker
+
+That's correct, I'm using the sqlite database as a temporary storage for exporting/importing 
+the investigators to different browsers, this way the user can remain unknown. 
+On the export we create a record on the DB that will live at most 24 hours that has the content of
+the cookies from that user, they get a UUID that they can later use on another browser to import
+the investigators.
+
+
 ## Cookie Challenge
 
 Cookie size limit, some compression was needed to create the cookies in order to capture all
