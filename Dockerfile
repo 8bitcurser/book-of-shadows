@@ -4,6 +4,8 @@ FROM golang:1.22-alpine AS builder
 # Set working directory
 WORKDIR /app
 
+RUN mkdir -p /app/data
+
 # Copy the source code
 COPY . .
 
