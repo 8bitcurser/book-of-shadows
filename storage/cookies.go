@@ -148,11 +148,19 @@ func (c *CookiesConfig) ExportInvestigatorsList(r *http.Request) (string, error)
 	}
 
 	encodedValue := base32.StdEncoding.EncodeToString(data)
-	return encodedValue, nil
+	conn := SQLiteDB{}
+	conn.Init()
+	uuid, _ := conn.SaveExport(
+		encodedValue)
+
+	return uuid, nil
 
 }
 
-func (c *CookiesConfig) ImportInvestigatorsList(w http.ResponseWriter, encodedData string) error {
+func (c *CookiesConfig) ImportInvestigatorsList(w http.ResponseWriter, uuid string) error {
+	conn := SQLiteDB{}
+	conn.Init()
+	encodedData, _ := conn.GetExport(uuid)
 	data, err := base32.StdEncoding.DecodeString(encodedData)
 	if err != nil {
 		return err

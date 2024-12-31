@@ -1,11 +1,16 @@
 package main
 
 import (
+	"book-of-shadows/storage"
 	"log"
 	"net/http"
 )
 
 func main() {
+	conn := storage.SQLiteDB{}
+	conn.Init()
+	defer conn.DB.Close()
+
 	fileServer := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	// routes
