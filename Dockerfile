@@ -1,19 +1,18 @@
-# Build stage
 FROM golang:1.22-alpine AS builder
 
-# Set working directory
 WORKDIR /app
+
+# Install build dependencies for SQLite
+RUN apk add --no-cache gcc musl-dev sqlite-dev
 
 RUN mkdir -p /app/data
 
-# Copy the source code
 COPY . .
 
-# Download dependencies
 RUN go get
 
-# Build the application
-RUN CGO_ENABLED=0 GOOS=linux go build -o main .
+# Build with CGO enabled
+RUN CGO_ENABLED=1 GOOS=linux go build -o main .
 
 
 # Final stage
@@ -22,12 +21,9 @@ FROM alpine:latest
 WORKDIR /app
 ENV PYTHONUNBUFFERED=1
 # Install Python3 and venv
-RUN apk add --no-cache \
-    python3 \
-    py3-pip \
-    python3-dev \
-    gcc \
-    musl-dev && ln -sf python3 /usr/bin/python
+# Install runtime dependencies
+RUN apk add --no-cache sqlite-dev python3 py3-pip python3-dev gcc musl-dev && ln -sf python3 /usr/bin/python
+
 
 # Copy the binary from builder
 COPY --from=builder /app/main .
