@@ -37,12 +37,16 @@ func (s *SQLiteDB) SaveExport(data string) (string, error) {
 	id := uuid.New().String()
 	_, err := s.DB.Exec(`INSERT INTO exports (id, data, created_at) VALUES (?, ?, ?)`,
 		id, data, time.Now())
+	if err != nil {
+		log.Printf("Error inserting data into DB: %v", err)
+	}
 	return id, err
 }
 
 func (s *SQLiteDB) GetExport(id string) (string, error) {
 	var data string
 	err := s.DB.QueryRow(`SELECT data FROM  exports WHERE id = ?`, id).Scan(&data)
+
 	return data, err
 }
 
