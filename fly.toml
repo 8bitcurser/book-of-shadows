@@ -21,7 +21,3 @@ primary_region = 'eze'
   cpu_kind = 'shared'
   cpus = 1
   memory_mb = 256
-
-[mounts]
-source="exports"
-destination="/data"

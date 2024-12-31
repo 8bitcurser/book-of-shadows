@@ -30,7 +30,6 @@ filled_modernSheet.pdf
 .DS_Store
 .idea/
 
-data/
 scripts/venv/
 venv/
 venv
@@ -38,5 +37,3 @@ venv/*
 *.pyc
 __pycache__/
 __init__.py
-exports.db
-*.db
