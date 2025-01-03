@@ -220,16 +220,39 @@ templ CharacterSheet(investigator *models.Investigator) {
         <div class="second-page mt-6 pt-0">
             <div class="mt-0">
                 <h2 class="text-xl font-bold mb-4 text-gray-700">Skills</h2>
+
+                <div class="flex gap-4 mb-4">
+                    <div class="bg-gray-100 px-4 py-2 rounded-md">
+                        <span class="text-sm text-gray-600">Occupation Points:</span>
+                        <span class="font-medium ml-1">{ strconv.Itoa(investigator.OccupationPoints) }</span>
+                    </div>
+                    <div class="bg-gray-100 px-4 py-2 rounded-md">
+                        <span class="text-sm text-gray-600">Archetype Points:</span>
+                        <span class="font-medium ml-1">{ strconv.Itoa(investigator.ArchetypePoints) }</span>
+                    </div>
+                    <div class="bg-gray-100 px-4 py-2 rounded-md">
+                        <span class="text-sm text-gray-600">Free Points:</span>
+                        <span class="font-medium ml-1">{ strconv.Itoa(investigator.FreePoints) }</span>
+                    </div>
+                </div>
+
                 <div class="bg-gray-50 p-4 rounded-lg">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
                         for _, skill := range sortSkills(investigator.Skills) {
-                            if skill.Name != "" && skill.Name != "Dodge_Copy" {
+                            if skill.Name != "" && skill.Name != "Dodge_Copy"  && skill.Base == 0 {
                                 <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
-                                    if (skill.Base > 0) {
-                                        <input type="text" aria-label={ skill.Name } class="font-medium text-gray-600 w-[40%]" value={ skill.Name }></input>
-                                    } else {
-                                        <span class="font-medium text-gray-600 w-[40%]">{ skill.Name }</span>
-                                    }
+                                    <input
+                                        type="checkbox"
+                                        class="w-4 h-4 text-blue-600 rounded border-gray-300 cursor-pointer mr-2"
+                                        data-skill-toggle={ skill.Name }
+                                        if skill.IsSelected {
+                                                checked
+                                            }
+                                    />
+                                    <span
+                                        class="font-medium text-gray-600 w-[40%] tooltip cursor-help"
+                                        title={ "Default: " + strconv.Itoa(skill.Default) + " | Points Assigned: " + strconv.Itoa(skill.Value - skill.Default) }
+                                    >{ skill.Name }</span>
                                     <div class="flex items-center w-[60%] justify-end">
                                         <input
                                             type="number"

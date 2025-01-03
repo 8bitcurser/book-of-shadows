@@ -14,6 +14,7 @@ type Skill struct {
 	Base         int    `json:"isBase"`
 	Category     string `json:"Category"`
 	NeedsFormDef int    `json:"needsFormDef"`
+	IsSelected   bool   `json:"IsSelected"`
 }
 
 func (skill *Skill) String() string {
@@ -29,6 +30,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Anthropology": {
 		Name:         "Anthropology",
@@ -38,6 +40,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Appraise": {
 		Name:         "Appraise",
@@ -47,6 +50,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Archaeology": {
 		Name:         "Archaeology",
@@ -56,6 +60,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"ArtCraft": {
 		Name:         "ArtCraft",
@@ -65,6 +70,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		IsSelected:   false,
 	},
 	"Charm": {
 		Name:         "Charm",
@@ -74,6 +80,7 @@ var Skills = map[string]Skill{
 		Value:        15,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Climb": {
 		Name:         "Climb",
@@ -83,6 +90,7 @@ var Skills = map[string]Skill{
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Computer Use": {
 		Name:         "Computer Use",
@@ -92,6 +100,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Credit Rating": {
 		Name:         "Credit Rating",
@@ -101,6 +110,7 @@ var Skills = map[string]Skill{
 		Value:        0,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Cthulhu Mythos": {
 		Name:         "Cthulhu Mythos",
@@ -110,6 +120,7 @@ var Skills = map[string]Skill{
 		Value:        0,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Disguise": {
 		Name:         "Disguise",
@@ -119,6 +130,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Drive Auto": {
 		Name:         "Drive Auto",
@@ -128,6 +140,7 @@ var Skills = map[string]Skill{
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Electrical Repair": {
 		Name:         "Electrical Repair",
@@ -137,6 +150,7 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Electronics": {
 		Name:         "Electronics",
@@ -146,6 +160,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Fast Talk": {
 		Name:         "Fast Talk",
@@ -155,6 +170,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Fighting(Brawl)": {
 		Name:         "Fighting(Brawl)",
@@ -165,6 +181,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 		Category:     "Fighting",
+		IsSelected:   false,
 	},
 	"Fighting": {
 		Name:         "Fighting",
@@ -174,6 +191,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		IsSelected:   false,
 	},
 	"Firearms": {
 		Name:         "Firearms",
@@ -183,6 +201,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		IsSelected:   false,
 	},
 	"Firearms(Handgun)": {
 		Name:         "Firearms(Handgun)",
@@ -193,6 +212,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 		Category:     "Firearms",
+		IsSelected:   false,
 	},
 	"Firearms(Rifle/Shotgun)": {
 		Name:         "Firearms(Rifle/Shotgun)",
@@ -203,6 +223,7 @@ var Skills = map[string]Skill{
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
 		Category:     "Firearms",
+		IsSelected:   false,
 	},
 	"First Aid": {
 		Name:         "First Aid",
@@ -212,6 +233,7 @@ var Skills = map[string]Skill{
 		Value:        30,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"History": {
 		Name:         "History",
@@ -221,6 +243,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Intimidate": {
 		Name:         "Intimidate",
@@ -230,6 +253,7 @@ var Skills = map[string]Skill{
 		Value:        15,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Jump": {
 		Name:         "Jump",
@@ -239,6 +263,7 @@ var Skills = map[string]Skill{
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Language": {
 		Name:         "Language",
@@ -248,6 +273,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		IsSelected:   false,
 	},
 	"Law": {
 		Name:         "Law",
@@ -257,6 +283,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Library Use": {
 		Name:         "Library Use",
@@ -266,6 +293,7 @@ var Skills = map[string]Skill{
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Listen": {
 		Name:         "Listen",
@@ -275,6 +303,7 @@ var Skills = map[string]Skill{
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Locksmith": {
 		Name:         "Locksmith",
@@ -284,6 +313,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Mechanical Repair": {
 		Name:         "Mechanical Repair",
@@ -293,6 +323,7 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Medicine": {
 		Name:         "Medicine",
@@ -302,6 +333,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Natural World": {
 		Name:         "Natural World",
@@ -311,6 +343,7 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Occult": {
 		Name:         "Occult",
@@ -320,6 +353,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Persuade": {
 		Name:         "Persuade",
@@ -329,6 +363,7 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Pilot": {
 		Name:         "Pilot",
@@ -338,6 +373,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		IsSelected:   false,
 	},
 	"Psychoanalysis": {
 		Name:         "Psychoanalysis",
@@ -347,6 +383,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Psychology": {
 		Name:         "Psychology",
@@ -356,6 +393,7 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Ride": {
 		Name:         "Ride",
@@ -365,6 +403,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Science": {
 		Name:         "Science",
@@ -373,7 +412,7 @@ var Skills = map[string]Skill{
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
-		Base:         1, // Can hold up to 3  Science, Science1, ...2,
+		Base:         1, // Can hold up to 3  Science, Science1, ...2, IsSelected: false,
 	},
 	"Sleight of Hand": {
 		Name:         "Sleight of Hand",
@@ -383,6 +422,7 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Spot Hidden": {
 		Name:         "Spot Hidden",
@@ -392,6 +432,7 @@ var Skills = map[string]Skill{
 		Value:        25,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Stealth": {
 		Name:         "Stealth",
@@ -401,6 +442,7 @@ var Skills = map[string]Skill{
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Survival": {
 		Name:         "Survival",
@@ -410,6 +452,7 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		IsSelected:   false,
 	},
 	"Swim": {
 		Name:         "Swim",
@@ -419,6 +462,7 @@ var Skills = map[string]Skill{
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Throw": {
 		Name:         "Throw",
@@ -428,6 +472,7 @@ var Skills = map[string]Skill{
 		Value:        20,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Track": {
 		Name:         "Track",
@@ -437,6 +482,7 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 	"Navigate": {
 		Name:         "Navigate",
@@ -446,5 +492,6 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         0,
+		IsSelected:   false,
 	},
 }

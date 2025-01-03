@@ -226,6 +226,25 @@ func (i *Investigator) AssignOccupation() {
 }
 
 func (i *Investigator) addMissingSkills(skills *[]string) {
+	// Add base skills as Any Skills on empty call
+	if len(*skills) == 0 {
+		for _, skill := range i.Skills {
+			if skill.Base == 1 {
+				newName := fmt.Sprintf("%s(%s)", skill.Name, "Any")
+				i.Skills[newName] = Skill{
+					Name:         newName,
+					Abbreviation: newName,
+					FormName:     fmt.Sprintf("%s%s", skill.FormName, "1"),
+					Default:      skill.Default,
+					Value:        skill.Value,
+					Era:          []Era{Twenties, Modern},
+					Base:         0,
+					NeedsFormDef: 1,
+				}
+			}
+		}
+	}
+
 	for _, occ := range *skills {
 		_, ok := i.Skills[occ]
 		if ok {
@@ -292,28 +311,8 @@ func (i *Investigator) addMissingSkills(skills *[]string) {
 				}
 			}
 
-			// if several matched pick one
-			if len(matches) > 0 {
-				newName := fmt.Sprintf("%s(%s)", occ, "Any")
-				matchPick := rand.Intn(len(matches))
-				skillMatched := matches[matchPick]
-				skill, _ := i.Skills[skillMatched.Name]
-				if skill.Base == 1 {
-					i.Skills[newName] = Skill{
-						Name:         newName,
-						Abbreviation: newName,
-						FormName:     fmt.Sprintf("%s%s", skill.FormName, "1"),
-						Default:      skill.Default,
-						Value:        skill.Value,
-						Era:          []Era{Twenties, Modern},
-						Base:         0,
-						NeedsFormDef: 1,
-					}
-
-				}
-				occ = newName
-
-			} else {
+			// Add the custom ones
+			if len(matches) == 0 {
 				i.Skills[occ] = Skill{
 					Name:         occ,
 					Abbreviation: occ,
@@ -362,6 +361,9 @@ type Investigator struct {
 	Build            string               `json:"Build"`
 	DamageBonus      string               `json:"DamageBonus"`
 	Talents          []Talent             `json:"Pulp-Talents"`
+	OccupationPoints int                  `json:"OccupationPoints"`
+	ArchetypePoints  int                  `json:"ArchetypePoints"`
+	FreePoints       int                  `json:"FreePoints"`
 }
 
 func NewInvestigator(mode GameMode) *Investigator {
@@ -512,12 +514,14 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Default:      EDU.Value,
 		Value:        EDU.Value,
 	}
+	inv.addMissingSkills(&[]string{})
 	// assign points
 	occupationPoints := inv.CalculateOccupationSkillPoints()
+	inv.OccupationPoints = occupationPoints
 	if inv.GameMode == Pulp {
-		archetypePoints := inv.Archetype.BonusPoints
+		inv.ArchetypePoints = inv.Archetype.BonusPoints
 		inv.addMissingSkills(&inv.Archetype.Skills)
-		inv.AssignSkillPoints(archetypePoints, inv.Archetype.Skills)
+		inv.AssignSkillPoints(inv.ArchetypePoints, inv.Archetype.Skills)
 	}
 	occupationSkills := make([]string, 0)
 
@@ -546,6 +550,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 			skillsList = append(skillsList, s)
 		}
 	}
-	inv.AssignSkillPoints(INT.Value*2, skillsList)
+	inv.FreePoints = INT.Value * 2
+	inv.AssignSkillPoints(inv.FreePoints, skillsList)
 	return &inv
 }
