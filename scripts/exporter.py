@@ -19,6 +19,9 @@ def process_pdf(options_json):
         input_path = options['input_path']
         output_path = options['output_path']
         metadata = options['metadata']
+        for skill in metadata:
+            if 'Chk' in skill:
+                metadata[skill] = "/Yes" if metadata[skill] == "1" else "/Off"
         # Open the PDF
         with open(input_path, 'rb') as file:
             reader = PyPDF2.PdfReader(file)
@@ -32,10 +35,7 @@ def process_pdf(options_json):
             writer.update_page_form_field_values(
                 writer.pages[0], metadata
             )
-            new_meta = {f'/{k}': v for k,v in metadata.items()}
-            writer.add_metadata(
-                new_meta
-            )
+
             # Save the modified PDF
             with open(output_path, 'wb') as output_file:
                 writer.write(output_file)
