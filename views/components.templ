@@ -244,10 +244,11 @@ templ CharacterSheet(investigator *models.Investigator) {
                                     <input
                                         type="checkbox"
                                         class="w-4 h-4 text-blue-600 rounded border-gray-300 cursor-pointer mr-2"
-                                        data-skill-toggle={ skill.Name }
+                                        data-skill={ skill.Name }
                                         if skill.IsSelected {
                                                 checked
                                             }
+                                        onchange="characterUtils.handleSkillToggleCheck(this)"
                                     />
                                     <span
                                         class="font-medium text-gray-600 w-[40%] tooltip cursor-help"

@@ -65,11 +65,12 @@ var Skills = map[string]Skill{
 	"ArtCraft": {
 		Name:         "ArtCraft",
 		Abbreviation: "ArtCraft",
-		FormName:     "ArtCraft1", // supports 1 more ArtCraft2
+		FormName:     "ArtCraft", // supports 1 more ArtCraft2
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		NeedsFormDef: 1,
 		IsSelected:   false,
 	},
 	"Charm": {
@@ -186,21 +187,23 @@ var Skills = map[string]Skill{
 	"Fighting": {
 		Name:         "Fighting",
 		Abbreviation: "Fighting",
-		FormName:     "Fighting1",
+		FormName:     "Fighting",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		NeedsFormDef: 1,
 		IsSelected:   false,
 	},
 	"Firearms": {
 		Name:         "Firearms",
 		Abbreviation: "Firearms",
-		FormName:     "Firearms1",
+		FormName:     "Firearms",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		NeedsFormDef: 1,
 		IsSelected:   false,
 	},
 	"Firearms(Handgun)": {
@@ -273,6 +276,7 @@ var Skills = map[string]Skill{
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		NeedsFormDef: 1,
 		IsSelected:   false,
 	},
 	"Law": {
@@ -373,6 +377,7 @@ var Skills = map[string]Skill{
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		NeedsFormDef: 1,
 		IsSelected:   false,
 	},
 	"Psychoanalysis": {
@@ -408,11 +413,12 @@ var Skills = map[string]Skill{
 	"Science": {
 		Name:         "Science",
 		Abbreviation: "Science",
-		FormName:     "Science1",
+		FormName:     "Science",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
-		Base:         1, // Can hold up to 3  Science, Science1, ...2, IsSelected: false,
+		Base:         1,
+		NeedsFormDef: 1, // Can hold up to 3  Science, Science1, ...2, IsSelected: false,
 	},
 	"Sleight of Hand": {
 		Name:         "Sleight of Hand",
@@ -452,6 +458,7 @@ var Skills = map[string]Skill{
 		Value:        10,
 		Era:          []Era{Twenties, Modern},
 		Base:         1,
+		NeedsFormDef: 1,
 		IsSelected:   false,
 	},
 	"Swim": {

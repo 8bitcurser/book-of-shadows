@@ -63,13 +63,17 @@ const characterUtils = {
         }
     },
 
+    async handleSkillToggleCheck(input){
+        const skillName = input.dataset.skill;
+        await this.updateInvestigator(
+            "skill_check",
+            skillName,
+            true
+        )
+    },
+
     async recalculateValues(input, type) {
         let value = 0
-        // if (type === 'attribute') {
-        //     value = parseInt(input.textContent) || 0
-        // } else {
-        //     value = parseInt(input.value) || 0;
-        // }
         value = parseInt(input.value) || 0;
         const container = input.parentElement;
         const halfSpan = container.querySelector('[data-half]');

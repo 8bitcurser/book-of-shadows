@@ -190,6 +190,13 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 		}
 		attr.Value = int(serializer.Value.(float64))
 		investigator.Attributes[serializer.Field] = attr
+	case "skill_check":
+		skill, ok := investigator.Skills[serializer.Field]
+		if !ok {
+			http.Error(w, "Skill not found", http.StatusNotFound)
+		}
+		skill.IsSelected = !skill.IsSelected
+		investigator.Skills[serializer.Field] = skill
 	default:
 		http.Error(w, "Unknown section", http.StatusBadRequest)
 	}

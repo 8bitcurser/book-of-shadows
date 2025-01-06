@@ -421,14 +421,14 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		}
 		for _, skill := range sortSkills(investigator.Skills) {
 			if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex justify-between items-center py-1 border-b border-gray-200 last:border-0\"><input type=\"checkbox\" class=\"w-4 h-4 text-blue-600 rounded border-gray-300 cursor-pointer mr-2\" data-skill-toggle=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"flex justify-between items-center py-1 border-b border-gray-200 last:border-0\"><input type=\"checkbox\" class=\"w-4 h-4 text-blue-600 rounded border-gray-300 cursor-pointer mr-2\" data-skill=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var27 string
 				templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 247, Col: 70}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 247, Col: 63}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 				if templ_7745c5c3_Err != nil {
@@ -444,14 +444,14 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 						return templ_7745c5c3_Err
 					}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("> <span class=\"font-medium text-gray-600 w-[40%] tooltip cursor-help\" title=\"")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" onchange=\"characterUtils.handleSkillToggleCheck(this)\"> <span class=\"font-medium text-gray-600 w-[40%] tooltip cursor-help\" title=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var28 string
 				templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs("Default: " + strconv.Itoa(skill.Default) + " | Points Assigned: " + strconv.Itoa(skill.Value-skill.Default))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 254, Col: 158}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 255, Col: 158}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 				if templ_7745c5c3_Err != nil {
@@ -464,7 +464,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var29 string
 				templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 255, Col: 49}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 256, Col: 49}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 				if templ_7745c5c3_Err != nil {
@@ -477,7 +477,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var30 string
 				templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 260, Col: 77}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 261, Col: 77}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 				if templ_7745c5c3_Err != nil {
@@ -490,7 +490,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var31 string
 				templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 261, Col: 67}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 262, Col: 67}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
 				if templ_7745c5c3_Err != nil {
@@ -503,7 +503,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var32 string
 				templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 2))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 267, Col: 152}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 268, Col: 152}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 				if templ_7745c5c3_Err != nil {
@@ -516,7 +516,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var33 string
 				templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 5))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 269, Col: 154}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 270, Col: 154}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 				if templ_7745c5c3_Err != nil {
@@ -569,7 +569,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var35 string
 			templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 393, Col: 56}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 394, Col: 56}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 			if templ_7745c5c3_Err != nil {
@@ -582,7 +582,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var36 string
 			templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 394, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 395, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
 			if templ_7745c5c3_Err != nil {
@@ -595,7 +595,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var37 string
 			templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", key))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 397, Col: 72}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 398, Col: 72}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
 			if templ_7745c5c3_Err != nil {
@@ -608,7 +608,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var38 string
 			templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/delete/%s", key))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 404, Col: 82}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 405, Col: 82}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 			if templ_7745c5c3_Err != nil {
@@ -678,7 +678,7 @@ func hidden(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var41 string
 		templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(mustJson(investigator))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 441, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/components.templ`, Line: 442, Col: 38}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
 		if templ_7745c5c3_Err != nil {

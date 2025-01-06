@@ -84,12 +84,14 @@ func ConvertInvestigatorToMap(investigator *models.Investigator) map[string]stri
 	}
 
 	// Handle Skills
-	for name, skill := range investigator.Skills {
+	for _, skill := range investigator.Skills {
 		formField := skill.FormName
 		if skill.NeedsFormDef == 1 {
-			data["SkillDef_"+formField] = name
+			data["SkillDef_"+formField] = skill.Name
 		}
-
+		if skill.IsSelected == true {
+			data["Skill_"+formField+"_Chk"] = "1"
+		}
 		data["Skill_"+formField] = strconv.Itoa(skill.Value)
 		data["Skill_"+formField+"_half"] = strconv.Itoa(skill.Value / 2)
 		data["Skill_"+formField+"_fifth"] = strconv.Itoa(skill.Value / 5)
