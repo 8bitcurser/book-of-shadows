@@ -174,29 +174,22 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 		if !ok || skill.Base == 1 {
 			continue
 		}
-		pointsToAssign := 0
-		maxPointForSkill := skillLimit
-		if skill.Value > skillLimit || skill.Name == "Cthulhu Mythos" {
+		pointsToAssign := rand.Intn(50) + 5
+
+		if assignablePoints < pointsToAssign || assignablePoints-pointsToAssign < 0 {
+			pointsToAssign = assignablePoints
+		}
+		assignablePoints -= pointsToAssign
+		if skill.Name == "Credit Rating" {
+			skillLimit = int(math.Min(float64(skillLimit), float64(i.Occupation.CreditRating.Max)))
+		}
+		if skill.Value > skillLimit || skill.Name == "Cthulhu Mythos" || (skill.Value+pointsToAssign) > skillLimit {
 			continue
 		}
-		if skill.Name == "Credit Rating" {
-			maxPointForSkill = int(math.Min(float64(skillLimit), float64(i.Occupation.CreditRating.Max)))
-			pointsToAssign = rand.Intn(maxPointForSkill) + 1
-		} else {
-			maxPointForSkill = skillLimit - skill.Value
-			if maxPointForSkill <= 0 {
-				continue
-			} else if maxPointForSkill > 80 {
-				// avoid big initial stat dumping
-				maxPointForSkill -= 10
-			}
-			pointsToAssign = rand.Intn(maxPointForSkill) + 1
-		}
+
 		skill.Value += pointsToAssign
 
-		assignablePoints -= pointsToAssign
 		i.Skills[skillName] = skill
-
 	}
 
 }
