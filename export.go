@@ -85,6 +85,9 @@ func ConvertInvestigatorToMap(investigator *models.Investigator) map[string]stri
 
 	// Handle Skills
 	for _, skill := range investigator.Skills {
+		if skill.Base == 1 {
+			continue
+		}
 		formField := skill.FormName
 		if skill.NeedsFormDef == 1 {
 			data["SkillDef_"+formField] = skill.Name
