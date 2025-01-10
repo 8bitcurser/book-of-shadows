@@ -241,6 +241,8 @@ var validUpdateSections = []string{
 	"combat",
 	"personalInfo",
 	"skills",
+	"skill_check",
+	"skill_name",
 }
 
 type UpdateRequestSerializer struct {

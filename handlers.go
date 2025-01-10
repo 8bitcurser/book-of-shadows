@@ -197,6 +197,19 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 		}
 		skill.IsSelected = !skill.IsSelected
 		investigator.Skills[serializer.Field] = skill
+	case "skill_name":
+		skill, ok := investigator.Skills[serializer.Field]
+
+		if !ok {
+			http.Error(w, "Skill not found", http.StatusNotFound)
+		}
+		if serializer.Field == skill.Name {
+			http.Error(w, "No change to Skill", http.StatusNotModified)
+		}
+		skill.Name = serializer.Value.(string)
+		investigator.Skills[skill.Name] = skill
+		delete(investigator.Skills, serializer.Field)
+
 	default:
 		http.Error(w, "Unknown section", http.StatusBadRequest)
 	}

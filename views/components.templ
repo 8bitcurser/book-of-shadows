@@ -250,10 +250,21 @@ templ CharacterSheet(investigator *models.Investigator) {
                                             }
                                         onchange="characterUtils.handleSkillToggleCheck(this)"
                                     />
-                                    <span
-                                        class="font-medium text-gray-600 w-[40%] tooltip cursor-help"
-                                        title={ "Default: " + strconv.Itoa(skill.Default) + " | Points Assigned: " + strconv.Itoa(skill.Value - skill.Default) }
-                                    >{ skill.Name }</span>
+                                   if skill.NeedsFormDef == 1 {
+                                    <input
+                                        type="text"
+                                        class="font-medium text-gray-600 w-[40%] tooltip cursor-help border-b border-transparent hover:border-gray-300 focus:border-gray-500 focus:outline-none mb-4 bg-transparent"
+                                        value={ skill.Name }
+                                        data-skill={ skill.Name }
+                                        onchange="characterUtils.handleSkillNameChange(this)"
+                                    />
+                                   } else {
+                                        <span
+                                            class="font-medium text-gray-600 w-[40%] tooltip cursor-help"
+                                            title={ "Default: " + strconv.Itoa(skill.Default) + " | Points Assigned: " + strconv.Itoa(skill.Value - skill.Default) }
+                                        >{ skill.Name }
+                                        </span>
+                                    }
                                     <div class="flex items-center w-[60%] justify-end">
                                         <input
                                             type="number"
@@ -389,20 +400,20 @@ templ InvestigatorsList(investigators map[string]*models.Investigator) {
         hx-swap="innerHTML"
     ></div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        for key, inv := range sortInvestigators(investigators) {
+        for _, inv := range sortInvestigators(investigators) {
             <div class="bg-white p-4 rounded-lg shadow">
                 <h3 class="text-xl font-bold">{ inv.Name }</h3>
                 <p class="text-gray-600">{ inv.Occupation.Name }</p>
                 <div class="mt-4 flex gap-2">
                     <button
-                        hx-get={fmt.Sprintf("/api/investigator/%s", key)}
+                        hx-get={fmt.Sprintf("/api/investigator/%s", inv.ID)}
                         hx-target="#character-sheet"
                         class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700"
                     >
                         Load
                     </button>
                     <button
-                        hx-delete={fmt.Sprintf("/api/investigator/delete/%s", key)}
+                        hx-delete={fmt.Sprintf("/api/investigator/delete/%s", inv.ID)}
                         hx-target="closest div"
                         class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700"
                         hx-confirm="Are you sure?"
@@ -419,7 +430,7 @@ templ InvestigatorsList(investigators map[string]*models.Investigator) {
                         hx-swap="none"
                         onclick={ templ.ComponentScript{
                             Name: "characterUtils.exportPDF",
-                            Call: fmt.Sprintf("characterUtils.exportPDF(event, '%s')", key),
+                            Call: fmt.Sprintf("characterUtils.exportPDF(event, '%s')", inv.ID),
                         }}
                         class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700"
                     >

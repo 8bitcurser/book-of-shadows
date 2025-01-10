@@ -72,6 +72,15 @@ const characterUtils = {
         )
     },
 
+    async handleSkillNameChange(input){
+        const skillName = input.dataset.skill;
+        await this.updateInvestigator(
+            "skill_name",
+            skillName,
+            input.value
+        )
+    },
+
     async recalculateValues(input, type) {
         let value = 0
         value = parseInt(input.value) || 0;
