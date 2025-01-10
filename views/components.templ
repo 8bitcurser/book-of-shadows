@@ -262,7 +262,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                                             data-skill={ skill.Name }
                                             onchange="characterUtils.recalculateValues(this, 'skill')"
                                             title="Regular"
-                                            min="0"
+                                            min={ strconv.Itoa(skill.Default) }
                                         />
                                         <span class="text-gray-300 w-[20px] text-center">|</span>
                                         <span class="tooltip cursor-help w-[50px] text-right" title="Half value" data-half>{ strconv.Itoa(skill.Value/2) }</span>
@@ -389,7 +389,7 @@ templ InvestigatorsList(investigators map[string]*models.Investigator) {
         hx-swap="innerHTML"
     ></div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        for key, inv := range investigators {
+        for key, inv := range sortInvestigators(investigators) {
             <div class="bg-white p-4 rounded-lg shadow">
                 <h3 class="text-xl font-bold">{ inv.Name }</h3>
                 <p class="text-gray-600">{ inv.Occupation.Name }</p>
@@ -472,4 +472,23 @@ func sortSkills(skills map[string]models.Skill) []models.Skill {
     })
 
     return skillSlice
+}
+
+
+func sortInvestigators(invs map[string]*models.Investigator) []*models.Investigator {
+    // Create a slice to hold the skills
+    var investigatorSlice []*models.Investigator
+
+    // Convert map to slice
+    for _, inv := range invs {
+        investigatorSlice = append(investigatorSlice, inv)
+    }
+
+
+    // Sort the slice by name
+    sort.Slice(investigatorSlice, func(i, j int) bool {
+        return investigatorSlice[i].ID < investigatorSlice[j].ID
+    })
+
+    return investigatorSlice
 }
