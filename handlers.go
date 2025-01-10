@@ -203,7 +203,7 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 		if !ok {
 			http.Error(w, "Skill not found", http.StatusNotFound)
 		}
-		if serializer.Field == skill.Name {
+		if serializer.Value.(string) == skill.Name {
 			http.Error(w, "No change to Skill", http.StatusNotModified)
 		}
 		skill.Name = serializer.Value.(string)
