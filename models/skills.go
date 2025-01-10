@@ -65,7 +65,7 @@ var Skills = map[string]Skill{
 	"ArtCraft": {
 		Name:         "ArtCraft",
 		Abbreviation: "ArtCraft",
-		FormName:     "ArtCraft", // supports 1 more ArtCraft2
+		FormName:     "ArtCraft1", // supports 1 more ArtCraft2
 		Default:      5,
 		Value:        5,
 		Era:          []Era{Twenties, Modern},
@@ -187,7 +187,7 @@ var Skills = map[string]Skill{
 	"Fighting": {
 		Name:         "Fighting",
 		Abbreviation: "Fighting",
-		FormName:     "Fighting",
+		FormName:     "Fighting1",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},
@@ -413,7 +413,7 @@ var Skills = map[string]Skill{
 	"Science": {
 		Name:         "Science",
 		Abbreviation: "Science",
-		FormName:     "Science",
+		FormName:     "Science1",
 		Default:      1,
 		Value:        1,
 		Era:          []Era{Twenties, Modern},

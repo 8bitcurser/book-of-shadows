@@ -227,7 +227,7 @@ func (i *Investigator) addMissingSkills(skills *[]string) {
 				i.Skills[newName] = Skill{
 					Name:         newName,
 					Abbreviation: newName,
-					FormName:     fmt.Sprintf("%s%s", skill.FormName, "1"),
+					FormName:     skill.FormName,
 					Default:      skill.Default,
 					Value:        skill.Value,
 					Era:          []Era{Twenties, Modern},
