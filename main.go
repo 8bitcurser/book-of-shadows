@@ -16,7 +16,7 @@ func main() {
 	http.Handle("/static/", http.StripPrefix("/static/", fileServer))
 	// routes
 	http.HandleFunc("/", handleHome)
-	http.HandleFunc("/api/generate", handleGenerate)
+	http.HandleFunc("/api/generate-random", handleGenerate)
 	http.HandleFunc("/api/investigator/export/", handleExportPDF)
 	http.HandleFunc("/api/investigator/list", handleListInvestigators)
 	http.HandleFunc("/api/investigator/list/export", handleListInvestigatorsExport)
