@@ -547,3 +547,160 @@ func NewInvestigator(mode GameMode) *Investigator {
 	inv.AssignSkillPoints(inv.FreePoints, skillsList)
 	return &inv
 }
+
+func InvestigatorCreate(payload []byte) *Investigator {
+	data := make(map[string]interface{})
+	err := json.Unmarshal(payload, &data)
+	if err != nil {
+		return nil
+	}
+	archetype := Archetypes[data["archetype"].(string)]
+	occupation := Occupations[data["occupation"].(string)]
+	inv := Investigator{
+		Era:              1,
+		GameMode:         Pulp,
+		Name:             data["name"].(string),
+		Residence:        data["residence"].(string),
+		Birthplace:       data["birthplace"].(string),
+		Age:              int(data["age"].(float64)),
+		ProfilePic:       ProfilePic{"/sample/path/env", "profile"},
+		Insane:           false,
+		TemporaryInsane:  false,
+		IndefiniteInsane: false,
+		MajorWound:       false,
+		Unconscious:      false,
+		Dying:            false,
+		Attributes: map[string]Attribute{
+			AttrStrength: {
+				Name:          "STR",
+				StartingValue: 0,
+				Value:         int(data["STR"].(float64)),
+				MaxValue:      0,
+			},
+			AttrConstitution: {
+				Name:          "CON",
+				StartingValue: 0,
+				Value:         int(data["CON"].(float64)),
+				MaxValue:      0,
+			},
+			AttrDexterity: {
+				Name:          "DEX",
+				StartingValue: 0,
+				Value:         int(data["DEX"].(float64)),
+				MaxValue:      0,
+			},
+			AttrIntelligence: {
+				Name:          "INT",
+				StartingValue: 0,
+				Value:         int(data["INT"].(float64)),
+				MaxValue:      0,
+			},
+			AttrSize: {
+				Name:          "SIZ",
+				StartingValue: 0,
+				Value:         int(data["SIZ"].(float64)),
+				MaxValue:      0,
+			},
+			AttrPower: {
+				Name:          "POW",
+				StartingValue: 0,
+				Value:         int(data["POW"].(float64)),
+				MaxValue:      0,
+			},
+			AttrAppearance: {
+				Name:          "APP",
+				StartingValue: 0,
+				Value:         int(data["APP"].(float64)),
+				MaxValue:      0,
+			},
+			AttrEducation: {
+				Name:          "EDU",
+				StartingValue: 0,
+				Value:         int(data["EDU"].(float64)),
+				MaxValue:      0,
+			},
+			AttrHitPoints: {
+				Name:          "CurrentHP",
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrMagicPoints: {
+				Name:          "CurrentMagic",
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrLuck: {
+				Name:          "CurrentLuck",
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+			AttrSanity: {
+				Name:          "CurrentSanity",
+				StartingValue: 0,
+				Value:         0,
+				MaxValue:      0,
+			},
+		},
+		Skills:      map[string]Skill{},
+		Move:        2,
+		Build:       "Big",
+		DamageBonus: "1D4",
+		Archetype:   &archetype,
+		Occupation:  &occupation,
+	}
+	LCK := inv.Attributes[AttrLuck]
+	SAN := inv.Attributes[AttrSanity]
+	POW := inv.Attributes[AttrPower]
+	MP := inv.Attributes[AttrMagicPoints]
+	DEX := inv.Attributes[AttrDexterity]
+	EDU := inv.Attributes[AttrEducation]
+	INT := inv.Attributes[AttrIntelligence]
+	LCK.Initialize(false)
+	// allow re roll
+	if LCK.Value < 45 {
+		LCK.Initialize(false)
+	}
+	SAN.Value = POW.Value
+	SAN.StartingValue = POW.StartingValue
+	inv.Attributes[AttrSanity] = SAN
+	inv.SetHP()
+	inv.SetMovement()
+	inv.SetBuildAndDMG()
+	MP.Value = POW.Value / 5
+	inv.Attributes[AttrMagicPoints] = MP
+	inv.GetSkills()
+
+	inv.Skills["Dodge_Copy"] = Skill{
+		Name:         "Dodge_Copy",
+		Abbreviation: "Dodge",
+		FormName:     "Dodge_Copy",
+		Default:      DEX.Value / 2,
+		Value:        DEX.Value / 2,
+	}
+	inv.Skills["Dodge"] = Skill{
+		Name:         "Dodge",
+		Abbreviation: "Dodge",
+		FormName:     "Dodge",
+		Default:      DEX.Value / 2,
+		Value:        DEX.Value / 2,
+	}
+	inv.Skills["Language(Own)"] = Skill{
+		Name:         "Language(Own)",
+		Abbreviation: "Language(Own)",
+		FormName:     "OwnLanguage",
+		Default:      EDU.Value,
+		Value:        EDU.Value,
+	}
+	inv.addMissingSkills(&[]string{})
+	occupationPoints := inv.CalculateOccupationSkillPoints()
+	inv.OccupationPoints = occupationPoints
+	if inv.GameMode == Pulp {
+		inv.ArchetypePoints = inv.Archetype.BonusPoints
+		inv.addMissingSkills(&inv.Archetype.Skills)
+	}
+	inv.FreePoints = INT.Value * 2
+	return &inv
+}

@@ -261,3 +261,20 @@ func (u *UpdateRequestSerializer) IsValid() bool {
 	}
 	return valid
 }
+
+type CreateInvestigatorRequestSerializer struct {
+	Age        int    `json:"age"`
+	Name       string `json:"name"`
+	Residence  string `json:"residence"`
+	Birthplace string `json:"birthplace"`
+	Occupation string `json:"occupation"`
+	Archetype  string `json:"archetype"`
+	STR        int    `json:"STR"`
+	CON        int    `json:"CON"`
+	DEX        int    `json:"DEX"`
+	INT        int    `json:"INT"`
+	POW        int    `json:"POW"`
+	APP        int    `json:"APP"`
+	SIZ        int    `json:"SIZ"`
+	EDU        int    `json:"EDU"`
+}

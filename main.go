@@ -21,9 +21,13 @@ func main() {
 	http.HandleFunc("/api/investigator/list", handleListInvestigators)
 	http.HandleFunc("/api/investigator/list/export", handleListInvestigatorsExport)
 	http.HandleFunc("/api/investigator/list/import/", handleListInvestigatorsImport)
+	http.HandleFunc("/api/investigator/create/", handleCreateInvestigator)
 	http.HandleFunc("/api/investigator/delete/", handleDeleteInvestigator)
 	http.HandleFunc("/api/investigator/update/", handleUpdateInvestigator)
 	http.HandleFunc("/api/investigator/", handleGetInvestigator)
+	http.HandleFunc("/api/occupation/list", handleListOccupation)
+	http.HandleFunc("/api/archetype/list", handleListArchetype)
+
 	log.Println("Server starting on :8080")
 	if err := http.ListenAndServe(":8080", nil); err != nil {
 		log.Fatal(err)
