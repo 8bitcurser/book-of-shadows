@@ -1,0 +1,104 @@
+package views
+
+templ Home() {
+    <!DOCTYPE html>
+    <html lang="en">
+        <head>
+            <meta charset="UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+            <title>Corbitt Files</title>
+            <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+            <script src="https://cdn.tailwindcss.com"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+            <script src="/static/character-utils.js"></script>
+            <style>
+                .menu-container {
+                    width: 100%;
+                    height: 180px;
+                    display: flex;
+                    position: relative;
+                }
+
+                .menu-segment {
+                    flex: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    transition: background-color 0.2s;
+                    cursor: pointer;
+                }
+
+                .menu-segment:hover {
+                    background-color: rgba(var(--bg-color), 0.9);
+                }
+
+                .menu-button {
+                    padding: 0.75rem 1.5rem;
+                    border-radius: 0.25rem;
+                    font-size: 1.2rem;
+                    transition: transform 0.2s;
+                    white-space: nowrap;
+                    color: white;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+
+                .menu-button:hover {
+                    transform: scale(1.05);
+                    background-color: rgba(255, 255, 255, 0.15);
+                }
+            </style>
+        </head>
+        <body class="min-h-screen py-8" style="background-color: #EEEEEE;">
+            <div class="container mx-auto px-4 mb-8">
+                <header class="text-center">
+                    <h1 class="text-4xl font-bold mb-2" style="color: #373A40">Corbitt Files</h1>
+                    <p style="color: #686D76">Generate investigators for your cosmic horror adventures</p>
+                </header>
+            </div>
+
+            <div class="menu-container">
+                <div class="menu-segment"
+                    style="--bg-color: 104, 109, 118; background-color: rgba(104, 109, 118, 0.8)">
+                    <button
+                        class="menu-button"
+                        hx-get="/api/generate-random"
+                        hx-target="#character-sheet"
+                        hx-vals='js:{mode: "pulp"}'>
+                        Generate Character
+                    </button>
+                </div>
+
+                <div class="menu-segment"
+                    style="--bg-color: 55, 58, 64; background-color: rgba(55, 58, 64, 0.8)">
+                    <button
+                        class="menu-button"
+                        hx-get="/api/investigator/list"
+                        hx-target="#character-sheet">
+                        List Investigators
+                    </button>
+                </div>
+
+                <div class="menu-segment"
+                    style="--bg-color: 220, 95, 0; background-color: rgba(220, 95, 0, 0.8)">
+                    <button
+                        class="menu-button"
+                            hx-get="/api/generate-step"
+                        hx-target="#character-sheet">
+                        Step by Step
+                    </button>
+                </div>
+            </div>
+
+            <div class="container mx-auto px-4">
+                <div id="character-sheet" class="mt-8 p-6 rounded-lg bg-white">
+                    <p class="text-center" style="color: #686D76">
+                        Select an option to begin
+                    </p>
+                </div>
+            </div>
+        </body>
+    </html>
+}

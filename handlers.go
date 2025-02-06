@@ -280,3 +280,15 @@ func handleListOccupation(w http.ResponseWriter, r *http.Request) {
 	w.Write(payload)
 
 }
+
+func handleCreateStepInvestigator(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	component := views.StepByStepForm()
+	err := component.Render(r.Context(), w)
+	if err != nil {
+		log.Println(err)
+	}
+}
