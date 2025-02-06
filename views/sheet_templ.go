@@ -77,7 +77,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></div><div><p class=\"text-sm\" style=\"color: #686D76\">Occupation</p><p class=\"font-medium\" style=\"color: #373A40\" data-field=\"archetype\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></div><div><p class=\"text-sm\" style=\"color: #686D76\">Archetype</p><p class=\"font-medium\" style=\"color: #373A40\" data-field=\"archetype\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

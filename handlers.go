@@ -11,6 +11,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"slices"
+	"strconv"
 	"strings"
 )
 
@@ -134,21 +136,32 @@ func handleCreateInvestigator(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
-	body, err := io.ReadAll(r.Body)
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
+	if err := r.ParseForm(); err != nil {
+		log.Println(err)
 	}
-	defer r.Body.Close()
-	var serializer serializers.CreateInvestigatorRequestSerializer
-	if err := json.Unmarshal(body, &serializer); err != nil {
-		http.Error(w, "Bad request", http.StatusBadRequest)
+	formToInt := func(val string) int {
+		value, err := strconv.Atoi(val)
+		if err != nil {
+			return 0 // or some default value
+		}
+		return value
 	}
-	payload, _ := json.Marshal(serializer)
+	payload := make(map[string]any)
+	keysToConvert := []string{"age", "STR", "CON", "DEX", "INT", "POW", "APP", "EDU", "SIZ"}
+	for key, val := range r.PostForm {
+		val = r.PostForm[key]
+		if slices.Contains(keysToConvert, key) {
+			payload[key] = formToInt(val[0])
+		} else {
+			payload[key] = val[0]
+		}
+	}
+
 	investigator := models.InvestigatorCreate(payload)
 	cm := storage.NewInvestigatorCookieConfig()
 	cm.SaveInvestigatorCookie(w, investigator)
 	components := views.CharacterSheet(investigator)
-	err = components.Render(r.Context(), w)
+	err := components.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)
 	}

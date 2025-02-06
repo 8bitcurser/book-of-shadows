@@ -458,7 +458,6 @@ func NewInvestigator(mode GameMode) *Investigator {
 		inv.Archetype = PickRandomArchetype()
 		inv.PickRandomTalents()
 	}
-
 	// assign occupation
 	inv.AssignOccupation()
 	// Initialize Attributes
@@ -548,12 +547,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 	return &inv
 }
 
-func InvestigatorCreate(payload []byte) *Investigator {
-	data := make(map[string]interface{})
-	err := json.Unmarshal(payload, &data)
-	if err != nil {
-		return nil
-	}
+func InvestigatorCreate(data map[string]any) *Investigator {
 	archetype := Archetypes[data["archetype"].(string)]
 	occupation := Occupations[data["occupation"].(string)]
 	inv := Investigator{
@@ -562,7 +556,7 @@ func InvestigatorCreate(payload []byte) *Investigator {
 		Name:             data["name"].(string),
 		Residence:        data["residence"].(string),
 		Birthplace:       data["birthplace"].(string),
-		Age:              int(data["age"].(float64)),
+		Age:              data["age"].(int),
 		ProfilePic:       ProfilePic{"/sample/path/env", "profile"},
 		Insane:           false,
 		TemporaryInsane:  false,
@@ -574,49 +568,49 @@ func InvestigatorCreate(payload []byte) *Investigator {
 			AttrStrength: {
 				Name:          "STR",
 				StartingValue: 0,
-				Value:         int(data["STR"].(float64)),
+				Value:         data["STR"].(int),
 				MaxValue:      0,
 			},
 			AttrConstitution: {
 				Name:          "CON",
 				StartingValue: 0,
-				Value:         int(data["CON"].(float64)),
+				Value:         data["CON"].(int),
 				MaxValue:      0,
 			},
 			AttrDexterity: {
 				Name:          "DEX",
 				StartingValue: 0,
-				Value:         int(data["DEX"].(float64)),
+				Value:         data["DEX"].(int),
 				MaxValue:      0,
 			},
 			AttrIntelligence: {
 				Name:          "INT",
 				StartingValue: 0,
-				Value:         int(data["INT"].(float64)),
+				Value:         data["INT"].(int),
 				MaxValue:      0,
 			},
 			AttrSize: {
 				Name:          "SIZ",
 				StartingValue: 0,
-				Value:         int(data["SIZ"].(float64)),
+				Value:         data["SIZ"].(int),
 				MaxValue:      0,
 			},
 			AttrPower: {
 				Name:          "POW",
 				StartingValue: 0,
-				Value:         int(data["POW"].(float64)),
+				Value:         data["POW"].(int),
 				MaxValue:      0,
 			},
 			AttrAppearance: {
 				Name:          "APP",
 				StartingValue: 0,
-				Value:         int(data["APP"].(float64)),
+				Value:         data["APP"].(int),
 				MaxValue:      0,
 			},
 			AttrEducation: {
 				Name:          "EDU",
 				StartingValue: 0,
-				Value:         int(data["EDU"].(float64)),
+				Value:         data["EDU"].(int),
 				MaxValue:      0,
 			},
 			AttrHitPoints: {
