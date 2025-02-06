@@ -173,15 +173,24 @@ templ CharacterSheet(investigator *models.Investigator) {
                 <div class="flex gap-4 mb-4">
                     <div class="bg-gray-100 px-4 py-2 rounded-md">
                         <span class="text-sm text-gray-600">Occupation Points:</span>
-                        <span class="font-medium ml-1">{ strconv.Itoa(investigator.OccupationPoints) }</span>
+                        <span class="font-medium ml-1">
+                            { strconv.Itoa(investigator.OccupationPoints) } |
+                            { strconv.Itoa(investigator.UnassignedOccupationPoints) }
+                        </span>
                     </div>
                     <div class="bg-gray-100 px-4 py-2 rounded-md">
                         <span class="text-sm text-gray-600">Archetype Points:</span>
-                        <span class="font-medium ml-1">{ strconv.Itoa(investigator.ArchetypePoints) }</span>
+                        <span class="font-medium ml-1">
+                            { strconv.Itoa(investigator.ArchetypePoints) } |
+                            { strconv.Itoa(investigator.UnassignedArchetypePoints) }
+                        </span>
                     </div>
                     <div class="bg-gray-100 px-4 py-2 rounded-md">
-                        <span class="text-sm text-gray-600">Free Points:</span>
-                        <span class="font-medium ml-1">{ strconv.Itoa(investigator.FreePoints) }</span>
+                        <span class="text-sm text-gray-600">Common interest Points:</span>
+                        <span class="font-medium ml-1">
+                            { strconv.Itoa(investigator.FreePoints) } |
+                            { strconv.Itoa(investigator.UnassignedFreePoints) }
+                        </span>
                     </div>
                 </div>
 

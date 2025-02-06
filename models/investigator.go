@@ -154,7 +154,7 @@ func (i *Investigator) CalculateOccupationSkillPoints() int {
 	return points
 }
 
-func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) {
+func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) int {
 	skillLimit := 90
 	if i.GameMode == Pulp {
 		skillLimit = 95
@@ -166,7 +166,7 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 		CR.Value = creditPointsBase
 		i.Skills["Credit Rating"] = CR
 	}
-
+	fmt.Println(assignablePoints)
 	for assignablePoints > 0 {
 		skillPicked := rand.Intn(len(skills))
 		skillName := skills[skillPicked]
@@ -190,8 +190,9 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 		skill.Value += pointsToAssign
 
 		i.Skills[skillName] = skill
+		fmt.Printf("Assigned skill points: %v - Amount: %d\n", skillName, pointsToAssign)
 	}
-
+	return assignablePoints
 }
 
 func (i *Investigator) GetSkills() {
@@ -332,31 +333,34 @@ func (i *Investigator) ToJSON() ([]byte, error) {
 }
 
 type Investigator struct {
-	ID               string               `json:"id"`
-	Era              Era                  `json:"-"`
-	GameMode         GameMode             `json:"-"`
-	Name             string               `json:"Investigators_Name"`
-	Residence        string               `json:"Residence"`
-	Birthplace       string               `json:"Birthplace"`
-	Age              int                  `json:"Age"`
-	ProfilePic       ProfilePic           `json:"Portrait"`
-	Occupation       *Occupation          `json:"Occupation"`
-	Archetype        *Archetype           `json:"Archetype"`
-	Insane           bool                 `json:"insane"`
-	TemporaryInsane  bool                 `json:"TempInsanity_Chk Off"`
-	IndefiniteInsane bool                 `json:"IndefInsanity_Chk"`
-	MajorWound       bool                 `json:"MajorWound_Chk"`
-	Unconscious      bool                 `json:"Unconscious_Chk"`
-	Dying            bool                 `json:"Dying_Chk"`
-	Attributes       map[string]Attribute `json:"Attributes"`
-	Skills           map[string]Skill     `json:"Skills"`
-	Move             int                  `json:"MOV"`
-	Build            string               `json:"Build"`
-	DamageBonus      string               `json:"DamageBonus"`
-	Talents          []Talent             `json:"Pulp-Talents"`
-	OccupationPoints int                  `json:"OccupationPoints"`
-	ArchetypePoints  int                  `json:"ArchetypePoints"`
-	FreePoints       int                  `json:"FreePoints"`
+	ID                         string               `json:"id"`
+	Era                        Era                  `json:"-"`
+	GameMode                   GameMode             `json:"-"`
+	Name                       string               `json:"Investigators_Name"`
+	Residence                  string               `json:"Residence"`
+	Birthplace                 string               `json:"Birthplace"`
+	Age                        int                  `json:"Age"`
+	ProfilePic                 ProfilePic           `json:"Portrait"`
+	Occupation                 *Occupation          `json:"Occupation"`
+	Archetype                  *Archetype           `json:"Archetype"`
+	Insane                     bool                 `json:"insane"`
+	TemporaryInsane            bool                 `json:"TempInsanity_Chk Off"`
+	IndefiniteInsane           bool                 `json:"IndefInsanity_Chk"`
+	MajorWound                 bool                 `json:"MajorWound_Chk"`
+	Unconscious                bool                 `json:"Unconscious_Chk"`
+	Dying                      bool                 `json:"Dying_Chk"`
+	Attributes                 map[string]Attribute `json:"Attributes"`
+	Skills                     map[string]Skill     `json:"Skills"`
+	Move                       int                  `json:"MOV"`
+	Build                      string               `json:"Build"`
+	DamageBonus                string               `json:"DamageBonus"`
+	Talents                    []Talent             `json:"Pulp-Talents"`
+	OccupationPoints           int                  `json:"OccupationPoints"`
+	ArchetypePoints            int                  `json:"ArchetypePoints"`
+	FreePoints                 int                  `json:"FreePoints"`
+	UnassignedOccupationPoints int                  `json:"UnassignedOccupationPoints"`
+	UnassignedArchetypePoints  int                  `json:"UnassignedArchetypePoints"`
+	UnassignedFreePoints       int                  `json:"UnassignedFreePoints"`
 }
 
 func NewInvestigator(mode GameMode) *Investigator {
@@ -497,7 +501,7 @@ func NewInvestigator(mode GameMode) *Investigator {
 		Abbreviation: "Dodge",
 		FormName:     "Dodge",
 		Default:      DEX.Value / 2,
-		Value:        (DEX.Value / 2),
+		Value:        DEX.Value / 2,
 	}
 	inv.Skills["Language(Own)"] = Skill{
 		Name:         "Language(Own)",
@@ -509,12 +513,14 @@ func NewInvestigator(mode GameMode) *Investigator {
 	inv.addMissingSkills(&[]string{})
 	// assign points
 	occupationPoints := inv.CalculateOccupationSkillPoints()
+	inv.UnassignedOccupationPoints = occupationPoints
 	inv.OccupationPoints = occupationPoints
-	if inv.GameMode == Pulp {
-		inv.ArchetypePoints = inv.Archetype.BonusPoints
-		inv.addMissingSkills(&inv.Archetype.Skills)
-		inv.AssignSkillPoints(inv.ArchetypePoints, inv.Archetype.Skills)
-	}
+
+	inv.ArchetypePoints = inv.Archetype.BonusPoints
+	inv.addMissingSkills(&inv.Archetype.Skills)
+	sparePoints := inv.AssignSkillPoints(inv.ArchetypePoints, inv.Archetype.Skills)
+	inv.UnassignedArchetypePoints = sparePoints
+
 	occupationSkills := make([]string, 0)
 
 	for _, skillReq := range inv.Occupation.SkillRequirements {
@@ -535,7 +541,8 @@ func NewInvestigator(mode GameMode) *Investigator {
 	}
 	inv.addMissingSkills(&occupationSkills)
 
-	inv.AssignSkillPoints(occupationPoints, occupationSkills)
+	sparePoints = inv.AssignSkillPoints(occupationPoints, occupationSkills)
+	inv.UnassignedOccupationPoints = sparePoints
 	var skillsList []string
 	for s, v := range inv.Skills {
 		if v.Name != "Cthulhu Mythos" && v.Name != "Dodge_Copy" {
@@ -543,7 +550,8 @@ func NewInvestigator(mode GameMode) *Investigator {
 		}
 	}
 	inv.FreePoints = INT.Value * 2
-	inv.AssignSkillPoints(inv.FreePoints, skillsList)
+	sparePoints = inv.AssignSkillPoints(inv.FreePoints, skillsList)
+	inv.UnassignedFreePoints = sparePoints
 	return &inv
 }
 
