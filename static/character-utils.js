@@ -203,6 +203,20 @@ const characterUtils = {
             throw error;
         }
     },
+    showDescription(value, targetId) {
+        const select = event.target;
+        const selectedOption = select.options[select.selectedIndex];
+        const description = selectedOption.getAttribute('data-description');
+        const target = document.getElementById(targetId);
+
+        if (description) {
+            target.textContent = description;
+            target.style.opacity = "1";
+        } else {
+            target.textContent = "";
+            target.style.opacity = "0";
+        }
+    },
 
 };
 

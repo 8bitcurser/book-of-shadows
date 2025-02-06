@@ -8,6 +8,8 @@ package views
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
+import "book-of-shadows/models"
+
 func StepByStepForm() templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -29,7 +31,105 @@ func StepByStepForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"max-w-4xl mx-auto p-6\" style=\"background-color: #EEEEEE;\"><form id=\"stepForm\" class=\"space-y-8\" hx-post=\"/api/investigator/create\" hx-target=\"#character-sheet\"><!-- Personal Information --><div class=\"p-6 rounded-lg\" style=\"background-color: rgba(104, 109, 118, 0.1)\"><h2 class=\"text-xl font-bold mb-6\" style=\"color: #373A40\">Personal Information</h2><div class=\"grid grid-cols-1 md:grid-cols-2 gap-6\"><div><label class=\"block mb-2\" style=\"color: #686D76\">Name</label> <input type=\"text\" name=\"name\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Age</label> <input type=\"number\" name=\"age\" min=\"15\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Residence</label> <input type=\"text\" name=\"residence\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Birthplace</label> <input type=\"text\" name=\"birthplace\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Occupation</label> <select name=\"occupation\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required><option value=\"\">Select Occupation</option> <option value=\"Antiquarian\">Antiquarian</option> <option value=\"Author\">Author</option> <option value=\"Detective\">Detective</option> <option value=\"Doctor\">Doctor</option> <option value=\"Journalist\">Journalist</option> <option value=\"Laborer\">Laborer</option> <option value=\"Police\">Police</option> <option value=\"Professor\">Professor</option></select></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Archetype</label> <select name=\"archetype\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required><option value=\"\">Select Archetype</option> <option value=\"Academic\">Academic</option> <option value=\"Adventurer\">Adventurer</option> <option value=\"Everyman\">Everyman</option> <option value=\"Explorer\">Explorer</option> <option value=\"Investigator\">Investigator</option> <option value=\"Seeker\">Seeker</option></select></div></div></div><!-- Attributes --><div class=\"p-6 rounded-lg\" style=\"background-color: rgba(104, 109, 118, 0.1)\"><h2 class=\"text-xl font-bold mb-6\" style=\"color: #373A40\">Attributes</h2><div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div><label class=\"block mb-2\" style=\"color: #686D76\">Strength (STR)</label> <input type=\"number\" name=\"STR\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Constitution (CON)</label> <input type=\"number\" name=\"CON\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Dexterity (DEX)</label> <input type=\"number\" name=\"DEX\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Appearance (APP)</label> <input type=\"number\" name=\"APP\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Education (EDU)</label> <input type=\"number\" name=\"EDU\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Size (SIZ)</label> <input type=\"number\" name=\"SIZ\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Intelligence (INT)</label> <input type=\"number\" name=\"INT\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Power (POW)</label> <input type=\"number\" name=\"POW\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div></div></div><!-- Submit Button --><div class=\"flex justify-end\"><button type=\"submit\" class=\"px-6 py-2 rounded transition-all\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">Create Investigator</button></div></form></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"max-w-4xl mx-auto p-6\" style=\"background-color: #EEEEEE;\"><form id=\"stepForm\" class=\"space-y-8\" hx-post=\"/api/investigator/create\" hx-target=\"#character-sheet\"><!-- Personal Information --><div class=\"p-6 rounded-lg\" style=\"background-color: rgba(104, 109, 118, 0.1)\"><h2 class=\"text-xl font-bold mb-6\" style=\"color: #373A40\">Personal Information</h2><div class=\"grid grid-cols-1 md:grid-cols-2 gap-6\"><div><label class=\"block mb-2\" style=\"color: #686D76\">Name</label> <input type=\"text\" name=\"name\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Age</label> <input type=\"number\" name=\"age\" min=\"15\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Residence</label> <input type=\"text\" name=\"residence\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Birthplace</label> <input type=\"text\" name=\"birthplace\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Occupation</label> <select name=\"occupation\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required onchange=\"characterUtils.showDescription(this.value, &#39;occupation-description&#39;)\"><option value=\"\">Select Occupation</option> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for key, occ := range models.Occupations {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var2 string
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(key)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/firstStep.templ`, Line: 71, Col: 50}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-description=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(occ.GetDescription())
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/firstStep.templ`, Line: 71, Col: 90}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(key)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/firstStep.templ`, Line: 71, Col: 96}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select><p id=\"occupation-description\" class=\"text-sm mt-1 transition-all whitespace-pre-line leading-relaxed\" style=\"color: #686D76; min-height: 3em;\"></p></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Archetype</label> <select name=\"archetype\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required onchange=\"characterUtils.showDescription(this.value, &#39;archetype-description&#39;)\"><option value=\"\">Select Archetype</option> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for key, arch := range models.Archetypes {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var5 string
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(key)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/firstStep.templ`, Line: 91, Col: 50}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-description=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(arch.GetDescription())
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/firstStep.templ`, Line: 91, Col: 91}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(key)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/firstStep.templ`, Line: 91, Col: 97}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</option>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select><p id=\"archetype-description\" class=\"text-sm mt-1 transition-all whitespace-pre-line leading-relaxed\" style=\"color: #686D76; min-height: 3em;\"></p></div></div></div><!-- Attributes --><div class=\"p-6 rounded-lg\" style=\"background-color: rgba(104, 109, 118, 0.1)\"><h2 class=\"text-xl font-bold mb-6\" style=\"color: #373A40\">Attributes</h2><div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div><label class=\"block mb-2\" style=\"color: #686D76\">Strength (STR)</label> <input type=\"number\" name=\"STR\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Constitution (CON)</label> <input type=\"number\" name=\"CON\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Dexterity (DEX)</label> <input type=\"number\" name=\"DEX\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Appearance (APP)</label> <input type=\"number\" name=\"APP\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Education (EDU)</label> <input type=\"number\" name=\"EDU\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Size (SIZ)</label> <input type=\"number\" name=\"SIZ\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Intelligence (INT)</label> <input type=\"number\" name=\"INT\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Power (POW)</label> <input type=\"number\" name=\"POW\" min=\"1\" max=\"99\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div></div></div><!-- Submit Button --><div class=\"flex justify-end\"><button type=\"submit\" class=\"px-6 py-2 rounded transition-all\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">Create Investigator</button></div></form></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

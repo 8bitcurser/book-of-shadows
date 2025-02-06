@@ -1,7 +1,9 @@
 package models
 
 import (
+	"fmt"
 	"math/rand"
+	"strings"
 )
 
 type SpecialArchetypeRules struct {
@@ -24,6 +26,51 @@ type Archetype struct {
 
 func (a *Archetype) String() string {
 	return a.Name
+}
+
+func (a *Archetype) GetDescription() string {
+	var desc strings.Builder
+
+	// Start with the main description
+	desc.WriteString(a.Description)
+	desc.WriteString("\n\n")
+
+	// Core Characteristics
+	if len(a.CoreCharacteristic) > 0 {
+		desc.WriteString("Core Characteristics: ")
+		desc.WriteString(strings.Join(a.CoreCharacteristic, " or "))
+		desc.WriteString("\n\n")
+	}
+
+	// Bonus Points
+	desc.WriteString(fmt.Sprintf("Bonus Points: %d\n\n", a.BonusPoints))
+
+	// Skills
+	if len(a.Skills) > 0 {
+		desc.WriteString("Archetype Skills:\n")
+		desc.WriteString(strings.Join(a.Skills, ", "))
+		desc.WriteString("\n\n")
+	}
+
+	// Talents
+	if a.AmountOfTalents > 0 {
+		desc.WriteString(fmt.Sprintf("Number of Talents: %d\n\n", a.AmountOfTalents))
+	}
+
+	// Suggested Traits
+	if a.SuggestedTraits != "" {
+		desc.WriteString("Suggested Traits:\n")
+		desc.WriteString(a.SuggestedTraits)
+		desc.WriteString("\n\n")
+	}
+
+	// Suggested Occupations
+	if len(a.SuggestedOccupations) > 0 {
+		desc.WriteString("Suggested Occupations:\n")
+		desc.WriteString(strings.Join(a.SuggestedOccupations, ", "))
+	}
+
+	return desc.String()
 }
 
 func PickRandomArchetype() *Archetype {

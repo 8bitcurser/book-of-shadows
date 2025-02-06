@@ -1,5 +1,10 @@
 package models
 
+import (
+	"fmt"
+	"strings"
+)
+
 type BaseSkillAttribute struct {
 	Name       string `json:"Name"`
 	Multiplier int    `json:"Multiplier"`
@@ -35,6 +40,60 @@ type Occupation struct {
 
 func (o *Occupation) String() string {
 	return o.Name
+}
+
+func (o *Occupation) GetDescription() string {
+	// Build description using strings.Builder for efficiency
+	var desc strings.Builder
+
+	// Start with skill points calculation
+	desc.WriteString(fmt.Sprintf("As %s, your skill points are calculated by multiplying your ",
+		strings.ToLower(o.Name)))
+
+	// Handle skill points calculation explanation
+	for i, attr := range o.SkillPoints.BaseAttributes {
+		if i > 0 {
+			desc.WriteString(" and ")
+		}
+		desc.WriteString(fmt.Sprintf("%s by %d", attr.Name, attr.Multiplier))
+	}
+	desc.WriteString("." +
+		". ")
+
+	// Required Skills section
+	desc.WriteString("\n\nRequired Skills: ")
+	var requiredSkills []string
+	var choiceSkills []string
+
+	for _, req := range o.SkillRequirements {
+		if req.Type == "required" {
+			requiredSkills = append(requiredSkills, req.Skill)
+		} else if req.Type == "choice" {
+			// Handle skill choices
+			choiceText := fmt.Sprintf("Choose %d from: %s",
+				req.SkillChoice.NumRequired,
+				strings.Join(req.SkillChoice.Skills, ", "))
+			choiceSkills = append(choiceSkills, choiceText)
+		}
+	}
+
+	desc.WriteString(strings.Join(requiredSkills, ", "))
+
+	// Optional Skills section
+	if len(choiceSkills) > 0 {
+		desc.WriteString("\n\nOptional Skills: ")
+		desc.WriteString(strings.Join(choiceSkills, "; "))
+	}
+
+	// Credit Rating range
+	desc.WriteString(fmt.Sprintf("\n\nCredit Rating: %d-%d", o.CreditRating.Min, o.CreditRating.Max))
+
+	// Suggested contacts
+	if o.SuggestedContacts != "" {
+		desc.WriteString(fmt.Sprintf("\n\nUseful Contacts: %s", o.SuggestedContacts))
+	}
+
+	return desc.String()
 }
 
 var Occupations = map[string]Occupation{

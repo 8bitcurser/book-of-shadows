@@ -1,5 +1,8 @@
 package views
 
+import "book-of-shadows/models"
+
+
 templ StepByStepForm() {
     <div class="max-w-4xl mx-auto p-6" style="background-color: #EEEEEE;">
         <form
@@ -61,17 +64,18 @@ templ StepByStepForm() {
                             class="w-full p-2 rounded"
                             style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
                             required
+                            onchange="characterUtils.showDescription(this.value, 'occupation-description')"
                         >
                             <option value="">Select Occupation</option>
-                            <option value="Antiquarian">Antiquarian</option>
-                            <option value="Author">Author</option>
-                            <option value="Detective">Detective</option>
-                            <option value="Doctor">Doctor</option>
-                            <option value="Journalist">Journalist</option>
-                            <option value="Laborer">Laborer</option>
-                            <option value="Police">Police</option>
-                            <option value="Professor">Professor</option>
+                            for key, occ := range models.Occupations {
+                                <option value={key} data-description={occ.GetDescription()}>{key}</option>
+                            }
                         </select>
+                        <p
+                                id="occupation-description"
+                                class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
+                                style="color: #686D76; min-height: 3em;"
+                            ></p>
                     </div>
                     <div>
                         <label class="block mb-2" style="color: #686D76">Archetype</label>
@@ -80,15 +84,18 @@ templ StepByStepForm() {
                             class="w-full p-2 rounded"
                             style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
                             required
+                            onchange="characterUtils.showDescription(this.value, 'archetype-description')"
                         >
                             <option value="">Select Archetype</option>
-                            <option value="Academic">Academic</option>
-                            <option value="Adventurer">Adventurer</option>
-                            <option value="Everyman">Everyman</option>
-                            <option value="Explorer">Explorer</option>
-                            <option value="Investigator">Investigator</option>
-                            <option value="Seeker">Seeker</option>
+                            for key, arch := range models.Archetypes {
+                                <option value={key} data-description={arch.GetDescription()}>{key}</option>
+                            }
                         </select>
+                        <p
+                                id="archetype-description"
+                                class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
+                                style="color: #686D76; min-height: 3em;"
+                            ></p>
                     </div>
                 </div>
             </div>
