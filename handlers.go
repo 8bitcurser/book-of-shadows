@@ -132,7 +132,7 @@ func handleListInvestigatorsImport(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 }
 
-func handleCreateInvestigator(w http.ResponseWriter, r *http.Request) {
+func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
@@ -299,7 +299,7 @@ func handleCreateStepInvestigator(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	component := views.StepByStepForm()
+	component := views.BaseInvForm()
 	err := component.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)

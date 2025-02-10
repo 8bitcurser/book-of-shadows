@@ -203,6 +203,7 @@ const characterUtils = {
             throw error;
         }
     },
+
     showDescription(value, targetId) {
         const select = event.target;
         const selectedOption = select.options[select.selectedIndex];
@@ -218,7 +219,34 @@ const characterUtils = {
         }
     },
 
+    rollAttribute(button, formula) {
+        const input = button.previousElementSibling;
+        let result = 0;
+
+        if (formula === '3d6x5') {
+            // Roll 3d6 * 5
+            result = (rollDice(3, 6)) * 5;
+        } else if (formula === '2d6p6x5') {
+            // Roll (2d6 + 6) * 5
+            result = (rollDice(2, 6) + 6) * 5;
+        }
+
+        input.value = result;
+    },
+
+
 };
+
+
+function rollDice(numDice, sides) {
+    let total = 0;
+    for (let i = 0; i < numDice; i++) {
+        total += Math.floor(Math.random() * sides) + 1;
+    }
+    return total;
+}
+
+
 
 // Initialize only once when the page loads
 if (document.readyState === 'loading') {

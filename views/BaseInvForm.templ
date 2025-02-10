@@ -1,0 +1,296 @@
+package views
+
+import "book-of-shadows/models"
+
+
+templ BaseInvForm() {
+
+        <form
+            id="stepForm"
+            class="space-y-8"
+            hx-post="/api/investigator/create/"
+            hx-target="#character-sheet"
+        >
+            <!-- Personal Information -->
+            <div class="p-6 rounded-lg" style="background-color: rgba(104, 109, 118, 0.1)">
+                <h2 class="text-xl font-bold mb-6" style="color: #373A40">Personal Information</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Name</label>
+                        <input
+                            type="text"
+                            name="name"
+                            class="w-full p-2 rounded"
+                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Age</label>
+                        <input
+                            type="number"
+                            name="age"
+                            min="15"
+                            max="90"
+                            class="w-full p-2 rounded"
+                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Residence</label>
+                        <input
+                            type="text"
+                            name="residence"
+                            class="w-full p-2 rounded"
+                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Birthplace</label>
+                        <input
+                            type="text"
+                            name="birthplace"
+                            class="w-full p-2 rounded"
+                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Occupation</label>
+                        <select
+                            name="occupation"
+                            class="w-full p-2 rounded"
+                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                            required
+                            onchange="characterUtils.showDescription(this.value, 'occupation-description')"
+                        >
+                            <option value="">Select Occupation</option>
+                            for key, occ := range models.Occupations {
+                                <option value={key} data-description={occ.GetDescription()}>{key}</option>
+                            }
+                        </select>
+                        <p
+                            id="occupation-description"
+                            class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
+                            style="color: #686D76; min-height: 3em;"
+                        ></p>
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Archetype</label>
+                        <select
+                            name="archetype"
+                            class="w-full p-2 rounded"
+                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                            required
+                            onchange="characterUtils.showDescription(this.value, 'archetype-description')"
+                        >
+                            <option value="">Select Archetype</option>
+                            for key, arch := range models.Archetypes {
+                                <option value={key} data-description={arch.GetDescription()}>{key}</option>
+                            }
+                        </select>
+                        <p
+                                id="archetype-description"
+                                class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
+                                style="color: #686D76; min-height: 3em;"
+                            ></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Attributes -->
+            <div class="p-6 rounded-lg" style="background-color: rgba(104, 109, 118, 0.1)">
+                <h2 class="text-xl font-bold mb-6" style="color: #373A40">Attributes</h2>
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Strength (STR)</label>
+                        <div class="flex gap-2 items-center">
+                            <input
+                                type="number"
+                                name="STR"
+                                min="1"
+                                max="90"
+                                class="w-full p-2 rounded"
+                                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="px-3 py-2 rounded"
+                                style="background-color: rgba(220, 95, 0, 0.8); color: white;"
+                                onclick="characterUtils.rollAttribute(this, '3d6x5')"
+                            >
+                                🎲
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Constitution (CON)</label>
+                        <div class="flex gap-2 items-center">
+                            <input
+                                type="number"
+                                name="CON"
+                                min="1"
+                                max="90"
+                                class="w-full p-2 rounded"
+                                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="px-3 py-2 rounded"
+                                style="background-color: rgba(220, 95, 0, 0.8); color: white;"
+                                onclick="characterUtils.rollAttribute(this, '3d6x5')"
+                            >
+                                🎲
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Dexterity (DEX)</label>
+                        <div class="flex gap-2 items-center">
+                            <input
+                                type="number"
+                                name="DEX"
+                                min="1"
+                                max="90"
+                                class="w-full p-2 rounded"
+                                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="px-3 py-2 rounded"
+                                style="background-color: rgba(220, 95, 0, 0.8); color: white;"
+                                onclick="characterUtils.rollAttribute(this, '3d6x5')"
+                            >
+                                🎲
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Appearance (APP)</label>
+                        <div class="flex gap-2 items-center">
+                            <input
+                                type="number"
+                                name="APP"
+                                min="1"
+                                max="90"
+                                class="w-full p-2 rounded"
+                                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="px-3 py-2 rounded"
+                                style="background-color: rgba(220, 95, 0, 0.8); color: white;"
+                                onclick="characterUtils.rollAttribute(this, '3d6x5')"
+                            >
+                                🎲
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Education (EDU)</label>
+                        <div class="flex gap-2 items-center">
+                            <input
+                                type="number"
+                                name="EDU"
+                                min="1"
+                                max="90"
+                                class="w-full p-2 rounded"
+                                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="px-3 py-2 rounded"
+                                style="background-color: rgba(220, 95, 0, 0.8); color: white;"
+                                onclick="characterUtils.rollAttribute(this, '2d6p6x5')"
+                            >
+                                🎲
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Size (SIZ)</label>
+                        <div class="flex gap-2 items-center">
+                            <input
+                                type="number"
+                                name="SIZ"
+                                min="1"
+                                max="90"
+                                class="w-full p-2 rounded"
+                                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="px-3 py-2 rounded"
+                                style="background-color: rgba(220, 95, 0, 0.8); color: white;"
+                                onclick="characterUtils.rollAttribute(this, '2d6p6x5')"
+                            >
+                                🎲
+                            </button>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block mb-2" style="color: #686D76">Intelligence (INT)</label>
+                        <div class="flex gap-2 items-center">
+                            <input
+                                type="number"
+                                name="INT"
+                                min="1"
+                                max="90"
+                                class="w-full p-2 rounded"
+                                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="px-3 py-2 rounded"
+                                style="background-color: rgba(220, 95, 0, 0.8); color: white;"
+                                onclick="characterUtils.rollAttribute(this, '2d6p6x5')"
+                            >
+                                🎲
+                            </button>
+                        </div>
+                    </div>
+                    <div    >
+                        <label class="block mb-2" style="color: #686D76">Power (POW)</label>
+                        <div class="flex gap-2 items-center">
+                            <input
+                                type="number"
+                                name="POW"
+                                min="1"
+                                max="90"
+                                class="w-full p-2 rounded"
+                                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="px-3 py-2 rounded"
+                                style="background-color: rgba(220, 95, 0, 0.8); color: white;"
+                                onclick="characterUtils.rollAttribute(this, '3d6x5')"
+                            >
+                                🎲
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="flex justify-end">
+                <button
+                    type="submit"
+                    class="px-6 py-2 rounded transition-all"
+                    style="background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)">
+                    Create Investigator
+                </button>
+            </div>
+        </form>
+}
