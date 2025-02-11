@@ -39,7 +39,7 @@ func handleGenerate(w http.ResponseWriter, r *http.Request) {
 		mode = models.Classic
 	}
 
-	investigator := models.NewInvestigator(mode)
+	investigator := models.RandomInvestigator(mode)
 	cm := storage.NewInvestigatorCookieConfig()
 	cm.SaveInvestigatorCookie(w, investigator)
 	components := views.CharacterSheet(investigator)
@@ -160,7 +160,7 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 	investigator := models.InvestigatorCreate(payload)
 	cm := storage.NewInvestigatorCookieConfig()
 	cm.SaveInvestigatorCookie(w, investigator)
-	components := views.CharacterSheet(investigator)
+	components := views.SkillArchAssignmentForm(investigator)
 	err := components.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)
@@ -301,6 +301,42 @@ func handleCreateStepInvestigator(w http.ResponseWriter, r *http.Request) {
 	}
 	component := views.BaseInvForm()
 	err := component.Render(r.Context(), w)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func handleConfirmArchSkillStepInvestigator(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/confirm-archetype/")
+	cm := storage.NewInvestigatorCookieConfig()
+	investigator, err := cm.GetInvestigatorCookie(r, key)
+	if err != nil {
+		log.Println(err)
+	}
+	component := views.SkillOccAssignmentForm(investigator)
+	err = component.Render(r.Context(), w)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func handleConfirmOccSkillStepInvestigator(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/confirm-occupation/")
+	cm := storage.NewInvestigatorCookieConfig()
+	investigator, err := cm.GetInvestigatorCookie(r, key)
+	if err != nil {
+		log.Println(err)
+	}
+	component := views.SkillGeneralAssignmentForm(investigator)
+	err = component.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)
 	}

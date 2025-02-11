@@ -1,0 +1,77 @@
+package views
+
+import "book-of-shadows/models"
+import "strconv"
+import "fmt"
+
+
+templ SkillOccAssignmentForm(investigator *models.Investigator) {
+    <input
+        type="text"
+        id={ investigator.ID }
+        class="text-3xl font-bold w-full border-b border-transparent hover:border-gray-300 focus:outline-none mb-4 bg-transparent"
+        value={ investigator.Name }
+        data-field="Name"
+        onchange="characterUtils.updatePersonalInfo(this)"
+        style="color: #373A40; display: none"
+    />
+    <div class="second-page mt-6 pt-0">
+        <div class="mt-0">
+            <h2 class="text-xl font-bold mb-4 text-gray-700">Occupation Skills</h2>
+            <div class="bg-gray-100 px-4 py-2 rounded-md">
+                <span class="text-sm text-gray-600">Occupation Points:</span>
+                <span class="font-medium ml-1" id="occupation-points">
+                    { strconv.Itoa(investigator.OccupationPoints) }
+                </span>
+            </div>
+
+            <div class="bg-gray-50 p-4 rounded-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-2">
+                    for _, skillConfiguration := range *investigator.GetOccupationSkills() {
+
+                        {{skill := investigator.Skills[skillConfiguration]}}
+                        if skill.Name != "" && skill.Name != "Dodge_Copy"  && skill.Base == 0 {
+                            <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
+                                <span
+                                    class="font-medium text-gray-600 w-[40%] tooltip cursor-help"
+                                    title={ "Default: " + strconv.Itoa(skill.Default) + " | Points Assigned: " + strconv.Itoa(skill.Value - skill.Default) }
+                                >{ skill.Name }
+                                </span>
+                                <div class="flex items-center w-[60%] justify-end">
+                                    <input
+                                        type="number"
+                                        class="tooltip cursor-pointer w-[50px] text-right bg-white border rounded px-1"
+                                        value={ strconv.Itoa(skill.Value) }
+                                        data-skill={ skill.Name }
+                                        onchange="characterUtils.recalculateValues(this, 'skill')"
+                                        data-skillvalue={ strconv.Itoa(skill.Value) }
+                                        title="Regular"
+                                        min={ strconv.Itoa(skill.Default) }
+                                        max="95"
+                                    />
+                                    <span class="text-gray-300 w-[20px] text-center">|</span>
+                                    <span class="tooltip cursor-help w-[50px] text-right" title="Half value" data-half>{ strconv.Itoa(skill.Value/2) }</span>
+                                    <span class="text-gray-300 w-[20px] text-center">|</span>
+                                    <span class="tooltip cursor-help w-[50px] text-right" title="Fifth value" data-fifth>{ strconv.Itoa(skill.Value/5) }</span>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="mt-4 flex justify-end transition-opacity" id="confirm-archetype-container" style="opacity: 0">
+        <button
+            type="button"
+            class="px-4 py-2 rounded transition-all"
+            style="background-color: rgba(220, 95, 0, 0.8); color: white;"
+            hx-get={ fmt.Sprintf("/api/investigator/confirm-occupation/%s", investigator.ID) }
+            hx-target="#character-sheet"
+        >
+            Continue to General Skills
+        </button>
+    </div>
+}

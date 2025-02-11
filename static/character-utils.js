@@ -84,6 +84,7 @@ const characterUtils = {
     async recalculateValues(input, type) {
         let value = 0
         value = parseInt(input.value) || 0;
+
         const container = input.parentElement;
         const halfSpan = container.querySelector('[data-half]');
         const fifthSpan = container.querySelector('[data-fifth]');
@@ -91,8 +92,6 @@ const characterUtils = {
         if (halfSpan) halfSpan.textContent = Math.floor(value / 2);
         if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);
 
-        const characterData = this.getCurrentCharacter();
-        if (!characterData) return;
         if (type === 'attribute') {
             const attrName = input.dataset.attr;
             if (characterData.attributes?.[attrName]) {
@@ -105,17 +104,41 @@ const characterUtils = {
             )
         } else if (type === 'skill') {
             const skillName = input.dataset.skill;
-            if (characterData.Skill?.[skillName]) {
-                characterData.Skill[skillName].value = value;
+            const prevValue = parseInt(input.dataset.skillvalue);
+
+            const difference = value - prevValue;
+
+            let currentPoints = document.getElementById("archetype-points");
+            if (!currentPoints) {
+                currentPoints = document.getElementById("occupation-points");
             }
-            await this.updateInvestigator(
+            if (!currentPoints) {
+                currentPoints = document.getElementById("general-points");
+            }
+            if (currentPoints) {
+                let val= parseInt(currentPoints.innerText) || 0;
+                let newPoints = val - difference;
+
+                // Don't allow negative points
+                if (newPoints < 0) {
+                    input.value = prevValue;
+                    return;
+                }
+                currentPoints.innerText = newPoints.toString();
+                input.dataset.skillvalue = value.toString();
+                this.updateArchetypeConfirmButton(newPoints);
+
+                // Disable/enable inputs based on points
+                this.updateArchetypeInputs(newPoints);
+            }
+            input.dataset.skillvalue = value.toString();
+                await this.updateInvestigator(
                 "skills",
                 skillName,
                 value
             )
-        }
 
-        document.getElementById('currentCharacter').value = JSON.stringify(characterData);
+        }
     },
 
     async updatePersonalInfo(input) {
@@ -197,7 +220,7 @@ const characterUtils = {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            return await response.json();
+            return null
         } catch (error) {
             console.error('Error updating investigator:', error);
             throw error;
@@ -233,6 +256,28 @@ const characterUtils = {
 
         input.value = result;
     },
+
+    updateArchetypeConfirmButton(points) {
+        const confirmContainer = document.getElementById('confirm-archetype-container');
+        if (confirmContainer) {
+            confirmContainer.style.opacity = points === 0 ? "1" : "0";
+            confirmContainer.style.pointerEvents = points === 0 ? "auto" : "none";
+        }
+    },
+
+    updateArchetypeInputs(points) {
+        const inputs = document.querySelectorAll('input[data-skill]');
+        inputs.forEach(input => {
+            if (points === 0) {
+                // When points are 0, don't allow increasing values
+                const currentValue = parseInt(input.value) || 0;
+                input.max = currentValue;
+            } else {
+                // Remove max restriction when points are available
+                input.removeAttribute('max');
+            }
+        });
+    }
 
 
 };

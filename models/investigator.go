@@ -166,7 +166,6 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 		CR.Value = creditPointsBase
 		i.Skills["Credit Rating"] = CR
 	}
-	fmt.Println(assignablePoints)
 	for assignablePoints > 0 {
 		skillPicked := rand.Intn(len(skills))
 		skillName := skills[skillPicked]
@@ -363,7 +362,7 @@ type Investigator struct {
 	UnassignedFreePoints       int                  `json:"UnassignedFreePoints"`
 }
 
-func NewInvestigator(mode GameMode) *Investigator {
+func RandomInvestigator(mode GameMode) *Investigator {
 	inv := Investigator{
 		Era:              1,
 		GameMode:         mode,
@@ -521,27 +520,10 @@ func NewInvestigator(mode GameMode) *Investigator {
 	sparePoints := inv.AssignSkillPoints(inv.ArchetypePoints, inv.Archetype.Skills)
 	inv.UnassignedArchetypePoints = sparePoints
 
-	occupationSkills := make([]string, 0)
+	occupationSkills := inv.GetOccupationSkills()
+	inv.addMissingSkills(occupationSkills)
 
-	for _, skillReq := range inv.Occupation.SkillRequirements {
-		if skillReq.Type == "required" {
-			occupationSkills = append(occupationSkills, skillReq.Skill)
-		} else {
-			picked := make([]int, 0)
-			for i := 0; i < skillReq.SkillChoice.NumRequired; i++ {
-				choice := rand.Intn(len(skillReq.SkillChoice.Skills))
-				if slices.Contains(picked, choice) {
-					continue
-				} else {
-					picked = append(picked, choice)
-					occupationSkills = append(occupationSkills, skillReq.SkillChoice.Skills[choice])
-				}
-			}
-		}
-	}
-	inv.addMissingSkills(&occupationSkills)
-
-	sparePoints = inv.AssignSkillPoints(occupationPoints, occupationSkills)
+	sparePoints = inv.AssignSkillPoints(occupationPoints, *occupationSkills)
 	inv.UnassignedOccupationPoints = sparePoints
 	var skillsList []string
 	for s, v := range inv.Skills {
@@ -704,5 +686,29 @@ func InvestigatorCreate(data map[string]any) *Investigator {
 		inv.addMissingSkills(&inv.Archetype.Skills)
 	}
 	inv.FreePoints = INT.Value * 2
+	occupationSkills := inv.GetOccupationSkills()
+	inv.addMissingSkills(occupationSkills)
 	return &inv
+}
+
+func (i *Investigator) GetOccupationSkills() *[]string {
+	occupationSkills := make([]string, 0)
+
+	for _, skillReq := range i.Occupation.SkillRequirements {
+		if skillReq.Type == "required" {
+			occupationSkills = append(occupationSkills, skillReq.Skill)
+		} else {
+			picked := make([]int, 0)
+			for i := 0; i < skillReq.SkillChoice.NumRequired; i++ {
+				choice := rand.Intn(len(skillReq.SkillChoice.Skills))
+				if slices.Contains(picked, choice) {
+					continue
+				} else {
+					picked = append(picked, choice)
+					occupationSkills = append(occupationSkills, skillReq.SkillChoice.Skills[choice])
+				}
+			}
+		}
+	}
+	return &occupationSkills
 }
