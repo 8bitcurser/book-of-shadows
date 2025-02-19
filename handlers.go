@@ -147,7 +147,7 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 		return value
 	}
 	payload := make(map[string]any)
-	keysToConvert := []string{"age", "STR", "CON", "DEX", "INT", "POW", "APP", "EDU", "SIZ"}
+	keysToConvert := []string{"age"}
 	for key, val := range r.PostForm {
 		val = r.PostForm[key]
 		if slices.Contains(keysToConvert, key) {
@@ -157,10 +157,10 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
-	investigator := models.InvestigatorCreate(payload)
+	investigator := models.InvestigatorBaseCreate(payload)
 	cm := storage.NewInvestigatorCookieConfig()
 	cm.SaveInvestigatorCookie(w, investigator)
-	components := views.SkillArchAssignmentForm(investigator)
+	components := views.AssignAttrForm(investigator)
 	err := components.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)
@@ -273,27 +273,6 @@ func handleGetInvestigator(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handleListArchetype(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	payload, _ := json.Marshal(models.Archetypes)
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(payload)
-}
-
-func handleListOccupation(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	payload, _ := json.Marshal(models.Occupations)
-	w.Header().Set("Content-Type", "application/json")
-	w.Write(payload)
-
-}
-
 func handleCreateStepInvestigator(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -337,6 +316,43 @@ func handleConfirmOccSkillStepInvestigator(w http.ResponseWriter, r *http.Reques
 	}
 	component := views.SkillGeneralAssignmentForm(investigator)
 	err = component.Render(r.Context(), w)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func handleConfirmAttrStepInvestigator(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+	}
+	if err := r.ParseForm(); err != nil {
+		log.Println(err)
+	}
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/confirm-attributes/")
+	cm := storage.NewInvestigatorCookieConfig()
+	investigator, err := cm.GetInvestigatorCookie(r, key)
+	if err != nil {
+		log.Println(err)
+	}
+	formToInt := func(val string) int {
+		value, err := strconv.Atoi(val)
+		if err != nil {
+			return 0 // or some default value
+		}
+		return value
+	}
+	payload := make(map[string]int)
+	keysToConvert := []string{"STR", "CON", "DEX", "INT", "POW", "APP", "EDU", "SIZ", "LCK"}
+	for key, val := range r.PostForm {
+		val = r.PostForm[key]
+		if slices.Contains(keysToConvert, key) {
+			payload[key] = formToInt(val[0])
+		}
+	}
+	investigator.InvestigatorUpdateAttributes(payload)
+	cm.UpdateInvestigatorCookie(w, key, investigator)
+	components := views.SkillArchAssignmentForm(investigator)
+	err = components.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)
 	}

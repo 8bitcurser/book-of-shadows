@@ -270,8 +270,7 @@ const characterUtils = {
         inputs.forEach(input => {
             if (points === 0) {
                 // When points are 0, don't allow increasing values
-                const currentValue = parseInt(input.value) || 0;
-                input.max = currentValue;
+                input.max = parseInt(input.value) || 0;
             } else {
                 // Remove max restriction when points are available
                 input.removeAttribute('max');

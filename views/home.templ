@@ -12,6 +12,7 @@ templ Home() {
             <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+            <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
             <script src="/static/character-utils.js"></script>
             <style>
                 .menu-container {
@@ -61,33 +62,31 @@ templ Home() {
 
             <div class="menu-container">
                 <div class="menu-segment"
-                    style="--bg-color: 104, 109, 118; background-color: rgba(104, 109, 118, 0.8)">
-                    <button
-                        class="menu-button"
-                        hx-get="/api/generate-random"
-                        hx-target="#character-sheet"
-                        hx-vals='js:{mode: "pulp"}'>
-                        Generate Character
-                    </button>
-                </div>
-
-                <div class="menu-segment"
                     style="--bg-color: 55, 58, 64; background-color: rgba(55, 58, 64, 0.8)">
                     <button
                         class="menu-button"
                         hx-get="/api/investigator/list"
                         hx-target="#character-sheet">
-                        List Investigators
+                        Archive
                     </button>
                 </div>
-
                 <div class="menu-segment"
-                    style="--bg-color: 220, 95, 0; background-color: rgba(220, 95, 0, 0.8)">
+                    style="--bg-color: 55, 58, 64; background-color: rgba(55, 58, 64, 0.8)">
                     <button
                         class="menu-button"
-                            hx-get="/api/generate-step"
+                        hx-get="/api/generate-step"
                         hx-target="#character-sheet">
-                        Step by Step
+                        Create your Investigator
+                    </button>
+                </div>
+                <div class="menu-segment"
+                    style="--bg-color: 55, 58, 64; background-color: rgba(55, 58, 64, 0.8)">
+                    <button
+                        class="menu-button"
+                        hx-get="/api/generate-random"
+                        hx-target="#character-sheet"
+                        hx-vals='js:{mode: "pulp"}'>
+                        Random Investigator
                     </button>
                 </div>
             </div>

@@ -537,7 +537,7 @@ func RandomInvestigator(mode GameMode) *Investigator {
 	return &inv
 }
 
-func InvestigatorCreate(data map[string]any) *Investigator {
+func InvestigatorBaseCreate(data map[string]any) *Investigator {
 	archetype := Archetypes[data["archetype"].(string)]
 	occupation := Occupations[data["occupation"].(string)]
 	inv := Investigator{
@@ -554,141 +554,136 @@ func InvestigatorCreate(data map[string]any) *Investigator {
 		MajorWound:       false,
 		Unconscious:      false,
 		Dying:            false,
-		Attributes: map[string]Attribute{
-			AttrStrength: {
-				Name:          "STR",
-				StartingValue: 0,
-				Value:         data["STR"].(int),
-				MaxValue:      0,
-			},
-			AttrConstitution: {
-				Name:          "CON",
-				StartingValue: 0,
-				Value:         data["CON"].(int),
-				MaxValue:      0,
-			},
-			AttrDexterity: {
-				Name:          "DEX",
-				StartingValue: 0,
-				Value:         data["DEX"].(int),
-				MaxValue:      0,
-			},
-			AttrIntelligence: {
-				Name:          "INT",
-				StartingValue: 0,
-				Value:         data["INT"].(int),
-				MaxValue:      0,
-			},
-			AttrSize: {
-				Name:          "SIZ",
-				StartingValue: 0,
-				Value:         data["SIZ"].(int),
-				MaxValue:      0,
-			},
-			AttrPower: {
-				Name:          "POW",
-				StartingValue: 0,
-				Value:         data["POW"].(int),
-				MaxValue:      0,
-			},
-			AttrAppearance: {
-				Name:          "APP",
-				StartingValue: 0,
-				Value:         data["APP"].(int),
-				MaxValue:      0,
-			},
-			AttrEducation: {
-				Name:          "EDU",
-				StartingValue: 0,
-				Value:         data["EDU"].(int),
-				MaxValue:      0,
-			},
-			AttrHitPoints: {
-				Name:          "CurrentHP",
-				StartingValue: 0,
-				Value:         0,
-				MaxValue:      0,
-			},
-			AttrMagicPoints: {
-				Name:          "CurrentMagic",
-				StartingValue: 0,
-				Value:         0,
-				MaxValue:      0,
-			},
-			AttrLuck: {
-				Name:          "CurrentLuck",
-				StartingValue: 0,
-				Value:         0,
-				MaxValue:      0,
-			},
-			AttrSanity: {
-				Name:          "CurrentSanity",
-				StartingValue: 0,
-				Value:         0,
-				MaxValue:      0,
-			},
+		Attributes:       map[string]Attribute{},
+		Skills:           map[string]Skill{},
+		Move:             2,
+		Build:            "Big",
+		DamageBonus:      "1D4",
+		Archetype:        &archetype,
+		Occupation:       &occupation,
+	}
+	inv.GetSkills()
+	inv.addMissingSkills(&[]string{})
+	inv.addMissingSkills(&inv.Archetype.Skills)
+	occupationSkills := inv.GetOccupationSkills()
+	inv.addMissingSkills(occupationSkills)
+	return &inv
+}
+
+func (i *Investigator) InvestigatorUpdateAttributes(data map[string]int) {
+	i.Attributes = map[string]Attribute{
+		AttrStrength: {
+			Name:          "STR",
+			StartingValue: 0,
+			Value:         data["STR"],
+			MaxValue:      0,
 		},
-		Skills:      map[string]Skill{},
-		Move:        2,
-		Build:       "Big",
-		DamageBonus: "1D4",
-		Archetype:   &archetype,
-		Occupation:  &occupation,
+		AttrConstitution: {
+			Name:          "CON",
+			StartingValue: 0,
+			Value:         data["CON"],
+			MaxValue:      0,
+		},
+		AttrDexterity: {
+			Name:          "DEX",
+			StartingValue: 0,
+			Value:         data["DEX"],
+			MaxValue:      0,
+		},
+		AttrIntelligence: {
+			Name:          "INT",
+			StartingValue: 0,
+			Value:         data["INT"],
+			MaxValue:      0,
+		},
+		AttrSize: {
+			Name:          "SIZ",
+			StartingValue: 0,
+			Value:         data["SIZ"],
+			MaxValue:      0,
+		},
+		AttrPower: {
+			Name:          "POW",
+			StartingValue: 0,
+			Value:         data["POW"],
+			MaxValue:      0,
+		},
+		AttrAppearance: {
+			Name:          "APP",
+			StartingValue: 0,
+			Value:         data["APP"],
+			MaxValue:      0,
+		},
+		AttrEducation: {
+			Name:          "EDU",
+			StartingValue: 0,
+			Value:         data["EDU"],
+			MaxValue:      0,
+		},
+		AttrHitPoints: {
+			Name:          "CurrentHP",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		AttrMagicPoints: {
+			Name:          "CurrentMagic",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
+		AttrLuck: {
+			Name:          "CurrentLuck",
+			StartingValue: data["LCK"],
+			Value:         data["LCK"],
+			MaxValue:      0,
+		},
+		AttrSanity: {
+			Name:          "CurrentSanity",
+			StartingValue: 0,
+			Value:         0,
+			MaxValue:      0,
+		},
 	}
-	LCK := inv.Attributes[AttrLuck]
-	SAN := inv.Attributes[AttrSanity]
-	POW := inv.Attributes[AttrPower]
-	MP := inv.Attributes[AttrMagicPoints]
-	DEX := inv.Attributes[AttrDexterity]
-	EDU := inv.Attributes[AttrEducation]
-	INT := inv.Attributes[AttrIntelligence]
-	LCK.Initialize(false)
-	// allow re roll
-	if LCK.Value < 45 {
-		LCK.Initialize(false)
-	}
+	SAN := i.Attributes[AttrSanity]
+	POW := i.Attributes[AttrPower]
+	MP := i.Attributes[AttrMagicPoints]
+	DEX := i.Attributes[AttrDexterity]
+	EDU := i.Attributes[AttrEducation]
+	INT := i.Attributes[AttrIntelligence]
 	SAN.Value = POW.Value
 	SAN.StartingValue = POW.StartingValue
-	inv.Attributes[AttrSanity] = SAN
-	inv.SetHP()
-	inv.SetMovement()
-	inv.SetBuildAndDMG()
+	i.Attributes[AttrSanity] = SAN
+	i.SetHP()
+	i.SetMovement()
+	i.SetBuildAndDMG()
 	MP.Value = POW.Value / 5
-	inv.Attributes[AttrMagicPoints] = MP
-	inv.GetSkills()
-
-	inv.Skills["Dodge_Copy"] = Skill{
+	i.Attributes[AttrMagicPoints] = MP
+	i.Skills["Dodge_Copy"] = Skill{
 		Name:         "Dodge_Copy",
 		Abbreviation: "Dodge",
 		FormName:     "Dodge_Copy",
 		Default:      DEX.Value / 2,
 		Value:        DEX.Value / 2,
 	}
-	inv.Skills["Dodge"] = Skill{
+	i.Skills["Dodge"] = Skill{
 		Name:         "Dodge",
 		Abbreviation: "Dodge",
 		FormName:     "Dodge",
 		Default:      DEX.Value / 2,
 		Value:        DEX.Value / 2,
 	}
-	inv.Skills["Language(Own)"] = Skill{
+	i.Skills["Language(Own)"] = Skill{
 		Name:         "Language(Own)",
 		Abbreviation: "Language(Own)",
 		FormName:     "OwnLanguage",
 		Default:      EDU.Value,
 		Value:        EDU.Value,
 	}
-	inv.addMissingSkills(&[]string{})
-	occupationPoints := inv.CalculateOccupationSkillPoints()
-	inv.OccupationPoints = occupationPoints
-	if inv.GameMode == Pulp {
-		inv.ArchetypePoints = inv.Archetype.BonusPoints
-		inv.addMissingSkills(&inv.Archetype.Skills)
-	}
-	inv.FreePoints = INT.Value * 2
-	occupationSkills := inv.GetOccupationSkills()
-	inv.addMissingSkills(occupationSkills)
-	return &inv
+	occupationPoints := i.CalculateOccupationSkillPoints()
+	i.OccupationPoints = occupationPoints
+	i.ArchetypePoints = i.Archetype.BonusPoints
+	i.FreePoints = INT.Value * 2
 }
 
 func (i *Investigator) GetOccupationSkills() *[]string {
