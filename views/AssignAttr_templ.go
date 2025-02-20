@@ -10,6 +10,19 @@ import templruntime "github.com/a-h/templ/runtime"
 
 import "book-of-shadows/models"
 import "fmt"
+import "slices"
+
+var attributes = map[string]string{
+	"POW": "Power",
+	"STR": "Strength",
+	"LCK": "Luck",
+	"APP": "Appearance",
+	"DEX": "Dexterity",
+	"INT": "Intelligence",
+	"EDU": "Education",
+	"SIZ": "Size",
+	"CON": "Constitution",
+}
 
 func AssignAttrForm(investigator *models.Investigator) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -32,46 +45,81 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<input type=\"text\" id=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style>\n        .tooltip-container {\n            position: relative;\n            display: inline-block;\n        }\n\n        .tooltip-text {\n            visibility: hidden;\n            opacity: 0;\n            position: absolute;\n            left: 0;\n            top: 100%;\n            background-color: rgba(255, 255, 255, 0.95);\n            color: #373A40;\n            padding: 8px 12px;\n            border-radius: 4px;\n            width: 300px;\n            font-size: 0.875rem;\n            box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n            z-index: 10;\n            transition: opacity 0.2s;\n        }\n\n        .tooltip-container:hover .tooltip-text {\n            visibility: visible;\n            opacity: 1;\n        }\n\n        .dice-btn {\n            opacity: 0.6;\n            transition: opacity 0.2s;\n        }\n\n        .dice-btn:hover {\n            opacity: 1;\n        }\n\n        input[type=number]::-webkit-inner-spin-button,\n        input[type=number]::-webkit-outer-spin-button {\n            -webkit-appearance: none;\n            margin: 0;\n        }\n        input[type=number] {\n            -moz-appearance: textfield;\n        }\n    </style><form id=\"stepForm\" class=\"space-y-4\" hx-post=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.ID)
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 10, Col: 28}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 70, Col: 89}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"text-3xl font-bold w-full border-b border-transparent hover:border-gray-300 focus:outline-none mb-4 bg-transparent\" value=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#character-sheet\"><div class=\"p-4 rounded-lg\" style=\"background-color: rgba(104, 109, 118, 0.1)\"><h2 class=\"text-xl font-bold mb-4\" style=\"color: #373A40\">Attributes</h2><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var3 string
-		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Name)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 12, Col: 33}
+		for key, value := range attributes {
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><div class=\"flex items-center gap-2 mb-1\"><label style=\"color: #686D76\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var3 string
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(value)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 79, Col: 64}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</label> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if slices.Contains(investigator.Archetype.CoreCharacteristic, value) {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"tooltip-container\"><span class=\"text-xs px-2 py-0.5 rounded cursor-help\" style=\"background-color: rgba(220, 95, 0, 0.1); color: rgba(220, 95, 0, 0.8);\">Core Characteristic</span> <span class=\"tooltip-text\">Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5</span></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"flex gap-1\"><input type=\"number\" name=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var4 string
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(key)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 94, Col: 41}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" min=\"1\" max=\"90\" class=\"flex-1 p-1.5 rounded text-center\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			if key == "STR" || key == "CON" || key == "LCK" || key == "DEX" || key == "APP" || key == "POW" {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"dice-btn p-1.5 rounded text-sm shrink-0\" style=\"background-color: rgba(220, 95, 0, 0.1); color: rgba(220, 95, 0, 0.8);\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			} else {
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"dice-btn p-1.5 rounded text-sm shrink-0\" style=\"background-color: rgba(220, 95, 0, 0.1); color: rgba(220, 95, 0, 0.8);\" onclick=\"characterUtils.rollAttribute(this, &#39;2d6p6x5&#39;)\">🎲</button>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div>")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-field=\"Name\" onchange=\"characterUtils.updatePersonalInfo(this)\" style=\"color: #373A40; display: none\"><form id=\"stepForm\" class=\"space-y-8\" hx-post=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var4 string
-		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 20, Col: 89}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#character-sheet\"><div class=\"p-6 rounded-lg\" style=\"background-color: rgba(104, 109, 118, 0.1)\"><h2 class=\"text-xl font-bold mb-6\" style=\"color: #373A40\">Attributes</h2><div class=\"grid grid-cols-1 md:grid-cols-4 gap-6\"><div><label class=\"block mb-2\" style=\"color: #686D76\">Strength (STR)</label><div class=\"flex gap-2 items-center\"><input type=\"number\" name=\"STR\" min=\"1\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"px-3 py-2 rounded\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white;\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button></div></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Constitution (CON)</label><div class=\"flex gap-2 items-center\"><input type=\"number\" name=\"CON\" min=\"1\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"px-3 py-2 rounded\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white;\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button></div></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Dexterity (DEX)</label><div class=\"flex gap-2 items-center\"><input type=\"number\" name=\"DEX\" min=\"1\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"px-3 py-2 rounded\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white;\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button></div></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Appearance (APP)</label><div class=\"flex gap-2 items-center\"><input type=\"number\" name=\"APP\" min=\"1\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"px-3 py-2 rounded\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white;\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button></div></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Education (EDU)</label><div class=\"flex gap-2 items-center\"><input type=\"number\" name=\"EDU\" min=\"1\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"px-3 py-2 rounded\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white;\" onclick=\"characterUtils.rollAttribute(this, &#39;2d6p6x5&#39;)\">🎲</button></div></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Size (SIZ)</label><div class=\"flex gap-2 items-center\"><input type=\"number\" name=\"SIZ\" min=\"1\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"px-3 py-2 rounded\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white;\" onclick=\"characterUtils.rollAttribute(this, &#39;2d6p6x5&#39;)\">🎲</button></div></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Intelligence (INT)</label><div class=\"flex gap-2 items-center\"><input type=\"number\" name=\"INT\" min=\"1\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"px-3 py-2 rounded\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white;\" onclick=\"characterUtils.rollAttribute(this, &#39;2d6p6x5&#39;)\">🎲</button></div></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Power (POW)</label><div class=\"flex gap-2 items-center\"><input type=\"number\" name=\"POW\" min=\"1\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"px-3 py-2 rounded\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white;\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button></div></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Luck (LCK)</label><div class=\"flex gap-2 items-center\"><input type=\"number\" name=\"LCK\" min=\"1\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"px-3 py-2 rounded\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white;\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button></div></div></div></div><div class=\"flex justify-end\"><button type=\"submit\" class=\"px-6 py-2 rounded transition-all\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">Assign Archetype Skills</button></div></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div><div class=\"flex justify-end\"><button type=\"submit\" class=\"px-6 py-2 rounded transition-all\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">Assign Archetype Skills</button></div></form>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
