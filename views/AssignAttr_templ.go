@@ -104,12 +104,12 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if key == "STR" || key == "CON" || key == "LCK" || key == "DEX" || key == "APP" || key == "POW" {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"dice-btn p-1.5 rounded text-sm shrink-0\" style=\"background-color: rgba(220, 95, 0, 0.1); color: rgba(220, 95, 0, 0.8);\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"dice-btn p-1.5 rounded text-sm shrink-0\" style=\"color: rgba(220, 95, 0, 0.8);\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"dice-btn p-1.5 rounded text-sm shrink-0\" style=\"background-color: rgba(220, 95, 0, 0.1); color: rgba(220, 95, 0, 0.8);\" onclick=\"characterUtils.rollAttribute(this, &#39;2d6p6x5&#39;)\">🎲</button>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button type=\"button\" class=\"dice-btn p-1.5 rounded text-sm shrink-0\" style=\"color: rgba(220, 95, 0, 0.8);\" onclick=\"characterUtils.rollAttribute(this, &#39;2d6p6x5&#39;)\">🎲</button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
