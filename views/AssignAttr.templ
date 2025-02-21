@@ -89,16 +89,18 @@ templ AssignAttrForm(investigator *models.Investigator) {
                             }
                         </div>
                         <div class="flex gap-1">
-                            <input
-                                type="number"
-                                name={key}
-                                min="1"
-                                max="90"
-                                class="flex-1 p-1.5 rounded text-center"
-                                style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
-                                required
-                            />
+
                             if key == "STR" || key == "CON" || key == "LCK" || key == "DEX" || key == "APP" || key == "POW" {
+                                <input
+                                    type="number"
+                                    name={key}
+                                    min="1"
+                                    placeholder="3D6 X 5"
+                                    max="90"
+                                    class="flex-1 p-1.5 rounded text-center"
+                                    style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                    required
+                                />
                                 <button
                                     type="button"
                                     class="dice-btn p-1.5 rounded text-sm shrink-0"
@@ -108,6 +110,16 @@ templ AssignAttrForm(investigator *models.Investigator) {
                                     🎲
                                 </button>
                             } else {
+                                <input
+                                    type="number"
+                                    name={key}
+                                    min="1"
+                                    placeholder="(2D6 + 6) X 5"
+                                    max="90"
+                                    class="flex-1 p-1.5 rounded text-center"
+                                    style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
+                                    required
+                                />
                                 <button
                                     type="button"
                                     class="dice-btn p-1.5 rounded text-sm shrink-0"

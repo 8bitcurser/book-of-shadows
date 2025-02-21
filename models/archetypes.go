@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"math/rand"
+	"slices"
 	"strings"
 )
 
@@ -989,5 +990,6 @@ var ArchetypesList = func() []string {
 	for k := range Archetypes {
 		keys = append(keys, k)
 	}
+	slices.Sort(keys)
 	return keys
 }()

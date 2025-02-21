@@ -67,8 +67,10 @@ templ BaseInvForm() {
                             onchange="characterUtils.showDescription(this.value, 'occupation-description')"
                         >
                             <option value="">Select Occupation</option>
-                            for key, occ := range models.Occupations {
-                                <option value={key} data-description={occ.GetDescription()}>{key}</option>
+
+                            for occ := range models.OccupationsList {
+                                {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
+                                <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
                             }
                         </select>
                         <p
@@ -87,8 +89,9 @@ templ BaseInvForm() {
                             onchange="characterUtils.showDescription(this.value, 'archetype-description')"
                         >
                             <option value="">Select Archetype</option>
-                            for key, arch := range models.Archetypes {
-                                <option value={key} data-description={arch.GetDescription()}>{key}</option>
+                            for arch := range models.ArchetypesList {
+                                {{archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]}}
+                                <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option>
                             }
                         </select>
                         <p

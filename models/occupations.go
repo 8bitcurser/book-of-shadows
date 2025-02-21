@@ -2,6 +2,7 @@ package models
 
 import (
 	"fmt"
+	"slices"
 	"strings"
 )
 
@@ -1766,5 +1767,6 @@ var OccupationsList = func() []string {
 	for k := range Occupations {
 		keys = append(keys, k)
 	}
+	slices.Sort(keys)
 	return keys
 }()
