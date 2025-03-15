@@ -7,67 +7,65 @@ import "encoding/json"
 
 
 templ InvestigatorsList(investigators map[string]*models.Investigator) {
-        <div class="mb-4 flex justify-end gap-2">
-            <button
-                onclick="document.getElementById('exportModal').classList.remove('hidden')"
-                class="px-3 py-1 rounded transition-all"
-                style="background-color: rgba(55, 58, 64, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)">
-                Export
-            </button>
-            <button
-                onclick="document.getElementById('importModal').classList.remove('hidden')"
-                class="px-3 py-1 rounded transition-all"
-                style="background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)">
-                Import
-            </button>
+        <div class="container ">
+            <div class="float-end">
+                <button type="button" class="btn btn-secondary " data-bs-toggle="modal" data-bs-target="#exportModal">
+                    Export
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#importModal">
+                    Import
+                </button>
+            </div>
         </div>
 
         // Export Modal
-        <div id="exportModal" class="hidden fixed inset-0 overflow-y-auto h-full w-full" style="background-color: rgba(55, 58, 64, 0.5)">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md" style="background-color: #EEEEEE">
-                <div class="mt-3 text-center">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">Export Investigators</h3>
-                    <div class="mt-2 px-7 py-3">
-                        <textarea id="exportCode" class="w-full h-32 p-2 border rounded" readonly
+        <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">
+                            Export Investigators
+                        </h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea class="form-control" id="exportCode" disabled
                             hx-get="/api/investigator/list/export"
                             hx-trigger="load"
                             hx-swap="innerHTML"></textarea>
                     </div>
-                    <div class="flex justify-center gap-2">
+                    <div class="modal-footer">
                         <button
-                            onclick="navigator.clipboard.writeText(document.getElementById('exportCode').value); document.getElementById('exportModal').classList.add('hidden')"
-                            class="bg-blue-500 text-white px-4 py-2 rounded">Copy & Close</button>
-                        <button
-                            onclick="document.getElementById('exportModal').classList.add('hidden')"
-                            class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                            onclick="navigator.clipboard.writeText(document.getElementById('exportCode').value);"
+                            type="button" class="btn btn-primary">Copy Code</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
         </div>
 
         // Import Modal
-        <div id="importModal" class="hidden fixed inset-0 overflow-y-auto h-full w-full" style="background-color: rgba(55, 58, 64, 0.5)">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md" style="background-color: #EEEEEE">
-                <div class="mt-3 text-center">
-                    <h3 class="text-lg leading-6 font-medium text-gray-900">Import Investigators</h3>
-                    <div class="mt-2 px-7 py-3">
-                        <textarea id="importCode" class="w-full h-32 p-2 border rounded" placeholder="Paste export code here"></textarea>
+        <div id="importModal" class="modal fade" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Import Investigators</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="flex justify-center gap-2">
+
+                    <div class="modal-body">
+                            <textarea class="form-control" id="importCode" class="w-full h-32 p-2 border rounded" placeholder="Paste export code here"></textarea>
+                    </div>
+                    <div class="modal-footer">
                         <button
-                            onclick="characterUtils.importInvestigators(); document.getElementById('importModal').classList.add('hidden')"
-                            class="bg-green-500 text-white px-4 py-2 rounded"
-                            hx-swap="none">
-                            Import
-                        </button>
-                        <button
-                            onclick="document.getElementById('importModal').classList.add('hidden')"
-                            class="bg-gray-500 text-white px-4 py-2 rounded">Cancel</button>
+                            onclick="characterUtils.importInvestigators();"
+                            type="button" class="btn btn-primary" hx-swap="none">Import</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                     </div>
                 </div>
             </div>
         </div>
-    <div
+        <div
         id="refresh-list"
         hx-get="/api/investigator/list"
         hx-trigger="import from:body"

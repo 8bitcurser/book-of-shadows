@@ -4,114 +4,99 @@ import "book-of-shadows/models"
 
 
 templ BaseInvForm() {
-
+        <div class="p-6 rounded-lg">
+            <h2 class="text-xl font-bold mb-6" style="color: #373A40">Personal Information</h2>
+        </div>
         <form
             id="stepForm"
-            class="space-y-8"
+            class="row g-3"
             hx-post="/api/investigator/create/"
             hx-target="#character-sheet"
         >
             <!-- Personal Information -->
-            <div class="p-6 rounded-lg" style="background-color: rgba(104, 109, 118, 0.1)">
-                <h2 class="text-xl font-bold mb-6" style="color: #373A40">Personal Information</h2>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                        <label class="block mb-2" style="color: #686D76">Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            class="w-full p-2 rounded"
-                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label class="block mb-2" style="color: #686D76">Age</label>
-                        <input
-                            type="number"
-                            name="age"
-                            min="15"
-                            max="90"
-                            class="w-full p-2 rounded"
-                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label class="block mb-2" style="color: #686D76">Residence</label>
-                        <input
-                            type="text"
-                            name="residence"
-                            class="w-full p-2 rounded"
-                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label class="block mb-2" style="color: #686D76">Birthplace</label>
-                        <input
-                            type="text"
-                            name="birthplace"
-                            class="w-full p-2 rounded"
-                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label class="block mb-2" style="color: #686D76">Occupation</label>
-                        <select
-                            name="occupation"
-                            class="w-full p-2 rounded"
-                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
-                            required
-                            onchange="characterUtils.showDescription(this.value, 'occupation-description')"
-                        >
-                            <option value="">Select Occupation</option>
+           <div class="col-md-3">
+                <label class="form-label">Name</label>
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control"
+                    required
+                />
+           </div>
+           <div class="col-md-3">
+                <label class="form-label">Age</label>
+                <input
+                    type="number"
+                    name="age"
+                    min="15"
+                    max="90"
+                    class="form-control"
+                    required
+                />
+           </div>
+           <div class="col-md-3">
+                <label class="form-label" >Residence</label>
+                <input
+                    type="text"
+                    name="residence"
+                    class="form-control"
+                    required
+                />
+           </div>
+           <div class="col-md-3">
+                <label class="form-label" >Birthplace</label>
+                <input
+                    type="text"
+                    name="birthplace"
+                    class="form-control"
+                    required
+                />
+           </div>
+           <div class="col-md-8">
+                <label class="form-label" >Archetype</label>
+                <select
+                    name="archetype"
+                    class="form-control"
+                    required
+                    onchange="characterUtils.showDescription(this.value, 'archetype-description')"
+                >
+                    <option value="">Select Archetype</option>
+                    for arch := range models.ArchetypesList {
+                        {{archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]}}
+                        <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option>
+                    }
+                </select>
+                <p
+                    id="archetype-description"
+                    class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
+                    style="color: #686D76; min-height: 3em;"
+                ></p>
+           </div>
+           <div class="col-md-8">
+                <label class="form-label">Occupation</label>
+                <select
+                    name="occupation"
+                    class="form-control"
+                    required
+                    onchange="characterUtils.showDescription(this.value, 'occupation-description')"
+                >
+                    <option value="">Select Occupation</option>
 
-                            for occ := range models.OccupationsList {
-                                {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
-                                <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
-                            }
-                        </select>
-                        <p
-                            id="occupation-description"
-                            class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
-                            style="color: #686D76; min-height: 3em;"
-                        ></p>
-                    </div>
-                    <div>
-                        <label class="block mb-2" style="color: #686D76">Archetype</label>
-                        <select
-                            name="archetype"
-                            class="w-full p-2 rounded"
-                            style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
-                            required
-                            onchange="characterUtils.showDescription(this.value, 'archetype-description')"
-                        >
-                            <option value="">Select Archetype</option>
-                            for arch := range models.ArchetypesList {
-                                {{archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]}}
-                                <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option>
-                            }
-                        </select>
-                        <p
-                                id="archetype-description"
-                                class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
-                                style="color: #686D76; min-height: 3em;"
-                            ></p>
-                    </div>
-                </div>
-            </div>
-
-
-            <!-- Submit Button -->
-            <div class="flex justify-end">
-                <button
-                    type="submit"
-                    class="px-6 py-2 rounded transition-all"
-                    style="background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)">
-                    Assign Attributes
-                </button>
-            </div>
+                    for occ := range models.OccupationsList {
+                        {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
+                        <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
+                    }
+                </select>
+                <p
+                    id="occupation-description"
+                    class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
+                    style="color: #686D76; min-height: 3em;"
+                ></p>
+           </div>
         </form>
+        <button
+            type="submit"
+            class="btn btn-primary">
+            Assign Attributes
+        </button>
 }

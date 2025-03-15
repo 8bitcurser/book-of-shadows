@@ -34,7 +34,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"mb-4 flex justify-end gap-2\"><button onclick=\"document.getElementById(&#39;exportModal&#39;).classList.remove(&#39;hidden&#39;)\" class=\"px-3 py-1 rounded transition-all\" style=\"background-color: rgba(55, 58, 64, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">Export</button> <button onclick=\"document.getElementById(&#39;importModal&#39;).classList.remove(&#39;hidden&#39;)\" class=\"px-3 py-1 rounded transition-all\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">Import</button></div><div id=\"exportModal\" class=\"hidden fixed inset-0 overflow-y-auto h-full w-full\" style=\"background-color: rgba(55, 58, 64, 0.5)\"><div class=\"relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md\" style=\"background-color: #EEEEEE\"><div class=\"mt-3 text-center\"><h3 class=\"text-lg leading-6 font-medium text-gray-900\">Export Investigators</h3><div class=\"mt-2 px-7 py-3\"><textarea id=\"exportCode\" class=\"w-full h-32 p-2 border rounded\" readonly hx-get=\"/api/investigator/list/export\" hx-trigger=\"load\" hx-swap=\"innerHTML\"></textarea></div><div class=\"flex justify-center gap-2\"><button onclick=\"navigator.clipboard.writeText(document.getElementById(&#39;exportCode&#39;).value); document.getElementById(&#39;exportModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-blue-500 text-white px-4 py-2 rounded\">Copy & Close</button> <button onclick=\"document.getElementById(&#39;exportModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-gray-500 text-white px-4 py-2 rounded\">Cancel</button></div></div></div></div><div id=\"importModal\" class=\"hidden fixed inset-0 overflow-y-auto h-full w-full\" style=\"background-color: rgba(55, 58, 64, 0.5)\"><div class=\"relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md\" style=\"background-color: #EEEEEE\"><div class=\"mt-3 text-center\"><h3 class=\"text-lg leading-6 font-medium text-gray-900\">Import Investigators</h3><div class=\"mt-2 px-7 py-3\"><textarea id=\"importCode\" class=\"w-full h-32 p-2 border rounded\" placeholder=\"Paste export code here\"></textarea></div><div class=\"flex justify-center gap-2\"><button onclick=\"characterUtils.importInvestigators(); document.getElementById(&#39;importModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-green-500 text-white px-4 py-2 rounded\" hx-swap=\"none\">Import</button> <button onclick=\"document.getElementById(&#39;importModal&#39;).classList.add(&#39;hidden&#39;)\" class=\"bg-gray-500 text-white px-4 py-2 rounded\">Cancel</button></div></div></div></div><div id=\"refresh-list\" hx-get=\"/api/investigator/list\" hx-trigger=\"import from:body\" hx-target=\"#character-sheet\" hx-swap=\"innerHTML\"></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container \"><div class=\"float-end\"><button type=\"button\" class=\"btn btn-secondary \" data-bs-toggle=\"modal\" data-bs-target=\"#exportModal\">Export</button> <button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"modal\" data-bs-target=\"#importModal\">Import</button></div></div><div id=\"exportModal\" class=\"modal fade\" tabindex=\"-1\" aria-labelledby=\"exportModalLabel\" aria-hidden=\"true\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title fs-5\">Export Investigators</h1><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div><div class=\"modal-body\"><textarea class=\"form-control\" id=\"exportCode\" disabled hx-get=\"/api/investigator/list/export\" hx-trigger=\"load\" hx-swap=\"innerHTML\"></textarea></div><div class=\"modal-footer\"><button onclick=\"navigator.clipboard.writeText(document.getElementById(&#39;exportCode&#39;).value);\" type=\"button\" class=\"btn btn-primary\">Copy Code</button> <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Cancel</button></div></div></div></div><div id=\"importModal\" class=\"modal fade\" tabindex=\"-1\" aria-labelledby=\"importModalLabel\" aria-hidden=\"true\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title fs-5\">Import Investigators</h1><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div><div class=\"modal-body\"><textarea class=\"form-control\" id=\"importCode\" class=\"w-full h-32 p-2 border rounded\" placeholder=\"Paste export code here\"></textarea></div><div class=\"modal-footer\"><button onclick=\"characterUtils.importInvestigators();\" type=\"button\" class=\"btn btn-primary\" hx-swap=\"none\">Import</button> <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Cancel</button></div></div></div></div><div id=\"refresh-list\" hx-get=\"/api/investigator/list\" hx-trigger=\"import from:body\" hx-target=\"#character-sheet\" hx-swap=\"innerHTML\"></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -46,7 +46,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 80, Col: 79}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 78, Col: 79}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -59,7 +59,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 81, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 79, Col: 63}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -72,7 +72,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", inv.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 84, Col: 75}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 82, Col: 75}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -85,7 +85,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/delete/%s", inv.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 91, Col: 85}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 89, Col: 85}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {

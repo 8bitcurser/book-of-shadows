@@ -31,20 +31,20 @@ func BaseInvForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<form id=\"stepForm\" class=\"space-y-8\" hx-post=\"/api/investigator/create/\" hx-target=\"#character-sheet\"><!-- Personal Information --><div class=\"p-6 rounded-lg\" style=\"background-color: rgba(104, 109, 118, 0.1)\"><h2 class=\"text-xl font-bold mb-6\" style=\"color: #373A40\">Personal Information</h2><div class=\"grid grid-cols-1 md:grid-cols-2 gap-6\"><div><label class=\"block mb-2\" style=\"color: #686D76\">Name</label> <input type=\"text\" name=\"name\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Age</label> <input type=\"number\" name=\"age\" min=\"15\" max=\"90\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Residence</label> <input type=\"text\" name=\"residence\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Birthplace</label> <input type=\"text\" name=\"birthplace\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Occupation</label> <select name=\"occupation\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required onchange=\"characterUtils.showDescription(this.value, &#39;occupation-description&#39;)\"><option value=\"\">Select Occupation</option> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"p-6 rounded-lg\"><h2 class=\"text-xl font-bold mb-6\" style=\"color: #373A40\">Personal Information</h2></div><form id=\"stepForm\" class=\"row g-3\" hx-post=\"/api/investigator/create/\" hx-target=\"#character-sheet\"><!-- Personal Information --><div class=\"col-md-3\"><label class=\"form-label\">Name</label> <input type=\"text\" name=\"name\" class=\"form-control\" required></div><div class=\"col-md-3\"><label class=\"form-label\">Age</label> <input type=\"number\" name=\"age\" min=\"15\" max=\"90\" class=\"form-control\" required></div><div class=\"col-md-3\"><label class=\"form-label\">Residence</label> <input type=\"text\" name=\"residence\" class=\"form-control\" required></div><div class=\"col-md-3\"><label class=\"form-label\">Birthplace</label> <input type=\"text\" name=\"birthplace\" class=\"form-control\" required></div><div class=\"col-md-8\"><label class=\"form-label\">Archetype</label> <select name=\"archetype\" class=\"form-control\" required onchange=\"characterUtils.showDescription(this.value, &#39;archetype-description&#39;)\"><option value=\"\">Select Archetype</option> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for occ := range models.OccupationsList {
-			occEntity, _ := models.Occupations[models.OccupationsList[occ]]
+		for arch := range models.ArchetypesList {
+			archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 73, Col: 61}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 66, Col: 54}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -55,9 +55,9 @@ func BaseInvForm() templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.GetDescription())
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.GetDescription())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 73, Col: 107}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 66, Col: 101}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -68,9 +68,9 @@ func BaseInvForm() templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 73, Col: 124}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 66, Col: 119}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -81,20 +81,20 @@ func BaseInvForm() templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select><p id=\"occupation-description\" class=\"text-sm mt-1 transition-all whitespace-pre-line leading-relaxed\" style=\"color: #686D76; min-height: 3em;\"></p></div><div><label class=\"block mb-2\" style=\"color: #686D76\">Archetype</label> <select name=\"archetype\" class=\"w-full p-2 rounded\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required onchange=\"characterUtils.showDescription(this.value, &#39;archetype-description&#39;)\"><option value=\"\">Select Archetype</option> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select><p id=\"archetype-description\" class=\"text-sm mt-1 transition-all whitespace-pre-line leading-relaxed\" style=\"color: #686D76; min-height: 3em;\"></p></div><div class=\"col-md-8\"><label class=\"form-label\">Occupation</label> <select name=\"occupation\" class=\"form-control\" required onchange=\"characterUtils.showDescription(this.value, &#39;occupation-description&#39;)\"><option value=\"\">Select Occupation</option> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for arch := range models.ArchetypesList {
-			archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]
+		for occ := range models.OccupationsList {
+			occEntity, _ := models.Occupations[models.OccupationsList[occ]]
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<option value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.Name)
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 94, Col: 62}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 87, Col: 53}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -105,9 +105,9 @@ func BaseInvForm() templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var6 string
-			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.GetDescription())
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.GetDescription())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 94, Col: 109}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 87, Col: 99}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -118,9 +118,9 @@ func BaseInvForm() templ.Component {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var7 string
-			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.Name)
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 94, Col: 127}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 87, Col: 116}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -131,7 +131,7 @@ func BaseInvForm() templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select><p id=\"archetype-description\" class=\"text-sm mt-1 transition-all whitespace-pre-line leading-relaxed\" style=\"color: #686D76; min-height: 3em;\"></p></div></div></div><!-- Submit Button --><div class=\"flex justify-end\"><button type=\"submit\" class=\"px-6 py-2 rounded transition-all\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">Assign Attributes</button></div></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select><p id=\"occupation-description\" class=\"text-sm mt-1 transition-all whitespace-pre-line leading-relaxed\" style=\"color: #686D76; min-height: 3em;\"></p></div></form><button type=\"submit\" class=\"btn btn-primary\">Assign Attributes</button>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
