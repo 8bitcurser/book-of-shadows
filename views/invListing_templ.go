@@ -34,64 +34,64 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container \"><div class=\"float-end\"><button type=\"button\" class=\"btn btn-secondary \" data-bs-toggle=\"modal\" data-bs-target=\"#exportModal\">Export</button> <button type=\"button\" class=\"btn btn-secondary\" data-bs-toggle=\"modal\" data-bs-target=\"#importModal\">Import</button></div></div><div id=\"exportModal\" class=\"modal fade\" tabindex=\"-1\" aria-labelledby=\"exportModalLabel\" aria-hidden=\"true\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title fs-5\">Export Investigators</h1><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div><div class=\"modal-body\"><textarea class=\"form-control\" id=\"exportCode\" disabled hx-get=\"/api/investigator/list/export\" hx-trigger=\"load\" hx-swap=\"innerHTML\"></textarea></div><div class=\"modal-footer\"><button onclick=\"navigator.clipboard.writeText(document.getElementById(&#39;exportCode&#39;).value);\" type=\"button\" class=\"btn btn-primary\">Copy Code</button> <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Cancel</button></div></div></div></div><div id=\"importModal\" class=\"modal fade\" tabindex=\"-1\" aria-labelledby=\"importModalLabel\" aria-hidden=\"true\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title fs-5\">Import Investigators</h1><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div><div class=\"modal-body\"><textarea class=\"form-control\" id=\"importCode\" class=\"w-full h-32 p-2 border rounded\" placeholder=\"Paste export code here\"></textarea></div><div class=\"modal-footer\"><button onclick=\"characterUtils.importInvestigators();\" type=\"button\" class=\"btn btn-primary\" hx-swap=\"none\">Import</button> <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Cancel</button></div></div></div></div><div id=\"refresh-list\" hx-get=\"/api/investigator/list\" hx-trigger=\"import from:body\" hx-target=\"#character-sheet\" hx-swap=\"innerHTML\"></div><div class=\"grid grid-cols-1 md:grid-cols-3 gap-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"btn-group\" role=\"group\"><button type=\"button\" class=\"btn btn-primary\" data-bs-toggle=\"modal\" data-bs-target=\"#exportModal\">Export</button> <button type=\"button\" class=\"btn btn-primary \" data-bs-toggle=\"modal\" data-bs-target=\"#importModal\">Import</button></div><br><div id=\"exportModal\" class=\"modal fade\" tabindex=\"-1\" aria-labelledby=\"exportModalLabel\" aria-hidden=\"true\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title fs-5\">Export Investigators</h1><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div><div class=\"modal-body\"><textarea class=\"form-control\" id=\"exportCode\" disabled hx-get=\"/api/investigator/list/export\" hx-trigger=\"load\" hx-swap=\"innerHTML\"></textarea></div><div class=\"modal-footer\"><button onclick=\"navigator.clipboard.writeText(document.getElementById(&#39;exportCode&#39;).value);\" type=\"button\" class=\"btn btn-primary\" data-bs-dismiss=\"modal\">Copy Code</button> <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Cancel</button></div></div></div></div><div id=\"importModal\" class=\"modal fade\" tabindex=\"-1\" aria-labelledby=\"importModalLabel\" aria-hidden=\"true\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title fs-5\">Import Investigators</h1><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div><div class=\"modal-body\"><textarea class=\"form-control\" id=\"importCode\" placeholder=\"Paste export code here\"></textarea></div><div class=\"modal-footer\"><button onclick=\"characterUtils.importInvestigators();\" type=\"button\" class=\"btn btn-primary\" hx-swap=\"none\" data-bs-dismiss=\"modal\">Import</button> <button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Cancel</button></div></div></div></div><div class=\"row\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for _, inv := range sortInvestigators(investigators) {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"p-4 rounded-lg\" style=\"background-color: rgba(104, 109, 118, 0.1)\"><h3 class=\"text-xl font-bold\" style=\"color: #373A40\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"col-sm-2 p-3\"><div class=\"card border-light\" style=\"width: 18rem;\"><img src=\"/static/profile.jpg\" class=\"card-img-top\" style=\"max-height: 250px\" alt=\"investigator-profile\"><hr><div class=\"card-body\"><h3 class=\"card-title\"><a class=\"link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover\" hx-get=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Name)
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", inv.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 78, Col: 79}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 78, Col: 178}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h3><p style=\"color: #686D76\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#character-sheet\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 79, Col: 63}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 78, Col: 221}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><div class=\"mt-4 flex gap-2\"><button hx-get=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</a></h3><p class=\"card-text\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", inv.ID))
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 82, Col: 75}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 80, Col: 70}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#character-sheet\" class=\"px-3 py-1 rounded transition-all\" style=\"background-color: rgba(104, 109, 118, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">Load</button> <button hx-delete=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p><button type=\"button\" class=\"btn btn-danger\" data-bs-toggle=\"modal\" data-bs-target=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/delete/%s", inv.ID))
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("#d-%s", inv.ID))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 89, Col: 85}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 81, Col: 140}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"closest div\" class=\"px-3 py-1 rounded transition-all\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\" hx-confirm=\"Are you sure?\">Delete</button><div hx-get=\"/api/investigator/list\" hx-trigger=\"deleted from:body\" hx-target=\"#character-sheet\" style=\"display: none\"></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\">Destroy</button> ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -102,7 +102,7 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<button hx-swap=\"none\" onclick=\"")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<a hx-swap=\"none\" onclick=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -114,7 +114,59 @@ func InvestigatorsList(investigators map[string]*models.Investigator) templ.Comp
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"px-3 py-1 rounded transition-all\" style=\"background-color: rgba(55, 58, 64, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">PDF</button></div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" class=\"btn btn-secondary\">PDF</a><div class=\"modal fade\" id=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("d-%s", inv.ID))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 87, Col: 83}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" data-bs-keyboard=\"false\" tabindex=\"-1\" aria-labelledby=\"staticBackdropLabel\" aria-hidden=\"true\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><h1 class=\"modal-title fs-5\" id=\"deleteModalLabel\">Are you sure?</h1><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div><div class=\"modal-body\"><p>This action is permanent: ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var8 string
+			templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 95, Col: 93}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(", ")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var9 string
+			templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Name)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 95, Col: 105}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" will be deleted</p></div><div class=\"modal-footer\"><button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button> <a class=\"btn btn-danger\" hx-delete=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var10 string
+			templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/delete/%s", inv.ID))
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/invListing.templ`, Line: 101, Col: 109}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"closest div\" data-bs-dismiss=\"modal\">Delete</a><div hx-get=\"/api/investigator/list\" hx-trigger=\"deleted from:body\" hx-target=\"#character-sheet\" style=\"display: none; z-index: -1\"></div></div></div></div></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

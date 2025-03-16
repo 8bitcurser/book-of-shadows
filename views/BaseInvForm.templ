@@ -52,46 +52,56 @@ templ BaseInvForm() {
                     required
                 />
            </div>
-           <div class="col-md-8">
-                <label class="form-label" >Archetype</label>
-                <select
-                    name="archetype"
-                    class="form-control"
-                    required
-                    onchange="characterUtils.showDescription(this.value, 'archetype-description')"
-                >
-                    <option value="">Select Archetype</option>
-                    for arch := range models.ArchetypesList {
-                        {{archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]}}
-                        <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option>
-                    }
-                </select>
-                <p
-                    id="archetype-description"
-                    class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
-                    style="color: #686D76; min-height: 3em;"
-                ></p>
+           <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label" >Archetype</label>
+                    <select
+                        name="archetype"
+                        class="form-control"
+                        required
+                        onchange="characterUtils.showDescription(this.value, 'archetype-description')"
+                    >
+                        <option value="">Select Archetype</option>
+                        for arch := range models.ArchetypesList {
+                            {{archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]}}
+                            <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <br>
+                    <p
+                        id="archetype-description"
+                        class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
+                        style="color: #686D76; min-height: 3em;"
+                    ></p>
+                </div>
            </div>
-           <div class="col-md-8">
-                <label class="form-label">Occupation</label>
-                <select
-                    name="occupation"
-                    class="form-control"
-                    required
-                    onchange="characterUtils.showDescription(this.value, 'occupation-description')"
-                >
-                    <option value="">Select Occupation</option>
+           <div class="row">
+                <div class="col-md-6">
+                    <label class="form-label">Occupation</label>
+                    <select
+                        name="occupation"
+                        class="form-control"
+                        required
+                        onchange="characterUtils.showDescription(this.value, 'occupation-description')"
+                    >
+                        <option value="">Select Occupation</option>
 
-                    for occ := range models.OccupationsList {
-                        {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
-                        <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
-                    }
-                </select>
-                <p
-                    id="occupation-description"
-                    class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
-                    style="color: #686D76; min-height: 3em;"
-                ></p>
+                        for occ := range models.OccupationsList {
+                            {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
+                            <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <br>
+                    <p
+                        id="occupation-description"
+                        class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
+                        style="color: #686D76; min-height: 3em;"
+                    ></p>
+                </div>
            </div>
         </form>
         <button
