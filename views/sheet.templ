@@ -9,25 +9,24 @@ import "strings"
 templ CharacterSheet(investigator *models.Investigator) {
     @hidden(investigator)
     <div class="container-fluid first-page">
-        <div class="row g-3">
+        <div class="row">
             <div class="col">
                 <div class="row">
-                    <label for={investigator.ID} class="col-sm-1 col-form-label">Name</label>
-                    <div class="col-sm-11">
+                    <div class="input-group">
+                        <span class="input-group-text">Name</span>
                         <input
                             type="text"
                             id={ investigator.ID }
                             class="form-control"
                             value={ investigator.Name }
                             data-field="Name"
+                            aria-label="Name"
+                            placeholder="Investigator Name"
                             onchange="characterUtils.updatePersonalInfo(this)"
                         />
                     </div>
-                </div>
-
-                <div class="row">
-                    <label for="inv-age" class="col-sm-1 col-form-label">Age</label>
-                    <div class="col-sm-11">
+                    <div class="input-group">
+                        <span class="input-group-text">Age</span>
                         <input
                             type="number"
                             class="form-control"
@@ -36,163 +35,149 @@ templ CharacterSheet(investigator *models.Investigator) {
                             onchange="characterUtils.updatePersonalInfo(this)"
                         />
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-auto">
-                        <label for="inv-res" class="col-sm-1 col-form-label">Residence</label>
-                        <div class="col-sm-11">
-                            <input
-                                type="text"
-                                id="inv-res"
-                                class="form-control"
-                                value={ investigator.Residence }
-                                data-field="Residence"
-                                onchange="characterUtils.updatePersonalInfo(this)"
-                            />
-                        </div>
-                    </div>
-                    <div class="col-auto">
-                        <label for="inv-birth" class="col-sm-1 col-form-label">Birthplace</label>
-                        <div class="col-sm-11">
+                    <div class="input-group">
+                        <span class="input-group-text">Residence</span>
                         <input
-                            id="inv-birth"
+                            type="text"
+                            class="form-control"
+                            value={ investigator.Residence }
+                            data-field="Residence"
+                            onchange="characterUtils.updatePersonalInfo(this)"
+                        />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Birthplace</span>
+                        <input
                             type="text"
                             class="form-control"
                             value={ investigator.Birthplace }
                             data-field="Birthplace"
                             onchange="characterUtils.updatePersonalInfo(this)"
                         />
-                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <span class="input-group-text">Occupation</span>
+                        <input class="form-control" type="text" data-field="occupation" value={ investigator.Occupation.Name } disabled />
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-text">Archetype</span>
+                        <input class="form-control" data-field="archetype" value={ investigator.Archetype.Name } disabled />
                     </div>
                 </div>
 
-
-                <label  class="col-form-label">Occupation</label>
-                <p class="" data-field="occupation">{ investigator.Occupation.Name }</p>
-
-                <p class="" >Archetype</p>
-                <p class="" data-field="archetype">{ investigator.Archetype.Name }</p>
-            </div>
-            <div class="col">
                 <div class="row">
-                    <h2 class="">Attributes</h2>
                     for _, attr := range investigator.Attributes {
                         if (!strings.HasPrefix(attr.Name, "Current")) {
-                            <div class="col-auto">
-                                <span class="">{ attr.Name }</span>
-                                <div class="">
-                                    <span class="" data-attr={attr.Name} title="Regular">{ strconv.Itoa(attr.Value) }</span>
-                                    <span class="">|</span>
-                                    <span class="" title="Half value" data-half>{ strconv.Itoa(attr.Value/2) }</span>
-                                    <span class="">|</span>
-                                    <span class="" title="Fifth value" data-fifth>{ strconv.Itoa(attr.Value/5) }</span>
-                                </div>
+                            <div class="input-group">
+                                <span class="input-group-text">{ attr.Name }</span>
+                                <input class="form-control" data-attr={attr.Name} title="Regular" value={ strconv.Itoa(attr.Value) } disabled />
+                                <input class="form-control" title="Half value" data-half value={ strconv.Itoa(attr.Value/2) } disabled />
+                                <input class="form-control" title="Fifth value" data-fifth value={ strconv.Itoa(attr.Value/5) } disabled/>
                             </div>
                         }
                     }
                 </div>
+            </div>
 
-                <div class="row">
-                    <h2 class="" style="">Combat</h2>
-                    <div class="col-auto">
-                        <span class="">HP</span>
-                        <input
-                            type="number"
-                            class="form-control"
-                            value={ strconv.Itoa(investigator.Attributes["HitPoints"].Value) }
-                            data-attr="HitPoints"
-                            title="CurrentHP"
-                            min="0"
-                            onchange="characterUtils.recalculateValues(this, 'attribute')"
-                        />
-                    </div>
-                    <div class="col-auto">
-                        <span class="">MP</span>
-                        <input
-                            type="number"
-                            class="form-control"
-                            value={ strconv.Itoa(investigator.Attributes["MagicPoints"].Value) }
-                            data-attr="MagicPoints"
-                            title="CurrentMP"
-                            min="0"
-                            onchange="characterUtils.recalculateValues(this, 'attribute')"
-                        />
-                    </div>
-                    <div class="col-auto">
-                        <span class="">Luck</span>
-                        <input
-                            type="number"
-                            class="form-control"
-                            value={ strconv.Itoa(investigator.Attributes["Luck"].Value) }
-                            data-attr="Luck"
-                            title="CurrentLuck"
-                            min="0"
-                            onchange="characterUtils.recalculateValues(this, 'attribute')"
-                        />
-                    </div>
-                    <div class="col-auto">
-                        <span class="font-medium">Sanity</span>
-                        <input
-                            type="number"
-                            class="form-control"
-                            value={ strconv.Itoa(investigator.Attributes["Sanity"].Value) }
-                            data-attr="Sanity"
-                            title="CurrentSanity"
-                            onchange="characterUtils.recalculateValues(this, 'attribute')"
-                            min="0"
-                        />
-                    </div>
-                    <div class="col-auto">
-                        <span class="">Movement</span>
-                        <p data-field="move">{ strconv.Itoa(investigator.Move) }</p>
-                    </div>
-                    <div class="col-auto">
-                        <span class="">Build</span>
-                        <p data-field="build">{ investigator.Build }</p>
-                    </div>
-                    <div class="col-auto">
-                        <span class="">DB</span>
-                        <p data-field="dmgbonus">{ investigator.DamageBonus }</p>
-                    </div>
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-text">HP</span>
+                    <input
+                        type="number"
+                        class="form-control"
+                        value={ strconv.Itoa(investigator.Attributes["HitPoints"].Value) }
+                        data-attr="HitPoints"
+                        title="CurrentHP"
+                        min="0"
+                        onchange="characterUtils.recalculateValues(this, 'attribute')"
+                    />
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">MP</span>
+                    <input
+                        type="number"
+                        class="form-control"
+                        value={ strconv.Itoa(investigator.Attributes["MagicPoints"].Value) }
+                        data-attr="MagicPoints"
+                        title="CurrentMP"
+                        min="0"
+                        onchange="characterUtils.recalculateValues(this, 'attribute')"
+                    />
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Luck</span>
+                    <input
+                        type="number"
+                        class="form-control"
+                        value={ strconv.Itoa(investigator.Attributes["Luck"].Value) }
+                        data-attr="Luck"
+                        title="CurrentLuck"
+                        min="0"
+                        onchange="characterUtils.recalculateValues(this, 'attribute')"
+                    />
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Sanity</span>
+                    <input
+                        type="number"
+                        class="form-control"
+                        value={ strconv.Itoa(investigator.Attributes["Sanity"].Value) }
+                        data-attr="Sanity"
+                        title="CurrentSanity"
+                        onchange="characterUtils.recalculateValues(this, 'attribute')"
+                        min="0"
+                    />
+                </div>
+            </div>
+            <div class="col">
+                <div class="input-group">
+                    <span class="input-group-text">Movement</span>
+                    <input type="text" data-field="move" value={ strconv.Itoa(investigator.Move) } disabled />
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">Build</span>
+                    <input type="text" data-field="build" value={ investigator.Build } disabled />
+                </div>
+                <div class="input-group">
+                    <span class="input-group-text">DB</span>
+                    <input type="text" data-field="dmgbonus" value={ investigator.DamageBonus } disabled />
                 </div>
             </div>
         </div>
-
-        if len(investigator.Talents) > 0 {
-            <div class="">
-                <h2 class="">Pulp Talents</h2>
-                <div class="" data-field="talents">
-                    for _, talent := range investigator.Talents {
-                        <div class="">
-                            <h3 class="">{ talent.Name }</h3>
-                            <p class="">{ talent.Description }</p>
-                        </div>
-                    }
-                </div>
-            </div>
-        }
-
     </div>
+
+    if len(investigator.Talents) > 0 {
+        <div class="row">
+            <div class="" data-field="talents">
+                for _, talent := range investigator.Talents {
+                    <div class="">
+                        <h3 class="">{ talent.Name }</h3>
+                        <p class="">{ talent.Description }</p>
+                    </div>
+                }
+            </div>
+        </div>
+    }
 
     <div class="second-page">
         <div class="container-fluid">
             <h2 class="">Skills</h2>
 
-            <div class="">
-                <div class="">
+            <div class="row mb-3">
+                <div class="col-auto">
                     <span class="">Occupation Points:</span>
                     <span class="">
                         { strconv.Itoa(investigator.OccupationPoints) }
                     </span>
                 </div>
-                <div class="">
+                <div class="col-auto">
                     <span class="">Archetype Points:</span>
                     <span class="">
                         { strconv.Itoa(investigator.ArchetypePoints) }
                     </span>
                 </div>
-                <div class="">
+                <div class="col-auto">
                     <span class="">Common interest Points:</span>
                     <span class="">
                         { strconv.Itoa(investigator.FreePoints) }
@@ -200,55 +185,90 @@ templ CharacterSheet(investigator *models.Investigator) {
                 </div>
             </div>
 
-            <div class="">
-                <div class="">
-                    for _, skill := range sortSkills(investigator.Skills) {
-                        if skill.Name != "" && skill.Name != "Dodge_Copy"  && skill.Base == 0 {
-                            <div class="flex justify-between items-center py-1 border-b border-gray-200 last:border-0">
+            <div class="skills-container">
+                for _, skill := range sortSkills(investigator.Skills) {
+                    if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
+                        <div class="skill-item d-flex justify-content-between align-items-center py-1 border-bottom border-gray-200">
+                            <div class="d-flex align-items-center">
                                 <input
                                     type="checkbox"
-                                    class=""
+                                    class="me-2"
                                     data-skill={ skill.Name }
                                     if skill.IsSelected {
-                                            checked
-                                        }
+                                        checked
+                                    }
                                     onchange="characterUtils.handleSkillToggleCheck(this)"
                                 />
-                               if skill.NeedsFormDef == 1 {
-                                <input
-                                    type="text"
-                                    class=""
-                                    value={ skill.Name }
-                                    data-skill={ skill.Name }
-                                    onchange="characterUtils.handleSkillNameChange(this)"
-                                />
-                               } else {
+                                if skill.NeedsFormDef == 1 {
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-sm"
+                                        value={ skill.Name }
+                                        data-skill={ skill.Name }
+                                        onchange="characterUtils.handleSkillNameChange(this)"
+                                    />
+                                } else {
                                     <span
-                                        class=""
+                                        class="skill-name"
                                         title={ "Default: " + strconv.Itoa(skill.Default) + " | Points Assigned: " + strconv.Itoa(skill.Value - skill.Default) }
                                     >{ skill.Name }
                                     </span>
                                 }
-                                <div class="">
-                                    <input
-                                        type="number"
-                                        class=""
-                                        value={ strconv.Itoa(skill.Value) }
-                                        data-skill={ skill.Name }
-                                        onchange="characterUtils.recalculateValues(this, 'skill')"
-                                        title="Regular"
-                                        min={ strconv.Itoa(skill.Default) }
-                                    />
-                                    <span class="">|</span>
-                                    <span class="" title="Half value" data-half>{ strconv.Itoa(skill.Value/2) }</span>
-                                    <span class="">|</span>
-                                    <span class="" title="Fifth value" data-fifth>{ strconv.Itoa(skill.Value/5) }</span>
-                                </div>
                             </div>
-                        }
+                            <div class="d-flex align-items-center">
+                                <input
+                                    type="number"
+                                    class="form-control form-control-sm me-1 skill-value-input"
+                                    value={ strconv.Itoa(skill.Value) }
+                                    data-skill={ skill.Name }
+                                    onchange="characterUtils.recalculateValues(this, 'skill')"
+                                    title="Regular"
+                                    min={ strconv.Itoa(skill.Default) }
+                                />
+                                <span class="mx-1">|</span>
+                                <span class="mx-1" title="Half value" data-half>{ strconv.Itoa(skill.Value/2) }</span>
+                                <span class="mx-1">|</span>
+                                <span class="mx-1" title="Fifth value" data-fifth>{ strconv.Itoa(skill.Value/5) }</span>
+                            </div>
+                        </div>
                     }
-                </div>
+                }
             </div>
+
+            <style>
+                /* CSS for multi-column layout */
+                .skills-container {
+                    column-count: 3;
+                    column-gap: 2rem;
+                }
+
+                /* Ensure each skill item stays together */
+                .skill-item {
+                    break-inside: avoid;
+                    page-break-inside: avoid;
+                    -webkit-column-break-inside: avoid;
+                    display: inline-block;
+                    width: 100%;
+                }
+
+                /* Make skill value inputs more compact */
+                .skill-value-input {
+                    width: 60px;
+                }
+
+                /* Responsive adjustments */
+                @media (max-width: 992px) {
+                    .skills-container {
+                        column-count: 2;
+                    }
+                }
+
+                @media (max-width: 576px) {
+                    .skills-container {
+                        column-count: 1;
+                    }
+                }
+            </style>
         </div>
     </div>
 }
