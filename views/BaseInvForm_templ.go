@@ -31,7 +31,7 @@ func BaseInvForm() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"p-6 rounded-lg\"><h2 class=\"text-xl font-bold mb-6\" style=\"color: #373A40\">Personal Information</h2></div><form id=\"stepForm\" class=\"row g-3\" hx-post=\"/api/investigator/create/\" hx-target=\"#character-sheet\"><!-- Personal Information --><div class=\"col-md-3\"><label class=\"form-label\">Name</label> <input type=\"text\" name=\"name\" class=\"form-control\" required></div><div class=\"col-md-3\"><label class=\"form-label\">Age</label> <input type=\"number\" name=\"age\" min=\"15\" max=\"90\" class=\"form-control\" required></div><div class=\"col-md-3\"><label class=\"form-label\">Residence</label> <input type=\"text\" name=\"residence\" class=\"form-control\" required></div><div class=\"col-md-3\"><label class=\"form-label\">Birthplace</label> <input type=\"text\" name=\"birthplace\" class=\"form-control\" required></div><div class=\"row\"><div class=\"col-md-6\"><label class=\"form-label\">Archetype</label> <select name=\"archetype\" class=\"form-control\" required onchange=\"characterUtils.showDescription(this.value, &#39;archetype-description&#39;)\"><option value=\"\">Select Archetype</option> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container-fluid p-3 coc-sheet\"><!-- Header --><div class=\"mb-4\"><h2 class=\"text-xl font-bold\" style=\"color: #373A40\">Personal Information</h2></div><form id=\"stepForm\" class=\"row g-3\" hx-post=\"/api/investigator/create/\" hx-target=\"#character-sheet\"><!-- Personal Information --><div class=\"col-md-3\"><label class=\"form-label\">Name</label> <input type=\"text\" name=\"name\" class=\"form-control\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\"></div><div class=\"col-md-3\"><label class=\"form-label\">Age</label> <input type=\"number\" name=\"age\" min=\"15\" max=\"90\" class=\"form-control\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\"></div><div class=\"col-md-3\"><label class=\"form-label\">Residence</label> <input type=\"text\" name=\"residence\" class=\"form-control\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\"></div><div class=\"col-md-3\"><label class=\"form-label\">Birthplace</label> <input type=\"text\" name=\"birthplace\" class=\"form-control\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\"></div><div class=\"col-md-6\"><label class=\"form-label\">Archetype</label> <select name=\"archetype\" id=\"archetype-select\" class=\"form-control\" required onchange=\"characterUtils.handleArchetypeSelection(this)\"><option value=\"\">Select Archetype</option> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -44,7 +44,7 @@ func BaseInvForm() templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 67, Col: 58}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 79, Col: 54}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -57,7 +57,7 @@ func BaseInvForm() templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.GetDescription())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 67, Col: 105}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 79, Col: 101}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -70,7 +70,7 @@ func BaseInvForm() templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 67, Col: 123}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 79, Col: 119}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -81,7 +81,7 @@ func BaseInvForm() templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div><div class=\"col-md-6\"><br><p id=\"archetype-description\" class=\"text-sm mt-1 transition-all whitespace-pre-line leading-relaxed\" style=\"color: #686D76; min-height: 3em;\"></p></div></div><div class=\"row\"><div class=\"col-md-6\"><label class=\"form-label\">Occupation</label> <select name=\"occupation\" class=\"form-control\" required onchange=\"characterUtils.showDescription(this.value, &#39;occupation-description&#39;)\"><option value=\"\">Select Occupation</option> ")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select><p id=\"archetype-description\" class=\"mt-2 text-secondary\" style=\"min-height: 3em;\"></p></div><div class=\"col-md-6\" id=\"occupation-container\" style=\"display: none;\"><label class=\"form-label\">Occupation</label> <select name=\"occupation\" id=\"occupation-select\" class=\"form-control\" required onchange=\"characterUtils.handleOccupationSelection(this)\"><option value=\"\">Select Occupation</option> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -94,7 +94,7 @@ func BaseInvForm() templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 93, Col: 57}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 101, Col: 53}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -107,7 +107,7 @@ func BaseInvForm() templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.GetDescription())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 93, Col: 103}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 101, Col: 99}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -120,7 +120,7 @@ func BaseInvForm() templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 93, Col: 120}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/BaseInvForm.templ`, Line: 101, Col: 116}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -131,7 +131,7 @@ func BaseInvForm() templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select></div><div class=\"col-md-6\"><br><p id=\"occupation-description\" class=\"text-sm mt-1 transition-all whitespace-pre-line leading-relaxed\" style=\"color: #686D76; min-height: 3em;\"></p></div></div></form><button type=\"submit\" class=\"btn btn-primary\">Assign Attributes</button>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</select><p id=\"occupation-description\" class=\"mt-2 text-secondary\" style=\"min-height: 3em;\"></p></div><div class=\"col-12 mt-4\"><button id=\"next-step-button\" type=\"submit\" class=\"btn btn-primary\" disabled>Assign Attributes</button></div></form><style>\n            .coc-sheet {\n                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n                background-color: #fff;\n                border-radius: 8px;\n            }\n        </style><script>\n            // Extend the characterUtils object with the new functions\n            if (!window.characterUtils) {\n                window.characterUtils = {};\n            }\n\n            // Function to handle archetype selection\n            window.characterUtils.handleArchetypeSelection = function(selectElement) {\n                // First, show the description as before\n                this.showDescription(selectElement.value, 'archetype-description');\n\n                // Then, show the occupation section if an archetype is selected\n                const occupationContainer = document.getElementById('occupation-container');\n\n                if (selectElement.value) {\n                    // Show the occupation container with a smooth transition\n                    occupationContainer.style.display = 'block';\n                } else {\n                    // Hide the occupation container\n                    occupationContainer.style.display = 'none';\n                }\n\n                // Check if the form is complete\n                this.checkFormCompletion();\n            };\n\n            // Function to handle occupation selection\n            window.characterUtils.handleOccupationSelection = function(selectElement) {\n                // Show the description\n                this.showDescription(selectElement.value, 'occupation-description');\n\n                // Check if the form is complete\n                this.checkFormCompletion();\n            };\n\n            // Function to check if the form is complete\n            window.characterUtils.checkFormCompletion = function() {\n                const nameInput = document.querySelector('input[name=\"name\"]');\n                const ageInput = document.querySelector('input[name=\"age\"]');\n                const residenceInput = document.querySelector('input[name=\"residence\"]');\n                const birthplaceInput = document.querySelector('input[name=\"birthplace\"]');\n                const archetypeSelect = document.getElementById('archetype-select');\n                const occupationSelect = document.getElementById('occupation-select');\n                const nextButton = document.getElementById('next-step-button');\n\n                // Check if all fields are filled\n                const isNameFilled = nameInput && nameInput.value.trim() !== '';\n                const isAgeFilled = ageInput && ageInput.value !== '';\n                const isResidenceFilled = residenceInput && residenceInput.value.trim() !== '';\n                const isBirthplaceFilled = birthplaceInput && birthplaceInput.value.trim() !== '';\n                const isArchetypeSelected = archetypeSelect && archetypeSelect.value !== '';\n                const isOccupationSelected = occupationSelect && occupationSelect.value !== '';\n\n                // Only enable the button if all fields are filled\n                nextButton.disabled = !(\n                    isNameFilled &&\n                    isAgeFilled &&\n                    isResidenceFilled &&\n                    isBirthplaceFilled &&\n                    isArchetypeSelected &&\n                    isOccupationSelected\n                );\n            };\n\n            // If showDescription doesn't exist, add it\n            if (!window.characterUtils.showDescription) {\n                window.characterUtils.showDescription = function(value, targetId) {\n                    const descriptionElement = document.getElementById(targetId);\n                    const selectElement = event.target;\n                    const selectedOption = Array.from(selectElement.options).find(option => option.value === value);\n\n                    if (selectedOption && selectedOption.dataset.description) {\n                        descriptionElement.textContent = selectedOption.dataset.description;\n                    } else {\n                        descriptionElement.textContent = \"\";\n                    }\n                };\n            }\n\n            // Initialize form check on page load\n            document.addEventListener('DOMContentLoaded', function() {\n                // Add event listener to occupation select\n                const occupationSelect = document.getElementById('occupation-select');\n                if (occupationSelect) {\n                    occupationSelect.addEventListener('change', function() {\n                        characterUtils.handleOccupationSelection(this);\n                    });\n                }\n\n                // Initial form check\n                characterUtils.checkFormCompletion();\n            });\n        </script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

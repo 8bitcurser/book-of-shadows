@@ -4,9 +4,12 @@ import "book-of-shadows/models"
 
 
 templ BaseInvForm() {
-        <div class="p-6 rounded-lg">
-            <h2 class="text-xl font-bold mb-6" style="color: #373A40">Personal Information</h2>
+    <div class="container-fluid p-3 coc-sheet">
+        <!-- Header -->
+        <div class="mb-4">
+            <h2 class="text-xl font-bold" style="color: #373A40">Personal Information</h2>
         </div>
+
         <form
             id="stepForm"
             class="row g-3"
@@ -14,16 +17,18 @@ templ BaseInvForm() {
             hx-target="#character-sheet"
         >
             <!-- Personal Information -->
-           <div class="col-md-3">
+            <div class="col-md-3">
                 <label class="form-label">Name</label>
                 <input
                     type="text"
                     name="name"
                     class="form-control"
                     required
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
                 />
-           </div>
-           <div class="col-md-3">
+            </div>
+            <div class="col-md-3">
                 <label class="form-label">Age</label>
                 <input
                     type="number"
@@ -32,81 +37,189 @@ templ BaseInvForm() {
                     max="90"
                     class="form-control"
                     required
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
                 />
-           </div>
-           <div class="col-md-3">
-                <label class="form-label" >Residence</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Residence</label>
                 <input
                     type="text"
                     name="residence"
                     class="form-control"
                     required
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
                 />
-           </div>
-           <div class="col-md-3">
-                <label class="form-label" >Birthplace</label>
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Birthplace</label>
                 <input
                     type="text"
                     name="birthplace"
                     class="form-control"
                     required
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
                 />
-           </div>
-           <div class="row">
-                <div class="col-md-6">
-                    <label class="form-label" >Archetype</label>
-                    <select
-                        name="archetype"
-                        class="form-control"
-                        required
-                        onchange="characterUtils.showDescription(this.value, 'archetype-description')"
-                    >
-                        <option value="">Select Archetype</option>
-                        for arch := range models.ArchetypesList {
-                            {{archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]}}
-                            <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option>
-                        }
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <br>
-                    <p
-                        id="archetype-description"
-                        class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
-                        style="color: #686D76; min-height: 3em;"
-                    ></p>
-                </div>
-           </div>
-           <div class="row">
-                <div class="col-md-6">
-                    <label class="form-label">Occupation</label>
-                    <select
-                        name="occupation"
-                        class="form-control"
-                        required
-                        onchange="characterUtils.showDescription(this.value, 'occupation-description')"
-                    >
-                        <option value="">Select Occupation</option>
+            </div>
 
-                        for occ := range models.OccupationsList {
-                            {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
-                            <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
-                        }
-                    </select>
-                </div>
-                <div class="col-md-6">
-                    <br>
-                    <p
-                        id="occupation-description"
-                        class="text-sm mt-1 transition-all whitespace-pre-line leading-relaxed"
-                        style="color: #686D76; min-height: 3em;"
-                    ></p>
-                </div>
-           </div>
+            <div class="col-md-6">
+                <label class="form-label">Archetype</label>
+                <select
+                    name="archetype"
+                    id="archetype-select"
+                    class="form-control"
+                    required
+                    onchange="characterUtils.handleArchetypeSelection(this)"
+                >
+                    <option value="">Select Archetype</option>
+                    for arch := range models.ArchetypesList {
+                        {{archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]}}
+                        <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option>
+                    }
+                </select>
+                <p
+                    id="archetype-description"
+                    class="mt-2 text-secondary"
+                    style="min-height: 3em;"
+                ></p>
+            </div>
+
+            <div class="col-md-6" id="occupation-container" style="display: none;">
+                <label class="form-label">Occupation</label>
+                <select
+                    name="occupation"
+                    id="occupation-select"
+                    class="form-control"
+                    required
+                    onchange="characterUtils.handleOccupationSelection(this)"
+                >
+                    <option value="">Select Occupation</option>
+                    for occ := range models.OccupationsList {
+                        {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
+                        <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
+                    }
+                </select>
+                <p
+                    id="occupation-description"
+                    class="mt-2 text-secondary"
+                    style="min-height: 3em;"
+                ></p>
+            </div>
+
+            <div class="col-12 mt-4">
+                <button
+                    id="next-step-button"
+                    type="submit"
+                    class="btn btn-primary"
+                    disabled
+                >
+                    Assign Attributes
+                </button>
+            </div>
         </form>
-        <button
-            type="submit"
-            class="btn btn-primary">
-            Assign Attributes
-        </button>
+
+        <style>
+            .coc-sheet {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                background-color: #fff;
+                border-radius: 8px;
+            }
+        </style>
+
+        <script>
+            // Extend the characterUtils object with the new functions
+            if (!window.characterUtils) {
+                window.characterUtils = {};
+            }
+
+            // Function to handle archetype selection
+            window.characterUtils.handleArchetypeSelection = function(selectElement) {
+                // First, show the description as before
+                this.showDescription(selectElement.value, 'archetype-description');
+
+                // Then, show the occupation section if an archetype is selected
+                const occupationContainer = document.getElementById('occupation-container');
+
+                if (selectElement.value) {
+                    // Show the occupation container with a smooth transition
+                    occupationContainer.style.display = 'block';
+                } else {
+                    // Hide the occupation container
+                    occupationContainer.style.display = 'none';
+                }
+
+                // Check if the form is complete
+                this.checkFormCompletion();
+            };
+
+            // Function to handle occupation selection
+            window.characterUtils.handleOccupationSelection = function(selectElement) {
+                // Show the description
+                this.showDescription(selectElement.value, 'occupation-description');
+
+                // Check if the form is complete
+                this.checkFormCompletion();
+            };
+
+            // Function to check if the form is complete
+            window.characterUtils.checkFormCompletion = function() {
+                const nameInput = document.querySelector('input[name="name"]');
+                const ageInput = document.querySelector('input[name="age"]');
+                const residenceInput = document.querySelector('input[name="residence"]');
+                const birthplaceInput = document.querySelector('input[name="birthplace"]');
+                const archetypeSelect = document.getElementById('archetype-select');
+                const occupationSelect = document.getElementById('occupation-select');
+                const nextButton = document.getElementById('next-step-button');
+
+                // Check if all fields are filled
+                const isNameFilled = nameInput && nameInput.value.trim() !== '';
+                const isAgeFilled = ageInput && ageInput.value !== '';
+                const isResidenceFilled = residenceInput && residenceInput.value.trim() !== '';
+                const isBirthplaceFilled = birthplaceInput && birthplaceInput.value.trim() !== '';
+                const isArchetypeSelected = archetypeSelect && archetypeSelect.value !== '';
+                const isOccupationSelected = occupationSelect && occupationSelect.value !== '';
+
+                // Only enable the button if all fields are filled
+                nextButton.disabled = !(
+                    isNameFilled &&
+                    isAgeFilled &&
+                    isResidenceFilled &&
+                    isBirthplaceFilled &&
+                    isArchetypeSelected &&
+                    isOccupationSelected
+                );
+            };
+
+            // If showDescription doesn't exist, add it
+            if (!window.characterUtils.showDescription) {
+                window.characterUtils.showDescription = function(value, targetId) {
+                    const descriptionElement = document.getElementById(targetId);
+                    const selectElement = event.target;
+                    const selectedOption = Array.from(selectElement.options).find(option => option.value === value);
+
+                    if (selectedOption && selectedOption.dataset.description) {
+                        descriptionElement.textContent = selectedOption.dataset.description;
+                    } else {
+                        descriptionElement.textContent = "";
+                    }
+                };
+            }
+
+            // Initialize form check on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                // Add event listener to occupation select
+                const occupationSelect = document.getElementById('occupation-select');
+                if (occupationSelect) {
+                    occupationSelect.addEventListener('change', function() {
+                        characterUtils.handleOccupationSelection(this);
+                    });
+                }
+
+                // Initial form check
+                characterUtils.checkFormCompletion();
+            });
+        </script>
+    </div>
 }

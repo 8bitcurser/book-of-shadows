@@ -45,32 +45,32 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<style>\n        .tooltip-container {\n            position: relative;\n            display: inline-block;\n        }\n\n        .tooltip-text {\n            visibility: hidden;\n            opacity: 0;\n            position: absolute;\n            left: 0;\n            top: 100%;\n            background-color: rgba(255, 255, 255, 0.95);\n            color: #373A40;\n            padding: 8px 12px;\n            border-radius: 4px;\n            width: 300px;\n            font-size: 0.875rem;\n            box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n            z-index: 10;\n            transition: opacity 0.2s;\n        }\n\n        .tooltip-container:hover .tooltip-text {\n            visibility: visible;\n            opacity: 1;\n        }\n\n        .dice-btn {\n            opacity: 0.6;\n            transition: opacity 0.2s;\n        }\n\n        .dice-btn:hover {\n            opacity: 1;\n        }\n\n        input[type=number]::-webkit-inner-spin-button,\n        input[type=number]::-webkit-outer-spin-button {\n            -webkit-appearance: none;\n            margin: 0;\n        }\n        input[type=number] {\n            -moz-appearance: textfield;\n        }\n    </style><form id=\"stepForm\" class=\"space-y-4\" hx-post=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container-fluid p-3 coc-sheet\"><!-- Header --><div class=\"mb-4\"><h2 class=\"text-xl font-bold\" style=\"color: #373A40\">Attributes Assignment</h2></div><form id=\"stepForm\" hx-post=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 70, Col: 89}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 28, Col: 93}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#character-sheet\"><div class=\"p-4 rounded-lg\" style=\"background-color: rgba(104, 109, 118, 0.1)\"><h2 class=\"text-xl font-bold mb-4\" style=\"color: #373A40\">Attributes</h2><div class=\"grid grid-cols-1 md:grid-cols-2 gap-4\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#character-sheet\"><div class=\"card mb-4\"><div class=\"card-body\"><div class=\"row g-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for key, value := range attributes {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div><div class=\"flex items-center gap-2 mb-1\"><label style=\"color: #686D76\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"col-md-4 mb-3\"><div class=\"d-flex align-items-center mb-2\"><label class=\"form-label me-2\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(value)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 79, Col: 64}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 37, Col: 73}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -81,12 +81,12 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if slices.Contains(investigator.Archetype.CoreCharacteristic, value) {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"tooltip-container\"><span class=\"text-xs px-2 py-0.5 rounded cursor-help\" style=\"background-color: rgba(220, 95, 0, 0.1); color: rgba(220, 95, 0, 0.8);\">Core Characteristic</span> <span class=\"tooltip-text\">Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5</span></div>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"position-relative d-inline-block tooltip-container\"><span class=\"badge bg-warning text-dark\">Core</span><div class=\"tooltip-text\">Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5</div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"flex gap-1\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"input-group\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -98,13 +98,13 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(key)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 96, Col: 45}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 51, Col: 53}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" min=\"1\" placeholder=\"3D6 X 5\" max=\"90\" class=\"flex-1 p-1.5 rounded text-center\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"dice-btn p-1.5 rounded text-sm shrink-0\" style=\"color: rgba(220, 95, 0, 0.8);\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" min=\"1\" placeholder=\"3D6 X 5\" max=\"90\" class=\"form-control text-center\" required> <button type=\"button\" class=\"btn btn-outline-secondary dice-btn\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -116,13 +116,13 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(key)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 115, Col: 45}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 68, Col: 53}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" min=\"1\" placeholder=\"(2D6 + 6) X 5\" max=\"90\" class=\"flex-1 p-1.5 rounded text-center\" style=\"background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;\" required> <button type=\"button\" class=\"dice-btn p-1.5 rounded text-sm shrink-0\" style=\"color: rgba(220, 95, 0, 0.8);\" onclick=\"characterUtils.rollAttribute(this, &#39;2d6p6x5&#39;)\">🎲</button>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" min=\"1\" placeholder=\"(2D6 + 6) X 5\" max=\"90\" class=\"form-control text-center\" required> <button type=\"button\" class=\"btn btn-outline-secondary dice-btn\" onclick=\"characterUtils.rollAttribute(this, &#39;2d6p6x5&#39;)\">🎲</button>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -132,7 +132,7 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div><div class=\"flex justify-end\"><button type=\"submit\" class=\"px-6 py-2 rounded transition-all\" style=\"background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)\">Assign Archetype Skills</button></div></form>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div><div class=\"d-flex justify-content-end\"><button type=\"submit\" class=\"btn btn-primary\">Assign Archetype Skills</button></div></form><style>\n            .coc-sheet {\n                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n                background-color: #fff;\n                border-radius: 8px;\n            }\n\n            .tooltip-container {\n                position: relative;\n                cursor: help;\n            }\n\n            .tooltip-text {\n                visibility: hidden;\n                opacity: 0;\n                position: absolute;\n                z-index: 1;\n                left: 0;\n                top: 100%;\n                width: 300px;\n                background-color: #fff;\n                color: #333;\n                text-align: left;\n                border-radius: 6px;\n                padding: 8px 12px;\n                font-size: 0.875rem;\n                box-shadow: 0 2px 8px rgba(0,0,0,0.2);\n                transition: opacity 0.3s;\n            }\n\n            .tooltip-container:hover .tooltip-text {\n                visibility: visible;\n                opacity: 1;\n            }\n\n            .dice-btn {\n                opacity: 0.8;\n                transition: opacity 0.2s;\n            }\n\n            .dice-btn:hover {\n                opacity: 1;\n            }\n\n            input[type=number]::-webkit-inner-spin-button,\n            input[type=number]::-webkit-outer-spin-button {\n                -webkit-appearance: none;\n                margin: 0;\n            }\n\n            input[type=number] {\n                -moz-appearance: textfield;\n            }\n        </style></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

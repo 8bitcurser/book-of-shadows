@@ -38,7 +38,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container-fluid p-3 coc-sheet\"><!-- Header --><div class=\"text-center mb-3\"><h1 class=\"sheet-title\">Modern Era Investigator</h1></div><!-- Personal Information --><div class=\"row mb-3\"><div class=\"col-md-4\"><label for=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container-fluid p-3 coc-sheet\"><!-- Header --><div class=\"text-center mb-3\"><h1 class=\"sheet-title\">Pulp Investigator</h1></div><!-- Personal Information --><div class=\"row mb-3\"><div class=\"col-md-4\"><label for=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

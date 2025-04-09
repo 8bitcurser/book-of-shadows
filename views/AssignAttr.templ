@@ -17,131 +17,138 @@ var attributes = map[string]string{
 }
 
 templ AssignAttrForm(investigator *models.Investigator) {
-    <style>
-        .tooltip-container {
-            position: relative;
-            display: inline-block;
-        }
+    <div class="container-fluid p-3 coc-sheet">
+        <!-- Header -->
+        <div class="mb-4">
+            <h2 class="text-xl font-bold" style="color: #373A40">Attributes Assignment</h2>
+        </div>
 
-        .tooltip-text {
-            visibility: hidden;
-            opacity: 0;
-            position: absolute;
-            left: 0;
-            top: 100%;
-            background-color: rgba(255, 255, 255, 0.95);
-            color: #373A40;
-            padding: 8px 12px;
-            border-radius: 4px;
-            width: 300px;
-            font-size: 0.875rem;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            z-index: 10;
-            transition: opacity 0.2s;
-        }
-
-        .tooltip-container:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .dice-btn {
-            opacity: 0.6;
-            transition: opacity 0.2s;
-        }
-
-        .dice-btn:hover {
-            opacity: 1;
-        }
-
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-    </style>
-
-    <form
-        id="stepForm"
-        class="space-y-4"
-        hx-post={ fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID) }
-        hx-target="#character-sheet"
-    >
-        <div class="p-4 rounded-lg" style="background-color: rgba(104, 109, 118, 0.1)">
-            <h2 class="text-xl font-bold mb-4" style="color: #373A40">Attributes</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                for key, value := range attributes {
-                    <div>
-                        <div class="flex items-center gap-2 mb-1">
-                            <label style="color: #686D76">{value}</label>
-                            if slices.Contains(investigator.Archetype.CoreCharacteristic, value) {
-                                <div class="tooltip-container">
-                                    <span class="text-xs px-2 py-0.5 rounded cursor-help" style="background-color: rgba(220, 95, 0, 0.1); color: rgba(220, 95, 0, 0.8);">
-                                        Core Characteristic
-                                    </span>
-                                    <span class="tooltip-text">
-                                        Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5
-                                    </span>
+        <form
+            id="stepForm"
+            hx-post={ fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID) }
+            hx-target="#character-sheet"
+        >
+            <div class="card mb-4">
+                <div class="card-body">
+                    <div class="row g-3">
+                        for key, value := range attributes {
+                            <div class="col-md-4 mb-3">
+                                <div class="d-flex align-items-center mb-2">
+                                    <label class="form-label me-2">{value}</label>
+                                    if slices.Contains(investigator.Archetype.CoreCharacteristic, value) {
+                                        <div class="position-relative d-inline-block tooltip-container">
+                                            <span class="badge bg-warning text-dark">Core</span>
+                                            <div class="tooltip-text">
+                                                Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5
+                                            </div>
+                                        </div>
+                                    }
                                 </div>
-                            }
-                        </div>
-                        <div class="flex gap-1">
-
-                            if key == "STR" || key == "CON" || key == "LCK" || key == "DEX" || key == "APP" || key == "POW" {
-                                <input
-                                    type="number"
-                                    name={key}
-                                    min="1"
-                                    placeholder="3D6 X 5"
-                                    max="90"
-                                    class="flex-1 p-1.5 rounded text-center"
-                                    style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    class="dice-btn p-1.5 rounded text-sm shrink-0"
-                                    style="color: rgba(220, 95, 0, 0.8);"
-                                    onclick="characterUtils.rollAttribute(this, '3d6x5')"
-                                >
-                                    🎲
-                                </button>
-                            } else {
-                                <input
-                                    type="number"
-                                    name={key}
-                                    min="1"
-                                    placeholder="(2D6 + 6) X 5"
-                                    max="90"
-                                    class="flex-1 p-1.5 rounded text-center"
-                                    style="background-color: rgba(255, 255, 255, 0.1); border: 1px solid rgba(104, 109, 118, 0.2); color: #373A40;"
-                                    required
-                                />
-                                <button
-                                    type="button"
-                                    class="dice-btn p-1.5 rounded text-sm shrink-0"
-                                    style="color: rgba(220, 95, 0, 0.8);"
-                                    onclick="characterUtils.rollAttribute(this, '2d6p6x5')"
-                                >
-                                    🎲
-                                </button>
-                            }
-                        </div>
+                                <div class="input-group">
+                                    if key == "STR" || key == "CON" || key == "LCK" || key == "DEX" || key == "APP" || key == "POW" {
+                                        <input
+                                            type="number"
+                                            name={key}
+                                            min="1"
+                                            placeholder="3D6 X 5"
+                                            max="90"
+                                            class="form-control text-center"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary dice-btn"
+                                            onclick="characterUtils.rollAttribute(this, '3d6x5')"
+                                        >
+                                            🎲
+                                        </button>
+                                    } else {
+                                        <input
+                                            type="number"
+                                            name={key}
+                                            min="1"
+                                            placeholder="(2D6 + 6) X 5"
+                                            max="90"
+                                            class="form-control text-center"
+                                            required
+                                        />
+                                        <button
+                                            type="button"
+                                            class="btn btn-outline-secondary dice-btn"
+                                            onclick="characterUtils.rollAttribute(this, '2d6p6x5')"
+                                        >
+                                            🎲
+                                        </button>
+                                    }
+                                </div>
+                            </div>
+                        }
                     </div>
-                }
+                </div>
             </div>
-        </div>
 
-        <div class="flex justify-end">
-            <button
-                type="submit"
-                class="px-6 py-2 rounded transition-all"
-                style="background-color: rgba(220, 95, 0, 0.8); color: white; border: 1px solid rgba(255, 255, 255, 0.2)">
-                Assign Archetype Skills
-            </button>
-        </div>
-    </form>
+            <div class="d-flex justify-content-end">
+                <button
+                    type="submit"
+                    class="btn btn-primary">
+                    Assign Archetype Skills
+                </button>
+            </div>
+        </form>
+
+        <style>
+            .coc-sheet {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                background-color: #fff;
+                border-radius: 8px;
+            }
+
+            .tooltip-container {
+                position: relative;
+                cursor: help;
+            }
+
+            .tooltip-text {
+                visibility: hidden;
+                opacity: 0;
+                position: absolute;
+                z-index: 1;
+                left: 0;
+                top: 100%;
+                width: 300px;
+                background-color: #fff;
+                color: #333;
+                text-align: left;
+                border-radius: 6px;
+                padding: 8px 12px;
+                font-size: 0.875rem;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+                transition: opacity 0.3s;
+            }
+
+            .tooltip-container:hover .tooltip-text {
+                visibility: visible;
+                opacity: 1;
+            }
+
+            .dice-btn {
+                opacity: 0.8;
+                transition: opacity 0.2s;
+            }
+
+            .dice-btn:hover {
+                opacity: 1;
+            }
+
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            input[type=number] {
+                -moz-appearance: textfield;
+            }
+        </style>
+    </div>
 }
