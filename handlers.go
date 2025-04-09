@@ -213,7 +213,8 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 		case "Name":
 			investigator.Name = serializer.Value.(string)
 		case "Age":
-			investigator.Age = serializer.Value.(int)
+			age, _ := strconv.Atoi(serializer.Value.(string))
+			investigator.Age = age
 		case "Residence":
 			investigator.Residence = serializer.Value.(string)
 		case "Birthplace":
