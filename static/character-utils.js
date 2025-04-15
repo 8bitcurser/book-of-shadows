@@ -132,7 +132,7 @@ const characterUtils = {
                 this.updateArchetypeInputs(newPoints);
             }
             input.dataset.skillvalue = value.toString();
-                await this.updateInvestigator(
+            await this.updateInvestigator(
                 "skills",
                 skillName,
                 value

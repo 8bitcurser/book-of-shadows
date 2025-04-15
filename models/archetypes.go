@@ -14,14 +14,14 @@ type SpecialArchetypeRules struct {
 }
 
 type Archetype struct {
-	Name                  string                `json:"name"`
-	Skills                []string              `json:"-"`
-	BonusPoints           int                   `json:"-"`
-	CoreCharacteristic    []string              `json:"-"`
-	SuggestedOccupations  []string              `json:"-"`
-	AmountOfTalents       int                   `json:"-"`
-	Description           string                `json:"description"`
-	SuggestedTraits       string                `json:"-"`
+	Name                  string                `json:"Name"`
+	Skills                []string              `json:"Skills"`
+	BonusPoints           int                   `json:"BonusPoints"`
+	CoreCharacteristic    []string              `json:"CoreCharacteristic"`
+	SuggestedOccupations  []string              `json:"SuggestedOccupations"`
+	AmountOfTalents       int                   `json:"AmountOfTalents"`
+	Description           string                `json:"Description"`
+	SuggestedTraits       string                `json:"SuggestedTraits"`
 	SpecialArchetypeRules SpecialArchetypeRules `json:"-"`
 }
 

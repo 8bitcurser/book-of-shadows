@@ -8,7 +8,7 @@ type Skill struct {
 	Name         string `json:"Name"`
 	FormName     string `json:"FormName"`
 	Abbreviation string `json:"-"`
-	Default      int    `json:"-"`
+	Default      int    `json:"Default"`
 	Value        int    `json:"Value"`
 	Era          []Era  `json:"-"`
 	Base         int    `json:"isBase"`

@@ -23,8 +23,6 @@ func main() {
 	http.HandleFunc("/api/investigator/list/import/", handleListInvestigatorsImport)
 	http.HandleFunc("/api/generate-step", handleCreateStepInvestigator)
 	http.HandleFunc("/api/investigator/confirm-attributes/", handleConfirmAttrStepInvestigator)
-	http.HandleFunc("/api/investigator/confirm-archetype/", handleConfirmArchSkillStepInvestigator)
-	http.HandleFunc("/api/investigator/confirm-occupation/", handleConfirmOccSkillStepInvestigator)
 	http.HandleFunc("/api/investigator/create/", handleCreateBaseInvestigator)
 	http.HandleFunc("/api/investigator/delete/", handleDeleteInvestigator)
 	http.HandleFunc("/api/investigator/update/", handleUpdateInvestigator)

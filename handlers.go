@@ -286,42 +286,6 @@ func handleCreateStepInvestigator(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handleConfirmArchSkillStepInvestigator(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/confirm-archetype/")
-	cm := storage.NewInvestigatorCookieConfig()
-	investigator, err := cm.GetInvestigatorCookie(r, key)
-	if err != nil {
-		log.Println(err)
-	}
-	component := views.SkillOccAssignmentForm(investigator)
-	err = component.Render(r.Context(), w)
-	if err != nil {
-		log.Println(err)
-	}
-}
-
-func handleConfirmOccSkillStepInvestigator(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/confirm-occupation/")
-	cm := storage.NewInvestigatorCookieConfig()
-	investigator, err := cm.GetInvestigatorCookie(r, key)
-	if err != nil {
-		log.Println(err)
-	}
-	component := views.SkillGeneralAssignmentForm(investigator)
-	err = component.Render(r.Context(), w)
-	if err != nil {
-		log.Println(err)
-	}
-}
-
 func handleConfirmAttrStepInvestigator(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -352,7 +316,8 @@ func handleConfirmAttrStepInvestigator(w http.ResponseWriter, r *http.Request) {
 	}
 	investigator.InvestigatorUpdateAttributes(payload)
 	cm.UpdateInvestigatorCookie(w, key, investigator)
-	components := views.SkillArchAssignmentForm(investigator)
+
+	components := views.SkillAssignmentForm(investigator)
 	err = components.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)
