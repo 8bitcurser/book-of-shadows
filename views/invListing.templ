@@ -7,119 +7,128 @@ import "encoding/json"
 
 
 templ InvestigatorsList(investigators map[string]*models.Investigator) {
-
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Investigators</h2>
         <div class="btn-group" role="group">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exportModal">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exportModal">
                 Export
             </button>
-            <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#importModal">
+            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#importModal">
                 Import
             </button>
         </div>
+    </div>
 
-        <br>
-
-        // Export Modal
-        <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">
-                            Export Investigators
-                        </h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <textarea class="form-control" id="exportCode" disabled
-                            hx-get="/api/investigator/list/export"
-                            hx-trigger="load"
-                            hx-swap="innerHTML"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            onclick="navigator.clipboard.writeText(document.getElementById('exportCode').value);"
-                            type="button" class="btn btn-primary" data-bs-dismiss="modal">Copy Code</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
+    <!-- Export Modal -->
+    <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exportModalLabel">Export Investigators</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control" id="exportCode" rows="10" disabled
+                        hx-get="/api/investigator/list/export"
+                        hx-trigger="load"
+                        hx-swap="innerHTML"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        onclick="navigator.clipboard.writeText(document.getElementById('exportCode').value);"
+                        type="button" class="btn btn-primary">Copy Code</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        // Import Modal
-        <div id="importModal" class="modal fade" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5">Import Investigators</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <textarea class="form-control" id="importCode" placeholder="Paste export code here"></textarea>
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            onclick="characterUtils.importInvestigators();"
-                            type="button" class="btn btn-primary" hx-swap="none" data-bs-dismiss="modal">Import</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
+    <!-- Import Modal -->
+    <div id="importModal" class="modal fade" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="importModalLabel">Import Investigators</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control" id="importCode" rows="10" placeholder="Paste export code here"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        onclick="characterUtils.importInvestigators();"
+                        type="button" class="btn btn-primary" hx-swap="none" data-bs-dismiss="modal">Import</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class="row">
-            for _, inv := range sortInvestigators(investigators) {
-                <div class="col-sm-2 p-3">
-                    <div class="card border-light" style="width: 18rem;">
-                        <img src="/static/profile.jpg" class="card-img-top" style="max-height: 250px" alt="investigator-profile">
-                        <hr>
-                        <div class="card-body">
-                            <h3 class="card-title">
-                                <a class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" hx-get={ fmt.Sprintf("/api/investigator/%s", inv.ID) } hx-target="#character-sheet"> { inv.Name } </a>
-                             </h3>
-                            <p class="card-text">{ inv.Occupation.Name }</p>
-                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target={fmt.Sprintf("#d-%s", inv.ID)}>Destroy</button>
-                            <a hx-swap="none" onclick={ templ.ComponentScript{
-                                                        Name: "characterUtils.exportPDF",
-                                                        Call: fmt.Sprintf("characterUtils.exportPDF(event, '%s')", inv.ID),
-                                                    }} class="btn btn-secondary" >PDF</a>
-                            // Delete Modal
-                            <div class="modal fade" id={fmt.Sprintf("d-%s", inv.ID)}  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="deleteModalLabel">Are you sure?</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <p>This action is permanent: {inv.Occupation.Name}, {inv.Name} will be deleted</p>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <a
-                                                class="btn btn-danger"
-                                                hx-delete={fmt.Sprintf("/api/investigator/delete/%s", inv.ID)}
-                                                hx-target="closest div"
-                                                data-bs-dismiss="modal"
-                                            >
-                                                Delete
-                                            </a>
-                                            <div
-                                                hx-get="/api/investigator/list"
-                                                hx-trigger="deleted from:body"
-                                                hx-target="#character-sheet"
-                                                style="display: none; z-index: -1"
-                                            >
-                                            </div>
-                                        </div>
-                                    </div>
+    <!-- Investigator Cards -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        for _, inv := range sortInvestigators(investigators) {
+            <div class="col">
+                <div class="card h-100 border-light shadow-sm">
+                    <img src="/static/profile.jpg" class="card-img-top" style="object-fit: cover; height: 200px;" alt="investigator-profile">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-2">
+                            <a class="link-dark link-underline-opacity-25 link-underline-opacity-100-hover text-decoration-none"
+                               hx-get={ fmt.Sprintf("/api/investigator/%s", inv.ID) }
+                               hx-target="#character-sheet">
+                               { inv.Name }
+                            </a>
+                        </h5>
+                        <p class="card-text text-muted mb-3">{ inv.Occupation.Name }</p>
+                        <div class="mt-auto d-flex justify-content-between">
+                            <button type="button" class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target={fmt.Sprintf("#d-%s", inv.ID)}>
+                                Delete
+                            </button>
+                            <a hx-swap="none" 
+                               onclick={ templ.ComponentScript{
+                                   Name: "characterUtils.exportPDF",
+                                   Call: fmt.Sprintf("characterUtils.exportPDF(event, '%s')", inv.ID),
+                               }} 
+                               class="btn btn-sm btn-outline-secondary">
+                               PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Delete Modal -->
+                <div class="modal fade" id={fmt.Sprintf("d-%s", inv.ID)} tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="deleteModalLabel">Confirm Deletion</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    Are you sure you want to delete <strong>{inv.Name}</strong> ({inv.Occupation.Name})? This action is irreversible.
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <a class="btn btn-danger"
+                                   hx-delete={fmt.Sprintf("/api/investigator/delete/%s", inv.ID)}
+                                   hx-target="closest div"
+                                   data-bs-dismiss="modal">
+                                   Delete
+                                </a>
+                                <div
+                                    hx-get="/api/investigator/list"
+                                    hx-trigger="deleted from:body"
+                                    hx-target="#character-sheet"
+                                    style="display: none;">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            }
-        </div>
+            </div>
+        }
+    </div>
 }
 
 
