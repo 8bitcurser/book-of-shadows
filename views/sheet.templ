@@ -7,87 +7,397 @@ import "strings"
 
 templ CharacterSheet(investigator *models.Investigator) {
     @hidden(investigator)
-    <div class="container-fluid p-3 coc-sheet">
-        <!-- Header -->
-        <div class="text-center mb-3">
-            <h1 class="sheet-title">Pulp Investigator</h1>
+    <div class="container-fluid p-4 coc-sheet">
+        <!-- Progress Bar & Step Indicator -->
+        <div class="mb-4">
+            <div class="progress mb-3" style="height: 8px; background-color: #f0f0f0;">
+                <div class="progress-bar" role="progressbar" style="width: 100%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center px-2">
+                <div class="step-indicator completed d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <span class="step-label small fw-medium">Personal Info</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: linear-gradient(90deg, #b5838d 0%, #b5838d 100%);"></div>
+                <div class="step-indicator completed d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <span class="step-label small fw-medium">Attributes</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: linear-gradient(90deg, #b5838d 0%, #b5838d 100%);"></div>
+                <div class="step-indicator completed d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <span class="step-label small fw-medium">Skills</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: linear-gradient(90deg, #b5838d 0%, #b5838d 100%);"></div>
+                <div class="step-indicator active d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <span>4</span>
+                    </div>
+                    <span class="step-label small fw-bold" style="color: #6d6875;">Complete</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header & Lock/Unlock Toggle -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold" style="color: #6d6875">Character Sheet</h2>
+            <div class="lock-toggle d-flex align-items-center">
+                <span class="me-2 text-secondary small">Lock Editing</span>
+                <div class="form-check form-switch">
+                    <input 
+                        class="form-check-input" 
+                        type="checkbox" 
+                        id="lockToggle" 
+                        role="switch" 
+                        onchange="characterUtils.toggleLock(this)" 
+                        style="width: 3em; height: 1.5em;"
+                    />
+                    <label class="form-check-label visually-hidden" for="lockToggle">Lock Character Sheet Editing</label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Character Header Card -->
+        <div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none; background: linear-gradient(135deg, #f8f9fa 0%, #f0f0f0 100%);">
+            <div class="card-body p-3">
+                <div class="d-flex align-items-center">
+                    <div class="avatar me-3" style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        { string([]rune(investigator.Name)[0]) }
+                    </div>
+                    <div>
+                        <h3 class="mb-0 fw-bold" style="color: #6d6875;">{investigator.Name}</h3>
+                        <p class="mb-0 text-secondary">{investigator.Occupation.Name} {investigator.Archetype.Name}</p>
+                    </div>
+                    <div class="ms-auto d-flex flex-wrap">
+                        <button onclick="characterUtils.exportPDF(event, '{investigator.ID}')" class="btn me-2" style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.5rem;">
+                            <i class="bi bi-file-earmark-pdf me-2"></i>Export PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- Personal Information -->
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label for={investigator.ID}>Name</label>
-                <input
-                    type="text"
-                    id={ investigator.ID }
-                    class="form-control"
-                    value={ investigator.Name }
-                    data-field="Name"
-                    onchange="characterUtils.updatePersonalInfo(this)"
-                />
+        <div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
+            <div class="card-header d-flex align-items-center p-3" style="background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;">
+                <i class="bi bi-person-vcard me-2" style="color: #6d6875;"></i>
+                <h4 class="mb-0 fw-bold" style="color: #6d6875; font-size: 1.1rem;">Personal Information</h4>
             </div>
-            <div class="col-md-4">
-                <label for="inv-birth">Birthplace</label>
-                <input
-                    id="inv-birth"
-                    type="text"
-                    class="form-control"
-                    value={ investigator.Birthplace }
-                    data-field="Birthplace"
-                    onchange="characterUtils.updatePersonalInfo(this)"
-                />
-            </div>
-            <div class="col-md-4">
-                <label for="inv-res">Residence</label>
-                <input
-                    type="text"
-                    id="inv-res"
-                    class="form-control"
-                    value={ investigator.Residence }
-                    data-field="Residence"
-                    onchange="characterUtils.updatePersonalInfo(this)"
-                />
-            </div>
-        </div>
+            <div class="card-body p-3">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for={investigator.ID} class="form-label">Name</label>
+                        <input
+                            type="text"
+                            id={investigator.ID}
+                            class="form-control editable"
+                            value={investigator.Name}
+                            data-field="Name"
+                            onchange="characterUtils.updatePersonalInfo(this)"
+                        />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inv-birth" class="form-label">Birthplace</label>
+                        <input
+                            id="inv-birth"
+                            type="text"
+                            class="form-control editable"
+                            value={investigator.Birthplace}
+                            data-field="Birthplace"
+                            onchange="characterUtils.updatePersonalInfo(this)"
+                        />
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inv-res" class="form-label">Residence</label>
+                        <input
+                            type="text"
+                            id="inv-res"
+                            class="form-control editable"
+                            value={investigator.Residence}
+                            data-field="Residence"
+                            onchange="characterUtils.updatePersonalInfo(this)"
+                        />
+                    </div>
+                </div>
 
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label>Occupation</label>
-                <p class="form-control">{ investigator.Occupation.Name }</p>
-            </div>
-            <div class="col-md-4">
-                <label>Archetype</label>
-                <p class="form-control">{ investigator.Archetype.Name }</p>
-            </div>
-            <div class="col-md-4">
-                <label for="inv-age">Age</label>
-                <input
-                    type="number"
-                    class="form-control"
-                    value={ strconv.Itoa(investigator.Age) }
-                    data-field="Age"
-                    onchange="characterUtils.updatePersonalInfo(this)"
-                />
+                <div class="row g-3 mt-1">
+                    <div class="col-md-4">
+                        <label class="form-label">Occupation</label>
+                        <p class="form-control-plaintext bg-light rounded px-2 py-1">{investigator.Occupation.Name}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Archetype</label>
+                        <p class="form-control-plaintext bg-light rounded px-2 py-1">{investigator.Archetype.Name}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="inv-age" class="form-label">Age</label>
+                        <input
+                            type="number"
+                            class="form-control editable"
+                            value={strconv.Itoa(investigator.Age)}
+                            data-field="Age"
+                            onchange="characterUtils.updatePersonalInfo(this)"
+                        />
+                    </div>
+                </div>
             </div>
         </div>
 
         <!-- Characteristics and Combat Stats -->
-        <div class="row mb-4">
+        <div class="row mb-4 g-3">
             <!-- Characteristics -->
             <div class="col-md-8">
-                <h3 class="section-title">Characteristics</h3>
-                <div class="row g-2">
-                    for _, attr := range investigator.Attributes {
-                        if (!strings.HasPrefix(attr.Name, "Current") && !strings.HasPrefix(attr.Name, "Max")) {
-                            <div class="col-md-3 mb-2">
-                                <div class="characteristic-box p-2 border">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <strong>{ attr.Name }</strong>
-                                        <span class="value" data-attr={attr.Name}>{ strconv.Itoa(attr.Value) }</span>
+                <div class="card shadow-sm h-100" style="border-radius: 1rem; border: none;">
+                    <div class="card-header d-flex align-items-center p-3" style="background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;">
+                        <i class="bi bi-bar-chart-fill me-2" style="color: #6d6875;"></i>
+                        <h4 class="mb-0 fw-bold" style="color: #6d6875; font-size: 1.1rem;">Characteristics</h4>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="row g-3">
+                            for _, attr := range investigator.Attributes {
+                                if (!strings.HasPrefix(attr.Name, "Current") && !strings.HasPrefix(attr.Name, "Max") && 
+                                     attr.Name != "HitPoints" && attr.Name != "MagicPoints" && attr.Name != "Sanity") {
+                                    <div class="col-md-3 col-sm-4 mb-2">
+                                        <div class="characteristic-box p-2 rounded shadow-sm" style="background-color: #f8f9fa; transition: all 0.2s ease; border: 1px solid rgba(0,0,0,0.05);">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <strong style="color: #6d6875;">{attr.Name}</strong>
+                                                <span class="value badge fw-bold" style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;" data-attr={attr.Name}>{strconv.Itoa(attr.Value)}</span>
+                                            </div>
+                                            <div class="d-flex justify-content-end mt-1">
+                                                <small class="me-2 text-secondary" title="Half value" data-half>{strconv.Itoa(attr.Value/2)}</small>
+                                                <small class="ms-2 text-secondary" title="Fifth value" data-fifth>{strconv.Itoa(attr.Value/5)}</small>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="d-flex justify-content-end">
-                                        <small class="me-1" title="Half value" data-half>{ strconv.Itoa(attr.Value/2) }</small>
-                                        <small class="ms-1" title="Fifth value" data-fifth>{ strconv.Itoa(attr.Value/5) }</small>
+                                }
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Combat Stats -->
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100" style="border-radius: 1rem; border: none;">
+                    <div class="card-header d-flex align-items-center p-3" style="background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;">
+                        <i class="bi bi-shield-fill me-2" style="color: #6d6875;"></i>
+                        <h4 class="mb-0 fw-bold" style="color: #6d6875; font-size: 1.1rem;">Combat Stats</h4>
+                    </div>
+                    <div class="card-body p-3">
+                        <div class="mb-3">
+                            <label class="d-flex justify-content-between fw-medium">
+                                <span style="color: #6d6875;">Hit Points</span>
+                                <span class="text-secondary small">Current / Max</span>
+                            </label>
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    class="form-control editable"
+                                    value={strconv.Itoa(investigator.Attributes["HitPoints"].Value)}
+                                    data-attr="HitPoints"
+                                    title="CurrentHP"
+                                    min="0"
+                                    onchange="characterUtils.recalculateValues(this, 'attribute')"
+                                />
+                                <span class="input-group-text" style="background-color: #f1f1f1;">/</span>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    value={strconv.Itoa(investigator.Attributes["MaxHP"].Value)} 
+                                    readonly
+                                    style="background-color: #f8f9fa;"
+                                />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="d-flex justify-content-between fw-medium">
+                                <span style="color: #6d6875;">Magic Points</span>
+                                <span class="text-secondary small">Current / Max</span>
+                            </label>
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    class="form-control editable"
+                                    value={strconv.Itoa(investigator.Attributes["MagicPoints"].Value)}
+                                    data-attr="MagicPoints"
+                                    title="CurrentMP"
+                                    min="0"
+                                    onchange="characterUtils.recalculateValues(this, 'attribute')"
+                                />
+                                <span class="input-group-text" style="background-color: #f1f1f1;">/</span>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    value={strconv.Itoa(investigator.Attributes["MaxMP"].Value)} 
+                                    readonly
+                                    style="background-color: #f8f9fa;"
+                                />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="d-flex justify-content-between fw-medium">
+                                <span style="color: #6d6875;">Sanity</span>
+                                <span class="text-secondary small">Current / Max</span>
+                            </label>
+                            <div class="input-group">
+                                <input
+                                    type="number"
+                                    class="form-control editable"
+                                    value={strconv.Itoa(investigator.Attributes["Sanity"].Value)}
+                                    data-attr="Sanity"
+                                    title="CurrentSanity"
+                                    onchange="characterUtils.recalculateValues(this, 'attribute')"
+                                    min="0"
+                                />
+                                <span class="input-group-text" style="background-color: #f1f1f1;">/</span>
+                                <input 
+                                    type="number" 
+                                    class="form-control" 
+                                    value={strconv.Itoa(investigator.Attributes["MaxSanity"].Value)} 
+                                    readonly
+                                    style="background-color: #f8f9fa;"
+                                />
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="fw-medium" style="color: #6d6875;">Luck</label>
+                            <input
+                                type="number"
+                                class="form-control editable"
+                                value={strconv.Itoa(investigator.Attributes["Luck"].Value)}
+                                data-attr="Luck"
+                                title="CurrentLuck"
+                                min="0"
+                                onchange="characterUtils.recalculateValues(this, 'attribute')"
+                            />
+                        </div>
+                        <div class="d-flex flex-wrap gap-3">
+                            <div class="stat-pill px-3 py-2 rounded-pill shadow-sm" style="background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05);">
+                                <small class="d-block text-muted">Move</small>
+                                <span class="fw-medium">{strconv.Itoa(investigator.Move)}</span>
+                            </div>
+                            <div class="stat-pill px-3 py-2 rounded-pill shadow-sm" style="background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05);">
+                                <small class="d-block text-muted">Build</small>
+                                <span class="fw-medium">{investigator.Build}</span>
+                            </div>
+                            <div class="stat-pill px-3 py-2 rounded-pill shadow-sm" style="background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05);">
+                                <small class="d-block text-muted">Damage Bonus</small>
+                                <span class="fw-medium">{investigator.DamageBonus}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Checks -->
+        <div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
+            <div class="card-header d-flex align-items-center p-3" style="background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;">
+                <i class="bi bi-heart-pulse-fill me-2" style="color: #6d6875;"></i>
+                <h4 class="mb-0 fw-bold" style="color: #6d6875; font-size: 1.1rem;">Status Conditions</h4>
+            </div>
+            <div class="card-body p-3">
+                <div class="d-flex flex-wrap gap-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input editable" type="checkbox" role="switch" id="temp-insanity" style="cursor: pointer;" />
+                        <label class="form-check-label" for="temp-insanity" style="cursor: pointer;">Temporary Insanity</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input editable" type="checkbox" role="switch" id="indef-insanity" style="cursor: pointer;" />
+                        <label class="form-check-label" for="indef-insanity" style="cursor: pointer;">Indefinite Insanity</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input editable" type="checkbox" role="switch" id="major-wound" style="cursor: pointer;" />
+                        <label class="form-check-label" for="major-wound" style="cursor: pointer;">Major Wound</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input editable" type="checkbox" role="switch" id="unconscious" style="cursor: pointer;" />
+                        <label class="form-check-label" for="unconscious" style="cursor: pointer;">Unconscious</label>
+                    </div>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input editable" type="checkbox" role="switch" id="dying" style="cursor: pointer;" />
+                        <label class="form-check-label" for="dying" style="cursor: pointer;">Dying</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Skills Section -->
+        <div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
+            <div class="card-header d-flex align-items-center p-3" style="background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;">
+                <i class="bi bi-tools me-2" style="color: #6d6875;"></i>
+                <h4 class="mb-0 fw-bold" style="color: #6d6875; font-size: 1.1rem;">Skills</h4>
+                <div class="ms-auto skill-points">
+                    <span class="badge rounded-pill me-1" style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;">
+                        <i class="bi bi-briefcase-fill me-1"></i>Occupation: {strconv.Itoa(investigator.OccupationPoints)}
+                    </span>
+                    <span class="badge rounded-pill me-1" style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;">
+                        <i class="bi bi-book-fill me-1"></i>Interest: {strconv.Itoa(investigator.FreePoints)}
+                    </span>
+                    if investigator.ArchetypePoints > 0 {
+                        <span class="badge rounded-pill" style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;">
+                            <i class="bi bi-person-fill me-1"></i>Archetype: {strconv.Itoa(investigator.ArchetypePoints)}
+                        </span>
+                    }
+                </div>
+            </div>
+            <div class="card-body p-3">
+                <div class="skills-grid">
+                    for _, skill := range sortSkills(investigator.Skills) {
+                        if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
+                            <div class="skill-item p-2 mb-2 rounded shadow-sm" style="background-color: #f8f9fa; transition: all 0.2s ease; border: 1px solid rgba(0,0,0,0.05);">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check me-2">
+                                            <input
+                                                type="checkbox"
+                                                class="form-check-input editable"
+                                                data-skill={skill.Name}
+                                                if skill.IsSelected {
+                                                    checked
+                                                }
+                                                onchange="characterUtils.handleSkillToggleCheck(this)"
+                                                style="cursor: pointer; width: 1.1em; height: 1.1em;"
+                                            />
+                                        </div>
+                                        if skill.NeedsFormDef == 1 {
+                                            <input
+                                                type="text"
+                                                class="form-control form-control-sm editable"
+                                                style="width: 150px;"
+                                                value={skill.Name}
+                                                data-skill={skill.Name}
+                                                onchange="characterUtils.handleSkillNameChange(this)"
+                                            />
+                                        } else {
+                                            <span class="skill-name" style="color: #6d6875; font-weight: 500;">{skill.Name}</span>
+                                            <span class="skill-default ms-1 small text-secondary">({strconv.Itoa(skill.Default)}%)</span>
+                                        }
+                                    </div>
+                                    <div class="d-flex align-items-center">
+                                        <div class="input-group input-group-sm" style="width: 100px;">
+                                            <input
+                                                type="number"
+                                                class="form-control editable"
+                                                value={strconv.Itoa(skill.Value)}
+                                                data-skill={skill.Name}
+                                                onchange="characterUtils.recalculateValues(this, 'skill')"
+                                                title="Regular"
+                                                min={strconv.Itoa(skill.Default)}
+                                            />
+                                            <span class="input-group-text" style="background-color: #f1f1f1;">%</span>
+                                        </div>
+                                        <div class="derived-values ms-2 text-secondary small">
+                                            <span>{strconv.Itoa(skill.Value/2)}</span>
+                                            <span class="mx-1">/</span>
+                                            <span>{strconv.Itoa(skill.Value/5)}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -95,212 +405,21 @@ templ CharacterSheet(investigator *models.Investigator) {
                     }
                 </div>
             </div>
-
-            <!-- Combat Stats -->
-            <div class="col-md-4">
-                <h3 class="section-title">Combat Stats</h3>
-                <div class="mb-2">
-                    <label class="me-2">HP</label>
-                    <input
-                        type="number"
-                        class="form-control form-control-sm d-inline-block w-auto"
-                        value={ strconv.Itoa(investigator.Attributes["HitPoints"].Value) }
-                        data-attr="HitPoints"
-                        title="CurrentHP"
-                        min="0"
-                        onchange="characterUtils.recalculateValues(this, 'attribute')"
-                    />
-                    <span class="ms-2">/ { strconv.Itoa(investigator.Attributes["MaxHP"].Value) }</span>
-                </div>
-                <div class="mb-2">
-                    <label class="me-2">MP</label>
-                    <input
-                        type="number"
-                        class="form-control form-control-sm d-inline-block w-auto"
-                        value={ strconv.Itoa(investigator.Attributes["MagicPoints"].Value) }
-                        data-attr="MagicPoints"
-                        title="CurrentMP"
-                        min="0"
-                        onchange="characterUtils.recalculateValues(this, 'attribute')"
-                    />
-                    <span class="ms-2">/ { strconv.Itoa(investigator.Attributes["MaxMP"].Value) }</span>
-                </div>
-                <div class="mb-2">
-                    <label class="me-2">Sanity</label>
-                    <input
-                        type="number"
-                        class="form-control form-control-sm d-inline-block w-auto"
-                        value={ strconv.Itoa(investigator.Attributes["Sanity"].Value) }
-                        data-attr="Sanity"
-                        title="CurrentSanity"
-                        onchange="characterUtils.recalculateValues(this, 'attribute')"
-                        min="0"
-                    />
-                    <span class="ms-2">/ { strconv.Itoa(investigator.Attributes["MaxSanity"].Value) }</span>
-                </div>
-                <div class="mb-2">
-                    <label class="me-2">Luck</label>
-                    <input
-                        type="number"
-                        class="form-control form-control-sm d-inline-block w-auto"
-                        value={ strconv.Itoa(investigator.Attributes["Luck"].Value) }
-                        data-attr="Luck"
-                        title="CurrentLuck"
-                        min="0"
-                        onchange="characterUtils.recalculateValues(this, 'attribute')"
-                    />
-                </div>
-                <div class="mb-2">
-                    <label class="me-2">Move</label>
-                    <span class="badge bg-light text-dark border">{ strconv.Itoa(investigator.Move) }</span>
-                </div>
-                <div class="mb-2">
-                    <label class="me-2">Build</label>
-                    <span class="badge bg-light text-dark border">{ investigator.Build }</span>
-                </div>
-                <div class="mb-2">
-                    <label class="me-2">Damage Bonus</label>
-                    <span class="badge bg-light text-dark border">{ investigator.DamageBonus }</span>
-                </div>
-            </div>
         </div>
-
-        <!-- Status Checkboxes -->
-        <div class="status-checks mb-4 p-2 border bg-light">
-            <div class="d-flex flex-wrap gap-3">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="temp-insanity" />
-                    <label class="form-check-label" for="temp-insanity">Temporary Insanity</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="indef-insanity" />
-                    <label class="form-check-label" for="indef-insanity">Indefinite Insanity</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="major-wound" />
-                    <label class="form-check-label" for="major-wound">Major Wound</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="unconscious" />
-                    <label class="form-check-label" for="unconscious">Unconscious</label>
-                </div>
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" id="dying" />
-                    <label class="form-check-label" for="dying">Dying</label>
-                </div>
-            </div>
-        </div>
-
-        <!-- Skills Section -->
-        <div class="mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-2">
-                <h3 class="section-title">Skills</h3>
-                <div class="skill-points">
-                    <span class="me-2">Occupation: { strconv.Itoa(investigator.OccupationPoints) }</span>
-                    <span class="me-2">Interest: { strconv.Itoa(investigator.FreePoints) }</span>
-                    if investigator.ArchetypePoints > 0 {
-                        <span>Archetype: { strconv.Itoa(investigator.ArchetypePoints) }</span>
-                    }
-                </div>
-            </div>
-
-            <div class="skills-grid">
-                for _, skill := range sortSkills(investigator.Skills) {
-                    if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
-                        <div class="skill-item p-1 border-bottom">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="d-flex align-items-center">
-                                    <input
-                                        type="checkbox"
-                                        class="form-check-input me-2"
-                                        data-skill={ skill.Name }
-                                        if skill.IsSelected {
-                                            checked
-                                        }
-                                        onchange="characterUtils.handleSkillToggleCheck(this)"
-                                    />
-                                    if skill.NeedsFormDef == 1 {
-                                        <input
-                                            type="text"
-                                            class="form-control form-control-sm"
-                                            style="width: 120px;"
-                                            value={ skill.Name }
-                                            data-skill={ skill.Name }
-                                            onchange="characterUtils.handleSkillNameChange(this)"
-                                        />
-                                    } else {
-                                        <span title={ "Default: " + strconv.Itoa(skill.Default) + "%" }>
-                                            { skill.Name } ({ strconv.Itoa(skill.Default) }%)
-                                        </span>
-                                    }
-                                </div>
-                                <div class="d-flex align-items-center">
-                                    <input
-                                        type="number"
-                                        class="form-control form-control-sm me-1"
-                                        style="width: 55px;"
-                                        value={ strconv.Itoa(skill.Value) }
-                                        data-skill={ skill.Name }
-                                        onchange="characterUtils.recalculateValues(this, 'skill')"
-                                        title="Regular"
-                                        min={ strconv.Itoa(skill.Default) }
-                                    />
-                                    <small class="mx-1 text-secondary">{ strconv.Itoa(skill.Value/2) }/{ strconv.Itoa(skill.Value/5) }</small>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                }
-            </div>
-        </div>
-
-        <!-- Weapons Section -->
-        <!-- <div class="mb-4">
-            <h3 class="section-title">Weapons</h3>
-            <table class="table table-sm table-bordered">
-                <thead class="table-light">
-                    <tr>
-                        <th>Weapon</th>
-                        <th>Skill</th>
-                        <th>Damage</th>
-                        <th># of Attacks</th>
-                        <th>Range</th>
-                        <th>Ammo</th>
-                        <th>Malf.</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>Brawl</td>
-                        <td><input type="text" class="form-control form-control-sm" /></td>
-                        <td>1D3 + DB</td>
-                        <td>1</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    <tr>
-                        <td><input type="text" class="form-control form-control-sm" /></td>
-                        <td><input type="text" class="form-control form-control-sm" /></td>
-                        <td><input type="text" class="form-control form-control-sm" /></td>
-                        <td><input type="text" class="form-control form-control-sm" /></td>
-                        <td><input type="text" class="form-control form-control-sm" /></td>
-                        <td><input type="text" class="form-control form-control-sm" /></td>
-                        <td><input type="text" class="form-control form-control-sm" /></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div> -->
 
         <!-- Pulp Talents Section -->
         if len(investigator.Talents) > 0 {
-            <div class="mb-4">
-                <h3 class="section-title">Pulp Talents</h3>
-                <div class="talents-container p-2 border">
+            <div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
+                <div class="card-header d-flex align-items-center p-3" style="background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;">
+                    <i class="bi bi-stars me-2" style="color: #6d6875;"></i>
+                    <h4 class="mb-0 fw-bold" style="color: #6d6875; font-size: 1.1rem;">Pulp Talents</h4>
+                </div>
+                <div class="card-body p-3">
                     for _, talent := range investigator.Talents {
-                        <div class="talent-item mb-2">
-                            <h5>{ talent.Name }</h5>
-                            <p class="mb-0">{ talent.Description }</p>
+                        <div class="talent-item p-3 mb-3 rounded shadow-sm" style="background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05); position: relative; overflow: hidden;">
+                            <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);"></div>
+                            <h5 class="fw-bold" style="color: #6d6875;">{talent.Name}</h5>
+                            <p class="mb-0 text-secondary">{talent.Description}</p>
                         </div>
                     }
                 </div>
@@ -310,24 +429,12 @@ templ CharacterSheet(investigator *models.Investigator) {
 
     <style>
         .coc-sheet {
-            font-family: 'Georgia', serif;
-            background-color: #f9f9f9;
-            border: 1px solid #333;
-            border-radius: 5px;
-        }
-
-        .sheet-title {
-            font-weight: bold;
-            font-size: 1.8rem;
-            letter-spacing: 1px;
-        }
-
-        .section-title {
-            font-size: 1.2rem;
-            font-weight: bold;
-            border-bottom: 1px solid #333;
-            padding-bottom: 3px;
-            margin-bottom: 10px;
+            font-family: 'Roboto', sans-serif;
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .skills-grid {
@@ -340,7 +447,76 @@ templ CharacterSheet(investigator *models.Investigator) {
             page-break-inside: avoid;
             -webkit-column-break-inside: avoid;
         }
-
+        
+        .skill-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;
+            background-color: #fff !important;
+            border-color: rgba(181, 131, 141, 0.2) !important;
+        }
+        
+        .characteristic-box:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;
+            background-color: #fff !important;
+        }
+        
+        .stat-pill:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;
+            background-color: #f0e6ea !important;
+        }
+        
+        /* Form element focus styles */
+        .form-control:focus {
+            border-color: #b5838d;
+            box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
+        }
+        
+        /* Progress steps styling */
+        .step-indicator {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-circle {
+            transition: all 0.3s;
+        }
+        
+        .step-label {
+            transition: all 0.3s;
+        }
+        
+        .step-indicator.completed .step-label {
+            color: #6d6875;
+        }
+        
+        .step-indicator.active .step-label {
+            color: #6d6875;
+            font-weight: 500;
+        }
+        
+        /* Disabled form elements when locked */
+        .form-control[disabled], 
+        .form-check-input[disabled] {
+            background-color: #f8f9fa;
+            opacity: 0.8;
+            cursor: not-allowed;
+        }
+        
+        /* Lock toggle switch styling */
+        .form-switch .form-check-input {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+            background-color: #adb5bd;
+            border-color: #adb5bd;
+            cursor: pointer;
+        }
+        
+        .form-switch .form-check-input:checked {
+            background-color: #b5838d;
+            border-color: #b5838d;
+        }
+        
         /* Responsive adjustments */
         @media (max-width: 992px) {
             .skills-grid {
@@ -354,6 +530,116 @@ templ CharacterSheet(investigator *models.Investigator) {
             }
         }
     </style>
+
+    <script>
+        // Extend characterUtils with locking functionality
+        if (!window.characterUtils) {
+            window.characterUtils = {};
+        }
+        
+        // Toggle lock function
+        window.characterUtils.toggleLock = function(checkbox) {
+            const isLocked = checkbox.checked;
+            
+            // Get all editable elements
+            const editables = document.querySelectorAll('.editable');
+            
+            editables.forEach(element => {
+                element.disabled = isLocked;
+            });
+            
+            // Show a message 
+            const lockMessage = isLocked ? 'Character sheet is now locked. Unlock to make changes.' : 'Character sheet is now editable.';
+            const toast = document.createElement('div');
+            toast.className = 'position-fixed bottom-0 end-0 p-3';
+            toast.style.zIndex = 1050;
+            toast.innerHTML = `
+                <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <strong class="me-auto">${isLocked ? '🔒 Locked' : '🔓 Unlocked'}</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onclick="this.parentElement.parentElement.remove()"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${lockMessage}
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(toast);
+            
+            // Remove toast after 3 seconds
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        };
+        
+        // Ensure we keep the original recalculateValues function for attributes
+        const originalRecalculateValues = window.characterUtils.recalculateValues || function() {};
+        
+        // Override with enhanced version that ensures attributes are updated
+        window.characterUtils.recalculateValues = function(input, type) {
+            let value = parseInt(input.value) || 0;
+            
+            // Update half and fifth values if applicable
+            const container = input.closest('.characteristic-box') || input.parentElement;
+            const halfSpan = container.querySelector('[data-half]');
+            const fifthSpan = container.querySelector('[data-fifth]');
+            
+            if (halfSpan) halfSpan.textContent = Math.floor(value / 2);
+            if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);
+            
+            // Handle attribute updates
+            if (type === 'attribute') {
+                const attrName = input.dataset.attr;
+                
+                // Get character data if it exists
+                const charData = this.getCurrentCharacter();
+                if (charData && charData.attributes && charData.attributes[attrName]) {
+                    charData.attributes[attrName].value = value;
+                }
+                
+                // Update the server with the new value
+                this.updateInvestigator("combat", attrName, value)
+                    .then(() => {
+                        // Add visual feedback
+                        input.classList.add('bg-success', 'bg-opacity-10');
+                        setTimeout(() => {
+                            input.classList.remove('bg-success', 'bg-opacity-10');
+                        }, 300);
+                    })
+                    .catch(error => {
+                        console.error('Error updating attribute:', error);
+                        input.classList.add('bg-danger', 'bg-opacity-10');
+                        setTimeout(() => {
+                            input.classList.remove('bg-danger', 'bg-opacity-10');
+                        }, 300);
+                    });
+            } 
+            // Handle skill updates - call original function
+            else if (type === 'skill') {
+                if (typeof originalRecalculateValues === 'function') {
+                    originalRecalculateValues.call(this, input, type);
+                }
+            }
+        };
+        
+        // Initialize the form on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add hover effects to stat pills and characteristic boxes
+            const hoverElements = document.querySelectorAll('.stat-pill, .characteristic-box, .skill-item');
+            hoverElements.forEach(element => {
+                element.addEventListener('mouseenter', function() {
+                    if (!this.closest('.card').classList.contains('locked')) {
+                        this.style.backgroundColor = '#f0f0f0';
+                    }
+                });
+                element.addEventListener('mouseleave', function() {
+                    if (!this.closest('.card').classList.contains('locked')) {
+                        this.style.backgroundColor = '#f8f9fa';
+                    }
+                });
+            });
+        });
+    </script>
 }
 
 func sortSkills(skills map[string]models.Skill) []models.Skill {

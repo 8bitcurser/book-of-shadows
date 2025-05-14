@@ -45,34 +45,86 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container-fluid p-3 coc-sheet\"><!-- Header --><div class=\"mb-4\"><h2 class=\"text-xl font-bold\" style=\"color: #373A40\">Attributes Assignment</h2></div><form id=\"stepForm\" hx-post=\"")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"container-fluid p-4 coc-sheet\"><!-- Progress Bar & Step Indicator --><div class=\"mb-4\"><div class=\"progress mb-3\" style=\"height: 8px; background-color: #f0f0f0;\"><div class=\"progress-bar\" role=\"progressbar\" style=\"width: 40%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);\" aria-valuenow=\"40\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div></div><div class=\"d-flex justify-content-between align-items-center px-2\"><div class=\"step-indicator completed d-flex flex-column align-items-center\"><div class=\"step-circle mb-1\" style=\"width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;\"><i class=\"bi bi-check-lg\"></i></div><span class=\"step-label small fw-medium\">Personal Info</span></div><div class=\"step-connector flex-grow-1 mx-2\" style=\"height: 2px; background: linear-gradient(90deg, #b5838d 0%, #f0f0f0 100%);\"></div><div class=\"step-indicator active d-flex flex-column align-items-center\"><div class=\"step-circle mb-1\" style=\"width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;\"><span>2</span></div><span class=\"step-label small fw-medium\" style=\"color: #6d6875;\">Attributes</span></div><div class=\"step-connector flex-grow-1 mx-2\" style=\"height: 2px; background: #f0f0f0;\"></div><div class=\"step-indicator d-flex flex-column align-items-center\"><div class=\"step-circle mb-1\" style=\"width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;\"><span>3</span></div><span class=\"step-label small\">Skills</span></div><div class=\"step-connector flex-grow-1 mx-2\" style=\"height: 2px; background: #f0f0f0;\"></div><div class=\"step-indicator d-flex flex-column align-items-center\"><div class=\"step-circle mb-1\" style=\"width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;\"><span>4</span></div><span class=\"step-label small\">Complete</span></div></div></div><!-- Header with new styling --><div class=\"mb-4 text-center\"><h2 class=\"fw-bold mb-3\" style=\"color: #6d6875\">Attributes Assignment</h2><p class=\"text-secondary mb-4\">Assign your investigator's core attributes</p></div><!-- Character Overview Card --><div class=\"card mb-4 shadow-sm\" style=\"border-radius: 1rem; border: none; background-color: #f8f9fa;\"><div class=\"card-body py-2\"><div class=\"d-flex align-items-center\"><div class=\"avatar me-3\" style=\"width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID))
+		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(string([]rune(investigator.Name)[0]))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 28, Col: 93}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 68, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#character-sheet\"><div class=\"card mb-4\"><div class=\"card-body\"><div class=\"row g-3\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div><h5 class=\"mb-0 fw-bold\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Name)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 71, Col: 68}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</h5><p class=\"mb-0 small text-muted\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var4 string
+		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Archetype.Name)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 72, Col: 86}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var5 string
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Occupation.Name)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 72, Col: 119}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</p></div></div></div></div><!-- Random All Button at the top --><div class=\"text-center mb-4\"><button type=\"button\" class=\"btn btn-lg px-4 py-2\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; color: white; border-radius: 0.5rem; transition: all 0.3s;\" onclick=\"characterUtils.rollAllAttributes()\"><span class=\"me-2\">🎲</span> Roll All Attributes</button></div><form id=\"stepForm\" hx-post=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var6 string
+		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 92, Col: 93}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" hx-target=\"#character-sheet\"><div class=\"card mb-4 shadow-sm\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-body p-4\"><div class=\"row g-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for key, value := range attributes {
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"col-md-4 mb-3\"><div class=\"d-flex align-items-center mb-2\"><label class=\"form-label me-2\">")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"col-md-6 col-lg-4 mb-3\"><div class=\"attribute-container p-3 rounded shadow-sm\" style=\"background-color: #f8f9fa; transition: all 0.3s;\"><div class=\"d-flex align-items-center mb-3\"><label class=\"form-label fw-medium mb-0 me-2\" style=\"color: #6d6875; font-size: 1.1rem;\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(value)
+			var templ_7745c5c3_Var7 string
+			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(value)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 37, Col: 73}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 102, Col: 135}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -81,7 +133,7 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 				return templ_7745c5c3_Err
 			}
 			if slices.Contains(investigator.Archetype.CoreCharacteristic, value) {
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"position-relative d-inline-block tooltip-container\"><span class=\"badge bg-warning text-dark\">Core</span><div class=\"tooltip-text\">Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5</div></div>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("<div class=\"position-relative d-inline-block tooltip-container\"><span class=\"badge\" style=\"background: linear-gradient(135deg, #b5838d 0%, #6d6875 100%); color: white; font-weight: 500;\">Core</span><div class=\"tooltip-text\">Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5</div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -95,16 +147,16 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(key)
+				var templ_7745c5c3_Var8 string
+				templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(key)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 51, Col: 53}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 116, Col: 57}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" min=\"1\" placeholder=\"3D6 X 5\" max=\"90\" class=\"form-control text-center\" required> <button type=\"button\" class=\"btn btn-outline-secondary dice-btn\" onclick=\"characterUtils.rollAttribute(this, &#39;3d6x5&#39;)\">🎲</button>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" min=\"1\" placeholder=\"3D6 × 5\" max=\"90\" class=\"form-control form-control-lg text-center shadow-sm attribute-input\" required data-formula=\"3d6x5\" style=\"border-radius: 0.5rem; border: 1px solid #ced4da;\" onchange=\"characterUtils.updateDerivedValues(this)\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -113,26 +165,26 @@ func AssignAttrForm(investigator *models.Investigator) templ.Component {
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(key)
+				var templ_7745c5c3_Var9 string
+				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(key)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 68, Col: 53}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AssignAttr.templ`, Line: 129, Col: 57}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" min=\"1\" placeholder=\"(2D6 + 6) X 5\" max=\"90\" class=\"form-control text-center\" required> <button type=\"button\" class=\"btn btn-outline-secondary dice-btn\" onclick=\"characterUtils.rollAttribute(this, &#39;2d6p6x5&#39;)\">🎲</button>")
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("\" min=\"1\" placeholder=\"(2D6 + 6) × 5\" max=\"90\" class=\"form-control form-control-lg text-center shadow-sm attribute-input\" required data-formula=\"2d6p6x5\" style=\"border-radius: 0.5rem; border: 1px solid #ced4da;\" onchange=\"characterUtils.updateDerivedValues(this)\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div>")
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div><div class=\"d-flex justify-content-between mt-2 text-muted small\"><span>Half: <span class=\"attr-half\">-</span></span> <span>Fifth: <span class=\"attr-fifth\">-</span></span></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div><div class=\"d-flex justify-content-end\"><button type=\"submit\" class=\"btn btn-primary\">Assign Archetype Skills</button></div></form><style>\n            .coc-sheet {\n                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;\n                background-color: #fff;\n                border-radius: 8px;\n            }\n\n            .tooltip-container {\n                position: relative;\n                cursor: help;\n            }\n\n            .tooltip-text {\n                visibility: hidden;\n                opacity: 0;\n                position: absolute;\n                z-index: 1;\n                left: 0;\n                top: 100%;\n                width: 300px;\n                background-color: #fff;\n                color: #333;\n                text-align: left;\n                border-radius: 6px;\n                padding: 8px 12px;\n                font-size: 0.875rem;\n                box-shadow: 0 2px 8px rgba(0,0,0,0.2);\n                transition: opacity 0.3s;\n            }\n\n            .tooltip-container:hover .tooltip-text {\n                visibility: visible;\n                opacity: 1;\n            }\n\n            .dice-btn {\n                opacity: 0.8;\n                transition: opacity 0.2s;\n            }\n\n            .dice-btn:hover {\n                opacity: 1;\n            }\n\n            input[type=number]::-webkit-inner-spin-button,\n            input[type=number]::-webkit-outer-spin-button {\n                -webkit-appearance: none;\n                margin: 0;\n            }\n\n            input[type=number] {\n                -moz-appearance: textfield;\n            }\n        </style></div>")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString("</div></div></div><div class=\"d-flex justify-content-between mt-4\"><button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" style=\"border-radius: 0.5rem; transition: all 0.3s;\" onclick=\"characterUtils.goBackToPersonalInfo()\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Personal Info</button> <button type=\"submit\" class=\"btn btn-lg px-4 py-2\" id=\"next-button\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; color: white; border-radius: 0.5rem; transition: all 0.3s;\"><span>Proceed to Skills</span> <i class=\"bi bi-arrow-right ms-2\"></i></button></div></form><style>\n            .coc-sheet {\n                font-family: 'Roboto', sans-serif;\n                background-color: #fff;\n                border-radius: 1rem;\n                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);\n                max-width: 1200px;\n                margin: 0 auto;\n            }\n\n            .tooltip-container {\n                position: relative;\n                cursor: help;\n            }\n\n            .tooltip-text {\n                visibility: hidden;\n                opacity: 0;\n                position: absolute;\n                z-index: 10;\n                left: 0;\n                top: 100%;\n                width: 300px;\n                background-color: #fff;\n                color: #333;\n                text-align: left;\n                border-radius: 0.5rem;\n                padding: 12px 16px;\n                font-size: 0.875rem;\n                box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.15);\n                transition: opacity 0.3s, transform 0.3s;\n                transform: translateY(10px);\n            }\n\n            .tooltip-container:hover .tooltip-text {\n                visibility: visible;\n                opacity: 1;\n                transform: translateY(5px);\n            }\n            \n            .attribute-container {\n                position: relative;\n                overflow: hidden;\n            }\n            \n            .attribute-container:hover {\n                transform: translateY(-3px);\n                box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.1);\n            }\n            \n            .attribute-container.highlight::after {\n                content: '';\n                position: absolute;\n                top: 0;\n                left: 0;\n                right: 0;\n                bottom: 0;\n                background-color: rgba(181, 131, 141, 0.2);\n                pointer-events: none;\n                animation: fadeOut 0.5s forwards;\n            }\n            \n            @keyframes fadeOut {\n                0% { opacity: 1; }\n                100% { opacity: 0; }\n            }\n\n            input[type=number]::-webkit-inner-spin-button,\n            input[type=number]::-webkit-outer-spin-button {\n                -webkit-appearance: none;\n                margin: 0;\n            }\n\n            input[type=number] {\n                -moz-appearance: textfield;\n            }\n            \n            .form-control:focus {\n                border-color: #b5838d;\n                box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);\n            }\n            \n            button:hover {\n                transform: translateY(-2px) !important;\n                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;\n            }\n            \n            /* Dice rolling animation */\n            @keyframes dice-roll {\n                0% { transform: translateY(0) rotate(0); }\n                25% { transform: translateY(-5px) rotate(5deg); }\n                75% { transform: translateY(-3px) rotate(-3deg); }\n                100% { transform: translateY(0) rotate(0); }\n            }\n            \n            .dice-rolling {\n                animation: dice-roll 0.5s ease-in-out;\n            }\n            \n            /* Submit button pulsing when all fields are filled */\n            @keyframes pulse-button {\n                0% { transform: scale(1); }\n                50% { transform: scale(1.03); }\n                100% { transform: scale(1); }\n            }\n            \n            .pulse-button {\n                animation: pulse-button 1.5s infinite;\n            }\n            \n            /* Progress steps styling */\n            .step-indicator {\n                position: relative;\n                z-index: 1;\n            }\n            \n            .step-circle {\n                transition: all 0.3s;\n            }\n            \n            .step-label {\n                transition: all 0.3s;\n            }\n            \n            .step-indicator.completed .step-label {\n                color: #6d6875;\n            }\n            \n            .step-indicator.active .step-label {\n                color: #6d6875;\n                font-weight: 500;\n            }\n            \n            .form-check-input {\n                cursor: pointer;\n                position: relative;\n                margin-top: 0;\n            }\n            \n            .form-check-input:checked {\n                background-color: #b5838d;\n                border-color: #b5838d;\n            }\n        </style><script>\n            // Extend the characterUtils object with attribute calculation functions\n            if (!window.characterUtils) {\n                window.characterUtils = {};\n            }\n            \n            // Function to go back to personal info\n            window.characterUtils.goBackToPersonalInfo = function() {\n                // Use HTMX to load the personal info form\n                htmx.ajax('GET', '/api/investigator/edit/' + '{ investigator.ID }', {\n                    target: '#character-sheet',\n                    swap: 'innerHTML'\n                });\n            };\n            \n            // Roll all attributes at once\n            window.characterUtils.rollAllAttributes = function() {\n                // Play dice rolling sound if desired\n                this.playDiceSound();\n                \n                // Get the dice roll button and add animation\n                const rollButton = document.querySelector('button[onclick=\"characterUtils.rollAllAttributes()\"]');\n                rollButton.classList.add('dice-rolling');\n                setTimeout(() => {\n                    rollButton.classList.remove('dice-rolling');\n                }, 500);\n                \n                // Get all attribute inputs\n                const attributeInputs = document.querySelectorAll('.attribute-input');\n                \n                // Randomize the order to make it more visually interesting\n                const shuffledInputs = Array.from(attributeInputs).sort(() => Math.random() - 0.5);\n                \n                // Sequentially roll each attribute with a small delay\n                shuffledInputs.forEach((input, index) => {\n                    setTimeout(() => {\n                        this.rollAttribute(input);\n                        \n                        // Highlight the container\n                        const container = input.closest('.attribute-container');\n                        container.classList.add('highlight');\n                        setTimeout(() => {\n                            container.classList.remove('highlight');\n                        }, 500);\n                    }, index * 150); // Stagger the rolls\n                });\n                \n                // Check if all inputs are filled after rolling\n                setTimeout(() => {\n                    this.checkAllAttributesFilled();\n                }, attributeInputs.length * 150 + 100);\n            };\n            \n            // Roll a single attribute\n            window.characterUtils.rollAttribute = function(input) {\n                const formula = input.dataset.formula;\n                let result = 0;\n\n                if (formula === '3d6x5') {\n                    // Roll 3d6 * 5 with animation\n                    result = this.animateDiceRoll(3, 6, 5, input);\n                } else if (formula === '2d6p6x5') {\n                    // Roll (2d6 + 6) * 5 with animation\n                    result = this.animateDiceRoll(2, 6, 5, input, 6);\n                }\n                \n                // Update the half and fifth values\n                this.updateDerivedValues(input);\n            };\n            \n            // Check if all attribute inputs are filled\n            window.characterUtils.checkAllAttributesFilled = function() {\n                const inputs = document.querySelectorAll('.attribute-input');\n                let allFilled = true;\n                \n                inputs.forEach(input => {\n                    if (!input.value || input.value.trim() === '') {\n                        allFilled = false;\n                    }\n                });\n                \n                const nextButton = document.getElementById('next-button');\n                \n                if (allFilled) {\n                    // If all inputs are filled, pulse the next button\n                    nextButton.classList.add('pulse-button');\n                } else {\n                    nextButton.classList.remove('pulse-button');\n                }\n                \n                return allFilled;\n            };\n            \n            // Optional dice sound effect\n            window.characterUtils.playDiceSound = function() {\n                // Could add a dice rolling sound here if desired\n                // const audio = new Audio('/static/sounds/dice.mp3');\n                // audio.play();\n            };\n            \n            // Add a new function for dice roll animation\n            window.characterUtils.animateDiceRoll = function(numDice, sides, multiplier, input, bonus = 0) {\n                // Start with a random value\n                let currentValue = Math.floor(Math.random() * sides * numDice) * multiplier;\n                if (bonus > 0) currentValue += (bonus * multiplier);\n                input.value = currentValue;\n                \n                // Animate through several values\n                let iterations = 3;\n                const animateRoll = setInterval(() => {\n                    currentValue = Math.floor(Math.random() * sides * numDice) * multiplier;\n                    if (bonus > 0) currentValue += (bonus * multiplier);\n                    input.value = currentValue;\n                    iterations--;\n                    \n                    if (iterations <= 0) {\n                        clearInterval(animateRoll);\n                        // Final actual roll\n                        let result = 0;\n                        for (let i = 0; i < numDice; i++) {\n                            result += Math.floor(Math.random() * sides) + 1;\n                        }\n                        if (bonus > 0) result += bonus;\n                        result *= multiplier;\n                        \n                        input.value = result;\n                        this.updateDerivedValues(input);\n                    }\n                }, 100);\n                \n                return currentValue;\n            };\n            \n            // Add function to update half and fifth values\n            window.characterUtils.updateDerivedValues = function(input) {\n                const container = input.closest('.attribute-container');\n                const halfSpan = container.querySelector('.attr-half');\n                const fifthSpan = container.querySelector('.attr-fifth');\n                \n                const value = parseInt(input.value) || 0;\n                \n                if (halfSpan) halfSpan.textContent = Math.floor(value / 2);\n                if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);\n                \n                // Check if all inputs are filled after updating\n                this.checkAllAttributesFilled();\n            };\n            \n            // Initialize the form\n            document.addEventListener('DOMContentLoaded', function() {\n                // Set up input change listeners for all attribute inputs\n                document.querySelectorAll('.attribute-input').forEach(input => {\n                    input.addEventListener('input', function() {\n                        characterUtils.updateDerivedValues(this);\n                    });\n                    \n                    // Initial calculation for any pre-filled values\n                    characterUtils.updateDerivedValues(input);\n                });\n                \n                // Add hover effects to attribute containers\n                document.querySelectorAll('.attribute-container').forEach(container => {\n                    container.addEventListener('mouseenter', function() {\n                        this.style.backgroundColor = '#f0f0f0';\n                    });\n                    container.addEventListener('mouseleave', function() {\n                        this.style.backgroundColor = '#f8f9fa';\n                    });\n                });\n                \n                // Initial check for all fields filled\n                characterUtils.checkAllAttributesFilled();\n            });\n        </script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

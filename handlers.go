@@ -150,13 +150,13 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 	keysToConvert := []string{"age"}
 	for key, val := range r.PostForm {
 		val = r.PostForm[key]
+		fmt.Println(key, val)
 		if slices.Contains(keysToConvert, key) {
 			payload[key] = formToInt(val[0])
 		} else {
 			payload[key] = val[0]
 		}
 	}
-
 	investigator := models.InvestigatorBaseCreate(payload)
 	cm := storage.NewInvestigatorCookieConfig()
 	cm.SaveInvestigatorCookie(w, investigator)

@@ -2,62 +2,98 @@ package views
 
 import "book-of-shadows/models"
 
-
 templ BaseInvForm() {
-    <div class="container-fluid p-3 coc-sheet">
-        <!-- Header -->
+    <div class="container-fluid p-4 coc-sheet">
+        <!-- Progress Bar & Step Indicator -->
         <div class="mb-4">
-            <h2 class="text-xl font-bold" style="color: #373A40">Personal Information</h2>
+            <div class="progress mb-3" style="height: 8px; background-color: #f0f0f0;">
+                <div class="progress-bar" role="progressbar" style="width: 20%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center px-2">
+                <div class="step-indicator active d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <span>1</span>
+                    </div>
+                    <span class="step-label small fw-medium" style="color: #6d6875;">Personal Info</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: #f0f0f0;"></div>
+                <div class="step-indicator d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;">
+                        <span>2</span>
+                    </div>
+                    <span class="step-label small">Attributes</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: #f0f0f0;"></div>
+                <div class="step-indicator d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;">
+                        <span>3</span>
+                    </div>
+                    <span class="step-label small">Skills</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: #f0f0f0;"></div>
+                <div class="step-indicator d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;">
+                        <span>4</span>
+                    </div>
+                    <span class="step-label small">Complete</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header with new styling -->
+        <div class="mb-4 text-center">
+            <h2 class="fw-bold mb-3" style="color: #6d6875">Personal Information</h2>
+            <p class="text-secondary mb-4">Start by entering your investigator's basic details</p>
         </div>
 
         <form
             id="stepForm"
-            class="row g-3"
+            class="row g-4"
             hx-post="/api/investigator/create/"
             hx-target="#character-sheet"
         >
             <!-- Personal Information -->
-            <div class="col-md-3">
-                <label class="form-label">Name</label>
+            <div class="col-md-6 col-lg-3">
+                <label class="form-label fw-medium">Name</label>
                 <input
                     type="text"
                     name="name"
-                    class="form-control"
+                    class="form-control shadow-sm"
                     required
                     onchange="characterUtils.checkFormCompletion()"
                     onkeyup="characterUtils.checkFormCompletion()"
                 />
             </div>
-            <div class="col-md-3">
-                <label class="form-label">Age</label>
+            <div class="col-md-6 col-lg-3">
+                <label class="form-label fw-medium">Age</label>
                 <input
                     type="number"
                     name="age"
                     min="15"
                     max="90"
-                    class="form-control"
+                    class="form-control shadow-sm"
                     required
                     onchange="characterUtils.checkFormCompletion()"
                     onkeyup="characterUtils.checkFormCompletion()"
                 />
             </div>
-            <div class="col-md-3">
-                <label class="form-label">Residence</label>
+            <div class="col-md-6 col-lg-3">
+                <label class="form-label fw-medium">Residence</label>
                 <input
                     type="text"
                     name="residence"
-                    class="form-control"
+                    class="form-control shadow-sm"
                     required
                     onchange="characterUtils.checkFormCompletion()"
                     onkeyup="characterUtils.checkFormCompletion()"
                 />
             </div>
-            <div class="col-md-3">
-                <label class="form-label">Birthplace</label>
+            <div class="col-md-6 col-lg-3">
+                <label class="form-label fw-medium">Birthplace</label>
                 <input
                     type="text"
                     name="birthplace"
-                    class="form-control"
+                    class="form-control shadow-sm"
                     required
                     onchange="characterUtils.checkFormCompletion()"
                     onkeyup="characterUtils.checkFormCompletion()"
@@ -65,11 +101,11 @@ templ BaseInvForm() {
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Archetype</label>
+                <label class="form-label fw-medium">Archetype</label>
                 <select
                     name="archetype"
                     id="archetype-select"
-                    class="form-control"
+                    class="form-control shadow-sm"
                     required
                     onchange="characterUtils.handleArchetypeSelection(this)"
                 >
@@ -79,19 +115,19 @@ templ BaseInvForm() {
                         <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option>
                     }
                 </select>
-                <p
+                <div 
                     id="archetype-description"
-                    class="mt-2 text-secondary"
-                    style="min-height: 3em;"
-                ></p>
+                    class="mt-3 p-3 rounded shadow-sm bg-light text-secondary"
+                    style="min-height: 4em; display: none;"
+                ></div>
             </div>
 
             <div class="col-md-6" id="occupation-container" style="display: none;">
-                <label class="form-label">Occupation</label>
+                <label class="form-label fw-medium">Occupation</label>
                 <select
                     name="occupation"
                     id="occupation-select"
-                    class="form-control"
+                    class="form-control shadow-sm"
                     required
                     onchange="characterUtils.handleOccupationSelection(this)"
                 >
@@ -101,30 +137,112 @@ templ BaseInvForm() {
                         <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
                     }
                 </select>
-                <p
+                <div 
                     id="occupation-description"
-                    class="mt-2 text-secondary"
-                    style="min-height: 3em;"
-                ></p>
+                    class="mt-3 p-3 rounded shadow-sm bg-light text-secondary"
+                    style="min-height: 4em; display: none;"
+                ></div>
             </div>
 
-            <div class="col-12 mt-4">
+            <div class="col-12 mt-4 text-center">
                 <button
                     id="next-step-button"
                     type="submit"
-                    class="btn btn-primary"
+                    class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center justify-content-center mx-auto"
+                    style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; min-width: 240px;"
                     disabled
                 >
-                    Assign Attributes
+                    <span>Continue to Attributes</span>
+                    <i class="bi bi-arrow-right ms-2"></i>
                 </button>
             </div>
         </form>
 
         <style>
             .coc-sheet {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                font-family: 'Roboto', sans-serif;
                 background-color: #fff;
-                border-radius: 8px;
+                border-radius: 1rem;
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+            
+            .form-control:focus, select:focus {
+                border-color: #b5838d;
+                box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
+            }
+            
+            .form-control, select {
+                border-radius: 0.5rem;
+                padding: 0.625rem 0.75rem;
+                transition: all 0.2s;
+            }
+            
+            .form-label {
+                color: #6d6875;
+                margin-bottom: 0.5rem;
+            }
+            
+            #next-step-button:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+            }
+            
+            #next-step-button {
+                transition: all 0.3s;
+                border-radius: 0.5rem;
+            }
+            
+            #next-step-button:disabled {
+                background: #e5e5e5 !important;
+                color: #999;
+                transform: none;
+                box-shadow: none;
+            }
+            
+            /* Progress steps styling */
+            .step-indicator {
+                position: relative;
+                z-index: 1;
+            }
+            
+            .step-circle {
+                transition: all 0.3s;
+            }
+            
+            .step-label {
+                transition: all 0.3s;
+            }
+            
+            .step-indicator.completed .step-label {
+                color: #6d6875;
+            }
+            
+            .step-indicator.active .step-label {
+                color: #6d6875;
+                font-weight: 500;
+            }
+            
+            /* Submit button pulsing when all fields are filled */
+            @keyframes pulse-button {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.03); }
+                100% { transform: scale(1); }
+            }
+            
+            .pulse-button {
+                animation: pulse-button 1.5s infinite;
+            }
+
+            /* Form field transitions */
+            @keyframes field-highlight {
+                0% { background-color: rgba(181, 131, 141, 0.1); }
+                100% { background-color: transparent; }
+            }
+            
+            .field-highlight {
+                animation: field-highlight 1s;
             }
         </style>
 
@@ -136,8 +254,25 @@ templ BaseInvForm() {
 
             // Function to handle archetype selection
             window.characterUtils.handleArchetypeSelection = function(selectElement) {
-                // First, show the description as before
-                this.showDescription(selectElement.value, 'archetype-description');
+                // Show the description with an improved animation
+                const descriptionElement = document.getElementById('archetype-description');
+                const selectedOption = Array.from(selectElement.options).find(option => option.value === selectElement.value);
+                
+                if (selectedOption && selectedOption.dataset.description) {
+                    descriptionElement.textContent = selectedOption.dataset.description;
+                    descriptionElement.style.display = 'block';
+                    // Add a subtle animation
+                    descriptionElement.style.opacity = '0';
+                    setTimeout(() => {
+                        descriptionElement.style.transition = 'opacity 0.3s ease';
+                        descriptionElement.style.opacity = '1';
+                    }, 10);
+                } else {
+                    descriptionElement.style.opacity = '0';
+                    setTimeout(() => {
+                        descriptionElement.style.display = 'none';
+                    }, 300);
+                }
 
                 // Then, show the occupation section if an archetype is selected
                 const occupationContainer = document.getElementById('occupation-container');
@@ -145,9 +280,17 @@ templ BaseInvForm() {
                 if (selectElement.value) {
                     // Show the occupation container with a smooth transition
                     occupationContainer.style.display = 'block';
+                    occupationContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        occupationContainer.style.transition = 'opacity 0.3s ease';
+                        occupationContainer.style.opacity = '1';
+                    }, 10);
                 } else {
                     // Hide the occupation container
-                    occupationContainer.style.display = 'none';
+                    occupationContainer.style.opacity = '0';
+                    setTimeout(() => {
+                        occupationContainer.style.display = 'none';
+                    }, 300);
                 }
 
                 // Check if the form is complete
@@ -156,8 +299,25 @@ templ BaseInvForm() {
 
             // Function to handle occupation selection
             window.characterUtils.handleOccupationSelection = function(selectElement) {
-                // Show the description
-                this.showDescription(selectElement.value, 'occupation-description');
+                // Show the description with animation
+                const descriptionElement = document.getElementById('occupation-description');
+                const selectedOption = Array.from(selectElement.options).find(option => option.value === selectElement.value);
+                
+                if (selectedOption && selectedOption.dataset.description) {
+                    descriptionElement.textContent = selectedOption.dataset.description;
+                    descriptionElement.style.display = 'block';
+                    // Add a subtle animation
+                    descriptionElement.style.opacity = '0';
+                    setTimeout(() => {
+                        descriptionElement.style.transition = 'opacity 0.3s ease';
+                        descriptionElement.style.opacity = '1';
+                    }, 10);
+                } else {
+                    descriptionElement.style.opacity = '0';
+                    setTimeout(() => {
+                        descriptionElement.style.display = 'none';
+                    }, 300);
+                }
 
                 // Check if the form is complete
                 this.checkFormCompletion();
@@ -182,7 +342,7 @@ templ BaseInvForm() {
                 const isOccupationSelected = occupationSelect && occupationSelect.value !== '';
 
                 // Only enable the button if all fields are filled
-                nextButton.disabled = !(
+                const isFormComplete = (
                     isNameFilled &&
                     isAgeFilled &&
                     isResidenceFilled &&
@@ -190,22 +350,30 @@ templ BaseInvForm() {
                     isArchetypeSelected &&
                     isOccupationSelected
                 );
+                
+                nextButton.disabled = !isFormComplete;
+                
+                // Add a visual feedback
+                if (isFormComplete) {
+                    nextButton.style.background = 'linear-gradient(135deg, #6d6875 0%, #b5838d 100%)';
+                    
+                    // Make the button pulse to draw attention
+                    nextButton.classList.add('pulse-button');
+                } else {
+                    nextButton.style.background = '#e5e5e5';
+                    nextButton.classList.remove('pulse-button');
+                }
+                
+                return isFormComplete;
             };
-
-            // If showDescription doesn't exist, add it
-            if (!window.characterUtils.showDescription) {
-                window.characterUtils.showDescription = function(value, targetId) {
-                    const descriptionElement = document.getElementById(targetId);
-                    const selectElement = event.target;
-                    const selectedOption = Array.from(selectElement.options).find(option => option.value === value);
-
-                    if (selectedOption && selectedOption.dataset.description) {
-                        descriptionElement.textContent = selectedOption.dataset.description;
-                    } else {
-                        descriptionElement.textContent = "";
-                    }
-                };
-            }
+            
+            // Add field completion highlight
+            window.characterUtils.highlightField = function(field) {
+                field.classList.add('field-highlight');
+                setTimeout(() => {
+                    field.classList.remove('field-highlight');
+                }, 1000);
+            };
 
             // Initialize form check on page load
             document.addEventListener('DOMContentLoaded', function() {
@@ -217,8 +385,43 @@ templ BaseInvForm() {
                     });
                 }
 
+                // Add focus and blur effects to all form fields
+                const formFields = document.querySelectorAll('.form-control');
+                formFields.forEach(field => {
+                    // Focus effect
+                    field.addEventListener('focus', function() {
+                        this.style.borderColor = '#b5838d';
+                    });
+                    
+                    // Blur effect
+                    field.addEventListener('blur', function() {
+                        // Only keep the border if the field has a value
+                        if (this.value && this.value.trim() !== '') {
+                            this.style.borderColor = '#b5838d';
+                            characterUtils.highlightField(this.parentElement);
+                        } else {
+                            this.style.borderColor = '#ced4da';
+                        }
+                    });
+                    
+                    // Change effect
+                    field.addEventListener('change', function() {
+                        if (this.value && this.value.trim() !== '') {
+                            characterUtils.highlightField(this.parentElement);
+                        }
+                    });
+                });
+
                 // Initial form check
                 characterUtils.checkFormCompletion();
+                
+                // Automatically focus on the first empty required field
+                setTimeout(() => {
+                    const firstEmptyField = document.querySelector('.form-control:required:not([value]):not([value=""])');
+                    if (firstEmptyField) {
+                        firstEmptyField.focus();
+                    }
+                }, 500);
             });
         </script>
     </div>

@@ -17,10 +17,74 @@ var attributes = map[string]string{
 }
 
 templ AssignAttrForm(investigator *models.Investigator) {
-    <div class="container-fluid p-3 coc-sheet">
-        <!-- Header -->
+    <div class="container-fluid p-4 coc-sheet">
+        <!-- Progress Bar & Step Indicator -->
         <div class="mb-4">
-            <h2 class="text-xl font-bold" style="color: #373A40">Attributes Assignment</h2>
+            <div class="progress mb-3" style="height: 8px; background-color: #f0f0f0;">
+                <div class="progress-bar" role="progressbar" style="width: 40%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center px-2">
+                <div class="step-indicator completed d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <span class="step-label small fw-medium">Personal Info</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: linear-gradient(90deg, #b5838d 0%, #f0f0f0 100%);"></div>
+                <div class="step-indicator active d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <span>2</span>
+                    </div>
+                    <span class="step-label small fw-medium" style="color: #6d6875;">Attributes</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: #f0f0f0;"></div>
+                <div class="step-indicator d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;">
+                        <span>3</span>
+                    </div>
+                    <span class="step-label small">Skills</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: #f0f0f0;"></div>
+                <div class="step-indicator d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;">
+                        <span>4</span>
+                    </div>
+                    <span class="step-label small">Complete</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header with new styling -->
+        <div class="mb-4 text-center">
+            <h2 class="fw-bold mb-3" style="color: #6d6875">Attributes Assignment</h2>
+            <p class="text-secondary mb-4">Assign your investigator's core attributes</p>
+        </div>
+
+        <!-- Character Overview Card -->
+        <div class="card mb-4 shadow-sm" style="border-radius: 1rem; border: none; background-color: #f8f9fa;">
+            <div class="card-body py-2">
+                <div class="d-flex align-items-center">
+                    <div class="avatar me-3" style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+                        { string([]rune(investigator.Name)[0]) }
+                    </div>
+                    <div>
+                        <h5 class="mb-0 fw-bold">{ investigator.Name }</h5>
+                        <p class="mb-0 small text-muted">{ investigator.Archetype.Name } { investigator.Occupation.Name }</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Random All Button at the top -->
+        <div class="text-center mb-4">
+            <button 
+                type="button" 
+                class="btn btn-lg px-4 py-2"
+                style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; color: white; border-radius: 0.5rem; transition: all 0.3s;"
+                onclick="characterUtils.rollAllAttributes()"
+            >
+                <span class="me-2">🎲</span> Roll All Attributes
+            </button>
         </div>
 
         <form
@@ -28,58 +92,56 @@ templ AssignAttrForm(investigator *models.Investigator) {
             hx-post={ fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID) }
             hx-target="#character-sheet"
         >
-            <div class="card mb-4">
-                <div class="card-body">
-                    <div class="row g-3">
+            <div class="card mb-4 shadow-sm" style="border-radius: 1rem; border: none;">
+                <div class="card-body p-4">
+                    <div class="row g-4">
                         for key, value := range attributes {
-                            <div class="col-md-4 mb-3">
-                                <div class="d-flex align-items-center mb-2">
-                                    <label class="form-label me-2">{value}</label>
-                                    if slices.Contains(investigator.Archetype.CoreCharacteristic, value) {
-                                        <div class="position-relative d-inline-block tooltip-container">
-                                            <span class="badge bg-warning text-dark">Core</span>
-                                            <div class="tooltip-text">
-                                                Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5
+                            <div class="col-md-6 col-lg-4 mb-3">
+                                <div class="attribute-container p-3 rounded shadow-sm" style="background-color: #f8f9fa; transition: all 0.3s;">
+                                    <div class="d-flex align-items-center mb-3">
+                                        <label class="form-label fw-medium mb-0 me-2" style="color: #6d6875; font-size: 1.1rem;">{value}</label>
+                                        if slices.Contains(investigator.Archetype.CoreCharacteristic, value) {
+                                            <div class="position-relative d-inline-block tooltip-container">
+                                                <span class="badge" style="background: linear-gradient(135deg, #b5838d 0%, #6d6875 100%); color: white; font-weight: 500;">Core</span>
+                                                <div class="tooltip-text">
+                                                    Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5
+                                                </div>
                                             </div>
-                                        </div>
-                                    }
-                                </div>
-                                <div class="input-group">
-                                    if key == "STR" || key == "CON" || key == "LCK" || key == "DEX" || key == "APP" || key == "POW" {
-                                        <input
-                                            type="number"
-                                            name={key}
-                                            min="1"
-                                            placeholder="3D6 X 5"
-                                            max="90"
-                                            class="form-control text-center"
-                                            required
-                                        />
-                                        <button
-                                            type="button"
-                                            class="btn btn-outline-secondary dice-btn"
-                                            onclick="characterUtils.rollAttribute(this, '3d6x5')"
-                                        >
-                                            🎲
-                                        </button>
-                                    } else {
-                                        <input
-                                            type="number"
-                                            name={key}
-                                            min="1"
-                                            placeholder="(2D6 + 6) X 5"
-                                            max="90"
-                                            class="form-control text-center"
-                                            required
-                                        />
-                                        <button
-                                            type="button"
-                                            class="btn btn-outline-secondary dice-btn"
-                                            onclick="characterUtils.rollAttribute(this, '2d6p6x5')"
-                                        >
-                                            🎲
-                                        </button>
-                                    }
+                                        }
+                                    </div>
+                                    <div class="input-group">
+                                        if key == "STR" || key == "CON" || key == "LCK" || key == "DEX" || key == "APP" || key == "POW" {
+                                            <input
+                                                type="number"
+                                                name={key}
+                                                min="1"
+                                                placeholder="3D6 × 5"
+                                                max="90"
+                                                class="form-control form-control-lg text-center shadow-sm attribute-input"
+                                                required
+                                                data-formula="3d6x5"
+                                                style="border-radius: 0.5rem; border: 1px solid #ced4da;"
+                                                onchange="characterUtils.updateDerivedValues(this)"
+                                            />
+                                        } else {
+                                            <input
+                                                type="number"
+                                                name={key}
+                                                min="1"
+                                                placeholder="(2D6 + 6) × 5"
+                                                max="90"
+                                                class="form-control form-control-lg text-center shadow-sm attribute-input"
+                                                required
+                                                data-formula="2d6p6x5"
+                                                style="border-radius: 0.5rem; border: 1px solid #ced4da;"
+                                                onchange="characterUtils.updateDerivedValues(this)"
+                                            />
+                                        }
+                                    </div>
+                                    <div class="d-flex justify-content-between mt-2 text-muted small">
+                                        <span>Half: <span class="attr-half">-</span></span>
+                                        <span>Fifth: <span class="attr-fifth">-</span></span>
+                                    </div>
                                 </div>
                             </div>
                         }
@@ -87,20 +149,35 @@ templ AssignAttrForm(investigator *models.Investigator) {
                 </div>
             </div>
 
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-between mt-4">
+                <button 
+                    type="button" 
+                    class="btn btn-outline-secondary px-4 py-2"
+                    style="border-radius: 0.5rem; transition: all 0.3s;"
+                    onclick="characterUtils.goBackToPersonalInfo()"
+                >
+                    <i class="bi bi-arrow-left me-2"></i>Back to Personal Info
+                </button>
                 <button
                     type="submit"
-                    class="btn btn-primary">
-                    Assign Archetype Skills
+                    class="btn btn-lg px-4 py-2"
+                    id="next-button"
+                    style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; color: white; border-radius: 0.5rem; transition: all 0.3s;"
+                >
+                    <span>Proceed to Skills</span>
+                    <i class="bi bi-arrow-right ms-2"></i>
                 </button>
             </div>
         </form>
 
         <style>
             .coc-sheet {
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                font-family: 'Roboto', sans-serif;
                 background-color: #fff;
-                border-radius: 8px;
+                border-radius: 1rem;
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+                max-width: 1200px;
+                margin: 0 auto;
             }
 
             .tooltip-container {
@@ -112,32 +189,52 @@ templ AssignAttrForm(investigator *models.Investigator) {
                 visibility: hidden;
                 opacity: 0;
                 position: absolute;
-                z-index: 1;
+                z-index: 10;
                 left: 0;
                 top: 100%;
                 width: 300px;
                 background-color: #fff;
                 color: #333;
                 text-align: left;
-                border-radius: 6px;
-                padding: 8px 12px;
+                border-radius: 0.5rem;
+                padding: 12px 16px;
                 font-size: 0.875rem;
-                box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-                transition: opacity 0.3s;
+                box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.15);
+                transition: opacity 0.3s, transform 0.3s;
+                transform: translateY(10px);
             }
 
             .tooltip-container:hover .tooltip-text {
                 visibility: visible;
                 opacity: 1;
+                transform: translateY(5px);
             }
-
-            .dice-btn {
-                opacity: 0.8;
-                transition: opacity 0.2s;
+            
+            .attribute-container {
+                position: relative;
+                overflow: hidden;
             }
-
-            .dice-btn:hover {
-                opacity: 1;
+            
+            .attribute-container:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.1);
+            }
+            
+            .attribute-container.highlight::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background-color: rgba(181, 131, 141, 0.2);
+                pointer-events: none;
+                animation: fadeOut 0.5s forwards;
+            }
+            
+            @keyframes fadeOut {
+                0% { opacity: 1; }
+                100% { opacity: 0; }
             }
 
             input[type=number]::-webkit-inner-spin-button,
@@ -149,6 +246,248 @@ templ AssignAttrForm(investigator *models.Investigator) {
             input[type=number] {
                 -moz-appearance: textfield;
             }
+            
+            .form-control:focus {
+                border-color: #b5838d;
+                box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
+            }
+            
+            button:hover {
+                transform: translateY(-2px) !important;
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+            }
+            
+            /* Dice rolling animation */
+            @keyframes dice-roll {
+                0% { transform: translateY(0) rotate(0); }
+                25% { transform: translateY(-5px) rotate(5deg); }
+                75% { transform: translateY(-3px) rotate(-3deg); }
+                100% { transform: translateY(0) rotate(0); }
+            }
+            
+            .dice-rolling {
+                animation: dice-roll 0.5s ease-in-out;
+            }
+            
+            /* Submit button pulsing when all fields are filled */
+            @keyframes pulse-button {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.03); }
+                100% { transform: scale(1); }
+            }
+            
+            .pulse-button {
+                animation: pulse-button 1.5s infinite;
+            }
+            
+            /* Progress steps styling */
+            .step-indicator {
+                position: relative;
+                z-index: 1;
+            }
+            
+            .step-circle {
+                transition: all 0.3s;
+            }
+            
+            .step-label {
+                transition: all 0.3s;
+            }
+            
+            .step-indicator.completed .step-label {
+                color: #6d6875;
+            }
+            
+            .step-indicator.active .step-label {
+                color: #6d6875;
+                font-weight: 500;
+            }
+            
+            .form-check-input {
+                cursor: pointer;
+                position: relative;
+                margin-top: 0;
+            }
+            
+            .form-check-input:checked {
+                background-color: #b5838d;
+                border-color: #b5838d;
+            }
         </style>
+
+        <script>
+            // Extend the characterUtils object with attribute calculation functions
+            if (!window.characterUtils) {
+                window.characterUtils = {};
+            }
+            
+            // Function to go back to personal info
+            window.characterUtils.goBackToPersonalInfo = function() {
+                // Use HTMX to load the personal info form
+                htmx.ajax('GET', '/api/investigator/edit/' + '{ investigator.ID }', {
+                    target: '#character-sheet',
+                    swap: 'innerHTML'
+                });
+            };
+            
+            // Roll all attributes at once
+            window.characterUtils.rollAllAttributes = function() {
+                // Play dice rolling sound if desired
+                this.playDiceSound();
+                
+                // Get the dice roll button and add animation
+                const rollButton = document.querySelector('button[onclick="characterUtils.rollAllAttributes()"]');
+                rollButton.classList.add('dice-rolling');
+                setTimeout(() => {
+                    rollButton.classList.remove('dice-rolling');
+                }, 500);
+                
+                // Get all attribute inputs
+                const attributeInputs = document.querySelectorAll('.attribute-input');
+                
+                // Randomize the order to make it more visually interesting
+                const shuffledInputs = Array.from(attributeInputs).sort(() => Math.random() - 0.5);
+                
+                // Sequentially roll each attribute with a small delay
+                shuffledInputs.forEach((input, index) => {
+                    setTimeout(() => {
+                        this.rollAttribute(input);
+                        
+                        // Highlight the container
+                        const container = input.closest('.attribute-container');
+                        container.classList.add('highlight');
+                        setTimeout(() => {
+                            container.classList.remove('highlight');
+                        }, 500);
+                    }, index * 150); // Stagger the rolls
+                });
+                
+                // Check if all inputs are filled after rolling
+                setTimeout(() => {
+                    this.checkAllAttributesFilled();
+                }, attributeInputs.length * 150 + 100);
+            };
+            
+            // Roll a single attribute
+            window.characterUtils.rollAttribute = function(input) {
+                const formula = input.dataset.formula;
+                let result = 0;
+
+                if (formula === '3d6x5') {
+                    // Roll 3d6 * 5 with animation
+                    result = this.animateDiceRoll(3, 6, 5, input);
+                } else if (formula === '2d6p6x5') {
+                    // Roll (2d6 + 6) * 5 with animation
+                    result = this.animateDiceRoll(2, 6, 5, input, 6);
+                }
+                
+                // Update the half and fifth values
+                this.updateDerivedValues(input);
+            };
+            
+            // Check if all attribute inputs are filled
+            window.characterUtils.checkAllAttributesFilled = function() {
+                const inputs = document.querySelectorAll('.attribute-input');
+                let allFilled = true;
+                
+                inputs.forEach(input => {
+                    if (!input.value || input.value.trim() === '') {
+                        allFilled = false;
+                    }
+                });
+                
+                const nextButton = document.getElementById('next-button');
+                
+                if (allFilled) {
+                    // If all inputs are filled, pulse the next button
+                    nextButton.classList.add('pulse-button');
+                } else {
+                    nextButton.classList.remove('pulse-button');
+                }
+                
+                return allFilled;
+            };
+            
+            // Optional dice sound effect
+            window.characterUtils.playDiceSound = function() {
+                // Could add a dice rolling sound here if desired
+                // const audio = new Audio('/static/sounds/dice.mp3');
+                // audio.play();
+            };
+            
+            // Add a new function for dice roll animation
+            window.characterUtils.animateDiceRoll = function(numDice, sides, multiplier, input, bonus = 0) {
+                // Start with a random value
+                let currentValue = Math.floor(Math.random() * sides * numDice) * multiplier;
+                if (bonus > 0) currentValue += (bonus * multiplier);
+                input.value = currentValue;
+                
+                // Animate through several values
+                let iterations = 3;
+                const animateRoll = setInterval(() => {
+                    currentValue = Math.floor(Math.random() * sides * numDice) * multiplier;
+                    if (bonus > 0) currentValue += (bonus * multiplier);
+                    input.value = currentValue;
+                    iterations--;
+                    
+                    if (iterations <= 0) {
+                        clearInterval(animateRoll);
+                        // Final actual roll
+                        let result = 0;
+                        for (let i = 0; i < numDice; i++) {
+                            result += Math.floor(Math.random() * sides) + 1;
+                        }
+                        if (bonus > 0) result += bonus;
+                        result *= multiplier;
+                        
+                        input.value = result;
+                        this.updateDerivedValues(input);
+                    }
+                }, 100);
+                
+                return currentValue;
+            };
+            
+            // Add function to update half and fifth values
+            window.characterUtils.updateDerivedValues = function(input) {
+                const container = input.closest('.attribute-container');
+                const halfSpan = container.querySelector('.attr-half');
+                const fifthSpan = container.querySelector('.attr-fifth');
+                
+                const value = parseInt(input.value) || 0;
+                
+                if (halfSpan) halfSpan.textContent = Math.floor(value / 2);
+                if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);
+                
+                // Check if all inputs are filled after updating
+                this.checkAllAttributesFilled();
+            };
+            
+            // Initialize the form
+            document.addEventListener('DOMContentLoaded', function() {
+                // Set up input change listeners for all attribute inputs
+                document.querySelectorAll('.attribute-input').forEach(input => {
+                    input.addEventListener('input', function() {
+                        characterUtils.updateDerivedValues(this);
+                    });
+                    
+                    // Initial calculation for any pre-filled values
+                    characterUtils.updateDerivedValues(input);
+                });
+                
+                // Add hover effects to attribute containers
+                document.querySelectorAll('.attribute-container').forEach(container => {
+                    container.addEventListener('mouseenter', function() {
+                        this.style.backgroundColor = '#f0f0f0';
+                    });
+                    container.addEventListener('mouseleave', function() {
+                        this.style.backgroundColor = '#f8f9fa';
+                    });
+                });
+                
+                // Initial check for all fields filled
+                characterUtils.checkAllAttributesFilled();
+            });
+        </script>
     </div>
 }

@@ -5,8 +5,48 @@ import "strconv"
 import "fmt"
 
 templ SkillAssignmentForm(investigator *models.Investigator) {
-    <div class="container-fluid p-4 border rounded">
-        <h2 class="text-center mb-4">Pulp Investigator</h2>
+    <div class="container-fluid p-4 coc-sheet">
+        <!-- Progress Bar & Step Indicator -->
+        <div class="mb-4">
+            <div class="progress mb-3" style="height: 8px; background-color: #f0f0f0;">
+                <div class="progress-bar" role="progressbar" style="width: 60%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+            <div class="d-flex justify-content-between align-items-center px-2">
+                <div class="step-indicator completed d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <span class="step-label small fw-medium">Personal Info</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: linear-gradient(90deg, #b5838d 0%, #b5838d 100%);"></div>
+                <div class="step-indicator completed d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <i class="bi bi-check-lg"></i>
+                    </div>
+                    <span class="step-label small fw-medium">Attributes</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: linear-gradient(90deg, #b5838d 0%, #f0f0f0 100%);"></div>
+                <div class="step-indicator active d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
+                        <span>3</span>
+                    </div>
+                    <span class="step-label small fw-medium" style="color: #6d6875;">Skills</span>
+                </div>
+                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: #f0f0f0;"></div>
+                <div class="step-indicator d-flex flex-column align-items-center">
+                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;">
+                        <span>4</span>
+                    </div>
+                    <span class="step-label small">Complete</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Header -->
+        <div class="mb-4 text-center">
+            <h2 class="fw-bold mb-2" style="color: #6d6875">Skill Assignment</h2>
+            <p class="text-secondary mb-3">Distribute skill points to customize your investigator</p>
+        </div>
 
         <input
             type="text"
@@ -17,43 +57,37 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             onchange="characterUtils.updatePersonalInfo(this)"
         />
 
-        <!-- Personal Information Display -->
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label class="form-label">Name</label>
-                <input type="text" class="form-control" value={ investigator.Name } readonly />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Birthplace</label>
-                <input type="text" class="form-control" value={ investigator.Birthplace } readonly />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Residence</label>
-                <input type="text" class="form-control" value={ investigator.Residence } readonly />
-            </div>
-        </div>
-
-        <div class="row mb-4">
-            <div class="col-md-4">
-                <label class="form-label">Occupation</label>
-                <input type="text" class="form-control" value={ investigator.Occupation.Name } readonly />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Archetype</label>
-                <input type="text" class="form-control" value={ investigator.Archetype.Name } readonly />
-            </div>
-            <div class="col-md-4">
-                <label class="form-label">Age</label>
-                <input type="text" class="form-control" value={ strconv.Itoa(investigator.Age) } readonly />
+        <!-- Character Overview Card -->
+        <div class="card mb-4 shadow-sm" style="border-radius: 1rem; border: none; background-color: #f8f9fa;">
+            <div class="card-body py-3">
+                <div class="d-flex align-items-center">
+                    <div class="avatar me-3" style="width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold;">
+                        { string([]rune(investigator.Name)[0]) }
+                    </div>
+                    <div>
+                        <h4 class="mb-0 fw-bold">{ investigator.Name }</h4>
+                        <p class="mb-0 text-secondary">{ investigator.Archetype.Name } { investigator.Occupation.Name }</p>
+                    </div>
+                    <div class="ms-auto d-flex">
+                        <div class="info-pill mx-2 px-3 py-2 rounded-pill bg-light text-center">
+                            <small class="d-block text-muted">Age</small>
+                            <span class="fw-medium">{ strconv.Itoa(investigator.Age) }</span>
+                        </div>
+                        <div class="info-pill mx-2 px-3 py-2 rounded-pill bg-light text-center">
+                            <small class="d-block text-muted">Origin</small>
+                            <span class="fw-medium">{ investigator.Birthplace }</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- Tab navigation -->
-        <div class="border-top border-bottom pt-2 mb-4">
-            <ul class="nav nav-tabs" id="skillsTabs" role="tablist">
+        <!-- Tab navigation with new styling -->
+        <div class="mb-4">
+            <ul class="nav nav-pills nav-fill" id="skillsTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button
-                        class="nav-link active"
+                        class="nav-link active fw-medium py-3"
                         id="archetype-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#archetype-skills"
@@ -61,13 +95,14 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                         role="tab"
                         aria-controls="archetype-skills"
                         aria-selected="true"
+                        style="border-radius: 0.75rem;"
                     >
-                        Archetype Skills
+                        <i class="bi bi-person-badge me-2"></i>Archetype Skills
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button
-                        class="nav-link"
+                        class="nav-link fw-medium py-3"
                         id="occupation-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#occupation-skills"
@@ -76,13 +111,14 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                         aria-controls="occupation-skills"
                         aria-selected="false"
                         disabled
+                        style="border-radius: 0.75rem;"
                     >
-                        Occupation Skills
+                        <i class="bi bi-briefcase me-2"></i>Occupation Skills
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button
-                        class="nav-link"
+                        class="nav-link fw-medium py-3"
                         id="general-tab"
                         data-bs-toggle="tab"
                         data-bs-target="#general-skills"
@@ -91,28 +127,35 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                         aria-controls="general-skills"
                         aria-selected="false"
                         disabled
+                        style="border-radius: 0.75rem;"
                     >
-                        General Skills
+                        <i class="bi bi-list-check me-2"></i>General Skills
                     </button>
                 </li>
             </ul>
         </div>
 
-        <!-- Tab content -->
+        <!-- Tab content with improved styling -->
         <div class="tab-content" id="skillsTabContent">
             <!-- Archetype Skills Tab -->
             <div class="tab-pane fade show active" id="archetype-skills" role="tabpanel" aria-labelledby="archetype-tab">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="border-bottom pb-1" style="width: 50%;">Archetype Skills</h3>
-                    <div class="points-display">
-                        <span>Points:</span>
-                        <span class="fw-bold ms-1" id="archetype-points-total">
-                            { strconv.Itoa(investigator.ArchetypePoints) }
-                        </span>
-                        <span class="ms-2">Remaining:</span>
-                        <span class="fw-bold ms-1" id="archetype-points">
-                            { strconv.Itoa(investigator.ArchetypePoints) }
-                        </span>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0 fw-bold" style="color: #6d6875;">
+                        <i class="bi bi-person-badge me-2"></i>Archetype Skills
+                    </h3>
+                    <div class="points-display shadow-sm d-flex align-items-center p-2 px-3 rounded-pill">
+                        <div class="me-3">
+                            <span class="text-muted">Total:</span>
+                            <span class="fw-bold ms-1 text-dark" id="archetype-points-total">
+                                { strconv.Itoa(investigator.ArchetypePoints) }
+                            </span>
+                        </div>
+                        <div class="points-remaining">
+                            <span class="text-muted">Remaining:</span>
+                            <span class="fw-bold ms-1" id="archetype-points" style="color: #b5838d;">
+                                { strconv.Itoa(investigator.ArchetypePoints) }
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -121,26 +164,29 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                         for _, skill := range investigator.Archetype.Skills {
                             {{skillObj := investigator.Skills[skill]}}
                             if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
-                                <div class="col-md-4 mb-2">
-                                    <div class="skill-box">
+                                <div class="col-md-6 col-lg-4 mb-2">
+                                    <div class="skill-box shadow-sm">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="skill-name-container">
                                                 <span class="skill-name">{ skillObj.Name }</span>
                                                 <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
                                             </div>
                                             <div class="skill-values">
-                                                <input
-                                                    type="number"
-                                                    class="form-control skill-input"
-                                                    value={ strconv.Itoa(skillObj.Value) }
-                                                    data-skill={ skillObj.Name }
-                                                    data-skillvalue={ strconv.Itoa(skillObj.Value) }
-                                                    data-skilldefault={ strconv.Itoa(skillObj.Default) }
-                                                    data-skilltype="archetype"
-                                                    onchange="characterUtils.recalculateValues(this, 'skill')"
-                                                    min={ strconv.Itoa(skillObj.Default) }
-                                                    max="90"
-                                                />
+                                                <div class="input-group">
+                                                    <input
+                                                        type="number"
+                                                        class="form-control skill-input"
+                                                        value={ strconv.Itoa(skillObj.Value) }
+                                                        data-skill={ skillObj.Name }
+                                                        data-skillvalue={ strconv.Itoa(skillObj.Value) }
+                                                        data-skilldefault={ strconv.Itoa(skillObj.Default) }
+                                                        data-skilltype="archetype"
+                                                        onchange="characterUtils.recalculateValues(this, 'skill')"
+                                                        min={ strconv.Itoa(skillObj.Default) }
+                                                        max="90"
+                                                    />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
                                                 <div class="value-displays">
                                                     <span class="half-value" data-half>{ strconv.Itoa(skillObj.Value/2) }</span>
                                                     <span class="divider">|</span>
@@ -155,31 +201,48 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                     </div>
                 </div>
 
-                <div class="d-flex justify-content-end transition-opacity" id="confirm-archetype-container" style="opacity: 0; pointer-events: none;">
+                <div class="d-flex justify-content-between">
                     <button
-                        id="archetype-continue-btn"
                         type="button"
-                        class="btn btn-primary"
-                        onclick="navigateToTab('occupation')"
+                        class="btn btn-outline-secondary px-4 py-2"
+                        style="border-radius: 0.75rem; transition: all 0.3s;"
+                        onclick="characterUtils.goBackToAttributes()"
                     >
-                        Continue to Occupation Skills
+                        <i class="bi bi-arrow-left me-2"></i>Back to Attributes
                     </button>
+                    <div class="transition-opacity" id="confirm-archetype-container" style="opacity: 0; pointer-events: none;">
+                        <button
+                            id="archetype-continue-btn"
+                            type="button"
+                            class="btn btn-lg px-4 py-2"
+                            style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.75rem; transition: all 0.3s;"
+                            onclick="navigateToTab('occupation')"
+                        >
+                            <i class="bi bi-arrow-right-circle me-2"></i>Continue to Occupation Skills
+                        </button>
+                    </div>
                 </div>
             </div>
 
             <!-- Occupation Skills Tab -->
             <div class="tab-pane fade" id="occupation-skills" role="tabpanel" aria-labelledby="occupation-tab">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="border-bottom pb-1" style="width: 50%;">Occupation Skills</h3>
-                    <div class="points-display">
-                        <span>Points:</span>
-                        <span class="fw-bold ms-1" id="occupation-points-total">
-                            { strconv.Itoa(investigator.OccupationPoints) }
-                        </span>
-                        <span class="ms-2">Remaining:</span>
-                        <span class="fw-bold ms-1" id="occupation-points">
-                            { strconv.Itoa(investigator.OccupationPoints) }
-                        </span>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0 fw-bold" style="color: #6d6875;">
+                        <i class="bi bi-briefcase me-2"></i>Occupation Skills
+                    </h3>
+                    <div class="points-display shadow-sm d-flex align-items-center p-2 px-3 rounded-pill">
+                        <div class="me-3">
+                            <span class="text-muted">Total:</span>
+                            <span class="fw-bold ms-1 text-dark" id="occupation-points-total">
+                                { strconv.Itoa(investigator.OccupationPoints) }
+                            </span>
+                        </div>
+                        <div class="points-remaining">
+                            <span class="text-muted">Remaining:</span>
+                            <span class="fw-bold ms-1" id="occupation-points" style="color: #b5838d;">
+                                { strconv.Itoa(investigator.OccupationPoints) }
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -188,26 +251,29 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                         for _, skillConfiguration := range *investigator.GetOccupationSkills() {
                             {{skillObj := investigator.Skills[skillConfiguration]}}
                             if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
-                                <div class="col-md-4 mb-2">
-                                    <div class="skill-box">
+                                <div class="col-md-6 col-lg-4 mb-2">
+                                    <div class="skill-box shadow-sm">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="skill-name-container">
                                                 <span class="skill-name">{ skillObj.Name }</span>
                                                 <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
                                             </div>
                                             <div class="skill-values">
-                                                <input
-                                                    type="number"
-                                                    class="form-control skill-input"
-                                                    value={ strconv.Itoa(skillObj.Value) }
-                                                    data-skill={ skillObj.Name }
-                                                    data-skillvalue={ strconv.Itoa(skillObj.Value) }
-                                                    data-skilldefault={ strconv.Itoa(skillObj.Default) }
-                                                    data-skilltype="occupation"
-                                                    onchange="characterUtils.recalculateValues(this, 'skill')"
-                                                    min={ strconv.Itoa(skillObj.Default) }
-                                                    max="90"
-                                                />
+                                                <div class="input-group">
+                                                    <input
+                                                        type="number"
+                                                        class="form-control skill-input"
+                                                        value={ strconv.Itoa(skillObj.Value) }
+                                                        data-skill={ skillObj.Name }
+                                                        data-skillvalue={ strconv.Itoa(skillObj.Value) }
+                                                        data-skilldefault={ strconv.Itoa(skillObj.Default) }
+                                                        data-skilltype="occupation"
+                                                        onchange="characterUtils.recalculateValues(this, 'skill')"
+                                                        min={ strconv.Itoa(skillObj.Default) }
+                                                        max="90"
+                                                    />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
                                                 <div class="value-displays">
                                                     <span class="half-value" data-half>{ strconv.Itoa(skillObj.Value/2) }</span>
                                                     <span class="divider">|</span>
@@ -225,19 +291,21 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                 <div class="d-flex justify-content-between">
                     <button
                         type="button"
-                        class="btn btn-outline-secondary"
+                        class="btn btn-outline-secondary px-4 py-2"
+                        style="border-radius: 0.75rem; transition: all 0.3s;"
                         onclick="navigateToTab('archetype')"
                     >
-                        Back to Archetype Skills
+                        <i class="bi bi-arrow-left me-2"></i>Back to Archetype Skills
                     </button>
                     <div class="transition-opacity" id="confirm-occupation-container" style="opacity: 0; pointer-events: none;">
                         <button
                             id="occupation-continue-btn"
                             type="button"
-                            class="btn btn-primary"
+                            class="btn btn-lg px-4 py-2"
+                            style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.75rem; transition: all 0.3s;"
                             onclick="navigateToTab('general')"
                         >
-                            Continue to General Skills
+                            <i class="bi bi-arrow-right-circle me-2"></i>Continue to General Skills
                         </button>
                     </div>
                 </div>
@@ -245,17 +313,23 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
 
             <!-- General Skills Tab -->
             <div class="tab-pane fade" id="general-skills" role="tabpanel" aria-labelledby="general-tab">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="border-bottom pb-1" style="width: 50%;">General Skills</h3>
-                    <div class="points-display">
-                        <span>Points:</span>
-                        <span class="fw-bold ms-1" id="general-points-total">
-                            { strconv.Itoa(investigator.FreePoints) }
-                        </span>
-                        <span class="ms-2">Remaining:</span>
-                        <span class="fw-bold ms-1" id="general-points">
-                            { strconv.Itoa(investigator.FreePoints) }
-                        </span>
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="mb-0 fw-bold" style="color: #6d6875;">
+                        <i class="bi bi-list-check me-2"></i>General Skills
+                    </h3>
+                    <div class="points-display shadow-sm d-flex align-items-center p-2 px-3 rounded-pill">
+                        <div class="me-3">
+                            <span class="text-muted">Total:</span>
+                            <span class="fw-bold ms-1 text-dark" id="general-points-total">
+                                { strconv.Itoa(investigator.FreePoints) }
+                            </span>
+                        </div>
+                        <div class="points-remaining">
+                            <span class="text-muted">Remaining:</span>
+                            <span class="fw-bold ms-1" id="general-points" style="color: #b5838d;">
+                                { strconv.Itoa(investigator.FreePoints) }
+                            </span>
+                        </div>
                     </div>
                 </div>
 
@@ -263,26 +337,29 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                     <div class="row g-3">
                         for _, skillObj := range investigator.Skills {
                             if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
-                                <div class="col-md-4 mb-2">
-                                    <div class="skill-box">
+                                <div class="col-md-6 col-lg-4 mb-2">
+                                    <div class="skill-box shadow-sm">
                                         <div class="d-flex justify-content-between align-items-center">
                                             <div class="skill-name-container">
                                                 <span class="skill-name">{ skillObj.Name }</span>
                                                 <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
                                             </div>
                                             <div class="skill-values">
-                                                <input
-                                                    type="number"
-                                                    class="form-control skill-input"
-                                                    value={ strconv.Itoa(skillObj.Value) }
-                                                    data-skill={ skillObj.Name }
-                                                    data-skillvalue={ strconv.Itoa(skillObj.Value) }
-                                                    data-skilldefault={ strconv.Itoa(skillObj.Default) }
-                                                    data-skilltype="general"
-                                                    onchange="characterUtils.recalculateValues(this, 'skill')"
-                                                    min={ strconv.Itoa(skillObj.Default) }
-                                                    max="90"
-                                                />
+                                                <div class="input-group">
+                                                    <input
+                                                        type="number"
+                                                        class="form-control skill-input"
+                                                        value={ strconv.Itoa(skillObj.Value) }
+                                                        data-skill={ skillObj.Name }
+                                                        data-skillvalue={ strconv.Itoa(skillObj.Value) }
+                                                        data-skilldefault={ strconv.Itoa(skillObj.Default) }
+                                                        data-skilltype="general"
+                                                        onchange="characterUtils.recalculateValues(this, 'skill')"
+                                                        min={ strconv.Itoa(skillObj.Default) }
+                                                        max="90"
+                                                    />
+                                                    <span class="input-group-text">%</span>
+                                                </div>
                                                 <div class="value-displays">
                                                     <span class="half-value" data-half>{ strconv.Itoa(skillObj.Value/2) }</span>
                                                     <span class="divider">|</span>
@@ -300,20 +377,22 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                 <div class="d-flex justify-content-between">
                     <button
                         type="button"
-                        class="btn btn-outline-secondary"
+                        class="btn btn-outline-secondary px-4 py-2"
+                        style="border-radius: 0.75rem; transition: all 0.3s;"
                         onclick="navigateToTab('occupation')"
                     >
-                        Back to Occupation Skills
+                        <i class="bi bi-arrow-left me-2"></i>Back to Occupation Skills
                     </button>
                     <div class="transition-opacity" id="confirm-general-container" style="opacity: 0; pointer-events: none;">
                         <button
                             id="finish-btn"
                             type="button"
-                            class="btn btn-primary"
+                            class="btn btn-lg px-4 py-2"
+                            style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.75rem; transition: all 0.3s;"
                             hx-get={ fmt.Sprintf("/api/investigator/%s", investigator.ID) }
                             hx-target="#character-sheet"
                         >
-                            Complete Character
+                            <i class="bi bi-check-circle me-2"></i>Complete Character
                         </button>
                     </div>
                 </div>
@@ -322,14 +401,29 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
     </div>
 
     <style>
-        /* Styling to match character sheet */
+        .coc-sheet {
+            font-family: 'Roboto', sans-serif;
+            background-color: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
         .skill-box {
-            padding: 5px 10px;
-            border-bottom: 1px solid #dee2e6;
+            padding: 12px 15px;
+            border-radius: 0.75rem;
             background-color: #f8f9fa;
-            margin-bottom: 5px;
-            border-radius: 4px;
-            position: relative;
+            margin-bottom: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .skill-box:hover {
+            background-color: #fff;
+            transform: translateY(-3px);
+            box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.1) !important;
+            border-color: rgba(181, 131, 141, 0.2);
         }
 
         .skill-name-container {
@@ -339,50 +433,111 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
         }
 
         .skill-name {
-            font-weight: 500;
-            margin-right: 5px;
+            font-weight: 600;
+            margin-right: 8px;
+            color: #6d6875;
         }
 
         .skill-default {
             font-size: 0.8rem;
-            color: #6c757d;
+            color: #95a5a6;
         }
 
         .skill-values {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
+            min-width: 100px;
         }
 
         .skill-input {
-            width: 60px;
             text-align: center;
-            height: 32px;
-            padding: 2px 5px;
-            font-size: 0.9rem;
+            height: 38px;
+            font-weight: 500;
+            color: #6d6875;
+            border-color: rgba(0,0,0,0.1);
+        }
+        
+        .input-group-text {
+            background-color: #f1f1f1;
+            color: #95a5a6;
+            border-color: rgba(0,0,0,0.1);
+            font-weight: 500;
         }
 
         .value-displays {
             display: flex;
             font-size: 0.8rem;
-            color: #6c757d;
-            margin-top: 2px;
+            color: #95a5a6;
+            margin-top: 5px;
+            justify-content: center;
+            width: 100%;
         }
 
         .half-value, .fifth-value {
             min-width: 20px;
             text-align: center;
+            font-weight: 500;
         }
 
         .divider {
-            margin: 0 5px;
+            margin: 0 8px;
+            color: #ddd;
         }
 
         .points-display {
             background-color: #f8f9fa;
-            padding: 5px 10px;
-            border-radius: 4px;
-            border: 1px solid #dee2e6;
+            border-radius: 50px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        /* Animation for points remaining */
+        .points-remaining span:last-child {
+            transition: color 0.3s;
+        }
+        
+        /* Tab styling */
+        .nav-pills .nav-link {
+            color: #6c757d;
+            background-color: #f8f9fa;
+            border: 1px solid rgba(0,0,0,0.05);
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-pills .nav-link:hover:not([disabled]) {
+            background-color: #f0f0f0;
+            transform: translateY(-2px);
+        }
+        
+        .nav-pills .nav-link.active {
+            background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+            color: white;
+            box-shadow: 0 4px 10px rgba(181, 131, 141, 0.3);
+            transform: translateY(-2px);
+        }
+        
+        .nav-pills .nav-link[disabled] {
+            color: #adb5bd;
+            cursor: not-allowed;
+        }
+        
+        /* Button styling */
+        .btn-outline-secondary {
+            color: #6d6875;
+            border-color: #6d6875;
+        }
+        
+        .btn-outline-secondary:hover {
+            background-color: #6d6875;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(109, 104, 117, 0.2);
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
 
         /* Remove spinner buttons from number inputs */
@@ -399,6 +554,67 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
         .transition-opacity {
             transition: opacity 0.3s ease;
         }
+        
+        /* Focus states */
+        .form-control:focus, .btn:focus {
+            box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
+            border-color: #b5838d;
+        }
+        
+        /* Progress steps styling */
+        .step-indicator {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .step-circle {
+            transition: all 0.3s;
+        }
+        
+        .step-label {
+            transition: all 0.3s;
+        }
+        
+        .step-indicator.completed .step-label {
+            color: #6d6875;
+        }
+        
+        .step-indicator.active .step-label {
+            color: #6d6875;
+            font-weight: 500;
+        }
+        
+        /* Character info styling */
+        .info-pill {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        
+        .info-pill:hover {
+            background-color: #f0e6ea !important;
+            transform: translateY(-2px);
+        }
+        
+        /* Submit button pulsing when all points are used */
+        @keyframes pulse-button {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-button {
+            animation: pulse-button 1.5s infinite;
+        }
+        
+        /* Flash animation for changes */
+        @keyframes flash-highlight {
+            0% { background-color: rgba(181, 131, 141, 0.3); }
+            100% { background-color: transparent; }
+        }
+        
+        .flash-highlight {
+            animation: flash-highlight 0.8s ease-out;
+        }
     </style>
 
     <script>
@@ -409,16 +625,39 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                 document.getElementById(tabName + '-tab').disabled = false;
             }
 
-            // Switch to the tab
-            const tab = new bootstrap.Tab(document.getElementById(tabName + '-tab'));
-            tab.show();
+            // Add a slight delay before switching tabs for better animation
+            setTimeout(() => {
+                // Switch to the tab
+                const tab = new bootstrap.Tab(document.getElementById(tabName + '-tab'));
+                tab.show();
+                
+                // Scroll to top of the tab content
+                document.getElementById(tabName + '-skills').scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }, 100);
         }
+
+        // Extend the characterUtils object with navigation functionality
+        if (!window.characterUtils) {
+            window.characterUtils = {};
+        }
+        
+        // Function to go back to attributes page
+        window.characterUtils.goBackToAttributes = function() {
+            // Use HTMX to navigate back to the attributes page
+            htmx.ajax('GET', '/api/investigator/attributes/' + '{ investigator.ID }', {
+                target: '#character-sheet',
+                swap: 'innerHTML'
+            });
+        };
 
         // Immediately extend the characterUtils object with our enhanced functions
         // This ensures the functions are available before any input events occur
         (function() {
-            // Store the original recalculateValues function
-            const originalRecalculateValues = window.characterUtils.recalculateValues;
+            // Store the original recalculateValues function if it exists
+            const originalRecalculateValues = window.characterUtils.recalculateValues || function() {};
 
             // Replace with our enhanced version
             window.characterUtils.recalculateValues = function(input, type) {
@@ -434,9 +673,18 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                         input.value = 90;
                         return;
                     }
+                    
+                    // Apply min limit (default value)
+                    if (value < defaultValue) {
+                        input.value = defaultValue;
+                        return;
+                    }
 
                     // Calculate difference
                     const difference = value - prevValue;
+                    
+                    // Skip if there's no change
+                    if (difference === 0) return;
 
                     // Get proper points element
                     let pointsId = "";
@@ -467,12 +715,34 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                         // Don't allow negative points
                         if (newPoints < 0) {
                             input.value = prevValue;
-                            alert("Not enough points available!");
+                            
+                            // Visual feedback for error
+                            input.classList.add('is-invalid');
+                            
+                            // Remove invalid class after a short delay
+                            setTimeout(() => {
+                                input.classList.remove('is-invalid');
+                            }, 800);
+                            
                             return;
                         }
 
-                        // Update points display
+                        // Update points display with visual feedback
                         pointsElement.textContent = newPoints;
+                        
+                        // Add color coding based on remaining points
+                        if (newPoints < 10) {
+                            pointsElement.style.color = '#e74c3c';
+                        } else {
+                            pointsElement.style.color = '#b5838d';
+                        }
+                        
+                        // Highlight the skill box that was changed
+                        const skillBox = input.closest('.skill-box');
+                        skillBox.classList.add('flash-highlight');
+                        setTimeout(() => {
+                            skillBox.classList.remove('flash-highlight');
+                        }, 800);
 
                         // Update skill value tracking
                         input.dataset.skillvalue = value;
@@ -489,8 +759,15 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                         const confirmContainer = document.getElementById(confirmId);
                         if (confirmContainer) {
                             if (newPoints === 0) {
+                                // Animate showing the button
                                 confirmContainer.style.opacity = "1";
                                 confirmContainer.style.pointerEvents = "auto";
+                                
+                                // Add pulse animation to the button
+                                const continueBtn = confirmContainer.querySelector('button');
+                                if (continueBtn) {
+                                    continueBtn.classList.add('pulse-button');
+                                }
 
                                 // Auto advance after delay if points are used up
                                 if (nextTabName) {
@@ -498,18 +775,26 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                                         if (parseInt(pointsElement.textContent) === 0) {
                                             navigateToTab(nextTabName);
                                         }
-                                    }, 800);
+                                    }, 1000);
                                 }
                             } else {
                                 confirmContainer.style.opacity = "0";
                                 confirmContainer.style.pointerEvents = "none";
+                                
+                                // Remove pulse animation
+                                const continueBtn = confirmContainer.querySelector('button');
+                                if (continueBtn) {
+                                    continueBtn.classList.remove('pulse-button');
+                                }
                             }
                         }
                     }
                 }
 
-                // Call original function to update server
-                originalRecalculateValues.call(window.characterUtils, input, type);
+                // Call original function to update server if it exists
+                if (typeof originalRecalculateValues === 'function') {
+                    originalRecalculateValues.call(window.characterUtils, input, type);
+                }
             };
         })();
 
@@ -519,6 +804,28 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(button => {
                 button.addEventListener('shown.bs.tab', function (event) {
                     // If we need additional tab switching logic, we can add it here
+                });
+            });
+            
+            // Add hover effects to skill boxes
+            document.querySelectorAll('.skill-box').forEach(box => {
+                box.addEventListener('mouseenter', function() {
+                    this.style.backgroundColor = '#f0f0f0';
+                });
+                box.addEventListener('mouseleave', function() {
+                    this.style.backgroundColor = '#f8f9fa';
+                });
+            });
+            
+            // Initialize any skill inputs
+            document.querySelectorAll('.skill-input').forEach(input => {
+                // Add focus/blur effects
+                input.addEventListener('focus', function() {
+                    this.closest('.skill-box').style.borderColor = '#b5838d';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.closest('.skill-box').style.borderColor = 'rgba(0,0,0,0.05)';
                 });
             });
         });
