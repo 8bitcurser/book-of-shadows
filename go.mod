@@ -1,8 +1,10 @@
 module book-of-shadows
 
-go 1.22.5
+go 1.23.0
 
-require github.com/a-h/templ v0.2.793
+toolchain go1.23.9
+
+require github.com/a-h/templ v0.3.865
 
 require (
 	github.com/google/uuid v1.6.0 // indirect

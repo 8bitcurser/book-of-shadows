@@ -18,61 +18,10 @@ var attributes = map[string]string{
 
 templ AssignAttrForm(investigator *models.Investigator) {
     <div class="container-fluid p-4 coc-sheet">
-        <!-- Progress Bar & Step Indicator -->
-        <div class="mb-4">
-            <div class="progress mb-3" style="height: 8px; background-color: #f0f0f0;">
-                <div class="progress-bar" role="progressbar" style="width: 40%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
-            </div>
-            <div class="d-flex justify-content-between align-items-center px-2">
-                <div class="step-indicator completed d-flex flex-column align-items-center">
-                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
-                        <i class="bi bi-check-lg"></i>
-                    </div>
-                    <span class="step-label small fw-medium">Personal Info</span>
-                </div>
-                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: linear-gradient(90deg, #b5838d 0%, #f0f0f0 100%);"></div>
-                <div class="step-indicator active d-flex flex-column align-items-center">
-                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center;">
-                        <span>2</span>
-                    </div>
-                    <span class="step-label small fw-medium" style="color: #6d6875;">Attributes</span>
-                </div>
-                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: #f0f0f0;"></div>
-                <div class="step-indicator d-flex flex-column align-items-center">
-                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;">
-                        <span>3</span>
-                    </div>
-                    <span class="step-label small">Skills</span>
-                </div>
-                <div class="step-connector flex-grow-1 mx-2" style="height: 2px; background: #f0f0f0;"></div>
-                <div class="step-indicator d-flex flex-column align-items-center">
-                    <div class="step-circle mb-1" style="width: 30px; height: 30px; border-radius: 50%; background: #e5e5e5; color: #999; display: flex; align-items: center; justify-content: center;">
-                        <span>4</span>
-                    </div>
-                    <span class="step-label small">Complete</span>
-                </div>
-            </div>
-        </div>
-
         <!-- Header with new styling -->
         <div class="mb-4 text-center">
             <h2 class="fw-bold mb-3" style="color: #6d6875">Attributes Assignment</h2>
             <p class="text-secondary mb-4">Assign your investigator's core attributes</p>
-        </div>
-
-        <!-- Character Overview Card -->
-        <div class="card mb-4 shadow-sm" style="border-radius: 1rem; border: none; background-color: #f8f9fa;">
-            <div class="card-body py-2">
-                <div class="d-flex align-items-center">
-                    <div class="avatar me-3" style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; display: flex; align-items: center; justify-content: center; font-weight: bold;">
-                        { string([]rune(investigator.Name)[0]) }
-                    </div>
-                    <div>
-                        <h5 class="mb-0 fw-bold">{ investigator.Name }</h5>
-                        <p class="mb-0 small text-muted">{ investigator.Archetype.Name } { investigator.Occupation.Name }</p>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Random All Button at the top -->
@@ -154,18 +103,17 @@ templ AssignAttrForm(investigator *models.Investigator) {
                     type="button" 
                     class="btn btn-outline-secondary px-4 py-2"
                     style="border-radius: 0.5rem; transition: all 0.3s;"
-                    onclick="characterUtils.goBackToPersonalInfo()"
+                    hx-target="#character-sheet"
+                    hx-get={ fmt.Sprintf("/api/generate-step/%s", investigator.ID) }
                 >
-                    <i class="bi bi-arrow-left me-2"></i>Back to Personal Info
+                    Back to Personal Info
                 </button>
                 <button
                     type="submit"
                     class="btn btn-lg px-4 py-2"
-                    id="next-button"
                     style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; color: white; border-radius: 0.5rem; transition: all 0.3s;"
                 >
-                    <span>Proceed to Skills</span>
-                    <i class="bi bi-arrow-right ms-2"></i>
+                    Proceed to Skills
                 </button>
             </div>
         </form>
@@ -268,51 +216,6 @@ templ AssignAttrForm(investigator *models.Investigator) {
             .dice-rolling {
                 animation: dice-roll 0.5s ease-in-out;
             }
-            
-            /* Submit button pulsing when all fields are filled */
-            @keyframes pulse-button {
-                0% { transform: scale(1); }
-                50% { transform: scale(1.03); }
-                100% { transform: scale(1); }
-            }
-            
-            .pulse-button {
-                animation: pulse-button 1.5s infinite;
-            }
-            
-            /* Progress steps styling */
-            .step-indicator {
-                position: relative;
-                z-index: 1;
-            }
-            
-            .step-circle {
-                transition: all 0.3s;
-            }
-            
-            .step-label {
-                transition: all 0.3s;
-            }
-            
-            .step-indicator.completed .step-label {
-                color: #6d6875;
-            }
-            
-            .step-indicator.active .step-label {
-                color: #6d6875;
-                font-weight: 500;
-            }
-            
-            .form-check-input {
-                cursor: pointer;
-                position: relative;
-                margin-top: 0;
-            }
-            
-            .form-check-input:checked {
-                background-color: #b5838d;
-                border-color: #b5838d;
-            }
         </style>
 
         <script>
@@ -321,20 +224,8 @@ templ AssignAttrForm(investigator *models.Investigator) {
                 window.characterUtils = {};
             }
             
-            // Function to go back to personal info
-            window.characterUtils.goBackToPersonalInfo = function() {
-                // Use HTMX to load the personal info form
-                htmx.ajax('GET', '/api/investigator/edit/' + '{ investigator.ID }', {
-                    target: '#character-sheet',
-                    swap: 'innerHTML'
-                });
-            };
-            
             // Roll all attributes at once
             window.characterUtils.rollAllAttributes = function() {
-                // Play dice rolling sound if desired
-                this.playDiceSound();
-                
                 // Get the dice roll button and add animation
                 const rollButton = document.querySelector('button[onclick="characterUtils.rollAllAttributes()"]');
                 rollButton.classList.add('dice-rolling');
@@ -361,11 +252,6 @@ templ AssignAttrForm(investigator *models.Investigator) {
                         }, 500);
                     }, index * 150); // Stagger the rolls
                 });
-                
-                // Check if all inputs are filled after rolling
-                setTimeout(() => {
-                    this.checkAllAttributesFilled();
-                }, attributeInputs.length * 150 + 100);
             };
             
             // Roll a single attribute
@@ -385,35 +271,6 @@ templ AssignAttrForm(investigator *models.Investigator) {
                 this.updateDerivedValues(input);
             };
             
-            // Check if all attribute inputs are filled
-            window.characterUtils.checkAllAttributesFilled = function() {
-                const inputs = document.querySelectorAll('.attribute-input');
-                let allFilled = true;
-                
-                inputs.forEach(input => {
-                    if (!input.value || input.value.trim() === '') {
-                        allFilled = false;
-                    }
-                });
-                
-                const nextButton = document.getElementById('next-button');
-                
-                if (allFilled) {
-                    // If all inputs are filled, pulse the next button
-                    nextButton.classList.add('pulse-button');
-                } else {
-                    nextButton.classList.remove('pulse-button');
-                }
-                
-                return allFilled;
-            };
-            
-            // Optional dice sound effect
-            window.characterUtils.playDiceSound = function() {
-                // Could add a dice rolling sound here if desired
-                // const audio = new Audio('/static/sounds/dice.mp3');
-                // audio.play();
-            };
             
             // Add a new function for dice roll animation
             window.characterUtils.animateDiceRoll = function(numDice, sides, multiplier, input, bonus = 0) {
@@ -458,9 +315,6 @@ templ AssignAttrForm(investigator *models.Investigator) {
                 
                 if (halfSpan) halfSpan.textContent = Math.floor(value / 2);
                 if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);
-                
-                // Check if all inputs are filled after updating
-                this.checkAllAttributesFilled();
             };
             
             // Initialize the form
@@ -484,9 +338,6 @@ templ AssignAttrForm(investigator *models.Investigator) {
                         this.style.backgroundColor = '#f8f9fa';
                     });
                 });
-                
-                // Initial check for all fields filled
-                characterUtils.checkAllAttributesFilled();
             });
         </script>
     </div>

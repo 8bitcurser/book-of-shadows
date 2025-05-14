@@ -136,6 +136,7 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 	}
+
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)
 	}
@@ -150,7 +151,6 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 	keysToConvert := []string{"age"}
 	for key, val := range r.PostForm {
 		val = r.PostForm[key]
-		fmt.Println(key, val)
 		if slices.Contains(keysToConvert, key) {
 			payload[key] = formToInt(val[0])
 		} else {
@@ -279,8 +279,18 @@ func handleCreateStepInvestigator(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-	component := views.BaseInvForm()
-	err := component.Render(r.Context(), w)
+	key := strings.TrimPrefix(r.URL.Path, "/api/generate-step/")
+	cm := storage.NewInvestigatorCookieConfig()
+	investigator := &models.Investigator{}
+	err := error(nil)
+	if key != "/api/generate-step" {
+		investigator, err = cm.GetInvestigatorCookie(r, key)
+		if err != nil {
+			http.Error(w, "Investigator cookie missing", http.StatusNotFound)
+		}
+	}
+	component := views.BaseInvForm(investigator)
+	err = component.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)
 	}

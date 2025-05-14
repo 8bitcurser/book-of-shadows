@@ -1,8 +1,9 @@
 package views
 
 import "book-of-shadows/models"
+import "strconv"
 
-templ BaseInvForm() {
+templ BaseInvForm(inv *models.Investigator) {
     <div class="container-fluid p-4 coc-sheet">
         <!-- Progress Bar & Step Indicator -->
         <div class="mb-4">
@@ -55,49 +56,100 @@ templ BaseInvForm() {
             <!-- Personal Information -->
             <div class="col-md-6 col-lg-3">
                 <label class="form-label fw-medium">Name</label>
-                <input
-                    type="text"
-                    name="name"
-                    class="form-control shadow-sm"
-                    required
-                    onchange="characterUtils.checkFormCompletion()"
-                    onkeyup="characterUtils.checkFormCompletion()"
-                />
+                if inv != nil {
+                    <input
+                        type="text"
+                        name="name"
+                        class="form-control shadow-sm"
+                        required
+                        value={inv.Name}
+                        onchange="characterUtils.checkFormCompletion()"
+                        onkeyup="characterUtils.checkFormCompletion()"
+                    />
+                } else {
+                    <input
+                        type="text"
+                        name="name"
+                        class="form-control shadow-sm"
+                        required
+                        onchange="characterUtils.checkFormCompletion()"
+                        onkeyup="characterUtils.checkFormCompletion()"
+                    />
+                }
             </div>
             <div class="col-md-6 col-lg-3">
                 <label class="form-label fw-medium">Age</label>
-                <input
-                    type="number"
-                    name="age"
-                    min="15"
-                    max="90"
-                    class="form-control shadow-sm"
-                    required
-                    onchange="characterUtils.checkFormCompletion()"
-                    onkeyup="characterUtils.checkFormCompletion()"
-                />
+                if inv != nil {
+                    <input
+                        type="number"
+                        name="age"
+                        min="15"
+                        max="90"
+                        value={strconv.Itoa(inv.Age)}
+                        class="form-control shadow-sm"
+                        required
+                        onchange="characterUtils.checkFormCompletion()"
+                        onkeyup="characterUtils.checkFormCompletion()"
+                    />
+                } else {
+                    <input
+                        type="number"
+                        name="age"
+                        min="15"
+                        max="90"
+                        class="form-control shadow-sm"
+                        required
+                        onchange="characterUtils.checkFormCompletion()"
+                        onkeyup="characterUtils.checkFormCompletion()"
+                    />
+                }
             </div>
             <div class="col-md-6 col-lg-3">
                 <label class="form-label fw-medium">Residence</label>
-                <input
-                    type="text"
-                    name="residence"
-                    class="form-control shadow-sm"
-                    required
-                    onchange="characterUtils.checkFormCompletion()"
-                    onkeyup="characterUtils.checkFormCompletion()"
-                />
+                if inv != nil {
+                    <input
+                        type="text"
+                        name="residence"
+                        class="form-control shadow-sm"
+                        required
+                        value={inv.Residence}
+                        onchange="characterUtils.checkFormCompletion()"
+                        onkeyup="characterUtils.checkFormCompletion()"
+                    />
+                } else {
+                    <input
+                        type="text"
+                        name="residence"
+                        class="form-control shadow-sm"
+                        required
+                        onchange="characterUtils.checkFormCompletion()"
+                        onkeyup="characterUtils.checkFormCompletion()"
+                    />
+                }
             </div>
             <div class="col-md-6 col-lg-3">
                 <label class="form-label fw-medium">Birthplace</label>
-                <input
-                    type="text"
-                    name="birthplace"
-                    class="form-control shadow-sm"
-                    required
-                    onchange="characterUtils.checkFormCompletion()"
-                    onkeyup="characterUtils.checkFormCompletion()"
-                />
+                if inv != nil {
+                    <input
+                        type="text"
+                        name="birthplace"
+                        class="form-control shadow-sm"
+                        required
+                        value={inv.Birthplace}
+                        onchange="characterUtils.checkFormCompletion()"
+                        onkeyup="characterUtils.checkFormCompletion()"
+                    />
+                } else {
+                    <input
+                        type="text"
+                        name="birthplace"
+                        class="form-control shadow-sm"
+                        required
+                        onchange="characterUtils.checkFormCompletion()"
+                        onkeyup="characterUtils.checkFormCompletion()"
+                    />
+                }
+
             </div>
 
             <div class="col-md-6">
@@ -109,10 +161,15 @@ templ BaseInvForm() {
                     required
                     onchange="characterUtils.handleArchetypeSelection(this)"
                 >
-                    <option value="">Select Archetype</option>
+                    if inv != nil {
+                        <option value={inv.Archetype.Name} data-description={inv.Archetype.GetDescription()} selected>{inv.Archetype.Name}</option>
+                    } else {
+                        <option value="">Select Archetype</option>
+                    }
+
                     for arch := range models.ArchetypesList {
                         {{archEntity, _ := models.Archetypes[models.ArchetypesList[arch]]}}
-                        <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option>
+                        <option value={archEntity.Name} data-description={archEntity.GetDescription()}>{archEntity.Name}</option> 
                     }
                 </select>
                 <div 
@@ -121,22 +178,25 @@ templ BaseInvForm() {
                     style="min-height: 4em; display: none;"
                 ></div>
             </div>
-
-            <div class="col-md-6" id="occupation-container" style="display: none;">
-                <label class="form-label fw-medium">Occupation</label>
-                <select
-                    name="occupation"
-                    id="occupation-select"
-                    class="form-control shadow-sm"
-                    required
-                    onchange="characterUtils.handleOccupationSelection(this)"
-                >
-                    <option value="">Select Occupation</option>
-                    for occ := range models.OccupationsList {
-                        {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
-                        <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
-                    }
-                </select>
+                <div class="col-md-6" id="occupation-container" style={getOccupationContainerStyle(inv)}>
+                    <label class="form-label fw-medium">Occupation</label>
+                    <select
+                        name="occupation"
+                        id="occupation-select"
+                        class="form-control shadow-sm"
+                        required
+                        onchange="characterUtils.handleOccupationSelection(this)"
+                    >
+                        if inv != nil {
+                            <option value={inv.Occupation.Name} data-description={inv.Occupation.GetDescription()} selected>{inv.Occupation.Name}</option>
+                        } else {
+                            <option value="">Select Occupation</option>
+                        }
+                        for occ := range models.OccupationsList {
+                            {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
+                            <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
+                        }
+                    </select>
                 <div 
                     id="occupation-description"
                     class="mt-3 p-3 rounded shadow-sm bg-light text-secondary"
@@ -149,8 +209,7 @@ templ BaseInvForm() {
                     id="next-step-button"
                     type="submit"
                     class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center justify-content-center mx-auto"
-                    style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; min-width: 240px;"
-                    disabled
+                    style={getButtonStyle(inv)}
                 >
                     <span>Continue to Attributes</span>
                     <i class="bi bi-arrow-right ms-2"></i>
@@ -254,44 +313,20 @@ templ BaseInvForm() {
 
             // Function to handle archetype selection
             window.characterUtils.handleArchetypeSelection = function(selectElement) {
-                // Show the description with an improved animation
+                // Show/hide description
                 const descriptionElement = document.getElementById('archetype-description');
                 const selectedOption = Array.from(selectElement.options).find(option => option.value === selectElement.value);
                 
                 if (selectedOption && selectedOption.dataset.description) {
                     descriptionElement.textContent = selectedOption.dataset.description;
                     descriptionElement.style.display = 'block';
-                    // Add a subtle animation
-                    descriptionElement.style.opacity = '0';
-                    setTimeout(() => {
-                        descriptionElement.style.transition = 'opacity 0.3s ease';
-                        descriptionElement.style.opacity = '1';
-                    }, 10);
                 } else {
-                    descriptionElement.style.opacity = '0';
-                    setTimeout(() => {
-                        descriptionElement.style.display = 'none';
-                    }, 300);
+                    descriptionElement.style.display = 'none';
                 }
 
-                // Then, show the occupation section if an archetype is selected
+                // Show/hide occupation container
                 const occupationContainer = document.getElementById('occupation-container');
-
-                if (selectElement.value) {
-                    // Show the occupation container with a smooth transition
-                    occupationContainer.style.display = 'block';
-                    occupationContainer.style.opacity = '0';
-                    setTimeout(() => {
-                        occupationContainer.style.transition = 'opacity 0.3s ease';
-                        occupationContainer.style.opacity = '1';
-                    }, 10);
-                } else {
-                    // Hide the occupation container
-                    occupationContainer.style.opacity = '0';
-                    setTimeout(() => {
-                        occupationContainer.style.display = 'none';
-                    }, 300);
-                }
+                occupationContainer.style.display = selectElement.value ? 'block' : 'none';
 
                 // Check if the form is complete
                 this.checkFormCompletion();
@@ -299,27 +334,16 @@ templ BaseInvForm() {
 
             // Function to handle occupation selection
             window.characterUtils.handleOccupationSelection = function(selectElement) {
-                // Show the description with animation
                 const descriptionElement = document.getElementById('occupation-description');
                 const selectedOption = Array.from(selectElement.options).find(option => option.value === selectElement.value);
                 
                 if (selectedOption && selectedOption.dataset.description) {
                     descriptionElement.textContent = selectedOption.dataset.description;
                     descriptionElement.style.display = 'block';
-                    // Add a subtle animation
-                    descriptionElement.style.opacity = '0';
-                    setTimeout(() => {
-                        descriptionElement.style.transition = 'opacity 0.3s ease';
-                        descriptionElement.style.opacity = '1';
-                    }, 10);
                 } else {
-                    descriptionElement.style.opacity = '0';
-                    setTimeout(() => {
-                        descriptionElement.style.display = 'none';
-                    }, 300);
+                    descriptionElement.style.display = 'none';
                 }
 
-                // Check if the form is complete
                 this.checkFormCompletion();
             };
 
@@ -333,31 +357,19 @@ templ BaseInvForm() {
                 const occupationSelect = document.getElementById('occupation-select');
                 const nextButton = document.getElementById('next-step-button');
 
-                // Check if all fields are filled
-                const isNameFilled = nameInput && nameInput.value.trim() !== '';
-                const isAgeFilled = ageInput && ageInput.value !== '';
-                const isResidenceFilled = residenceInput && residenceInput.value.trim() !== '';
-                const isBirthplaceFilled = birthplaceInput && birthplaceInput.value.trim() !== '';
-                const isArchetypeSelected = archetypeSelect && archetypeSelect.value !== '';
-                const isOccupationSelected = occupationSelect && occupationSelect.value !== '';
-
-                // Only enable the button if all fields are filled
                 const isFormComplete = (
-                    isNameFilled &&
-                    isAgeFilled &&
-                    isResidenceFilled &&
-                    isBirthplaceFilled &&
-                    isArchetypeSelected &&
-                    isOccupationSelected
+                    nameInput && nameInput.value.trim() !== '' &&
+                    ageInput && ageInput.value !== '' &&
+                    residenceInput && residenceInput.value.trim() !== '' &&
+                    birthplaceInput && birthplaceInput.value.trim() !== '' &&
+                    archetypeSelect && archetypeSelect.value !== '' &&
+                    occupationSelect && occupationSelect.value !== ''
                 );
                 
                 nextButton.disabled = !isFormComplete;
                 
-                // Add a visual feedback
                 if (isFormComplete) {
                     nextButton.style.background = 'linear-gradient(135deg, #6d6875 0%, #b5838d 100%)';
-                    
-                    // Make the button pulse to draw attention
                     nextButton.classList.add('pulse-button');
                 } else {
                     nextButton.style.background = '#e5e5e5';
@@ -366,63 +378,21 @@ templ BaseInvForm() {
                 
                 return isFormComplete;
             };
-            
-            // Add field completion highlight
-            window.characterUtils.highlightField = function(field) {
-                field.classList.add('field-highlight');
-                setTimeout(() => {
-                    field.classList.remove('field-highlight');
-                }, 1000);
-            };
-
-            // Initialize form check on page load
-            document.addEventListener('DOMContentLoaded', function() {
-                // Add event listener to occupation select
-                const occupationSelect = document.getElementById('occupation-select');
-                if (occupationSelect) {
-                    occupationSelect.addEventListener('change', function() {
-                        characterUtils.handleOccupationSelection(this);
-                    });
-                }
-
-                // Add focus and blur effects to all form fields
-                const formFields = document.querySelectorAll('.form-control');
-                formFields.forEach(field => {
-                    // Focus effect
-                    field.addEventListener('focus', function() {
-                        this.style.borderColor = '#b5838d';
-                    });
-                    
-                    // Blur effect
-                    field.addEventListener('blur', function() {
-                        // Only keep the border if the field has a value
-                        if (this.value && this.value.trim() !== '') {
-                            this.style.borderColor = '#b5838d';
-                            characterUtils.highlightField(this.parentElement);
-                        } else {
-                            this.style.borderColor = '#ced4da';
-                        }
-                    });
-                    
-                    // Change effect
-                    field.addEventListener('change', function() {
-                        if (this.value && this.value.trim() !== '') {
-                            characterUtils.highlightField(this.parentElement);
-                        }
-                    });
-                });
-
-                // Initial form check
-                characterUtils.checkFormCompletion();
-                
-                // Automatically focus on the first empty required field
-                setTimeout(() => {
-                    const firstEmptyField = document.querySelector('.form-control:required:not([value]):not([value=""])');
-                    if (firstEmptyField) {
-                        firstEmptyField.focus();
-                    }
-                }, 500);
-            });
         </script>
     </div>
+}
+
+func getOccupationContainerStyle(inv *models.Investigator) string {
+    if inv != nil && inv.Archetype.Name != "" {
+        return "display: block;"
+    }
+    return "display: none;"
+}
+
+func getButtonStyle(inv *models.Investigator) string {
+    if inv != nil && (inv.Archetype.Name != "" && inv.Occupation.Name != "") {
+        return "background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; min-width: 240px;"
+    } else {
+        return "display: none; background: #e5e5e5; border: none; min-width: 240px;"
+    }
 }

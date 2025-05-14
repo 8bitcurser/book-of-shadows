@@ -21,7 +21,7 @@ func main() {
 	http.HandleFunc("/api/investigator/list", handleListInvestigators)
 	http.HandleFunc("/api/investigator/list/export", handleListInvestigatorsExport)
 	http.HandleFunc("/api/investigator/list/import/", handleListInvestigatorsImport)
-	http.HandleFunc("/api/generate-step", handleCreateStepInvestigator)
+	http.HandleFunc("/api/generate-step/", handleCreateStepInvestigator)
 	http.HandleFunc("/api/investigator/confirm-attributes/", handleConfirmAttrStepInvestigator)
 	http.HandleFunc("/api/investigator/create/", handleCreateBaseInvestigator)
 	http.HandleFunc("/api/investigator/delete/", handleDeleteInvestigator)
