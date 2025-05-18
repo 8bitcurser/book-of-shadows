@@ -306,8 +306,10 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             background-color: #fff;
             border-radius: 1rem;
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
-            max-width: 1200px;
+            max-width: 1400px;
+            width: 98%;
             margin: 0 auto;
+            padding: 0 10px;
         }
         
         .skill-box {
@@ -330,50 +332,94 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             flex: 1;
             display: flex;
             align-items: baseline;
+            min-width: 0;
+            margin-right: 8px;
+            overflow: hidden;
         }
 
         .skill-name {
             font-weight: 600;
             margin-right: 8px;
             color: #6d6875;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 180px;
         }
 
         .skill-default {
             font-size: 0.8rem;
             color: #95a5a6;
+            white-space: nowrap;
         }
 
         .skill-values {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            min-width: 130px;
-        }
-
-        .skill-input {
-            text-align: center;
-            height: 38px;
-            font-weight: 500;
-            color: #6d6875;
-            border-color: rgba(0,0,0,0.1);
+            flex-shrink: 0; /* Prevent shrinking */
         }
         
-        .input-group-text {
-            background-color: #f1f1f1;
-            color: #95a5a6;
-            border-color: rgba(0,0,0,0.1);
+        /* New input group styling */
+        .skill-input-group {
+            display: flex;
+            align-items: center;
+            height: 38px;
+            border-radius: 0.25rem;
+            overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+        
+        .skill-input {
+            width: 40px;
+            height: 36px;
+            border: none;
+            text-align: center;
             font-weight: 500;
+            color: #6d6875;
+            -moz-appearance: textfield;
+            border-left: 1px solid rgba(0,0,0,0.1);
+            border-right: 1px solid rgba(0,0,0,0.1);
+        }
+        
+        .skill-input:focus {
+            outline: none;
+            box-shadow: inset 0 0 0 2px rgba(181, 131, 141, 0.25);
+        }
+        
+        .skill-input::-webkit-inner-spin-button,
+        .skill-input::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
         
         .btn-increment, .btn-decrement {
+            width: 30px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             background-color: #f1f1f1;
-            border-color: rgba(0,0,0,0.1);
             color: #6d6875;
-            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
         }
         
         .btn-increment:hover, .btn-decrement:hover {
             background-color: #e1e1e1;
+        }
+        
+        .percent-sign {
+            width: 24px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f1f1f1;
+            color: #95a5a6;
+            font-weight: 500;
         }
 
         .value-displays {
@@ -495,25 +541,23 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             font-weight: 500;
         }
         
-        /* Character info styling */
-        .info-pill {
-            transition: all 0.3s ease;
-            border: 1px solid rgba(0,0,0,0.05);
+        /* Responsive adjustments */
+        @media (max-width: 1200px) {
+            .skill-name {
+                max-width: 150px;
+            }
         }
         
-        .info-pill:hover {
-            background-color: #f0e6ea !important;
-            transform: translateY(-2px);
+        @media (max-width: 992px) {
+            .skill-name {
+                max-width: 120px;
+            }
         }
-        
-        /* Flash animation for changes */
-        @keyframes flash-highlight {
-            0% { background-color: rgba(181, 131, 141, 0.3); }
-            100% { background-color: transparent; }
-        }
-        
-        .flash-highlight {
-            animation: flash-highlight 0.8s ease-out;
+
+        @media (max-width: 576px) {
+            .skill-name {
+                max-width: 100px;
+            }
         }
     </style>
 
@@ -555,7 +599,8 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
 
         // Function to increment or decrement skill value using buttons
         window.characterUtils.adjustSkillValue = function(btn, increment) {
-            const input = btn.closest('.input-group').querySelector('.skill-input');
+            const inputGroup = btn.closest('.skill-input-group');
+            const input = inputGroup.querySelector('.skill-input');
             const currentValue = parseInt(input.value) || 0;
             
             // Increment or decrement the value
@@ -727,21 +772,21 @@ templ renderSkillBox(skillObj models.Skill, skillType string) {
         <div class="skill-box shadow-sm">
             <div class="d-flex justify-content-between align-items-center">
                 <div class="skill-name-container">
-                    <span class="skill-name">{ skillObj.Name }</span>
+                    <span class="skill-name" title={ skillObj.Name }>{ skillObj.Name }</span>
                     <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
                 </div>
                 <div class="skill-values">
-                    <div class="input-group">
+                    <div class="skill-input-group">
                         <button 
                             type="button" 
-                            class="btn btn-decrement input-group-text" 
+                            class="btn-decrement"
                             onclick="characterUtils.adjustSkillValue(this, false)"
                         >
                             <i class="bi bi-dash"></i>
                         </button>
                         <input
                             type="number"
-                            class="form-control skill-input"
+                            class="skill-input"
                             value={ strconv.Itoa(skillObj.Value) }
                             data-skill={ skillObj.Name }
                             data-skillvalue={ strconv.Itoa(skillObj.Value) }
@@ -753,12 +798,12 @@ templ renderSkillBox(skillObj models.Skill, skillType string) {
                         />
                         <button 
                             type="button" 
-                            class="btn btn-increment input-group-text" 
+                            class="btn-increment"
                             onclick="characterUtils.adjustSkillValue(this, true)"
                         >
                             <i class="bi bi-plus"></i>
                         </button>
-                        <span class="input-group-text">%</span>
+                        <div class="percent-sign">%</div>
                     </div>
                     <div class="value-displays">
                         <span class="half-value" data-half>{ strconv.Itoa(skillObj.Value/2) }</span>
