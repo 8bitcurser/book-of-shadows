@@ -8,10 +8,14 @@ package views
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-import "book-of-shadows/models"
-import "strconv"
-import "fmt"
+import (
+	"book-of-shadows/models"
+	"fmt"
+	"sort"
+	"strconv"
+)
 
+// Main templ for the Skill Assignment Form
 func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
@@ -40,7 +44,7 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 53, Col: 32}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 57, Col: 32}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -53,7 +57,7 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 55, Col: 37}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 59, Col: 37}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -66,7 +70,7 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(string([]rune(investigator.Name)[0]))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 65, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 69, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -79,7 +83,7 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 68, Col: 68}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 72, Col: 68}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -92,7 +96,7 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Archetype.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 69, Col: 84}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 73, Col: 84}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
@@ -105,7 +109,7 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Occupation.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 69, Col: 117}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 73, Col: 117}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
@@ -118,7 +122,7 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Age))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 74, Col: 84}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 78, Col: 84}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
@@ -131,7 +135,7 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Birthplace)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 78, Col: 77}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 82, Col: 77}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
@@ -144,7 +148,7 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.ArchetypePoints))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 150, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 154, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
@@ -157,472 +161,416 @@ func SkillAssignmentForm(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.ArchetypePoints))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 156, Col: 76}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 160, Col: 76}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</span></div></div></div><div class=\"mb-4\"><div class=\"row g-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</span></div></div></div><div class=\"mb-4\"><div class=\"row g-3\"><!-- Archetype Skills (Alphabetically Sorted) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, skill := range investigator.Archetype.Skills {
-			skillObj := investigator.Skills[skill]
-			if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<div class=\"col-md-6 col-lg-4 mb-2\"><div class=\"skill-box shadow-sm\"><div class=\"d-flex justify-content-between align-items-center\"><div class=\"skill-name-container\"><span class=\"skill-name\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var12 string
-				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(skillObj.Name)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 171, Col: 88}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span> <span class=\"skill-default\">(")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var13 string
-				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 172, Col: 109}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "%)</span></div><div class=\"skill-values\"><div class=\"input-group\"><input type=\"number\" class=\"form-control skill-input\" value=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 179, Col: 92}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" data-skill=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var15 string
-				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(skillObj.Name)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 180, Col: 82}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\" data-skillvalue=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var16 string
-				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 181, Col: 102}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\" data-skilldefault=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var17 string
-				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 182, Col: 106}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\" data-skilltype=\"archetype\" onchange=\"characterUtils.recalculateValues(this, &#39;skill&#39;)\" min=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var18 string
-				templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 185, Col: 92}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "\" max=\"90\"> <span class=\"input-group-text\">%</span></div><div class=\"value-displays\"><span class=\"half-value\" data-half>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var19 string
-				templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value / 2))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 191, Col: 119}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</span> <span class=\"divider\">|</span> <span class=\"fifth-value\" data-fifth>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var20 string
-				templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value / 5))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 193, Col: 121}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</span></div></div></div></div></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div></div><div class=\"d-flex justify-content-between\"><button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" style=\"border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"characterUtils.goBackToAttributes()\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Attributes</button><div class=\"transition-opacity\" id=\"confirm-archetype-container\" style=\"opacity: 0; pointer-events: none;\"><button id=\"archetype-continue-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"navigateToTab(&#39;occupation&#39;)\"><i class=\"bi bi-arrow-right-circle me-2\"></i>Continue to Occupation Skills</button></div></div></div><!-- Occupation Skills Tab --><div class=\"tab-pane fade\" id=\"occupation-skills\" role=\"tabpanel\" aria-labelledby=\"occupation-tab\"><div class=\"d-flex justify-content-between align-items-center mb-4\"><h3 class=\"mb-0 fw-bold\" style=\"color: #6d6875;\"><i class=\"bi bi-briefcase me-2\"></i>Occupation Skills</h3><div class=\"points-display shadow-sm d-flex align-items-center p-2 px-3 rounded-pill\"><div class=\"me-3\"><span class=\"text-muted\">Total:</span> <span class=\"fw-bold ms-1 text-dark\" id=\"occupation-points-total\">")
+		templ_7745c5c3_Err = renderArchetypeSkills(investigator).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.OccupationPoints))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 237, Col: 77}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</div></div><div class=\"d-flex justify-content-between\"><button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" style=\"border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"characterUtils.goBackToAttributes()\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Attributes</button><div class=\"transition-opacity\" id=\"confirm-archetype-container\"><button id=\"archetype-continue-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"navigateToTab(&#39;occupation&#39;)\"><i class=\"bi bi-arrow-right-circle me-2\"></i>Continue to Occupation Skills</button></div></div></div><!-- Occupation Skills Tab --><div class=\"tab-pane fade\" id=\"occupation-skills\" role=\"tabpanel\" aria-labelledby=\"occupation-tab\"><div class=\"d-flex justify-content-between align-items-center mb-4\"><h3 class=\"mb-0 fw-bold\" style=\"color: #6d6875;\"><i class=\"bi bi-briefcase me-2\"></i>Occupation Skills</h3><div class=\"points-display shadow-sm d-flex align-items-center p-2 px-3 rounded-pill\"><div class=\"me-3\"><span class=\"text-muted\">Total:</span> <span class=\"fw-bold ms-1 text-dark\" id=\"occupation-points-total\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "</span></div><div class=\"points-remaining\"><span class=\"text-muted\">Remaining:</span> <span class=\"fw-bold ms-1\" id=\"occupation-points\" style=\"color: #b5838d;\">")
+		var templ_7745c5c3_Var12 string
+		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.OccupationPoints))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 206, Col: 77}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var22 string
-		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.OccupationPoints))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 243, Col: 77}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</span></div><div class=\"points-remaining\"><span class=\"text-muted\">Remaining:</span> <span class=\"fw-bold ms-1\" id=\"occupation-points\" style=\"color: #b5838d;\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "</span></div></div></div><div class=\"mb-4\"><div class=\"row g-3\">")
+		var templ_7745c5c3_Var13 string
+		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.OccupationPoints))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 212, Col: 77}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, skillConfiguration := range *investigator.GetOccupationSkills() {
-			skillObj := investigator.Skills[skillConfiguration]
-			if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "<div class=\"col-md-6 col-lg-4 mb-2\"><div class=\"skill-box shadow-sm\"><div class=\"d-flex justify-content-between align-items-center\"><div class=\"skill-name-container\"><span class=\"skill-name\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var23 string
-				templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(skillObj.Name)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 258, Col: 88}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "</span> <span class=\"skill-default\">(")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var24 string
-				templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 259, Col: 109}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "%)</span></div><div class=\"skill-values\"><div class=\"input-group\"><input type=\"number\" class=\"form-control skill-input\" value=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var25 string
-				templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 266, Col: 92}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" data-skill=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var26 string
-				templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(skillObj.Name)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 267, Col: 82}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" data-skillvalue=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var27 string
-				templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 268, Col: 102}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "\" data-skilldefault=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var28 string
-				templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 269, Col: 106}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "\" data-skilltype=\"occupation\" onchange=\"characterUtils.recalculateValues(this, &#39;skill&#39;)\" min=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var29 string
-				templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 272, Col: 92}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "\" max=\"90\"> <span class=\"input-group-text\">%</span></div><div class=\"value-displays\"><span class=\"half-value\" data-half>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var30 string
-				templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value / 2))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 278, Col: 119}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</span> <span class=\"divider\">|</span> <span class=\"fifth-value\" data-fifth>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var31 string
-				templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value / 5))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 280, Col: 121}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</span></div></div></div></div></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div><div class=\"d-flex justify-content-between\"><button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" style=\"border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"navigateToTab(&#39;archetype&#39;)\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Archetype Skills</button><div class=\"transition-opacity\" id=\"confirm-occupation-container\" style=\"opacity: 0; pointer-events: none;\"><button id=\"occupation-continue-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"navigateToTab(&#39;general&#39;)\"><i class=\"bi bi-arrow-right-circle me-2\"></i>Continue to General Skills</button></div></div></div><!-- General Skills Tab --><div class=\"tab-pane fade\" id=\"general-skills\" role=\"tabpanel\" aria-labelledby=\"general-tab\"><div class=\"d-flex justify-content-between align-items-center mb-4\"><h3 class=\"mb-0 fw-bold\" style=\"color: #6d6875;\"><i class=\"bi bi-list-check me-2\"></i>General Skills</h3><div class=\"points-display shadow-sm d-flex align-items-center p-2 px-3 rounded-pill\"><div class=\"me-3\"><span class=\"text-muted\">Total:</span> <span class=\"fw-bold ms-1 text-dark\" id=\"general-points-total\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</span></div></div></div><div class=\"mb-4\"><div class=\"row g-3\"><!-- Occupation Skills (Alphabetically Sorted) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var32 string
-		templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.FreePoints))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 324, Col: 71}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
+		templ_7745c5c3_Err = renderOccupationSkills(investigator).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</span></div><div class=\"points-remaining\"><span class=\"text-muted\">Remaining:</span> <span class=\"fw-bold ms-1\" id=\"general-points\" style=\"color: #b5838d;\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div></div><div class=\"d-flex justify-content-between\"><button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" style=\"border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"navigateToTab(&#39;archetype&#39;)\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Archetype Skills</button><div class=\"transition-opacity\" id=\"confirm-occupation-container\"><button id=\"occupation-continue-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"navigateToTab(&#39;general&#39;)\"><i class=\"bi bi-arrow-right-circle me-2\"></i>Continue to General Skills</button></div></div></div><!-- General Skills Tab --><div class=\"tab-pane fade\" id=\"general-skills\" role=\"tabpanel\" aria-labelledby=\"general-tab\"><div class=\"d-flex justify-content-between align-items-center mb-4\"><h3 class=\"mb-0 fw-bold\" style=\"color: #6d6875;\"><i class=\"bi bi-list-check me-2\"></i>General Skills</h3><div class=\"points-display shadow-sm d-flex align-items-center p-2 px-3 rounded-pill\"><div class=\"me-3\"><span class=\"text-muted\">Total:</span> <span class=\"fw-bold ms-1 text-dark\" id=\"general-points-total\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var33 string
-		templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.FreePoints))
+		var templ_7745c5c3_Var14 string
+		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.FreePoints))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 330, Col: 71}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 258, Col: 71}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</span></div></div></div><div class=\"mb-4\"><div class=\"row g-3\">")
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, skillObj := range investigator.Skills {
-			if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"col-md-6 col-lg-4 mb-2\"><div class=\"skill-box shadow-sm\"><div class=\"d-flex justify-content-between align-items-center\"><div class=\"skill-name-container\"><span class=\"skill-name\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var34 string
-				templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(skillObj.Name)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 344, Col: 88}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "</span> <span class=\"skill-default\">(")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var35 string
-				templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 345, Col: 109}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "%)</span></div><div class=\"skill-values\"><div class=\"input-group\"><input type=\"number\" class=\"form-control skill-input\" value=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var36 string
-				templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 352, Col: 92}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "\" data-skill=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var37 string
-				templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(skillObj.Name)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 353, Col: 82}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\" data-skillvalue=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var38 string
-				templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 354, Col: 102}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "\" data-skilldefault=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var39 string
-				templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 355, Col: 106}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" data-skilltype=\"general\" onchange=\"characterUtils.recalculateValues(this, &#39;skill&#39;)\" min=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var40 string
-				templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 358, Col: 92}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var40))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "\" max=\"90\"> <span class=\"input-group-text\">%</span></div><div class=\"value-displays\"><span class=\"half-value\" data-half>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var41 string
-				templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value / 2))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 364, Col: 119}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "</span> <span class=\"divider\">|</span> <span class=\"fifth-value\" data-fifth>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var42 string
-				templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value / 5))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 366, Col: 121}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "</span></div></div></div></div></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "</div></div><div class=\"d-flex justify-content-between\"><button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" style=\"border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"navigateToTab(&#39;occupation&#39;)\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Occupation Skills</button><div class=\"transition-opacity\" id=\"confirm-general-container\" style=\"opacity: 0; pointer-events: none;\"><button id=\"finish-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.75rem; transition: all 0.3s;\" hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "</span></div><div class=\"points-remaining\"><span class=\"text-muted\">Remaining:</span> <span class=\"fw-bold ms-1\" id=\"general-points\" style=\"color: #b5838d;\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var43 string
-		templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", investigator.ID))
+		var templ_7745c5c3_Var15 string
+		templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.FreePoints))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 392, Col: 89}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 264, Col: 71}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var43))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\" hx-target=\"#character-sheet\"><i class=\"bi bi-check-circle me-2\"></i>Complete Character</button></div></div></div></div></div><style>\n        .coc-sheet {\n            font-family: 'Roboto', sans-serif;\n            background-color: #fff;\n            border-radius: 1rem;\n            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);\n            max-width: 1200px;\n            margin: 0 auto;\n        }\n        \n        .skill-box {\n            padding: 12px 15px;\n            border-radius: 0.75rem;\n            background-color: #f8f9fa;\n            margin-bottom: 10px;\n            transition: all 0.2s ease;\n            border: 1px solid rgba(0,0,0,0.05);\n        }\n        \n        .skill-box:hover {\n            background-color: #fff;\n            transform: translateY(-3px);\n            box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.1) !important;\n            border-color: rgba(181, 131, 141, 0.2);\n        }\n\n        .skill-name-container {\n            flex: 1;\n            display: flex;\n            align-items: baseline;\n        }\n\n        .skill-name {\n            font-weight: 600;\n            margin-right: 8px;\n            color: #6d6875;\n        }\n\n        .skill-default {\n            font-size: 0.8rem;\n            color: #95a5a6;\n        }\n\n        .skill-values {\n            display: flex;\n            flex-direction: column;\n            align-items: flex-end;\n            min-width: 100px;\n        }\n\n        .skill-input {\n            text-align: center;\n            height: 38px;\n            font-weight: 500;\n            color: #6d6875;\n            border-color: rgba(0,0,0,0.1);\n        }\n        \n        .input-group-text {\n            background-color: #f1f1f1;\n            color: #95a5a6;\n            border-color: rgba(0,0,0,0.1);\n            font-weight: 500;\n        }\n\n        .value-displays {\n            display: flex;\n            font-size: 0.8rem;\n            color: #95a5a6;\n            margin-top: 5px;\n            justify-content: center;\n            width: 100%;\n        }\n\n        .half-value, .fifth-value {\n            min-width: 20px;\n            text-align: center;\n            font-weight: 500;\n        }\n\n        .divider {\n            margin: 0 8px;\n            color: #ddd;\n        }\n\n        .points-display {\n            background-color: #f8f9fa;\n            border-radius: 50px;\n            border: 1px solid rgba(0,0,0,0.05);\n        }\n        \n        /* Animation for points remaining */\n        .points-remaining span:last-child {\n            transition: color 0.3s;\n        }\n        \n        /* Tab styling */\n        .nav-pills .nav-link {\n            color: #6c757d;\n            background-color: #f8f9fa;\n            border: 1px solid rgba(0,0,0,0.05);\n            margin: 0 5px;\n            transition: all 0.3s ease;\n        }\n        \n        .nav-pills .nav-link:hover:not([disabled]) {\n            background-color: #f0f0f0;\n            transform: translateY(-2px);\n        }\n        \n        .nav-pills .nav-link.active {\n            background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);\n            color: white;\n            box-shadow: 0 4px 10px rgba(181, 131, 141, 0.3);\n            transform: translateY(-2px);\n        }\n        \n        .nav-pills .nav-link[disabled] {\n            color: #adb5bd;\n            cursor: not-allowed;\n        }\n        \n        /* Button styling */\n        .btn-outline-secondary {\n            color: #6d6875;\n            border-color: #6d6875;\n        }\n        \n        .btn-outline-secondary:hover {\n            background-color: #6d6875;\n            color: white;\n            transform: translateY(-2px);\n            box-shadow: 0 4px 10px rgba(109, 104, 117, 0.2);\n        }\n        \n        button:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);\n        }\n\n        /* Remove spinner buttons from number inputs */\n        input[type=number]::-webkit-inner-spin-button,\n        input[type=number]::-webkit-outer-spin-button {\n            -webkit-appearance: none;\n            margin: 0;\n        }\n\n        input[type=number] {\n            -moz-appearance: textfield;\n        }\n\n        .transition-opacity {\n            transition: opacity 0.3s ease;\n        }\n        \n        /* Focus states */\n        .form-control:focus, .btn:focus {\n            box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);\n            border-color: #b5838d;\n        }\n        \n        /* Progress steps styling */\n        .step-indicator {\n            position: relative;\n            z-index: 1;\n        }\n        \n        .step-circle {\n            transition: all 0.3s;\n        }\n        \n        .step-label {\n            transition: all 0.3s;\n        }\n        \n        .step-indicator.completed .step-label {\n            color: #6d6875;\n        }\n        \n        .step-indicator.active .step-label {\n            color: #6d6875;\n            font-weight: 500;\n        }\n        \n        /* Character info styling */\n        .info-pill {\n            transition: all 0.3s ease;\n            border: 1px solid rgba(0,0,0,0.05);\n        }\n        \n        .info-pill:hover {\n            background-color: #f0e6ea !important;\n            transform: translateY(-2px);\n        }\n        \n        /* Submit button pulsing when all points are used */\n        @keyframes pulse-button {\n            0% { transform: scale(1); }\n            50% { transform: scale(1.03); }\n            100% { transform: scale(1); }\n        }\n        \n        .pulse-button {\n            animation: pulse-button 1.5s infinite;\n        }\n        \n        /* Flash animation for changes */\n        @keyframes flash-highlight {\n            0% { background-color: rgba(181, 131, 141, 0.3); }\n            100% { background-color: transparent; }\n        }\n        \n        .flash-highlight {\n            animation: flash-highlight 0.8s ease-out;\n        }\n    </style><script>\n        // Define global navigation function\n        function navigateToTab(tabName) {\n            // Enable the tab if it's not the archetype tab (which is always enabled)\n            if (tabName !== 'archetype') {\n                document.getElementById(tabName + '-tab').disabled = false;\n            }\n\n            // Add a slight delay before switching tabs for better animation\n            setTimeout(() => {\n                // Switch to the tab\n                const tab = new bootstrap.Tab(document.getElementById(tabName + '-tab'));\n                tab.show();\n                \n                // Scroll to top of the tab content\n                document.getElementById(tabName + '-skills').scrollIntoView({\n                    behavior: 'smooth',\n                    block: 'start'\n                });\n            }, 100);\n        }\n\n        // Extend the characterUtils object with navigation functionality\n        if (!window.characterUtils) {\n            window.characterUtils = {};\n        }\n        \n        // Function to go back to attributes page\n        window.characterUtils.goBackToAttributes = function() {\n            // Use HTMX to navigate back to the attributes page\n            htmx.ajax('GET', '/api/investigator/attributes/' + '{ investigator.ID }', {\n                target: '#character-sheet',\n                swap: 'innerHTML'\n            });\n        };\n\n        // Immediately extend the characterUtils object with our enhanced functions\n        // This ensures the functions are available before any input events occur\n        (function() {\n            // Store the original recalculateValues function if it exists\n            const originalRecalculateValues = window.characterUtils.recalculateValues || function() {};\n\n            // Replace with our enhanced version\n            window.characterUtils.recalculateValues = function(input, type) {\n                if (type === 'skill') {\n                    const skillName = input.dataset.skill;\n                    const value = parseInt(input.value) || 0;\n                    const prevValue = parseInt(input.dataset.skillvalue) || 0;\n                    const defaultValue = parseInt(input.dataset.skilldefault) || 0;\n                    const skillType = input.dataset.skilltype || 'archetype';\n\n                    // Apply max limit\n                    if (value > 90) {\n                        input.value = 90;\n                        return;\n                    }\n                    \n                    // Apply min limit (default value)\n                    if (value < defaultValue) {\n                        input.value = defaultValue;\n                        return;\n                    }\n\n                    // Calculate difference\n                    const difference = value - prevValue;\n                    \n                    // Skip if there's no change\n                    if (difference === 0) return;\n\n                    // Get proper points element\n                    let pointsId = \"\";\n                    let confirmId = \"\";\n                    let nextTabName = \"\";\n\n                    if (skillType === \"archetype\" || document.querySelector('#archetype-skills.active')) {\n                        pointsId = \"archetype-points\";\n                        confirmId = \"confirm-archetype-container\";\n                        nextTabName = \"occupation\";\n                    } else if (skillType === \"occupation\" || document.querySelector('#occupation-skills.active')) {\n                        pointsId = \"occupation-points\";\n                        confirmId = \"confirm-occupation-container\";\n                        nextTabName = \"general\";\n                    } else if (skillType === \"general\" || document.querySelector('#general-skills.active')) {\n                        pointsId = \"general-points\";\n                        confirmId = \"confirm-general-container\";\n                        nextTabName = \"\";\n                    }\n\n                    // Get points element and current remaining points\n                    const pointsElement = document.getElementById(pointsId);\n\n                    if (pointsElement) {\n                        const currentPoints = parseInt(pointsElement.textContent) || 0;\n                        const newPoints = currentPoints - difference;\n\n                        // Don't allow negative points\n                        if (newPoints < 0) {\n                            input.value = prevValue;\n                            \n                            // Visual feedback for error\n                            input.classList.add('is-invalid');\n                            \n                            // Remove invalid class after a short delay\n                            setTimeout(() => {\n                                input.classList.remove('is-invalid');\n                            }, 800);\n                            \n                            return;\n                        }\n\n                        // Update points display with visual feedback\n                        pointsElement.textContent = newPoints;\n                        \n                        // Add color coding based on remaining points\n                        if (newPoints < 10) {\n                            pointsElement.style.color = '#e74c3c';\n                        } else {\n                            pointsElement.style.color = '#b5838d';\n                        }\n                        \n                        // Highlight the skill box that was changed\n                        const skillBox = input.closest('.skill-box');\n                        skillBox.classList.add('flash-highlight');\n                        setTimeout(() => {\n                            skillBox.classList.remove('flash-highlight');\n                        }, 800);\n\n                        // Update skill value tracking\n                        input.dataset.skillvalue = value;\n\n                        // Update half and fifth values\n                        const container = input.closest('.skill-values');\n                        const halfSpan = container.querySelector('[data-half]');\n                        const fifthSpan = container.querySelector('[data-fifth]');\n\n                        if (halfSpan) halfSpan.textContent = Math.floor(value / 2);\n                        if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);\n\n                        // Show/hide continue button\n                        const confirmContainer = document.getElementById(confirmId);\n                        if (confirmContainer) {\n                            if (newPoints === 0) {\n                                // Animate showing the button\n                                confirmContainer.style.opacity = \"1\";\n                                confirmContainer.style.pointerEvents = \"auto\";\n                                \n                                // Add pulse animation to the button\n                                const continueBtn = confirmContainer.querySelector('button');\n                                if (continueBtn) {\n                                    continueBtn.classList.add('pulse-button');\n                                }\n\n                                // Auto advance after delay if points are used up\n                                if (nextTabName) {\n                                    setTimeout(() => {\n                                        if (parseInt(pointsElement.textContent) === 0) {\n                                            navigateToTab(nextTabName);\n                                        }\n                                    }, 1000);\n                                }\n                            } else {\n                                confirmContainer.style.opacity = \"0\";\n                                confirmContainer.style.pointerEvents = \"none\";\n                                \n                                // Remove pulse animation\n                                const continueBtn = confirmContainer.querySelector('button');\n                                if (continueBtn) {\n                                    continueBtn.classList.remove('pulse-button');\n                                }\n                            }\n                        }\n                    }\n                }\n\n                // Call original function to update server if it exists\n                if (typeof originalRecalculateValues === 'function') {\n                    originalRecalculateValues.call(window.characterUtils, input, type);\n                }\n            };\n        })();\n\n        // Add additional functionality when the DOM is loaded\n        document.addEventListener('DOMContentLoaded', function() {\n            // Add tab switching functionality to preserve values\n            document.querySelectorAll('button[data-bs-toggle=\"tab\"]').forEach(button => {\n                button.addEventListener('shown.bs.tab', function (event) {\n                    // If we need additional tab switching logic, we can add it here\n                });\n            });\n            \n            // Add hover effects to skill boxes\n            document.querySelectorAll('.skill-box').forEach(box => {\n                box.addEventListener('mouseenter', function() {\n                    this.style.backgroundColor = '#f0f0f0';\n                });\n                box.addEventListener('mouseleave', function() {\n                    this.style.backgroundColor = '#f8f9fa';\n                });\n            });\n            \n            // Initialize any skill inputs\n            document.querySelectorAll('.skill-input').forEach(input => {\n                // Add focus/blur effects\n                input.addEventListener('focus', function() {\n                    this.closest('.skill-box').style.borderColor = '#b5838d';\n                });\n                \n                input.addEventListener('blur', function() {\n                    this.closest('.skill-box').style.borderColor = 'rgba(0,0,0,0.05)';\n                });\n            });\n        });\n    </script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</span></div></div></div><div class=\"mb-4\"><div class=\"row g-3\"><!-- General Skills (Alphabetically Sorted) -->")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = renderGeneralSkills(investigator).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</div></div><div class=\"d-flex justify-content-between\"><button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" style=\"border-radius: 0.75rem; transition: all 0.3s;\" onclick=\"navigateToTab(&#39;occupation&#39;)\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Occupation Skills</button><div class=\"transition-opacity\" id=\"confirm-general-container\"><button id=\"finish-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.75rem; transition: all 0.3s;\" hx-get=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var16 string
+		templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", investigator.ID))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 292, Col: 89}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "\" hx-target=\"#character-sheet\"><i class=\"bi bi-check-circle me-2\"></i>Complete Character</button></div></div></div></div></div><style>\n        .coc-sheet {\n            font-family: 'Roboto', sans-serif;\n            background-color: #fff;\n            border-radius: 1rem;\n            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);\n            max-width: 1200px;\n            margin: 0 auto;\n        }\n        \n        .skill-box {\n            padding: 12px 15px;\n            border-radius: 0.75rem;\n            background-color: #f8f9fa;\n            margin-bottom: 10px;\n            transition: all 0.2s ease;\n            border: 1px solid rgba(0,0,0,0.05);\n        }\n        \n        .skill-box:hover {\n            background-color: #fff;\n            transform: translateY(-3px);\n            box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.1) !important;\n            border-color: rgba(181, 131, 141, 0.2);\n        }\n\n        .skill-name-container {\n            flex: 1;\n            display: flex;\n            align-items: baseline;\n        }\n\n        .skill-name {\n            font-weight: 600;\n            margin-right: 8px;\n            color: #6d6875;\n        }\n\n        .skill-default {\n            font-size: 0.8rem;\n            color: #95a5a6;\n        }\n\n        .skill-values {\n            display: flex;\n            flex-direction: column;\n            align-items: flex-end;\n            min-width: 130px;\n        }\n\n        .skill-input {\n            text-align: center;\n            height: 38px;\n            font-weight: 500;\n            color: #6d6875;\n            border-color: rgba(0,0,0,0.1);\n        }\n        \n        .input-group-text {\n            background-color: #f1f1f1;\n            color: #95a5a6;\n            border-color: rgba(0,0,0,0.1);\n            font-weight: 500;\n        }\n        \n        .btn-increment, .btn-decrement {\n            background-color: #f1f1f1;\n            border-color: rgba(0,0,0,0.1);\n            color: #6d6875;\n            transition: all 0.2s;\n        }\n        \n        .btn-increment:hover, .btn-decrement:hover {\n            background-color: #e1e1e1;\n        }\n\n        .value-displays {\n            display: flex;\n            font-size: 0.8rem;\n            color: #95a5a6;\n            margin-top: 5px;\n            justify-content: center;\n            width: 100%;\n        }\n\n        .half-value, .fifth-value {\n            min-width: 20px;\n            text-align: center;\n            font-weight: 500;\n        }\n\n        .divider {\n            margin: 0 8px;\n            color: #ddd;\n        }\n\n        .points-display {\n            background-color: #f8f9fa;\n            border-radius: 50px;\n            border: 1px solid rgba(0,0,0,0.05);\n        }\n        \n        /* Animation for points remaining */\n        .points-remaining span:last-child {\n            transition: color 0.3s;\n        }\n        \n        /* Tab styling */\n        .nav-pills .nav-link {\n            color: #6c757d;\n            background-color: #f8f9fa;\n            border: 1px solid rgba(0,0,0,0.05);\n            margin: 0 5px;\n            transition: all 0.3s ease;\n        }\n        \n        .nav-pills .nav-link:hover:not([disabled]) {\n            background-color: #f0f0f0;\n            transform: translateY(-2px);\n        }\n        \n        .nav-pills .nav-link.active {\n            background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);\n            color: white;\n            box-shadow: 0 4px 10px rgba(181, 131, 141, 0.3);\n            transform: translateY(-2px);\n        }\n        \n        .nav-pills .nav-link[disabled] {\n            color: #adb5bd;\n            cursor: not-allowed;\n        }\n        \n        /* Button styling */\n        .btn-outline-secondary {\n            color: #6d6875;\n            border-color: #6d6875;\n        }\n        \n        .btn-outline-secondary:hover {\n            background-color: #6d6875;\n            color: white;\n            transform: translateY(-2px);\n            box-shadow: 0 4px 10px rgba(109, 104, 117, 0.2);\n        }\n        \n        button:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);\n        }\n\n        /* Remove spinner buttons from number inputs */\n        input[type=number]::-webkit-inner-spin-button,\n        input[type=number]::-webkit-outer-spin-button {\n            -webkit-appearance: none;\n            margin: 0;\n        }\n\n        input[type=number] {\n            -moz-appearance: textfield;\n        }\n\n        .transition-opacity {\n            transition: opacity 0.3s ease;\n        }\n        \n        /* Focus states */\n        .form-control:focus, .btn:focus {\n            box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);\n            border-color: #b5838d;\n        }\n        \n        /* Progress steps styling */\n        .step-indicator {\n            position: relative;\n            z-index: 1;\n        }\n        \n        .step-circle {\n            transition: all 0.3s;\n        }\n        \n        .step-label {\n            transition: all 0.3s;\n        }\n        \n        .step-indicator.completed .step-label {\n            color: #6d6875;\n        }\n        \n        .step-indicator.active .step-label {\n            color: #6d6875;\n            font-weight: 500;\n        }\n        \n        /* Character info styling */\n        .info-pill {\n            transition: all 0.3s ease;\n            border: 1px solid rgba(0,0,0,0.05);\n        }\n        \n        .info-pill:hover {\n            background-color: #f0e6ea !important;\n            transform: translateY(-2px);\n        }\n        \n        /* Flash animation for changes */\n        @keyframes flash-highlight {\n            0% { background-color: rgba(181, 131, 141, 0.3); }\n            100% { background-color: transparent; }\n        }\n        \n        .flash-highlight {\n            animation: flash-highlight 0.8s ease-out;\n        }\n    </style><script>\n        // Define global navigation function\n        function navigateToTab(tabName) {\n            // Enable the tab if it's not the archetype tab (which is always enabled)\n            if (tabName !== 'archetype') {\n                document.getElementById(tabName + '-tab').disabled = false;\n            }\n\n            // Add a slight delay before switching tabs for better animation\n            setTimeout(() => {\n                // Switch to the tab\n                const tab = new bootstrap.Tab(document.getElementById(tabName + '-tab'));\n                tab.show();\n                \n                // Scroll to top of the tab content\n                document.getElementById(tabName + '-skills').scrollIntoView({\n                    behavior: 'smooth',\n                    block: 'start'\n                });\n            }, 100);\n        }\n\n        // Extend the characterUtils object with navigation functionality\n        if (!window.characterUtils) {\n            window.characterUtils = {};\n        }\n        \n        // Function to go back to attributes page\n        window.characterUtils.goBackToAttributes = function() {\n            // Use HTMX to navigate back to the attributes page\n            htmx.ajax('GET', '/api/investigator/attributes/' + '{ investigator.ID }', {\n                target: '#character-sheet',\n                swap: 'innerHTML'\n            });\n        };\n\n        // Function to increment or decrement skill value using buttons\n        window.characterUtils.adjustSkillValue = function(btn, increment) {\n            const input = btn.closest('.input-group').querySelector('.skill-input');\n            const currentValue = parseInt(input.value) || 0;\n            \n            // Increment or decrement the value\n            input.value = currentValue + (increment ? 1 : -1);\n            \n            // Trigger the change event to update calculations\n            input.dispatchEvent(new Event('change'));\n        };\n\n        // Immediately extend the characterUtils object with our enhanced functions\n        // This ensures the functions are available before any input events occur\n        (function() {\n            // Store the original recalculateValues function if it exists\n            const originalRecalculateValues = window.characterUtils.recalculateValues || function() {};\n\n            // Replace with our enhanced version\n            window.characterUtils.recalculateValues = function(input, type) {\n                if (type === 'skill') {\n                    const skillName = input.dataset.skill;\n                    const value = parseInt(input.value) || 0;\n                    const prevValue = parseInt(input.dataset.skillvalue) || 0;\n                    const defaultValue = parseInt(input.dataset.skilldefault) || 0;\n                    const skillType = input.dataset.skilltype || 'archetype';\n\n                    // Apply max limit\n                    if (value > 90) {\n                        input.value = 90;\n                        return;\n                    }\n                    \n                    // Apply min limit (default value)\n                    if (value < defaultValue) {\n                        input.value = defaultValue;\n                        return;\n                    }\n\n                    // Calculate difference\n                    const difference = value - prevValue;\n                    \n                    // Skip if there's no change\n                    if (difference === 0) return;\n\n                    // Get proper points element\n                    let pointsId = \"\";\n                    let confirmId = \"\";\n\n                    if (skillType === \"archetype\" || document.querySelector('#archetype-skills.active')) {\n                        pointsId = \"archetype-points\";\n                        confirmId = \"confirm-archetype-container\";\n                    } else if (skillType === \"occupation\" || document.querySelector('#occupation-skills.active')) {\n                        pointsId = \"occupation-points\";\n                        confirmId = \"confirm-occupation-container\";\n                    } else if (skillType === \"general\" || document.querySelector('#general-skills.active')) {\n                        pointsId = \"general-points\";\n                        confirmId = \"confirm-general-container\";\n                    }\n\n                    // Get points element and current remaining points\n                    const pointsElement = document.getElementById(pointsId);\n\n                    if (pointsElement) {\n                        const currentPoints = parseInt(pointsElement.textContent) || 0;\n                        const newPoints = currentPoints - difference;\n\n                        // Don't allow negative points\n                        if (newPoints < 0) {\n                            input.value = prevValue;\n                            \n                            // Visual feedback for error\n                            input.classList.add('is-invalid');\n                            \n                            // Remove invalid class after a short delay\n                            setTimeout(() => {\n                                input.classList.remove('is-invalid');\n                            }, 800);\n                            \n                            return;\n                        }\n\n                        // Update points display with visual feedback\n                        pointsElement.textContent = newPoints;\n                        \n                        // Add color coding based on remaining points\n                        if (newPoints < 10) {\n                            pointsElement.style.color = '#e74c3c';\n                        } else {\n                            pointsElement.style.color = '#b5838d';\n                        }\n                        \n                        // Highlight the skill box that was changed\n                        const skillBox = input.closest('.skill-box');\n                        skillBox.classList.add('flash-highlight');\n                        setTimeout(() => {\n                            skillBox.classList.remove('flash-highlight');\n                        }, 800);\n\n                        // Update skill value tracking\n                        input.dataset.skillvalue = value;\n\n                        // Update half and fifth values\n                        const container = input.closest('.skill-values');\n                        const halfSpan = container.querySelector('[data-half]');\n                        const fifthSpan = container.querySelector('[data-fifth]');\n\n                        if (halfSpan) halfSpan.textContent = Math.floor(value / 2);\n                        if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);\n\n                        // Show continue button if all points are used\n                        const confirmContainer = document.getElementById(confirmId);\n                        if (confirmContainer && newPoints === 0) {\n                            confirmContainer.style.opacity = \"1\";\n                            confirmContainer.style.pointerEvents = \"auto\";\n                        }\n                    }\n                }\n\n                // Call original function to update server if it exists\n                if (typeof originalRecalculateValues === 'function') {\n                    originalRecalculateValues.call(window.characterUtils, input, type);\n                }\n            };\n        })();\n\n        // Add additional functionality when the DOM is loaded\n        document.addEventListener('DOMContentLoaded', function() {\n            // Ensure all tab continue buttons are visible\n            document.getElementById('confirm-archetype-container').style.opacity = \"1\";\n            document.getElementById('confirm-archetype-container').style.pointerEvents = \"auto\";\n            document.getElementById('confirm-occupation-container').style.opacity = \"1\";\n            document.getElementById('confirm-occupation-container').style.pointerEvents = \"auto\";\n            document.getElementById('confirm-general-container').style.opacity = \"1\";\n            document.getElementById('confirm-general-container').style.pointerEvents = \"auto\";\n            \n            // Add tab switching functionality to preserve values\n            document.querySelectorAll('button[data-bs-toggle=\"tab\"]').forEach(button => {\n                button.addEventListener('shown.bs.tab', function (event) {\n                    // If we need additional tab switching logic, we can add it here\n                });\n            });\n            \n            // Add hover effects to skill boxes\n            document.querySelectorAll('.skill-box').forEach(box => {\n                box.addEventListener('mouseenter', function() {\n                    this.style.backgroundColor = '#f0f0f0';\n                });\n                box.addEventListener('mouseleave', function() {\n                    this.style.backgroundColor = '#f8f9fa';\n                });\n            });\n            \n            // Initialize any skill inputs\n            document.querySelectorAll('.skill-input').forEach(input => {\n                // Add focus/blur effects\n                input.addEventListener('focus', function() {\n                    this.closest('.skill-box').style.borderColor = '#b5838d';\n                });\n                \n                input.addEventListener('blur', function() {\n                    this.closest('.skill-box').style.borderColor = 'rgba(0,0,0,0.05)';\n                });\n            });\n        });\n    </script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		return nil
 	})
+}
+
+// Helper function to render a single skill box
+func renderSkillBox(skillObj models.Skill, skillType string) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var17 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var17 == nil {
+			templ_7745c5c3_Var17 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "<div class=\"col-md-6 col-lg-4 mb-2\"><div class=\"skill-box shadow-sm\"><div class=\"d-flex justify-content-between align-items-center\"><div class=\"skill-name-container\"><span class=\"skill-name\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var18 string
+		templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(skillObj.Name)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 730, Col: 60}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</span> <span class=\"skill-default\">(")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var19 string
+		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 731, Col: 81}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "%)</span></div><div class=\"skill-values\"><div class=\"input-group\"><button type=\"button\" class=\"btn btn-decrement input-group-text\" onclick=\"characterUtils.adjustSkillValue(this, false)\"><i class=\"bi bi-dash\"></i></button> <input type=\"number\" class=\"form-control skill-input\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var20 string
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 745, Col: 64}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\" data-skill=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var21 string
+		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(skillObj.Name)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 746, Col: 54}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\" data-skillvalue=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var22 string
+		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 747, Col: 74}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\" data-skilldefault=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var23 string
+		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 748, Col: 78}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" data-skilltype=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var24 string
+		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(skillType)
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 749, Col: 54}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" onchange=\"characterUtils.recalculateValues(this, &#39;skill&#39;)\" min=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var25 string
+		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Default))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 751, Col: 64}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" max=\"90\"> <button type=\"button\" class=\"btn btn-increment input-group-text\" onclick=\"characterUtils.adjustSkillValue(this, true)\"><i class=\"bi bi-plus\"></i></button> <span class=\"input-group-text\">%</span></div><div class=\"value-displays\"><span class=\"half-value\" data-half>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var26 string
+		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value / 2))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 764, Col: 91}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</span> <span class=\"divider\">|</span> <span class=\"fifth-value\" data-fifth>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var27 string
+		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skillObj.Value / 5))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/SkillAssignmentForm.templ`, Line: 766, Col: 93}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</span></div></div></div></div></div>")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		return nil
+	})
+}
+
+// Render archetype skills (alphabetically sorted)
+func renderArchetypeSkills(investigator *models.Investigator) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var28 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var28 == nil {
+			templ_7745c5c3_Var28 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templ.Raw("<!-- Archetype Skills Section -->").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, skillName := range getSortedSkillNames(investigator, investigator.Archetype.Skills) {
+			templ_7745c5c3_Err = renderSkillBox(investigator.Skills[skillName], "archetype").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		return nil
+	})
+}
+
+// Render occupation skills (alphabetically sorted)
+func renderOccupationSkills(investigator *models.Investigator) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var29 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var29 == nil {
+			templ_7745c5c3_Var29 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templ.Raw("<!-- Occupation Skills Section -->").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, skillName := range getSortedSkillNames(investigator, *investigator.GetOccupationSkills()) {
+			templ_7745c5c3_Err = renderSkillBox(investigator.Skills[skillName], "occupation").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		return nil
+	})
+}
+
+// Render general skills (alphabetically sorted)
+func renderGeneralSkills(investigator *models.Investigator) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var30 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var30 == nil {
+			templ_7745c5c3_Var30 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		templ_7745c5c3_Err = templ.Raw("<!-- General Skills Section -->").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		for _, skillObj := range getSortedSkills(investigator) {
+			templ_7745c5c3_Err = renderSkillBox(skillObj, "general").Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		return nil
+	})
+}
+
+// Helper function to sort skill names
+func getSortedSkillNames(investigator *models.Investigator, skills []string) []string {
+	// Create a slice to hold valid skills
+	var validSkills []string
+
+	// Add skills to the valid skills slice
+	for _, skillName := range skills {
+		skillObj := investigator.Skills[skillName]
+		if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
+			validSkills = append(validSkills, skillName)
+		}
+	}
+
+	// Sort skills alphabetically by name
+	sort.Slice(validSkills, func(i, j int) bool {
+		return investigator.Skills[validSkills[i]].Name < investigator.Skills[validSkills[j]].Name
+	})
+
+	return validSkills
+}
+
+// Helper function to get all sorted skills
+func getSortedSkills(investigator *models.Investigator) []models.Skill {
+	// Create a slice to hold valid skills
+	var validSkills []models.Skill
+
+	// Add skills to the valid skills slice
+	for _, skill := range investigator.Skills {
+		if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
+			validSkills = append(validSkills, skill)
+		}
+	}
+
+	// Sort skills alphabetically by name
+	sort.Slice(validSkills, func(i, j int) bool {
+		return validSkills[i].Name < validSkills[j].Name
+	})
+
+	return validSkills
 }
 
 var _ = templruntime.GeneratedTemplate

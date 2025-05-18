@@ -1,9 +1,13 @@
 package views
 
-import "book-of-shadows/models"
-import "strconv"
-import "fmt"
+import (
+    "book-of-shadows/models"
+    "sort"
+    "strconv"
+    "fmt"
+)
 
+// Main templ for the Skill Assignment Form
 templ SkillAssignmentForm(investigator *models.Investigator) {
     <div class="container-fluid p-4 coc-sheet">
         <!-- Progress Bar & Step Indicator -->
@@ -161,43 +165,8 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
 
                 <div class="mb-4">
                     <div class="row g-3">
-                        for _, skill := range investigator.Archetype.Skills {
-                            {{skillObj := investigator.Skills[skill]}}
-                            if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
-                                <div class="col-md-6 col-lg-4 mb-2">
-                                    <div class="skill-box shadow-sm">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="skill-name-container">
-                                                <span class="skill-name">{ skillObj.Name }</span>
-                                                <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
-                                            </div>
-                                            <div class="skill-values">
-                                                <div class="input-group">
-                                                    <input
-                                                        type="number"
-                                                        class="form-control skill-input"
-                                                        value={ strconv.Itoa(skillObj.Value) }
-                                                        data-skill={ skillObj.Name }
-                                                        data-skillvalue={ strconv.Itoa(skillObj.Value) }
-                                                        data-skilldefault={ strconv.Itoa(skillObj.Default) }
-                                                        data-skilltype="archetype"
-                                                        onchange="characterUtils.recalculateValues(this, 'skill')"
-                                                        min={ strconv.Itoa(skillObj.Default) }
-                                                        max="90"
-                                                    />
-                                                    <span class="input-group-text">%</span>
-                                                </div>
-                                                <div class="value-displays">
-                                                    <span class="half-value" data-half>{ strconv.Itoa(skillObj.Value/2) }</span>
-                                                    <span class="divider">|</span>
-                                                    <span class="fifth-value" data-fifth>{ strconv.Itoa(skillObj.Value/5) }</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
+                        <!-- Archetype Skills (Alphabetically Sorted) -->
+                        @renderArchetypeSkills(investigator)
                     </div>
                 </div>
 
@@ -210,7 +179,7 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                     >
                         <i class="bi bi-arrow-left me-2"></i>Back to Attributes
                     </button>
-                    <div class="transition-opacity" id="confirm-archetype-container" style="opacity: 0; pointer-events: none;">
+                    <div class="transition-opacity" id="confirm-archetype-container">
                         <button
                             id="archetype-continue-btn"
                             type="button"
@@ -248,43 +217,8 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
 
                 <div class="mb-4">
                     <div class="row g-3">
-                        for _, skillConfiguration := range *investigator.GetOccupationSkills() {
-                            {{skillObj := investigator.Skills[skillConfiguration]}}
-                            if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
-                                <div class="col-md-6 col-lg-4 mb-2">
-                                    <div class="skill-box shadow-sm">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="skill-name-container">
-                                                <span class="skill-name">{ skillObj.Name }</span>
-                                                <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
-                                            </div>
-                                            <div class="skill-values">
-                                                <div class="input-group">
-                                                    <input
-                                                        type="number"
-                                                        class="form-control skill-input"
-                                                        value={ strconv.Itoa(skillObj.Value) }
-                                                        data-skill={ skillObj.Name }
-                                                        data-skillvalue={ strconv.Itoa(skillObj.Value) }
-                                                        data-skilldefault={ strconv.Itoa(skillObj.Default) }
-                                                        data-skilltype="occupation"
-                                                        onchange="characterUtils.recalculateValues(this, 'skill')"
-                                                        min={ strconv.Itoa(skillObj.Default) }
-                                                        max="90"
-                                                    />
-                                                    <span class="input-group-text">%</span>
-                                                </div>
-                                                <div class="value-displays">
-                                                    <span class="half-value" data-half>{ strconv.Itoa(skillObj.Value/2) }</span>
-                                                    <span class="divider">|</span>
-                                                    <span class="fifth-value" data-fifth>{ strconv.Itoa(skillObj.Value/5) }</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
+                        <!-- Occupation Skills (Alphabetically Sorted) -->
+                        @renderOccupationSkills(investigator)
                     </div>
                 </div>
 
@@ -297,7 +231,7 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                     >
                         <i class="bi bi-arrow-left me-2"></i>Back to Archetype Skills
                     </button>
-                    <div class="transition-opacity" id="confirm-occupation-container" style="opacity: 0; pointer-events: none;">
+                    <div class="transition-opacity" id="confirm-occupation-container">
                         <button
                             id="occupation-continue-btn"
                             type="button"
@@ -335,42 +269,8 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
 
                 <div class="mb-4">
                     <div class="row g-3">
-                        for _, skillObj := range investigator.Skills {
-                            if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
-                                <div class="col-md-6 col-lg-4 mb-2">
-                                    <div class="skill-box shadow-sm">
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            <div class="skill-name-container">
-                                                <span class="skill-name">{ skillObj.Name }</span>
-                                                <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
-                                            </div>
-                                            <div class="skill-values">
-                                                <div class="input-group">
-                                                    <input
-                                                        type="number"
-                                                        class="form-control skill-input"
-                                                        value={ strconv.Itoa(skillObj.Value) }
-                                                        data-skill={ skillObj.Name }
-                                                        data-skillvalue={ strconv.Itoa(skillObj.Value) }
-                                                        data-skilldefault={ strconv.Itoa(skillObj.Default) }
-                                                        data-skilltype="general"
-                                                        onchange="characterUtils.recalculateValues(this, 'skill')"
-                                                        min={ strconv.Itoa(skillObj.Default) }
-                                                        max="90"
-                                                    />
-                                                    <span class="input-group-text">%</span>
-                                                </div>
-                                                <div class="value-displays">
-                                                    <span class="half-value" data-half>{ strconv.Itoa(skillObj.Value/2) }</span>
-                                                    <span class="divider">|</span>
-                                                    <span class="fifth-value" data-fifth>{ strconv.Itoa(skillObj.Value/5) }</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            }
-                        }
+                        <!-- General Skills (Alphabetically Sorted) -->
+                        @renderGeneralSkills(investigator)
                     </div>
                 </div>
 
@@ -383,7 +283,7 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                     >
                         <i class="bi bi-arrow-left me-2"></i>Back to Occupation Skills
                     </button>
-                    <div class="transition-opacity" id="confirm-general-container" style="opacity: 0; pointer-events: none;">
+                    <div class="transition-opacity" id="confirm-general-container">
                         <button
                             id="finish-btn"
                             type="button"
@@ -447,7 +347,7 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            min-width: 100px;
+            min-width: 130px;
         }
 
         .skill-input {
@@ -463,6 +363,17 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             color: #95a5a6;
             border-color: rgba(0,0,0,0.1);
             font-weight: 500;
+        }
+        
+        .btn-increment, .btn-decrement {
+            background-color: #f1f1f1;
+            border-color: rgba(0,0,0,0.1);
+            color: #6d6875;
+            transition: all 0.2s;
+        }
+        
+        .btn-increment:hover, .btn-decrement:hover {
+            background-color: #e1e1e1;
         }
 
         .value-displays {
@@ -595,17 +506,6 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             transform: translateY(-2px);
         }
         
-        /* Submit button pulsing when all points are used */
-        @keyframes pulse-button {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-            100% { transform: scale(1); }
-        }
-        
-        .pulse-button {
-            animation: pulse-button 1.5s infinite;
-        }
-        
         /* Flash animation for changes */
         @keyframes flash-highlight {
             0% { background-color: rgba(181, 131, 141, 0.3); }
@@ -653,6 +553,18 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             });
         };
 
+        // Function to increment or decrement skill value using buttons
+        window.characterUtils.adjustSkillValue = function(btn, increment) {
+            const input = btn.closest('.input-group').querySelector('.skill-input');
+            const currentValue = parseInt(input.value) || 0;
+            
+            // Increment or decrement the value
+            input.value = currentValue + (increment ? 1 : -1);
+            
+            // Trigger the change event to update calculations
+            input.dispatchEvent(new Event('change'));
+        };
+
         // Immediately extend the characterUtils object with our enhanced functions
         // This ensures the functions are available before any input events occur
         (function() {
@@ -689,20 +601,16 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                     // Get proper points element
                     let pointsId = "";
                     let confirmId = "";
-                    let nextTabName = "";
 
                     if (skillType === "archetype" || document.querySelector('#archetype-skills.active')) {
                         pointsId = "archetype-points";
                         confirmId = "confirm-archetype-container";
-                        nextTabName = "occupation";
                     } else if (skillType === "occupation" || document.querySelector('#occupation-skills.active')) {
                         pointsId = "occupation-points";
                         confirmId = "confirm-occupation-container";
-                        nextTabName = "general";
                     } else if (skillType === "general" || document.querySelector('#general-skills.active')) {
                         pointsId = "general-points";
                         confirmId = "confirm-general-container";
-                        nextTabName = "";
                     }
 
                     // Get points element and current remaining points
@@ -755,38 +663,11 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
                         if (halfSpan) halfSpan.textContent = Math.floor(value / 2);
                         if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);
 
-                        // Show/hide continue button
+                        // Show continue button if all points are used
                         const confirmContainer = document.getElementById(confirmId);
-                        if (confirmContainer) {
-                            if (newPoints === 0) {
-                                // Animate showing the button
-                                confirmContainer.style.opacity = "1";
-                                confirmContainer.style.pointerEvents = "auto";
-                                
-                                // Add pulse animation to the button
-                                const continueBtn = confirmContainer.querySelector('button');
-                                if (continueBtn) {
-                                    continueBtn.classList.add('pulse-button');
-                                }
-
-                                // Auto advance after delay if points are used up
-                                if (nextTabName) {
-                                    setTimeout(() => {
-                                        if (parseInt(pointsElement.textContent) === 0) {
-                                            navigateToTab(nextTabName);
-                                        }
-                                    }, 1000);
-                                }
-                            } else {
-                                confirmContainer.style.opacity = "0";
-                                confirmContainer.style.pointerEvents = "none";
-                                
-                                // Remove pulse animation
-                                const continueBtn = confirmContainer.querySelector('button');
-                                if (continueBtn) {
-                                    continueBtn.classList.remove('pulse-button');
-                                }
-                            }
+                        if (confirmContainer && newPoints === 0) {
+                            confirmContainer.style.opacity = "1";
+                            confirmContainer.style.pointerEvents = "auto";
                         }
                     }
                 }
@@ -800,6 +681,14 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
 
         // Add additional functionality when the DOM is loaded
         document.addEventListener('DOMContentLoaded', function() {
+            // Ensure all tab continue buttons are visible
+            document.getElementById('confirm-archetype-container').style.opacity = "1";
+            document.getElementById('confirm-archetype-container').style.pointerEvents = "auto";
+            document.getElementById('confirm-occupation-container').style.opacity = "1";
+            document.getElementById('confirm-occupation-container').style.pointerEvents = "auto";
+            document.getElementById('confirm-general-container').style.opacity = "1";
+            document.getElementById('confirm-general-container').style.pointerEvents = "auto";
+            
             // Add tab switching functionality to preserve values
             document.querySelectorAll('button[data-bs-toggle="tab"]').forEach(button => {
                 button.addEventListener('shown.bs.tab', function (event) {
@@ -830,4 +719,122 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
             });
         });
     </script>
+}
+
+// Helper function to render a single skill box
+templ renderSkillBox(skillObj models.Skill, skillType string) {
+    <div class="col-md-6 col-lg-4 mb-2">
+        <div class="skill-box shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="skill-name-container">
+                    <span class="skill-name">{ skillObj.Name }</span>
+                    <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
+                </div>
+                <div class="skill-values">
+                    <div class="input-group">
+                        <button 
+                            type="button" 
+                            class="btn btn-decrement input-group-text" 
+                            onclick="characterUtils.adjustSkillValue(this, false)"
+                        >
+                            <i class="bi bi-dash"></i>
+                        </button>
+                        <input
+                            type="number"
+                            class="form-control skill-input"
+                            value={ strconv.Itoa(skillObj.Value) }
+                            data-skill={ skillObj.Name }
+                            data-skillvalue={ strconv.Itoa(skillObj.Value) }
+                            data-skilldefault={ strconv.Itoa(skillObj.Default) }
+                            data-skilltype={ skillType }
+                            onchange="characterUtils.recalculateValues(this, 'skill')"
+                            min={ strconv.Itoa(skillObj.Default) }
+                            max="90"
+                        />
+                        <button 
+                            type="button" 
+                            class="btn btn-increment input-group-text" 
+                            onclick="characterUtils.adjustSkillValue(this, true)"
+                        >
+                            <i class="bi bi-plus"></i>
+                        </button>
+                        <span class="input-group-text">%</span>
+                    </div>
+                    <div class="value-displays">
+                        <span class="half-value" data-half>{ strconv.Itoa(skillObj.Value/2) }</span>
+                        <span class="divider">|</span>
+                        <span class="fifth-value" data-fifth>{ strconv.Itoa(skillObj.Value/5) }</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+// Render archetype skills (alphabetically sorted)
+templ renderArchetypeSkills(investigator *models.Investigator) {
+    // Create a slice to hold valid skills for sorting
+    @templ.Raw("<!-- Archetype Skills Section -->")
+    for _, skillName := range getSortedSkillNames(investigator, investigator.Archetype.Skills) {
+        @renderSkillBox(investigator.Skills[skillName], "archetype")
+    }
+}
+
+// Render occupation skills (alphabetically sorted)
+templ renderOccupationSkills(investigator *models.Investigator) {
+    // Create a slice to hold valid skills for sorting
+    @templ.Raw("<!-- Occupation Skills Section -->")
+    for _, skillName := range getSortedSkillNames(investigator, *investigator.GetOccupationSkills()) {
+        @renderSkillBox(investigator.Skills[skillName], "occupation")
+    }
+}
+
+// Render general skills (alphabetically sorted)
+templ renderGeneralSkills(investigator *models.Investigator) {
+    // Create a slice to hold valid skills for sorting
+    @templ.Raw("<!-- General Skills Section -->")
+    for _, skillObj := range getSortedSkills(investigator) {
+        @renderSkillBox(skillObj, "general")
+    }
+}
+
+// Helper function to sort skill names
+func getSortedSkillNames(investigator *models.Investigator, skills []string) []string {
+    // Create a slice to hold valid skills
+    var validSkills []string
+    
+    // Add skills to the valid skills slice
+    for _, skillName := range skills {
+        skillObj := investigator.Skills[skillName]
+        if skillObj.Name != "" && skillObj.Name != "Dodge_Copy" && skillObj.Base == 0 {
+            validSkills = append(validSkills, skillName)
+        }
+    }
+    
+    // Sort skills alphabetically by name
+    sort.Slice(validSkills, func(i, j int) bool {
+        return investigator.Skills[validSkills[i]].Name < investigator.Skills[validSkills[j]].Name
+    })
+    
+    return validSkills
+}
+
+// Helper function to get all sorted skills
+func getSortedSkills(investigator *models.Investigator) []models.Skill {
+    // Create a slice to hold valid skills
+    var validSkills []models.Skill
+    
+    // Add skills to the valid skills slice
+    for _, skill := range investigator.Skills {
+        if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
+            validSkills = append(validSkills, skill)
+        }
+    }
+    
+    // Sort skills alphabetically by name
+    sort.Slice(validSkills, func(i, j int) bool {
+        return validSkills[i].Name < validSkills[j].Name
+    })
+    
+    return validSkills
 }

@@ -25,6 +25,27 @@ templ Home() {
                 .icon-circle { width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #ffe8d6; color: #6d6875; }
                 .step-number { font-size: 1.5rem; font-weight: 500; color: #b5838d; margin-right: .5rem; }
                 #character-sheet { display: none; }
+                
+                /* Modal styling */
+                .modal-header {
+                    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+                    color: white;
+                }
+                .modal-body h4 {
+                    color: #6d6875;
+                    margin-top: 1.5rem;
+                    margin-bottom: 0.75rem;
+                }
+                .modal-body p, .modal-body li {
+                    margin-bottom: 0.75rem;
+                }
+                .footer-link {
+                    cursor: pointer;
+                    text-decoration: none;
+                }
+                .footer-link:hover {
+                    text-decoration: underline;
+                }
             </style>
 
             <script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -135,7 +156,6 @@ templ Home() {
                     <div class="container text-center">
                         <h2 class="mb-3">Privacy & Cookies</h2>
                         <p>CorbittFiles uses browser cookies solely to store your investigator data; no personal information or gameplay data is ever transmitted to a server. You can clear your cookies at any time to delete all stored investigators. Use the export/import feature to back up or share your characters safely.</p>
-                        <!--<a href="/privacy" class="btn btn-outline-secondary">Read Full Privacy Policy</a>-->
                     </div>
                 </section>
 
@@ -144,8 +164,8 @@ templ Home() {
                     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
                         <p class="mb-2 mb-md-0">&copy; 2025 CorbittFiles. All rights reserved.</p>
                         <nav>
-                            <a class="text-white me-3" href="/privacy">Privacy Policy</a>
-                            <a class="text-white" href="/terms">Terms of Service</a>
+                            <a class="text-white me-3 footer-link" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                            <a class="text-white footer-link" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
                         </nav>
                     </div>
                 </footer>
@@ -153,6 +173,135 @@ templ Home() {
 
             <!-- Character Sheet Container -->
             <div id="character-sheet" class="container-fluid py-4"></div>
+            
+            <!-- Privacy Policy Modal -->
+            <div class="modal fade" id="privacyModal" tabindex="-1" aria-labelledby="privacyModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="privacyModalLabel">Privacy Policy</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Last Updated: May 18, 2025</p>
+                            
+                            <p>Thank you for using CorbittFiles. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our service. Please read this privacy policy carefully. If you do not agree with the terms of this privacy policy, please do not access the application.</p>
+                            
+                            <h4>Information Collection</h4>
+                            <p>We prioritize your privacy and are committed to transparency about how we use data:</p>
+                            <ul>
+                                <li><strong>No Personal Information Collection:</strong> CorbittFiles does not collect any personal information such as names, email addresses, or any other identifying information.</li>
+                                <li><strong>Local Storage Only:</strong> All character sheet data is stored locally in your browser using cookies. This data never leaves your device unless you explicitly choose to export it.</li>
+                            </ul>
+                            
+                            <h4>Cookie Usage</h4>
+                            <p>We use only essential cookies to store your character data locally:</p>
+                            <ul>
+                                <li><strong>Functional Cookies:</strong> These allow CorbittFiles to save your investigator characters locally in your browser. These cookies do not track you or collect personal information.</li>
+                                <li><strong>No Third-Party Cookies:</strong> We do not use any third-party cookies for analytics, advertising, or tracking purposes.</li>
+                            </ul>
+                            
+                            <h4>Data Security</h4>
+                            <p>While we implement reasonable precautions to protect your information:</p>
+                            <ul>
+                                <li>All data is stored locally in your browser, which means we don't transmit or store your character data on our servers.</li>
+                                <li>For extra security, we recommend using the export feature to back up your data, especially if you clear your browser cookies regularly.</li>
+                            </ul>
+                            
+                            <h4>Character Data</h4>
+                            <p>When you create a character using CorbittFiles:</p>
+                            <ul>
+                                <li>The character data remains on your device in local cookies.</li>
+                                <li>You control this data entirely - you can delete it by clearing your browser cookies at any time.</li>
+                                <li>If you choose to use the export function, you'll receive a code that can be used to import your character on another device or share with friends.</li>
+                            </ul>
+                            
+                            <h4>Third-Party Services</h4>
+                            <p>CorbittFiles does not share any data with third parties because we don't collect any data to share. Your character information stays on your device.</p>
+                            
+                            <h4>Children's Privacy</h4>
+                            <p>Our Service is not directed to anyone under the age of 13. We do not knowingly collect personally identifiable information from children under 13.</p>
+                            
+                            <h4>Changes To This Privacy Policy</h4>
+                            <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page. You are advised to review this Privacy Policy periodically for any changes.</p>
+                            
+                            <h4>Contact Us</h4>
+                            <p>If you have any questions about this Privacy Policy, please contact us via the repository or project page.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Terms of Service Modal -->
+            <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-scrollable modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="termsModalLabel">Terms of Service</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Last Updated: May 18, 2025</p>
+                            
+                            <p>Please read these Terms of Service carefully before using CorbittFiles. Your access to and use of the service is conditioned on your acceptance of and compliance with these Terms. These Terms apply to all visitors, users, and others who access or use the Service.</p>
+                            
+                            <h4>Acceptance of Terms</h4>
+                            <p>By accessing or using the Service, you agree to be bound by these Terms. If you disagree with any part of the terms, you may not access the Service.</p>
+                            
+                            <h4>Service Description</h4>
+                            <p>CorbittFiles is a free, browser-based tool for creating and managing Call of Cthulhu v7 investigator characters. The service:</p>
+                            <ul>
+                                <li>Allows users to create, save, and export characters</li>
+                                <li>Stores character data locally using browser cookies</li>
+                                <li>Provides character export/import functionality via unique codes</li>
+                                <li>Is provided "as is" without warranty of any kind</li>
+                            </ul>
+                            
+                            <h4>Intellectual Property</h4>
+                            <p>The CorbittFiles service, including its design, code, functionality, and appearance, is protected by copyright and other intellectual property laws. This protection does not extend to the character data you create, which belongs to you.</p>
+                            
+                            <p>Call of Cthulhu is a registered trademark of Chaosium Inc. CorbittFiles is an independent, fan-created tool and is not affiliated with or endorsed by Chaosium Inc.</p>
+                            
+                            <h4>User Content & Character Data</h4>
+                            <p>You retain all rights to any character data you create using CorbittFiles. We claim no ownership over your content. However, by using the Service, you acknowledge that:</p>
+                            <ul>
+                                <li>You are responsible for all data you create and/or share</li>
+                                <li>You have the legal right to create and use the content</li>
+                                <li>Your content doesn't violate any third-party rights or applicable laws</li>
+                            </ul>
+                            
+                            <h4>Local Storage & Data Responsibility</h4>
+                            <p>CorbittFiles stores your character data locally in your browser's cookies. You understand and agree that:</p>
+                            <ul>
+                                <li>You are responsible for backing up your character data by using the export feature</li>
+                                <li>Clearing your browser cookies will permanently delete any character data that has not been exported</li>
+                                <li>We are not responsible for any loss of data resulting from browser actions, device failures, or other events outside our control</li>
+                            </ul>
+                            
+                            <h4>Limitations of Liability</h4>
+                            <p>In no event shall CorbittFiles, its developers, or contributors be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.</p>
+                            
+                            <h4>No Warranty</h4>
+                            <p>The Service is provided "as is" and "as available" without warranties of any kind, either express or implied, including, but not limited to, implied warranties of merchantability, fitness for a particular purpose, or non-infringement.</p>
+                            
+                            <h4>Changes to Terms</h4>
+                            <p>We reserve the right to modify or replace these Terms at any time. It is your responsibility to review these Terms periodically for changes. Your continued use of the Service following the posting of any changes constitutes acceptance of those changes.</p>
+                            
+                            <h4>Governing Law</h4>
+                            <p>These Terms shall be governed and construed in accordance with the laws applicable in your jurisdiction, without regard to its conflict of law provisions.</p>
+                            
+                            <h4>Contact</h4>
+                            <p>If you have any questions about these Terms, please contact us via the repository or project page.</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Scripts -->
             <script>
