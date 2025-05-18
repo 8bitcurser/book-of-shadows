@@ -12,6 +12,7 @@ import "book-of-shadows/models"
 import "strconv"
 import "sort"
 import "strings"
+import "fmt"
 
 func CharacterSheet(investigator *models.Investigator) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -45,7 +46,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(string([]rune(investigator.Name)[0]))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 71, Col: 62}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 72, Col: 62}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -58,7 +59,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 74, Col: 91}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 75, Col: 91}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -71,7 +72,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Occupation.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 75, Col: 84}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 76, Col: 84}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -84,587 +85,610 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Archetype.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 75, Col: 114}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 76, Col: 114}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p></div><div class=\"ms-auto d-flex flex-wrap\"><button onclick=\"characterUtils.exportPDF(event, &#39;{investigator.ID}&#39;)\" class=\"btn me-2\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.5rem;\"><i class=\"bi bi-file-earmark-pdf me-2\"></i>Export PDF</button></div></div></div></div><!-- Personal Information --><div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-person-vcard me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Personal Information</h4></div><div class=\"card-body p-3\"><div class=\"row g-3\"><div class=\"col-md-4\"><label for=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</p></div><div class=\"ms-auto d-flex flex-wrap\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var6 string
-		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.ID)
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 95, Col: 51}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{
+			Name: "characterUtils.exportPDF",
+			Call: fmt.Sprintf("characterUtils.exportPDF(event, '%s')", investigator.ID),
+		})
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" class=\"form-label\">Name</label> <input type=\"text\" id=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<button onclick=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var6 templ.ComponentScript = templ.ComponentScript{
+			Name: "characterUtils.exportPDF",
+			Call: fmt.Sprintf("characterUtils.exportPDF(event, '%s')", investigator.ID),
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6.Call)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"btn me-2\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.5rem;\"><i class=\"bi bi-file-earmark-pdf me-2\"></i>Export PDF</button></div></div></div></div><!-- Personal Information --><div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-person-vcard me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Personal Information</h4></div><div class=\"card-body p-3\"><div class=\"row g-3\"><div class=\"col-md-4\"><label for=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 98, Col: 47}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 99, Col: 51}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"form-label\">Name</label> <input type=\"text\" id=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
-		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Name)
+		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 100, Col: 52}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 102, Col: 47}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" data-field=\"Name\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div><div class=\"col-md-4\"><label for=\"inv-birth\" class=\"form-label\">Birthplace</label> <input id=\"inv-birth\" type=\"text\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
-		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Birthplace)
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 111, Col: 58}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 104, Col: 52}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" data-field=\"Birthplace\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div><div class=\"col-md-4\"><label for=\"inv-res\" class=\"form-label\">Residence</label> <input type=\"text\" id=\"inv-res\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" data-field=\"Name\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div><div class=\"col-md-4\"><label for=\"inv-birth\" class=\"form-label\">Birthplace</label> <input id=\"inv-birth\" type=\"text\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var10 string
-		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Residence)
+		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Birthplace)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 122, Col: 57}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 115, Col: 58}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\" data-field=\"Residence\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div></div><div class=\"row g-3 mt-1\"><div class=\"col-md-4\"><label class=\"form-label\">Occupation</label><p class=\"form-control-plaintext bg-light rounded px-2 py-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" data-field=\"Birthplace\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div><div class=\"col-md-4\"><label for=\"inv-res\" class=\"form-label\">Residence</label> <input type=\"text\" id=\"inv-res\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var11 string
-		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Occupation.Name)
+		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Residence)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 132, Col: 114}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 126, Col: 57}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</p></div><div class=\"col-md-4\"><label class=\"form-label\">Archetype</label><p class=\"form-control-plaintext bg-light rounded px-2 py-1\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "\" data-field=\"Residence\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div></div><div class=\"row g-3 mt-1\"><div class=\"col-md-4\"><label class=\"form-label\">Occupation</label><p class=\"form-control-plaintext bg-light rounded px-2 py-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var12 string
-		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Archetype.Name)
+		templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Occupation.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 136, Col: 113}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 136, Col: 114}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "</p></div><div class=\"col-md-4\"><label for=\"inv-age\" class=\"form-label\">Age</label> <input type=\"number\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</p></div><div class=\"col-md-4\"><label class=\"form-label\">Archetype</label><p class=\"form-control-plaintext bg-light rounded px-2 py-1\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var13 string
-		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Age))
+		templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Archetype.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 143, Col: 65}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 140, Col: 113}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\" data-field=\"Age\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div></div></div></div><!-- Characteristics and Combat Stats --><div class=\"row mb-4 g-3\"><!-- Characteristics --><div class=\"col-md-8\"><div class=\"card shadow-sm h-100\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-bar-chart-fill me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Characteristics</h4></div><div class=\"card-body p-3\"><div class=\"row g-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "</p></div><div class=\"col-md-4\"><label for=\"inv-age\" class=\"form-label\">Age</label> <input type=\"number\" class=\"form-control editable\" value=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var14 string
+		templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Age))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 147, Col: 65}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" data-field=\"Age\" onchange=\"characterUtils.updatePersonalInfo(this)\"></div></div></div></div><!-- Characteristics and Combat Stats --><div class=\"row mb-4 g-3\"><!-- Characteristics --><div class=\"col-md-8\"><div class=\"card shadow-sm h-100\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-bar-chart-fill me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Characteristics</h4></div><div class=\"card-body p-3\"><div class=\"row g-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for _, attr := range investigator.Attributes {
 			if !strings.HasPrefix(attr.Name, "Current") && !strings.HasPrefix(attr.Name, "Max") &&
 				attr.Name != "HitPoints" && attr.Name != "MagicPoints" && attr.Name != "Sanity" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<div class=\"col-md-3 col-sm-4 mb-2\"><div class=\"characteristic-box p-2 rounded shadow-sm\" style=\"background-color: #f8f9fa; transition: all 0.2s ease; border: 1px solid rgba(0,0,0,0.05);\"><div class=\"d-flex justify-content-between align-items-center\"><strong style=\"color: #6d6875;\">")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var14 string
-				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 169, Col: 90}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</strong> <span class=\"value badge fw-bold\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;\" data-attr=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<div class=\"col-md-3 col-sm-4 mb-2\"><div class=\"characteristic-box p-2 rounded shadow-sm\" style=\"background-color: #f8f9fa; transition: all 0.2s ease; border: 1px solid rgba(0,0,0,0.05);\"><div class=\"d-flex justify-content-between align-items-center\"><strong style=\"color: #6d6875;\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 170, Col: 187}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 173, Col: 90}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</strong> <span class=\"value badge fw-bold\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;\" data-attr=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var16 string
-				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value))
+				templ_7745c5c3_Var16, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 170, Col: 214}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 174, Col: 187}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var16))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</span></div><div class=\"d-flex justify-content-end mt-1\"><small class=\"me-2 text-secondary\" title=\"Half value\" data-half>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var17 string
-				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 2))
+				templ_7745c5c3_Var17, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 173, Col: 139}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 174, Col: 214}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var17))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "</small> <small class=\"ms-2 text-secondary\" title=\"Fifth value\" data-fifth>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</span></div><div class=\"d-flex justify-content-end mt-1\"><small class=\"me-2 text-secondary\" title=\"Half value\" data-half>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var18 string
-				templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 5))
+				templ_7745c5c3_Var18, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 2))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 174, Col: 141}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 177, Col: 139}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var18))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</small></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</small> <small class=\"ms-2 text-secondary\" title=\"Fifth value\" data-fifth>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var19 string
+				templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 5))
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 178, Col: 141}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "</small></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 20, "</div></div></div></div><!-- Combat Stats --><div class=\"col-md-4\"><div class=\"card shadow-sm h-100\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-shield-fill me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Combat Stats</h4></div><div class=\"card-body p-3\"><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span style=\"color: #6d6875;\">Hit Points</span> <span class=\"text-secondary small\">Current / Max</span></label><div class=\"input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		var templ_7745c5c3_Var19 string
-		templ_7745c5c3_Var19, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["HitPoints"].Value))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 202, Col: 99}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var19))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 21, "\" data-attr=\"HitPoints\" title=\"CurrentHP\" min=\"0\" onchange=\"characterUtils.recalculateValues(this, &#39;attribute&#39;)\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">/</span> <input type=\"number\" class=\"form-control\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</div></div></div></div><!-- Combat Stats --><div class=\"col-md-4\"><div class=\"card shadow-sm h-100\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-shield-fill me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Combat Stats</h4></div><div class=\"card-body p-3\"><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span style=\"color: #6d6875;\">Hit Points</span> <span class=\"text-secondary small\">Current / Max</span></label><div class=\"input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var20 string
-		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["MaxHP"].Value))
+		templ_7745c5c3_Var20, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["HitPoints"].Value))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 212, Col: 95}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 206, Col: 99}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var20))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "\" readonly style=\"background-color: #f8f9fa;\"></div></div><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span style=\"color: #6d6875;\">Magic Points</span> <span class=\"text-secondary small\">Current / Max</span></label><div class=\"input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\" data-attr=\"HitPoints\" title=\"CurrentHP\" min=\"0\" onchange=\"characterUtils.recalculateValues(this, &#39;attribute&#39;)\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">/</span> <input type=\"number\" class=\"form-control\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var21 string
-		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["MagicPoints"].Value))
+		templ_7745c5c3_Var21, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["HitPoints"].MaxValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 227, Col: 101}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 216, Col: 102}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var21))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 23, "\" data-attr=\"MagicPoints\" title=\"CurrentMP\" min=\"0\" onchange=\"characterUtils.recalculateValues(this, &#39;attribute&#39;)\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">/</span> <input type=\"number\" class=\"form-control\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\" readonly style=\"background-color: #f8f9fa;\"></div></div><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span style=\"color: #6d6875;\">Magic Points</span> <span class=\"text-secondary small\">Current / Max</span></label><div class=\"input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var22 string
-		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["MaxMP"].Value))
+		templ_7745c5c3_Var22, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["MagicPoints"].Value))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 237, Col: 95}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 231, Col: 101}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var22))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 24, "\" readonly style=\"background-color: #f8f9fa;\"></div></div><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span style=\"color: #6d6875;\">Sanity</span> <span class=\"text-secondary small\">Current / Max</span></label><div class=\"input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\" data-attr=\"MagicPoints\" title=\"CurrentMP\" min=\"0\" onchange=\"characterUtils.recalculateValues(this, &#39;attribute&#39;)\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">/</span> <input type=\"number\" class=\"form-control\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var23 string
-		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["Sanity"].Value))
+		templ_7745c5c3_Var23, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["MagicPoints"].MaxValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 252, Col: 96}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 241, Col: 104}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var23))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 25, "\" data-attr=\"Sanity\" title=\"CurrentSanity\" onchange=\"characterUtils.recalculateValues(this, &#39;attribute&#39;)\" min=\"0\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">/</span> <input type=\"number\" class=\"form-control\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" readonly style=\"background-color: #f8f9fa;\"></div></div><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span style=\"color: #6d6875;\">Sanity</span> <span class=\"text-secondary small\">Current / Max</span></label><div class=\"input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var24 string
-		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["MaxSanity"].Value))
+		templ_7745c5c3_Var24, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["Sanity"].Value))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 262, Col: 99}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 256, Col: 96}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var24))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 26, "\" readonly style=\"background-color: #f8f9fa;\"></div></div><div class=\"mb-3\"><label class=\"fw-medium\" style=\"color: #6d6875;\">Luck</label> <input type=\"number\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" data-attr=\"Sanity\" title=\"CurrentSanity\" onchange=\"characterUtils.recalculateValues(this, &#39;attribute&#39;)\" min=\"0\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">/</span> <input type=\"number\" class=\"form-control\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var25 string
-		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["Luck"].Value))
+		templ_7745c5c3_Var25, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["Sanity"].MaxValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 273, Col: 90}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 266, Col: 99}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var25))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 27, "\" data-attr=\"Luck\" title=\"CurrentLuck\" min=\"0\" onchange=\"characterUtils.recalculateValues(this, &#39;attribute&#39;)\"></div><div class=\"d-flex flex-wrap gap-3\"><div class=\"stat-pill px-3 py-2 rounded-pill shadow-sm\" style=\"background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05);\"><small class=\"d-block text-muted\">Move</small> <span class=\"fw-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "\" readonly style=\"background-color: #f8f9fa;\"></div></div><div class=\"mb-3\"><label class=\"fw-medium\" style=\"color: #6d6875;\">Luck</label> <input type=\"number\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var26 string
-		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Move))
+		templ_7745c5c3_Var26, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Attributes["Luck"].Value))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 283, Col: 88}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 277, Col: 90}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var26))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 28, "</span></div><div class=\"stat-pill px-3 py-2 rounded-pill shadow-sm\" style=\"background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05);\"><small class=\"d-block text-muted\">Build</small> <span class=\"fw-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "\" data-attr=\"Luck\" title=\"CurrentLuck\" min=\"0\" onchange=\"characterUtils.recalculateValues(this, &#39;attribute&#39;)\"></div><div class=\"d-flex flex-wrap gap-3\"><div class=\"stat-pill px-3 py-2 rounded-pill shadow-sm\" style=\"background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05);\"><small class=\"d-block text-muted\">Move</small> <span class=\"fw-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var27 string
-		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Build)
+		templ_7745c5c3_Var27, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.Move))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 287, Col: 75}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 287, Col: 88}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var27))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 29, "</span></div><div class=\"stat-pill px-3 py-2 rounded-pill shadow-sm\" style=\"background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05);\"><small class=\"d-block text-muted\">Damage Bonus</small> <span class=\"fw-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</span></div><div class=\"stat-pill px-3 py-2 rounded-pill shadow-sm\" style=\"background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05);\"><small class=\"d-block text-muted\">Build</small> <span class=\"fw-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var28 string
-		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.DamageBonus)
+		templ_7745c5c3_Var28, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.Build)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 291, Col: 81}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 291, Col: 75}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var28))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 30, "</span></div></div></div></div></div></div><!-- Status Checks --><div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-heart-pulse-fill me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Status Conditions</h4></div><div class=\"card-body p-3\"><div class=\"d-flex flex-wrap gap-3\"><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"temp-insanity\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"temp-insanity\" style=\"cursor: pointer;\">Temporary Insanity</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"indef-insanity\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"indef-insanity\" style=\"cursor: pointer;\">Indefinite Insanity</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"major-wound\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"major-wound\" style=\"cursor: pointer;\">Major Wound</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"unconscious\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"unconscious\" style=\"cursor: pointer;\">Unconscious</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"dying\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"dying\" style=\"cursor: pointer;\">Dying</label></div></div></div></div><!-- Skills Section --><div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-tools me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Skills</h4><div class=\"ms-auto skill-points\"><span class=\"badge rounded-pill me-1\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;\"><i class=\"bi bi-briefcase-fill me-1\"></i>Occupation: ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</span></div><div class=\"stat-pill px-3 py-2 rounded-pill shadow-sm\" style=\"background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05);\"><small class=\"d-block text-muted\">Damage Bonus</small> <span class=\"fw-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var29 string
-		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.OccupationPoints))
+		templ_7745c5c3_Var29, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.DamageBonus)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 338, Col: 121}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 295, Col: 81}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var29))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 31, "</span> <span class=\"badge rounded-pill me-1\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;\"><i class=\"bi bi-book-fill me-1\"></i>Interest: ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</span></div></div></div></div></div></div><!-- Status Checks --><div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-heart-pulse-fill me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Status Conditions</h4></div><div class=\"card-body p-3\"><div class=\"d-flex flex-wrap gap-3\"><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"temp-insanity\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"temp-insanity\" style=\"cursor: pointer;\">Temporary Insanity</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"indef-insanity\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"indef-insanity\" style=\"cursor: pointer;\">Indefinite Insanity</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"major-wound\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"major-wound\" style=\"cursor: pointer;\">Major Wound</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"unconscious\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"unconscious\" style=\"cursor: pointer;\">Unconscious</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"dying\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"dying\" style=\"cursor: pointer;\">Dying</label></div></div></div></div><!-- Skills Section --><div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-tools me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Skills</h4><div class=\"ms-auto skill-points\"><span class=\"badge rounded-pill me-1\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;\"><i class=\"bi bi-briefcase-fill me-1\"></i>Occupation: ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var30 string
-		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.FreePoints))
+		templ_7745c5c3_Var30, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.OccupationPoints))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 341, Col: 108}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 342, Col: 121}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var30))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 32, "</span> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "</span> <span class=\"badge rounded-pill me-1\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;\"><i class=\"bi bi-book-fill me-1\"></i>Interest: ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var31 string
+		templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.FreePoints))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 345, Col: 108}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</span> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if investigator.ArchetypePoints > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 33, "<span class=\"badge rounded-pill\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;\"><i class=\"bi bi-person-fill me-1\"></i>Archetype: ")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "<span class=\"badge rounded-pill\" style=\"background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white;\"><i class=\"bi bi-person-fill me-1\"></i>Archetype: ")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var31 string
-			templ_7745c5c3_Var31, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.ArchetypePoints))
+			var templ_7745c5c3_Var32 string
+			templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(investigator.ArchetypePoints))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 345, Col: 120}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 349, Col: 120}
 			}
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var31))
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 34, "</span>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "</span>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 35, "</div></div><div class=\"card-body p-3\"><div class=\"skills-grid\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "</div></div><div class=\"card-body p-3\"><div class=\"skills-grid\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		for _, skill := range sortSkills(investigator.Skills) {
 			if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 36, "<div class=\"skill-item p-2 mb-2 rounded shadow-sm\" style=\"background-color: #f8f9fa; transition: all 0.2s ease; border: 1px solid rgba(0,0,0,0.05);\"><div class=\"d-flex justify-content-between align-items-center\"><div class=\"d-flex align-items-center\"><div class=\"form-check me-2\"><input type=\"checkbox\" class=\"form-check-input editable\" data-skill=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, "<div class=\"skill-item p-2 mb-2 rounded shadow-sm\" style=\"background-color: #f8f9fa; transition: all 0.2s ease; border: 1px solid rgba(0,0,0,0.05);\"><div class=\"d-flex justify-content-between align-items-center\"><div class=\"d-flex align-items-center\"><div class=\"form-check me-2\"><input type=\"checkbox\" class=\"form-check-input editable\" data-skill=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var32 string
-				templ_7745c5c3_Var32, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
+				var templ_7745c5c3_Var33 string
+				templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 361, Col: 70}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 365, Col: 70}
 				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var32))
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 37, "\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, "\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if skill.IsSelected {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 38, " checked")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, " checked")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 39, " onchange=\"characterUtils.handleSkillToggleCheck(this)\" style=\"cursor: pointer; width: 1.1em; height: 1.1em;\"></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, " onchange=\"characterUtils.handleSkillToggleCheck(this)\" style=\"cursor: pointer; width: 1.1em; height: 1.1em;\"></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				if skill.NeedsFormDef == 1 {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 40, "<input type=\"text\" class=\"form-control form-control-sm editable\" style=\"width: 150px;\" value=\"")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					var templ_7745c5c3_Var33 string
-					templ_7745c5c3_Var33, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
-					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 374, Col: 65}
-					}
-					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var33))
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 41, "\" data-skill=\"")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "<input type=\"text\" class=\"form-control form-control-sm editable\" style=\"width: 150px;\" value=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var34 string
 					templ_7745c5c3_Var34, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 375, Col: 70}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 378, Col: 65}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var34))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 42, "\" onchange=\"characterUtils.handleSkillNameChange(this)\">")
-					if templ_7745c5c3_Err != nil {
-						return templ_7745c5c3_Err
-					}
-				} else {
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "<span class=\"skill-name\" style=\"color: #6d6875; font-weight: 500;\">")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 43, "\" data-skill=\"")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var35 string
 					templ_7745c5c3_Var35, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 379, Col: 122}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 379, Col: 70}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var35))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "</span> <span class=\"skill-default ms-1 small text-secondary\">(")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 44, "\" onchange=\"characterUtils.handleSkillNameChange(this)\">")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+				} else {
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "<span class=\"skill-name\" style=\"color: #6d6875; font-weight: 500;\">")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 					var templ_7745c5c3_Var36 string
-					templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Default))
+					templ_7745c5c3_Var36, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 380, Col: 127}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 383, Col: 122}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var36))
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
-					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 45, "%)</span>")
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "</span> <span class=\"skill-default ms-1 small text-secondary\">(")
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					var templ_7745c5c3_Var37 string
+					templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Default))
+					if templ_7745c5c3_Err != nil {
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 384, Col: 127}
+					}
+					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
+					if templ_7745c5c3_Err != nil {
+						return templ_7745c5c3_Err
+					}
+					templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "%)</span>")
 					if templ_7745c5c3_Err != nil {
 						return templ_7745c5c3_Err
 					}
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 46, "</div><div class=\"d-flex align-items-center\"><div class=\"input-group input-group-sm\" style=\"width: 100px;\"><input type=\"number\" class=\"form-control editable\" value=\"")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				var templ_7745c5c3_Var37 string
-				templ_7745c5c3_Var37, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value))
-				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 388, Col: 80}
-				}
-				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var37))
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 47, "\" data-skill=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "</div><div class=\"d-flex align-items-center\"><div class=\"input-group input-group-sm\" style=\"width: 100px;\"><input type=\"number\" class=\"form-control editable\" value=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var38 string
-				templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
+				templ_7745c5c3_Var38, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 389, Col: 70}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 392, Col: 80}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var38))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 48, "\" onchange=\"characterUtils.recalculateValues(this, &#39;skill&#39;)\" title=\"Regular\" min=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\" data-skill=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var39 string
-				templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Default))
+				templ_7745c5c3_Var39, templ_7745c5c3_Err = templ.JoinStringErrs(skill.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 392, Col: 80}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 393, Col: 70}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var39))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 49, "\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">%</span></div><div class=\"derived-values ms-2 text-secondary small\"><span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "\" onchange=\"characterUtils.recalculateValues(this, &#39;skill&#39;)\" title=\"Regular\" min=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var40 string
-				templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 2))
+				templ_7745c5c3_Var40, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Default))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 397, Col: 78}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 396, Col: 80}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var40))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 50, "</span> <span class=\"mx-1\">/</span> <span>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">%</span></div><div class=\"derived-values ms-2 text-secondary small\"><span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var41 string
-				templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 5))
+				templ_7745c5c3_Var41, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 2))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 399, Col: 78}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 401, Col: 78}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var41))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 51, "</span></div></div></div></div>")
-				if templ_7745c5c3_Err != nil {
-					return templ_7745c5c3_Err
-				}
-			}
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "</div></div></div><!-- Pulp Talents Section -->")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		if len(investigator.Talents) > 0 {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "<div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-stars me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Pulp Talents</h4></div><div class=\"card-body p-3\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-			for _, talent := range investigator.Talents {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "<div class=\"talent-item p-3 mb-3 rounded shadow-sm\" style=\"background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05); position: relative; overflow: hidden;\"><div style=\"position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);\"></div><h5 class=\"fw-bold\" style=\"color: #6d6875;\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 52, "</span> <span class=\"mx-1\">/</span> <span>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var42 string
-				templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs(talent.Name)
+				templ_7745c5c3_Var42, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(skill.Value / 5))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 421, Col: 84}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 403, Col: 78}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var42))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "</h5><p class=\"mb-0 text-secondary\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 53, "</span></div></div></div></div>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 54, "</div></div></div><!-- Pulp Talents Section -->")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if len(investigator.Talents) > 0 {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 55, "<div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3\" style=\"background: rgba(109, 104, 117, 0.1); border: none; border-radius: 1rem 1rem 0 0;\"><i class=\"bi bi-stars me-2\" style=\"color: #6d6875;\"></i><h4 class=\"mb-0 fw-bold\" style=\"color: #6d6875; font-size: 1.1rem;\">Pulp Talents</h4></div><div class=\"card-body p-3\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			for _, talent := range investigator.Talents {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "<div class=\"talent-item p-3 mb-3 rounded shadow-sm\" style=\"background-color: #f8f9fa; border: 1px solid rgba(0,0,0,0.05); position: relative; overflow: hidden;\"><div style=\"position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);\"></div><h5 class=\"fw-bold\" style=\"color: #6d6875;\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var43 string
-				templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(talent.Description)
+				templ_7745c5c3_Var43, templ_7745c5c3_Err = templ.JoinStringErrs(talent.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 422, Col: 78}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 425, Col: 84}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var43))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 56, "</p></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</h5><p class=\"mb-0 text-secondary\">")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var44 string
+				templ_7745c5c3_Var44, templ_7745c5c3_Err = templ.JoinStringErrs(talent.Description)
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 426, Col: 78}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var44))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "</p></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 57, "</div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "</div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 58, "</div><style>\n        .coc-sheet {\n            font-family: 'Roboto', sans-serif;\n            background-color: #fff;\n            border-radius: 1rem;\n            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);\n            max-width: 1200px;\n            margin: 0 auto;\n        }\n\n        .skills-grid {\n            column-count: 3;\n            column-gap: 20px;\n        }\n\n        .skill-item {\n            break-inside: avoid;\n            page-break-inside: avoid;\n            -webkit-column-break-inside: avoid;\n        }\n        \n        .skill-item:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;\n            background-color: #fff !important;\n            border-color: rgba(181, 131, 141, 0.2) !important;\n        }\n        \n        .characteristic-box:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;\n            background-color: #fff !important;\n        }\n        \n        .stat-pill:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;\n            background-color: #f0e6ea !important;\n        }\n        \n        /* Form element focus styles */\n        .form-control:focus {\n            border-color: #b5838d;\n            box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);\n        }\n        \n        /* Progress steps styling */\n        .step-indicator {\n            position: relative;\n            z-index: 1;\n        }\n        \n        .step-circle {\n            transition: all 0.3s;\n        }\n        \n        .step-label {\n            transition: all 0.3s;\n        }\n        \n        .step-indicator.completed .step-label {\n            color: #6d6875;\n        }\n        \n        .step-indicator.active .step-label {\n            color: #6d6875;\n            font-weight: 500;\n        }\n        \n        /* Disabled form elements when locked */\n        .form-control[disabled], \n        .form-check-input[disabled] {\n            background-color: #f8f9fa;\n            opacity: 0.8;\n            cursor: not-allowed;\n        }\n        \n        /* Lock toggle switch styling */\n        .form-switch .form-check-input {\n            background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e\");\n            background-color: #adb5bd;\n            border-color: #adb5bd;\n            cursor: pointer;\n        }\n        \n        .form-switch .form-check-input:checked {\n            background-color: #b5838d;\n            border-color: #b5838d;\n        }\n        \n        /* Responsive adjustments */\n        @media (max-width: 992px) {\n            .skills-grid {\n                column-count: 2;\n            }\n        }\n\n        @media (max-width: 576px) {\n            .skills-grid {\n                column-count: 1;\n            }\n        }\n    </style><script>\n        // Extend characterUtils with locking functionality\n        if (!window.characterUtils) {\n            window.characterUtils = {};\n        }\n        \n        // Toggle lock function\n        window.characterUtils.toggleLock = function(checkbox) {\n            const isLocked = checkbox.checked;\n            \n            // Get all editable elements\n            const editables = document.querySelectorAll('.editable');\n            \n            editables.forEach(element => {\n                element.disabled = isLocked;\n            });\n            \n            // Show a message \n            const lockMessage = isLocked ? 'Character sheet is now locked. Unlock to make changes.' : 'Character sheet is now editable.';\n            const toast = document.createElement('div');\n            toast.className = 'position-fixed bottom-0 end-0 p-3';\n            toast.style.zIndex = 1050;\n            toast.innerHTML = `\n                <div class=\"toast show\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\">\n                    <div class=\"toast-header\">\n                        <strong class=\"me-auto\">${isLocked ? '🔒 Locked' : '🔓 Unlocked'}</strong>\n                        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"toast\" aria-label=\"Close\" onclick=\"this.parentElement.parentElement.remove()\"></button>\n                    </div>\n                    <div class=\"toast-body\">\n                        ${lockMessage}\n                    </div>\n                </div>\n            `;\n            document.body.appendChild(toast);\n            \n            // Remove toast after 3 seconds\n            setTimeout(() => {\n                toast.remove();\n            }, 3000);\n        };\n        \n        // Ensure we keep the original recalculateValues function for attributes\n        const originalRecalculateValues = window.characterUtils.recalculateValues || function() {};\n        \n        // Override with enhanced version that ensures attributes are updated\n        window.characterUtils.recalculateValues = function(input, type) {\n            let value = parseInt(input.value) || 0;\n            \n            // Update half and fifth values if applicable\n            const container = input.closest('.characteristic-box') || input.parentElement;\n            const halfSpan = container.querySelector('[data-half]');\n            const fifthSpan = container.querySelector('[data-fifth]');\n            \n            if (halfSpan) halfSpan.textContent = Math.floor(value / 2);\n            if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);\n            \n            // Handle attribute updates\n            if (type === 'attribute') {\n                const attrName = input.dataset.attr;\n                \n                // Get character data if it exists\n                const charData = this.getCurrentCharacter();\n                if (charData && charData.attributes && charData.attributes[attrName]) {\n                    charData.attributes[attrName].value = value;\n                }\n                \n                // Update the server with the new value\n                this.updateInvestigator(\"combat\", attrName, value)\n                    .then(() => {\n                        // Add visual feedback\n                        input.classList.add('bg-success', 'bg-opacity-10');\n                        setTimeout(() => {\n                            input.classList.remove('bg-success', 'bg-opacity-10');\n                        }, 300);\n                    })\n                    .catch(error => {\n                        console.error('Error updating attribute:', error);\n                        input.classList.add('bg-danger', 'bg-opacity-10');\n                        setTimeout(() => {\n                            input.classList.remove('bg-danger', 'bg-opacity-10');\n                        }, 300);\n                    });\n            } \n            // Handle skill updates - call original function\n            else if (type === 'skill') {\n                if (typeof originalRecalculateValues === 'function') {\n                    originalRecalculateValues.call(this, input, type);\n                }\n            }\n        };\n        \n        // Initialize the form on load\n        document.addEventListener('DOMContentLoaded', function() {\n            // Add hover effects to stat pills and characteristic boxes\n            const hoverElements = document.querySelectorAll('.stat-pill, .characteristic-box, .skill-item');\n            hoverElements.forEach(element => {\n                element.addEventListener('mouseenter', function() {\n                    if (!this.closest('.card').classList.contains('locked')) {\n                        this.style.backgroundColor = '#f0f0f0';\n                    }\n                });\n                element.addEventListener('mouseleave', function() {\n                    if (!this.closest('.card').classList.contains('locked')) {\n                        this.style.backgroundColor = '#f8f9fa';\n                    }\n                });\n            });\n        });\n    </script>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "</div><style>\n        .coc-sheet {\n            font-family: 'Roboto', sans-serif;\n            background-color: #fff;\n            border-radius: 1rem;\n            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);\n            max-width: 1200px;\n            margin: 0 auto;\n        }\n\n        .skills-grid {\n            column-count: 3;\n            column-gap: 20px;\n        }\n\n        .skill-item {\n            break-inside: avoid;\n            page-break-inside: avoid;\n            -webkit-column-break-inside: avoid;\n        }\n        \n        .skill-item:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;\n            background-color: #fff !important;\n            border-color: rgba(181, 131, 141, 0.2) !important;\n        }\n        \n        .characteristic-box:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;\n            background-color: #fff !important;\n        }\n        \n        .stat-pill:hover {\n            transform: translateY(-2px);\n            box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;\n            background-color: #f0e6ea !important;\n        }\n        \n        /* Form element focus styles */\n        .form-control:focus {\n            border-color: #b5838d;\n            box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);\n        }\n        \n        /* Progress steps styling */\n        .step-indicator {\n            position: relative;\n            z-index: 1;\n        }\n        \n        .step-circle {\n            transition: all 0.3s;\n        }\n        \n        .step-label {\n            transition: all 0.3s;\n        }\n        \n        .step-indicator.completed .step-label {\n            color: #6d6875;\n        }\n        \n        .step-indicator.active .step-label {\n            color: #6d6875;\n            font-weight: 500;\n        }\n        \n        /* Disabled form elements when locked */\n        .form-control[disabled], \n        .form-check-input[disabled] {\n            background-color: #f8f9fa;\n            opacity: 0.8;\n            cursor: not-allowed;\n        }\n        \n        /* Lock toggle switch styling */\n        .form-switch .form-check-input {\n            background-image: url(\"data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e\");\n            background-color: #adb5bd;\n            border-color: #adb5bd;\n            cursor: pointer;\n        }\n        \n        .form-switch .form-check-input:checked {\n            background-color: #b5838d;\n            border-color: #b5838d;\n        }\n        \n        /* Responsive adjustments */\n        @media (max-width: 992px) {\n            .skills-grid {\n                column-count: 2;\n            }\n        }\n\n        @media (max-width: 576px) {\n            .skills-grid {\n                column-count: 1;\n            }\n        }\n    </style><script>\n        // Extend characterUtils with locking functionality\n        if (!window.characterUtils) {\n            window.characterUtils = {};\n        }\n        \n        // Toggle lock function\n        window.characterUtils.toggleLock = function(checkbox) {\n            const isLocked = checkbox.checked;\n            \n            // Get all editable elements\n            const editables = document.querySelectorAll('.editable');\n            \n            editables.forEach(element => {\n                element.disabled = isLocked;\n            });\n            \n            // Show a message \n            const lockMessage = isLocked ? 'Character sheet is now locked. Unlock to make changes.' : 'Character sheet is now editable.';\n            const toast = document.createElement('div');\n            toast.className = 'position-fixed bottom-0 end-0 p-3';\n            toast.style.zIndex = 1050;\n            toast.innerHTML = `\n                <div class=\"toast show\" role=\"alert\" aria-live=\"assertive\" aria-atomic=\"true\">\n                    <div class=\"toast-header\">\n                        <strong class=\"me-auto\">${isLocked ? '🔒 Locked' : '🔓 Unlocked'}</strong>\n                        <button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"toast\" aria-label=\"Close\" onclick=\"this.parentElement.parentElement.remove()\"></button>\n                    </div>\n                    <div class=\"toast-body\">\n                        ${lockMessage}\n                    </div>\n                </div>\n            `;\n            document.body.appendChild(toast);\n            \n            // Remove toast after 3 seconds\n            setTimeout(() => {\n                toast.remove();\n            }, 1500);\n        };\n        \n        // Ensure we keep the original recalculateValues function for attributes\n        const originalRecalculateValues = window.characterUtils.recalculateValues || function() {};\n        \n        // Override with enhanced version that ensures attributes are updated\n        window.characterUtils.recalculateValues = function(input, type) {\n            let value = parseInt(input.value) || 0;\n            \n            // Update half and fifth values if applicable\n            const container = input.closest('.characteristic-box') || input.parentElement;\n            const halfSpan = container.querySelector('[data-half]');\n            const fifthSpan = container.querySelector('[data-fifth]');\n            \n            if (halfSpan) halfSpan.textContent = Math.floor(value / 2);\n            if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);\n            \n            // Handle attribute updates\n            if (type === 'attribute') {\n                const attrName = input.dataset.attr;\n                \n                // Get character data if it exists\n                const charData = this.getCurrentCharacter();\n                if (charData && charData.attributes && charData.attributes[attrName]) {\n                    charData.attributes[attrName].value = value;\n                }\n                \n                // Update the server with the new value\n                this.updateInvestigator(\"combat\", attrName, value)\n                    .then(() => {\n                        // Add visual feedback\n                        input.classList.add('bg-success', 'bg-opacity-10');\n                        setTimeout(() => {\n                            input.classList.remove('bg-success', 'bg-opacity-10');\n                        }, 300);\n                    })\n                    .catch(error => {\n                        console.error('Error updating attribute:', error);\n                        input.classList.add('bg-danger', 'bg-opacity-10');\n                        setTimeout(() => {\n                            input.classList.remove('bg-danger', 'bg-opacity-10');\n                        }, 300);\n                    });\n            } \n            // Handle skill updates - call original function\n            else if (type === 'skill') {\n                if (typeof originalRecalculateValues === 'function') {\n                    originalRecalculateValues.call(this, input, type);\n                }\n            }\n        };\n        \n        // Initialize the form on load\n        document.addEventListener('DOMContentLoaded', function() {\n            // Add hover effects to stat pills and characteristic boxes\n            const hoverElements = document.querySelectorAll('.stat-pill, .characteristic-box, .skill-item');\n            hoverElements.forEach(element => {\n                element.addEventListener('mouseenter', function() {\n                    if (!this.closest('.card').classList.contains('locked')) {\n                        this.style.backgroundColor = '#f0f0f0';\n                    }\n                });\n                element.addEventListener('mouseleave', function() {\n                    if (!this.closest('.card').classList.contains('locked')) {\n                        this.style.backgroundColor = '#f8f9fa';\n                    }\n                });\n            });\n        });\n    </script>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -707,25 +731,25 @@ func hidden(investigator *models.Investigator) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var44 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var44 == nil {
-			templ_7745c5c3_Var44 = templ.NopComponent
+		templ_7745c5c3_Var45 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var45 == nil {
+			templ_7745c5c3_Var45 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 59, "<input type=\"hidden\" id=\"currentCharacter\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 61, "<input type=\"hidden\" id=\"currentCharacter\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var45 string
-		templ_7745c5c3_Var45, templ_7745c5c3_Err = templ.JoinStringErrs(mustJson(investigator))
+		var templ_7745c5c3_Var46 string
+		templ_7745c5c3_Var46, templ_7745c5c3_Err = templ.JoinStringErrs(mustJson(investigator))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 668, Col: 38}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 672, Col: 38}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var45))
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var46))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 60, "\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 62, "\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

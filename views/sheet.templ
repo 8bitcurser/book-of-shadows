@@ -4,6 +4,7 @@ import "book-of-shadows/models"
 import "strconv"
 import "sort"
 import "strings"
+import "fmt"
 
 templ CharacterSheet(investigator *models.Investigator) {
     @hidden(investigator)
@@ -75,7 +76,10 @@ templ CharacterSheet(investigator *models.Investigator) {
                         <p class="mb-0 text-secondary">{investigator.Occupation.Name} {investigator.Archetype.Name}</p>
                     </div>
                     <div class="ms-auto d-flex flex-wrap">
-                        <button onclick="characterUtils.exportPDF(event, '{investigator.ID}')" class="btn me-2" style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.5rem;">
+                        <button onclick={ templ.ComponentScript{
+                                   Name: "characterUtils.exportPDF",
+                                   Call: fmt.Sprintf("characterUtils.exportPDF(event, '%s')", investigator.ID),
+                               }} class="btn me-2" style="background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: white; border: none; border-radius: 0.5rem;">
                             <i class="bi bi-file-earmark-pdf me-2"></i>Export PDF
                         </button>
                     </div>
@@ -209,7 +213,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                                 <input 
                                     type="number" 
                                     class="form-control" 
-                                    value={strconv.Itoa(investigator.Attributes["MaxHP"].Value)} 
+                                    value={strconv.Itoa(investigator.Attributes["HitPoints"].MaxValue)} 
                                     readonly
                                     style="background-color: #f8f9fa;"
                                 />
@@ -234,7 +238,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                                 <input 
                                     type="number" 
                                     class="form-control" 
-                                    value={strconv.Itoa(investigator.Attributes["MaxMP"].Value)} 
+                                    value={strconv.Itoa(investigator.Attributes["MagicPoints"].MaxValue)} 
                                     readonly
                                     style="background-color: #f8f9fa;"
                                 />
@@ -259,7 +263,7 @@ templ CharacterSheet(investigator *models.Investigator) {
                                 <input 
                                     type="number" 
                                     class="form-control" 
-                                    value={strconv.Itoa(investigator.Attributes["MaxSanity"].Value)} 
+                                    value={strconv.Itoa(investigator.Attributes["Sanity"].MaxValue)} 
                                     readonly
                                     style="background-color: #f8f9fa;"
                                 />
@@ -569,7 +573,7 @@ templ CharacterSheet(investigator *models.Investigator) {
             // Remove toast after 3 seconds
             setTimeout(() => {
                 toast.remove();
-            }, 3000);
+            }, 1500);
         };
         
         // Ensure we keep the original recalculateValues function for attributes
