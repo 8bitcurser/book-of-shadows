@@ -189,7 +189,6 @@ func (i *Investigator) AssignSkillPoints(assignablePoints int, skills []string) 
 		skill.Value += pointsToAssign
 
 		i.Skills[skillName] = skill
-		fmt.Printf("Assigned skill points: %v - Amount: %d\n", skillName, pointsToAssign)
 	}
 	return assignablePoints
 }

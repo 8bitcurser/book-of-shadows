@@ -23,7 +23,7 @@ type Attribute struct {
 	Name          string `json:"Name"`
 	StartingValue int    `json:"-"`
 	Value         int    `json:"Value"`
-	MaxValue      int    `json:"-"`
+	MaxValue      int    `json:"MaxValue"`
 }
 
 func (a *Attribute) String() string {
