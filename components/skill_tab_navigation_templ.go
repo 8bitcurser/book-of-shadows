@@ -35,7 +35,10 @@ func ArchetypeTabActions(investigatorId string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, fmt.Sprintf("characterUtils.goBackToAttributes('%s')", investigatorId))
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{
+			Name: "characterUtils.goBackToAttributes",
+			Call: fmt.Sprintf("characterUtils.goBackToAttributes('%s')", investigatorId),
+		})
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -43,12 +46,38 @@ func ArchetypeTabActions(investigatorId string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 templ.ComponentScript = fmt.Sprintf("characterUtils.goBackToAttributes('%s')", investigatorId)
+		var templ_7745c5c3_Var2 templ.ComponentScript = templ.ComponentScript{
+			Name: "characterUtils.goBackToAttributes",
+			Call: fmt.Sprintf("characterUtils.goBackToAttributes('%s')", investigatorId),
+		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2.Call)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Attributes</button><div class=\"transition-opacity\" id=\"confirm-archetype-container\"><button id=\"archetype-continue-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2 gradient-button\" onclick=\"characterUtils.navigateToTab(&#39;occupation&#39;)\"><i class=\"bi bi-arrow-right-circle me-2\"></i>Continue to Occupation Skills</button></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Attributes</button><div class=\"transition-opacity\" id=\"confirm-archetype-container\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{
+			Name: "characterUtils.navigateToTab",
+			Call: "characterUtils.navigateToTab('occupation')",
+		})
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<button id=\"archetype-continue-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2 gradient-button\" onclick=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 templ.ComponentScript = templ.ComponentScript{
+			Name: "characterUtils.navigateToTab",
+			Call: "characterUtils.navigateToTab('occupation')",
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3.Call)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\"><i class=\"bi bi-arrow-right-circle me-2\"></i>Continue to Occupation Skills</button></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -72,12 +101,58 @@ func OccupationTabActions() templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var3 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var3 == nil {
-			templ_7745c5c3_Var3 = templ.NopComponent
+		templ_7745c5c3_Var4 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var4 == nil {
+			templ_7745c5c3_Var4 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<div class=\"d-flex justify-content-between\"><button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" onclick=\"characterUtils.navigateToTab(&#39;archetype&#39;)\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Archetype Skills</button><div class=\"transition-opacity\" id=\"confirm-occupation-container\"><button id=\"occupation-continue-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2 gradient-button\" onclick=\"characterUtils.navigateToTab(&#39;general&#39;)\"><i class=\"bi bi-arrow-right-circle me-2\"></i>Continue to General Skills</button></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<div class=\"d-flex justify-content-between\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{
+			Name: "characterUtils.navigateToTab",
+			Call: "characterUtils.navigateToTab('archetype')",
+		})
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" onclick=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var5 templ.ComponentScript = templ.ComponentScript{
+			Name: "characterUtils.navigateToTab",
+			Call: "characterUtils.navigateToTab('archetype')",
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var5.Call)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Archetype Skills</button><div class=\"transition-opacity\" id=\"confirm-occupation-container\">")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{
+			Name: "characterUtils.navigateToTab",
+			Call: "characterUtils.navigateToTab('general')",
+		})
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<button id=\"occupation-continue-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2 gradient-button\" onclick=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var6 templ.ComponentScript = templ.ComponentScript{
+			Name: "characterUtils.navigateToTab",
+			Call: "characterUtils.navigateToTab('general')",
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var6.Call)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "\"><i class=\"bi bi-arrow-right-circle me-2\"></i>Continue to General Skills</button></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -101,25 +176,48 @@ func GeneralTabActions(investigatorId string) templ.Component {
 			}()
 		}
 		ctx = templ.InitializeContext(ctx)
-		templ_7745c5c3_Var4 := templ.GetChildren(ctx)
-		if templ_7745c5c3_Var4 == nil {
-			templ_7745c5c3_Var4 = templ.NopComponent
+		templ_7745c5c3_Var7 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var7 == nil {
+			templ_7745c5c3_Var7 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div class=\"d-flex justify-content-between\"><button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" onclick=\"characterUtils.navigateToTab(&#39;occupation&#39;)\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Occupation Skills</button><div class=\"transition-opacity\" id=\"confirm-general-container\"><button id=\"finish-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2 gradient-button\" hx-get=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "<div class=\"d-flex justify-content-between\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", investigatorId))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/skill_tab_navigation.templ`, Line: 63, Col: 76}
-		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
+		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{
+			Name: "characterUtils.navigateToTab",
+			Call: "characterUtils.navigateToTab('occupation')",
+		})
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" hx-target=\"#character-sheet\"><i class=\"bi bi-check-circle me-2\"></i>Complete Character</button></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<button type=\"button\" class=\"btn btn-outline-secondary px-4 py-2\" onclick=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var8 templ.ComponentScript = templ.ComponentScript{
+			Name: "characterUtils.navigateToTab",
+			Call: "characterUtils.navigateToTab('occupation')",
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var8.Call)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Occupation Skills</button><div class=\"transition-opacity\" id=\"confirm-general-container\"><button id=\"finish-btn\" type=\"button\" class=\"btn btn-lg px-4 py-2 gradient-button\" hx-get=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var9 string
+		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", investigatorId))
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/skill_tab_navigation.templ`, Line: 78, Col: 76}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "\" hx-target=\"#character-sheet\"><i class=\"bi bi-check-circle me-2\"></i>Complete Character</button></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

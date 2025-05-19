@@ -7,7 +7,10 @@ templ ArchetypeTabActions(investigatorId string) {
         <button
             type="button"
             class="btn btn-outline-secondary px-4 py-2"
-            onclick={ fmt.Sprintf("characterUtils.goBackToAttributes('%s')", investigatorId) }
+            onclick={ templ.ComponentScript{
+                Name: "characterUtils.goBackToAttributes",
+                Call: fmt.Sprintf("characterUtils.goBackToAttributes('%s')", investigatorId),
+            }}
         >
             <i class="bi bi-arrow-left me-2"></i>Back to Attributes
         </button>
@@ -16,7 +19,10 @@ templ ArchetypeTabActions(investigatorId string) {
                 id="archetype-continue-btn"
                 type="button"
                 class="btn btn-lg px-4 py-2 gradient-button"
-                onclick="characterUtils.navigateToTab('occupation')"
+                onclick={ templ.ComponentScript{
+                    Name: "characterUtils.navigateToTab",
+                    Call: "characterUtils.navigateToTab('occupation')",
+                }}
             >
                 <i class="bi bi-arrow-right-circle me-2"></i>Continue to Occupation Skills
             </button>
@@ -29,7 +35,10 @@ templ OccupationTabActions() {
         <button
             type="button"
             class="btn btn-outline-secondary px-4 py-2"
-            onclick="characterUtils.navigateToTab('archetype')"
+            onclick={ templ.ComponentScript{
+                Name: "characterUtils.navigateToTab",
+                Call: "characterUtils.navigateToTab('archetype')",
+            }}
         >
             <i class="bi bi-arrow-left me-2"></i>Back to Archetype Skills
         </button>
@@ -38,7 +47,10 @@ templ OccupationTabActions() {
                 id="occupation-continue-btn"
                 type="button"
                 class="btn btn-lg px-4 py-2 gradient-button"
-                onclick="characterUtils.navigateToTab('general')"
+                onclick={ templ.ComponentScript{
+                    Name: "characterUtils.navigateToTab",
+                    Call: "characterUtils.navigateToTab('general')",
+                }}
             >
                 <i class="bi bi-arrow-right-circle me-2"></i>Continue to General Skills
             </button>
@@ -51,7 +63,10 @@ templ GeneralTabActions(investigatorId string) {
         <button
             type="button"
             class="btn btn-outline-secondary px-4 py-2"
-            onclick="characterUtils.navigateToTab('occupation')"
+            onclick={ templ.ComponentScript{
+                Name: "characterUtils.navigateToTab",
+                Call: "characterUtils.navigateToTab('occupation')",
+            }}
         >
             <i class="bi bi-arrow-left me-2"></i>Back to Occupation Skills
         </button>
