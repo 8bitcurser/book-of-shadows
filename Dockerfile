@@ -34,6 +34,7 @@ COPY --from=builder /app/serializers ./serializers
 COPY --from=builder /app/models ./models
 COPY --from=builder /app/storage ./storage
 COPY --from=builder /app/data ./data
+COPY --from=builder /app/components ./components
 COPY --from=builder /app/export.go ./export.go
 
 

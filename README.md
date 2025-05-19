@@ -12,11 +12,9 @@
 - Generate random pulp cthulhu investigator
 - Export to official PDF
 - CRUD investigators with CookieStorage
-
-## Pending Features
-
 - Cookie export through QR code or code line for another browser
 - Investigator Wizard
+
 
 ## Why no centralized Storage?
 
