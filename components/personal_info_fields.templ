@@ -1,0 +1,105 @@
+package components
+
+import "book-of-shadows/models"
+import "strconv"
+
+templ PersonalInfoFields(inv *models.Investigator) {
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <label class="form-label fw-medium">Name</label>
+            if inv != nil {
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control shadow-sm"
+                    required
+                    value={inv.Name}
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
+                />
+            } else {
+                <input
+                    type="text"
+                    name="name"
+                    class="form-control shadow-sm"
+                    required
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
+                />
+            }
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <label class="form-label fw-medium">Age</label>
+            if inv != nil {
+                <input
+                    type="number"
+                    name="age"
+                    min="15"
+                    max="90"
+                    value={strconv.Itoa(inv.Age)}
+                    class="form-control shadow-sm"
+                    required
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
+                />
+            } else {
+                <input
+                    type="number"
+                    name="age"
+                    min="15"
+                    max="90"
+                    class="form-control shadow-sm"
+                    required
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
+                />
+            }
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <label class="form-label fw-medium">Residence</label>
+            if inv != nil {
+                <input
+                    type="text"
+                    name="residence"
+                    class="form-control shadow-sm"
+                    required
+                    value={inv.Residence}
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
+                />
+            } else {
+                <input
+                    type="text"
+                    name="residence"
+                    class="form-control shadow-sm"
+                    required
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
+                />
+            }
+        </div>
+        <div class="col-md-6 col-lg-3">
+            <label class="form-label fw-medium">Birthplace</label>
+            if inv != nil {
+                <input
+                    type="text"
+                    name="birthplace"
+                    class="form-control shadow-sm"
+                    required
+                    value={inv.Birthplace}
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
+                />
+            } else {
+                <input
+                    type="text"
+                    name="birthplace"
+                    class="form-control shadow-sm"
+                    required
+                    onchange="characterUtils.checkFormCompletion()"
+                    onkeyup="characterUtils.checkFormCompletion()"
+                />
+            }
+        </div>
+    </div>
+}

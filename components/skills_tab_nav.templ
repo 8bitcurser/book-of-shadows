@@ -1,0 +1,52 @@
+package components 
+
+templ SkillsTabNav() {
+    <div class="mb-4">
+        <ul class="nav nav-pills nav-fill" id="skillsTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link active fw-medium py-3"
+                    id="archetype-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#archetype-skills"
+                    type="button"
+                    role="tab"
+                    aria-controls="archetype-skills"
+                    aria-selected="true"
+                >
+                    <i class="bi bi-person-badge me-2"></i>Archetype Skills
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link fw-medium py-3"
+                    id="occupation-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#occupation-skills"
+                    type="button"
+                    role="tab"
+                    aria-controls="occupation-skills"
+                    aria-selected="false"
+                    disabled
+                >
+                    <i class="bi bi-briefcase me-2"></i>Occupation Skills
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button
+                    class="nav-link fw-medium py-3"
+                    id="general-tab"
+                    data-bs-toggle="tab"
+                    data-bs-target="#general-skills"
+                    type="button"
+                    role="tab"
+                    aria-controls="general-skills"
+                    aria-selected="false"
+                    disabled
+                >
+                    <i class="bi bi-list-check me-2"></i>General Skills
+                </button>
+            </li>
+        </ul>
+    </div>
+}

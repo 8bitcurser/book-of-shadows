@@ -1,0 +1,19 @@
+package components
+
+import "encoding/json"
+
+templ HiddenCharacterData(character interface{}) {
+    <input
+        type="hidden"
+        id="currentCharacter"
+        value={ mustJson(character) }
+    />
+}
+
+func mustJson(v interface{}) string {
+    b, err := json.Marshal(v)
+    if err != nil {
+        return ""
+    }
+    return string(b)
+}

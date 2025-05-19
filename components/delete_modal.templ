@@ -1,0 +1,37 @@
+package components
+
+import "book-of-shadows/models"
+import "fmt"
+
+templ DeleteModal(inv *models.Investigator) {
+    <div class="modal fade" id={ fmt.Sprintf("d-%s", inv.ID) } tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="deleteModalLabel">Confirm Deletion</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Are you sure you want to delete <strong>{ inv.Name }</strong> ({ inv.Occupation.Name })? This action is irreversible.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a class="btn btn-danger"
+                        hx-delete={ fmt.Sprintf("/api/investigator/delete/%s", inv.ID) }
+                        hx-target="closest div"
+                        data-bs-dismiss="modal">
+                        Delete
+                    </a>
+                    <div
+                        hx-get="/api/investigator/list"
+                        hx-trigger="deleted from:body"
+                        hx-target="#character-sheet"
+                        style="display: none;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

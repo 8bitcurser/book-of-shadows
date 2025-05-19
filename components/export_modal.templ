@@ -1,0 +1,26 @@
+package components
+
+templ ExportModal() {
+    <div id="exportModal" class="modal fade" tabindex="-1" aria-labelledby="exportModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exportModalLabel">Export Investigators</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control modal-textarea" id="exportCode" rows="10" disabled
+                        hx-get="/api/investigator/list/export"
+                        hx-trigger="load"
+                        hx-swap="innerHTML"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        onclick="navigator.clipboard.writeText(document.getElementById('exportCode').value);"
+                        type="button" class="btn btn-primary">Copy Code</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

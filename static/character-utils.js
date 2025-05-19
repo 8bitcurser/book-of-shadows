@@ -276,8 +276,516 @@ const characterUtils = {
                 input.removeAttribute('max');
             }
         });
-    }
+    },
 
+    // Function to handle archetype selection
+    handleArchetypeSelection(selectElement) {
+        // Show/hide description
+        const descriptionElement = document.getElementById('archetype-description');
+        const selectedOption = Array.from(selectElement.options).find(option => option.value === selectElement.value);
+        
+        if (selectedOption && selectedOption.dataset.description) {
+            descriptionElement.textContent = selectedOption.dataset.description;
+            descriptionElement.style.display = 'block';
+        } else {
+            descriptionElement.style.display = 'none';
+        }
+
+        // Show/hide occupation container
+        const occupationContainer = document.getElementById('occupation-container');
+        occupationContainer.style.display = selectElement.value ? 'block' : 'none';
+
+        // Check if the form is complete
+        this.checkFormCompletion();
+    },
+
+    // Function to handle occupation selection
+    handleOccupationSelection(selectElement) {
+        const descriptionElement = document.getElementById('occupation-description');
+        const selectedOption = Array.from(selectElement.options).find(option => option.value === selectElement.value);
+        
+        if (selectedOption && selectedOption.dataset.description) {
+            descriptionElement.textContent = selectedOption.dataset.description;
+            descriptionElement.style.display = 'block';
+        } else {
+            descriptionElement.style.display = 'none';
+        }
+
+        this.checkFormCompletion();
+    },
+
+    // Function to check if the form is complete
+    checkFormCompletion() {
+        const nameInput = document.querySelector('input[name="name"]');
+        const ageInput = document.querySelector('input[name="age"]');
+        const residenceInput = document.querySelector('input[name="residence"]');
+        const birthplaceInput = document.querySelector('input[name="birthplace"]');
+        const archetypeSelect = document.getElementById('archetype-select');
+        const occupationSelect = document.getElementById('occupation-select');
+        const nextButton = document.getElementById('next-step-button');
+
+        const isFormComplete = (
+            nameInput && nameInput.value.trim() !== '' &&
+            ageInput && ageInput.value !== '' &&
+            residenceInput && residenceInput.value.trim() !== '' &&
+            birthplaceInput && birthplaceInput.value.trim() !== '' &&
+            archetypeSelect && archetypeSelect.value !== '' &&
+            occupationSelect && occupationSelect.value !== ''
+        );
+        
+        nextButton.disabled = !isFormComplete;
+        
+        if (isFormComplete) {
+            nextButton.style.background = 'linear-gradient(135deg, #6d6875 0%, #b5838d 100%)';
+            nextButton.classList.add('pulse-button');
+        } else {
+            nextButton.style.background = '#e5e5e5';
+            nextButton.classList.remove('pulse-button');
+        }
+        
+        return isFormComplete;
+    },
+
+    // Add these functions to character-utils.js
+
+    // Roll all attributes at once
+    rollAllAttributes() {
+        // Get the dice roll button and add animation
+        const rollButton = document.querySelector('button[onclick="characterUtils.rollAllAttributes()"]');
+        rollButton.classList.add('dice-rolling');
+        setTimeout(() => {
+            rollButton.classList.remove('dice-rolling');
+        }, 500);
+        
+        // Get all attribute inputs
+        const attributeInputs = document.querySelectorAll('.attribute-input');
+        
+        // Randomize the order to make it more visually interesting
+        const shuffledInputs = Array.from(attributeInputs).sort(() => Math.random() - 0.5);
+        
+        // Sequentially roll each attribute with a small delay
+        shuffledInputs.forEach((input, index) => {
+            setTimeout(() => {
+                this.rollAttribute(input);
+                
+                // Highlight the container
+                const container = input.closest('.attribute-container');
+                container.classList.add('highlight');
+                setTimeout(() => {
+                    container.classList.remove('highlight');
+                }, 500);
+            }, index * 150); // Stagger the rolls
+        });
+    },
+
+    // Roll a single attribute
+    rollAttribute(input) {
+        const formula = input.dataset.formula;
+        let result = 0;
+
+        if (formula === '3d6x5') {
+            // Roll 3d6 * 5 with animation
+            result = this.animateDiceRoll(3, 6, 5, input);
+        } else if (formula === '2d6p6x5') {
+            // Roll (2d6 + 6) * 5 with animation
+            result = this.animateDiceRoll(2, 6, 5, input, 6);
+        }
+        
+        // Update the half and fifth values
+        this.updateDerivedValues(input);
+    },
+
+    // Add a new function for dice roll animation
+    animateDiceRoll(numDice, sides, multiplier, input, bonus = 0) {
+        // Start with a random value
+        let currentValue = Math.floor(Math.random() * sides * numDice) * multiplier;
+        if (bonus > 0) currentValue += (bonus * multiplier);
+        input.value = currentValue;
+        
+        // Animate through several values
+        let iterations = 3;
+        const animateRoll = setInterval(() => {
+            currentValue = Math.floor(Math.random() * sides * numDice) * multiplier;
+            if (bonus > 0) currentValue += (bonus * multiplier);
+            input.value = currentValue;
+            iterations--;
+            
+            if (iterations <= 0) {
+                clearInterval(animateRoll);
+                // Final actual roll
+                let result = 0;
+                for (let i = 0; i < numDice; i++) {
+                    result += Math.floor(Math.random() * sides) + 1;
+                }
+                if (bonus > 0) result += bonus;
+                result *= multiplier;
+                
+                input.value = result;
+                this.updateDerivedValues(input);
+            }
+        }, 100);
+        
+        return currentValue;
+    },
+
+    // Add function to update half and fifth values
+    updateDerivedValues(input) {
+        const container = input.closest('.attribute-container');
+        const halfSpan = container.querySelector('.attr-half');
+        const fifthSpan = container.querySelector('.attr-fifth');
+        
+        const value = parseInt(input.value) || 0;
+        
+        if (halfSpan) halfSpan.textContent = Math.floor(value / 2);
+        if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);
+    },
+
+    // Initialize attribute form
+    initAttributeForm() {
+        // Set up input change listeners for all attribute inputs
+        document.querySelectorAll('.attribute-input').forEach(input => {
+            input.addEventListener('input', function() {
+                characterUtils.updateDerivedValues(this);
+            });
+            
+            // Initial calculation for any pre-filled values
+            characterUtils.updateDerivedValues(input);
+        })
+    },
+
+    // Add these to character-utils.js
+
+    // Function to go back to attributes page
+    goBackToAttributes(investigatorId) {
+        htmx.ajax('GET', '/api/investigator/attributes/' + investigatorId, {
+            target: '#character-sheet',
+            swap: 'innerHTML'
+        });
+    },
+
+    // Function to navigate between tabs
+    navigateToTab(tabName) {
+        // Enable the tab if it's not the archetype tab (which is always enabled)
+        if (tabName !== 'archetype') {
+            document.getElementById(tabName + '-tab').disabled = false;
+        }
+
+        // Add a slight delay before switching tabs for better animation
+        setTimeout(() => {
+            // Switch to the tab
+            const tab = new bootstrap.Tab(document.getElementById(tabName + '-tab'));
+            tab.show();
+            
+            // Scroll to top of the tab content
+            document.getElementById(tabName + '-skills').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }, 100);
+    },
+
+    // Function to increment or decrement skill value using buttons
+    adjustSkillValue(btn, increment) {
+        const inputGroup = btn.closest('.skill-input-group');
+        const input = inputGroup.querySelector('.skill-input');
+        const currentValue = parseInt(input.value) || 0;
+        
+        // Increment or decrement the value
+        input.value = currentValue + (increment ? 1 : -1);
+        
+        // Trigger the change event to update calculations
+        input.dispatchEvent(new Event('change'));
+    },
+
+
+    recalculateSkillValues(input) {
+        const skillName = input.dataset.skill;
+        const value = parseInt(input.value) || 0;
+        const prevValue = parseInt(input.dataset.skillvalue) || 0;
+        const defaultValue = parseInt(input.dataset.skilldefault) || 0;
+        const skillType = input.dataset.skilltype || 'archetype';
+
+        // Apply max limit
+        if (value > 90) {
+            input.value = 90;
+            return;
+        }
+        
+        // Apply min limit (default value)
+        if (value < defaultValue) {
+            input.value = defaultValue;
+            return;
+        }
+
+        // Calculate difference
+        const difference = value - prevValue;
+        
+        // Skip if there's no change
+        if (difference === 0) return;
+
+        // Get proper points element
+        let pointsId = "";
+        let confirmId = "";
+
+        if (skillType === "archetype" || document.querySelector('#archetype-skills.active')) {
+            pointsId = "archetype-points";
+            confirmId = "confirm-archetype-container";
+        } else if (skillType === "occupation" || document.querySelector('#occupation-skills.active')) {
+            pointsId = "occupation-points";
+            confirmId = "confirm-occupation-container";
+        } else if (skillType === "general" || document.querySelector('#general-skills.active')) {
+            pointsId = "general-points";
+            confirmId = "confirm-general-container";
+        }
+
+        // Get points element and current remaining points
+        const pointsElement = document.getElementById(pointsId);
+
+        if (pointsElement) {
+            const currentPoints = parseInt(pointsElement.textContent) || 0;
+            const newPoints = currentPoints - difference;
+
+            // Don't allow negative points
+            if (newPoints < 0) {
+                input.value = prevValue;
+                
+                // Visual feedback for error
+                input.classList.add('is-invalid');
+                
+                // Remove invalid class after a short delay
+                setTimeout(() => {
+                    input.classList.remove('is-invalid');
+                }, 800);
+                
+                return;
+            }
+
+            // Update points display with visual feedback
+            pointsElement.textContent = newPoints;
+            
+            // Add color coding based on remaining points
+            if (newPoints < 10) {
+                pointsElement.style.color = '#e74c3c';
+            } else {
+                pointsElement.style.color = '#b5838d';
+            }
+            
+            // Highlight the skill box that was changed
+            const skillBox = input.closest('.skill-box');
+            skillBox.classList.add('flash-highlight');
+            setTimeout(() => {
+                skillBox.classList.remove('flash-highlight');
+            }, 800);
+
+            // Update skill value tracking
+            input.dataset.skillvalue = value;
+
+            // Update half and fifth values
+            const container = input.closest('.skill-values');
+            const halfSpan = container.querySelector('[data-half]');
+            const fifthSpan = container.querySelector('[data-fifth]');
+
+            if (halfSpan) halfSpan.textContent = Math.floor(value / 2);
+            if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);
+
+            // Show continue button if all points are used
+            const confirmContainer = document.getElementById(confirmId);
+            if (confirmContainer && newPoints === 0) {
+                confirmContainer.style.opacity = "1";
+                confirmContainer.style.pointerEvents = "auto";
+            }
+        }
+
+        // Call server update
+        this.updateInvestigator("skills", skillName, value);
+    },
+
+    // Initialize skill form
+    initSkillForm() {
+        // Ensure all tab continue buttons are visible
+        document.querySelectorAll('.transition-opacity').forEach(container => {
+            container.style.opacity = "1";
+            container.style.pointerEvents = "auto";
+        });
+        
+        // Add hover effects to skill boxes
+        document.querySelectorAll('.skill-box').forEach(box => {
+            box.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = '#f0f0f0';
+            });
+            box.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = '#f8f9fa';
+            });
+        });
+        
+        // Initialize any skill inputs
+        document.querySelectorAll('.skill-input').forEach(input => {
+            // Add focus/blur effects
+            input.addEventListener('focus', function() {
+                this.closest('.skill-box').style.borderColor = '#b5838d';
+            });
+            
+            input.addEventListener('blur', function() {
+                this.closest('.skill-box').style.borderColor = 'rgba(0,0,0,0.05)';
+            });
+        });
+    },
+
+
+    toggleLock(checkbox) {
+        const isLocked = checkbox.checked;
+        
+        // Get all editable elements
+        const editables = document.querySelectorAll('.editable');
+        
+        editables.forEach(element => {
+            element.disabled = isLocked;
+        });
+        
+        // Show a message 
+        const lockMessage = isLocked ? 'Character sheet is now locked. Unlock to make changes.' : 'Character sheet is now editable.';
+        const toast = document.createElement('div');
+        toast.className = 'position-fixed bottom-0 end-0 p-3';
+        toast.style.zIndex = 1050;
+        toast.innerHTML = `
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header">
+                    <strong class="me-auto">${isLocked ? '🔒 Locked' : '🔓 Unlocked'}</strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close" onclick="this.parentElement.parentElement.remove()"></button>
+                </div>
+                <div class="toast-body">
+                    ${lockMessage}
+                </div>
+            </div>
+        `;
+        document.body.appendChild(toast);
+        
+        // Remove toast after 1.5 seconds
+        setTimeout(() => {
+            toast.remove();
+        }, 1500);
+},
+
+// Enhanced recalculateValues function for character sheet
+    recalculateSheetValues(input, type) {
+        let value = parseInt(input.value) || 0;
+        
+        // Update half and fifth values if applicable
+        const container = input.closest('.characteristic-box') || input.parentElement;
+        const halfSpan = container.querySelector('[data-half]');
+        const fifthSpan = container.querySelector('[data-fifth]');
+        
+        if (halfSpan) halfSpan.textContent = Math.floor(value / 2);
+        if (fifthSpan) fifthSpan.textContent = Math.floor(value / 5);
+        
+        // Handle attribute updates
+        if (type === 'attribute') {
+            const attrName = input.dataset.attr;
+            
+            // Get character data if it exists
+            const charData = this.getCurrentCharacter();
+            if (charData && charData.attributes && charData.attributes[attrName]) {
+                charData.attributes[attrName].value = value;
+            }
+            
+            // Update the server with the new value
+            this.updateInvestigator("combat", attrName, value)
+                .then(() => {
+                    // Add visual feedback
+                    input.classList.add('bg-success', 'bg-opacity-10');
+                    setTimeout(() => {
+                        input.classList.remove('bg-success', 'bg-opacity-10');
+                    }, 300);
+                })
+                .catch(error => {
+                    console.error('Error updating attribute:', error);
+                    input.classList.add('bg-danger', 'bg-opacity-10');
+                    setTimeout(() => {
+                        input.classList.remove('bg-danger', 'bg-opacity-10');
+                    }, 300);
+                });
+        } 
+        // Handle skill updates
+        else if (type === 'skill') {
+            // Update skill derived values (half/fifth)
+            const skillItem = input.closest('.skill-item');
+            if (skillItem) {
+                const derivedValues = skillItem.querySelector('.derived-values');
+                if (derivedValues) {
+                    const spans = derivedValues.querySelectorAll('span');
+                    if (spans.length >= 3) {
+                        spans[0].textContent = Math.floor(value / 2);
+                        spans[2].textContent = Math.floor(value / 5);
+                    }
+                }
+            }
+            
+            const skillName = input.dataset.skill;
+            const prevValue = parseInt(input.dataset.skillvalue) || value;
+            
+            // Update the server with the new value
+            this.updateInvestigator("skills", skillName, value)
+                .then(() => {
+                    // Add visual feedback
+                    input.classList.add('bg-success', 'bg-opacity-10');
+                    setTimeout(() => {
+                        input.classList.remove('bg-success', 'bg-opacity-10');
+                    }, 300);
+                })
+                .catch(error => {
+                    console.error('Error updating skill:', error);
+                    input.classList.add('bg-danger', 'bg-opacity-10');
+                    setTimeout(() => {
+                        input.classList.remove('bg-danger', 'bg-opacity-10');
+                    }, 300);
+                });
+            
+            // Update skill value tracking
+            input.dataset.skillvalue = value.toString();
+        }
+    },
+
+// Initialize character sheet
+    initCharacterSheet() {
+        // Add hover effects to stat pills and characteristic boxes
+        const hoverElements = document.querySelectorAll('.stat-pill, .characteristic-box, .skill-item');
+        hoverElements.forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                if (!this.closest('.card').classList.contains('locked')) {
+                    this.style.backgroundColor = '#f0f0f0';
+                }
+            });
+            element.addEventListener('mouseleave', function() {
+                if (!this.closest('.card').classList.contains('locked')) {
+                    this.style.backgroundColor = '#f8f9fa';
+                }
+            });
+        });
+    
+        // Adjust skill names dynamically based on available space
+        adjustSkillNames = function() {
+            const skillItems = document.querySelectorAll('.skill-item');
+            skillItems.forEach(item => {
+                const container = item.querySelector('.skill-name-container');
+                const nameWrapper = item.querySelector('.skill-name-wrapper');
+                const name = item.querySelector('.skill-name');
+                
+                if (container && nameWrapper && name) {
+                    // Calculate available width
+                    const containerWidth = container.offsetWidth;
+                    
+                    // Adjust max-width dynamically if needed
+                    if (containerWidth < 120) {
+                        name.style.maxWidth = (containerWidth - 30) + 'px';
+                    }
+                }
+            });
+        };
+    
+        // Run initially and on window resize
+        adjustSkillNames();
+        window.addEventListener('resize', adjustSkillNames);
+    }
 
 };
 

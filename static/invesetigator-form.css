@@ -1,0 +1,131 @@
+/* investigator-form.css */
+.coc-sheet {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.form-control:focus, select:focus {
+    border-color: #b5838d;
+    box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
+}
+
+.form-control, select {
+    border-radius: 0.5rem;
+    padding: 0.625rem 0.75rem;
+    transition: all 0.2s;
+}
+
+.form-label {
+    color: #6d6875;
+    margin-bottom: 0.5rem;
+}
+
+#next-step-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+#next-step-button {
+    transition: all 0.3s;
+    border-radius: 0.5rem;
+}
+
+#next-step-button:disabled {
+    background: #e5e5e5 !important;
+    color: #999;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Progress steps styling */
+.step-indicator {
+    position: relative;
+    z-index: 1;
+}
+
+.step-circle {
+    transition: all 0.3s;
+    width: 30px; 
+    height: 30px; 
+    border-radius: 50%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+.step-circle.active {
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    color: white;
+}
+
+.step-circle.inactive {
+    background: #e5e5e5;
+    color: #999;
+}
+
+.step-label {
+    transition: all 0.3s;
+}
+
+.step-connector {
+    height: 2px; 
+    background: #f0f0f0;
+}
+
+.step-indicator.completed .step-label {
+    color: #6d6875;
+}
+
+.step-indicator.active .step-label {
+    color: #6d6875;
+    font-weight: 500;
+}
+
+/* Submit button pulsing when all fields are filled */
+@keyframes pulse-button {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.pulse-button {
+    animation: pulse-button 1.5s infinite;
+}
+
+/* Form field transitions */
+@keyframes field-highlight {
+    0% { background-color: rgba(181, 131, 141, 0.1); }
+    100% { background-color: transparent; }
+}
+
+.field-highlight {
+    animation: field-highlight 1s;
+}
+
+.description-box {
+    min-height: 4em;
+    display: none;
+}
+
+.form-section-header {
+    color: #6d6875;
+}
+
+.progress-bar-custom {
+    height: 8px; 
+    background-color: #f0f0f0;
+}
+
+.progress-fill {
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+}
+
+.gradient-button {
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    border: none;
+    min-width: 240px;
+}

@@ -1,0 +1,11 @@
+package components
+
+import "book-of-shadows/models"
+
+templ InvestigatorsGrid(investigators []*models.Investigator) {
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        for _, inv := range investigators {
+            @InvestigatorCard(inv)
+        }
+    </div>
+}

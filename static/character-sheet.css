@@ -1,0 +1,209 @@
+/* character-sheet.css */
+.coc-sheet {
+    font-family: 'Roboto', sans-serif;
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+    max-width: 1400px;
+    width: 98%;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+/* Character avatar */
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Card styling */
+.card-header-custom {
+    background: rgba(109, 104, 117, 0.1);
+    border: none;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.gradient-button {
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+}
+
+.card-header-icon {
+    color: #6d6875;
+}
+
+.section-title {
+    color: #6d6875;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+/* Characteristics */
+.characteristic-box {
+    background-color: #f8f9fa;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.characteristic-box:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;
+    background-color: #fff !important;
+}
+
+.characteristic-value {
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    color: white;
+}
+
+/* Stat pills */
+.stat-pill {
+    background-color: #f8f9fa;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.stat-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;
+    background-color: #f0e6ea !important;
+}
+
+/* Skills grid */
+.skills-grid {
+    column-count: 3;
+    column-gap: 20px;
+}
+
+.skill-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    background-color: #f8f9fa;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.skill-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 0.25rem 0.5rem rgba(0,0,0,0.1) !important;
+    background-color: #fff !important;
+    border-color: rgba(181, 131, 141, 0.2) !important;
+}
+
+.skill-name-container {
+    flex: 1;
+    min-width: 0;
+    margin-right: 8px;
+}
+
+.skill-name-wrapper {
+    display: flex;
+    align-items: baseline;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.skill-name {
+    color: #6d6875;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+.skill-badge {
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    color: white;
+}
+
+/* Talents */
+.talent-item {
+    background-color: #f8f9fa;
+    border: 1px solid rgba(0,0,0,0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+.talent-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+}
+
+.talent-title {
+    color: #6d6875;
+    font-weight: bold;
+}
+
+/* Lock toggle switch styling */
+.form-switch .form-check-input {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+    background-color: #adb5bd;
+    border-color: #adb5bd;
+    cursor: pointer;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: #b5838d;
+    border-color: #b5838d;
+}
+
+/* Form elements */
+.form-control:focus {
+    border-color: #b5838d;
+    box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
+}
+
+.form-control[disabled], 
+.form-check-input[disabled] {
+    background-color: #f8f9fa;
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .skills-grid {
+        column-count: 3;
+    }
+    
+    .skill-name {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 992px) {
+    .skills-grid {
+        column-count: 2;
+    }
+    
+    .skill-name {
+        max-width: 200px;
+    }
+}
+
+@media (max-width: 576px) {
+    .skills-grid {
+        column-count: 1;
+    }
+    
+    .skill-name {
+        max-width: 250px;
+    }
+}

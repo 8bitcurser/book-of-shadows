@@ -1,0 +1,37 @@
+package components
+
+import "book-of-shadows/models"
+
+templ OccupationSelection(inv *models.Investigator) {
+    <div class="col-md-6" id="occupation-container" style={getOccupationContainerStyle(inv)}>
+        <label class="form-label fw-medium">Occupation</label>
+        <select
+            name="occupation"
+            id="occupation-select"
+            class="form-control shadow-sm"
+            required
+            onchange="characterUtils.handleOccupationSelection(this)"
+        >
+            if inv != nil {
+                <option value={inv.Occupation.Name} data-description={inv.Occupation.GetDescription()} selected>{inv.Occupation.Name}</option>
+            } else {
+                <option value="">Select Occupation</option>
+            }
+            for occ := range models.OccupationsList {
+                {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
+                <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
+            }
+        </select>
+        <div 
+            id="occupation-description"
+            class="mt-3 p-3 rounded shadow-sm bg-light text-secondary description-box"
+        ></div>
+    </div>
+}
+
+func getOccupationContainerStyle(inv *models.Investigator) string {
+    if inv != nil && inv.Archetype.Name != "" {
+        return "display: block;"
+    }
+    return "display: none;"
+}

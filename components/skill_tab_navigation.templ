@@ -1,0 +1,70 @@
+package components
+
+import "fmt"
+
+templ ArchetypeTabActions(investigatorId string) {
+    <div class="d-flex justify-content-between">
+        <button
+            type="button"
+            class="btn btn-outline-secondary px-4 py-2"
+            onclick={ fmt.Sprintf("characterUtils.goBackToAttributes('%s')", investigatorId) }
+        >
+            <i class="bi bi-arrow-left me-2"></i>Back to Attributes
+        </button>
+        <div class="transition-opacity" id="confirm-archetype-container">
+            <button
+                id="archetype-continue-btn"
+                type="button"
+                class="btn btn-lg px-4 py-2 gradient-button"
+                onclick="characterUtils.navigateToTab('occupation')"
+            >
+                <i class="bi bi-arrow-right-circle me-2"></i>Continue to Occupation Skills
+            </button>
+        </div>
+    </div>
+}
+
+templ OccupationTabActions() {
+    <div class="d-flex justify-content-between">
+        <button
+            type="button"
+            class="btn btn-outline-secondary px-4 py-2"
+            onclick="characterUtils.navigateToTab('archetype')"
+        >
+            <i class="bi bi-arrow-left me-2"></i>Back to Archetype Skills
+        </button>
+        <div class="transition-opacity" id="confirm-occupation-container">
+            <button
+                id="occupation-continue-btn"
+                type="button"
+                class="btn btn-lg px-4 py-2 gradient-button"
+                onclick="characterUtils.navigateToTab('general')"
+            >
+                <i class="bi bi-arrow-right-circle me-2"></i>Continue to General Skills
+            </button>
+        </div>
+    </div>
+}
+
+templ GeneralTabActions(investigatorId string) {
+    <div class="d-flex justify-content-between">
+        <button
+            type="button"
+            class="btn btn-outline-secondary px-4 py-2"
+            onclick="characterUtils.navigateToTab('occupation')"
+        >
+            <i class="bi bi-arrow-left me-2"></i>Back to Occupation Skills
+        </button>
+        <div class="transition-opacity" id="confirm-general-container">
+            <button
+                id="finish-btn"
+                type="button"
+                class="btn btn-lg px-4 py-2 gradient-button"
+                hx-get={ fmt.Sprintf("/api/investigator/%s", investigatorId) }
+                hx-target="#character-sheet"
+            >
+                <i class="bi bi-check-circle me-2"></i>Complete Character
+            </button>
+        </div>
+    </div>
+}

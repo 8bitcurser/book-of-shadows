@@ -1,0 +1,41 @@
+package components
+
+import "book-of-shadows/models"
+import "strconv"
+
+templ CharacterOverview(inv *models.Investigator) {
+    <!-- Hidden input for character identification -->
+    <input
+        type="text"
+        id={ inv.ID }
+        class="d-none"
+        value={ inv.Name }
+        data-field="Name"
+        onchange="characterUtils.updatePersonalInfo(this)"
+    />
+
+    <!-- Character Overview Card -->
+    <div class="card mb-4 shadow-sm" style="border-radius: 1rem; border: none; background-color: #f8f9fa;">
+        <div class="card-body py-3">
+            <div class="d-flex align-items-center">
+                <div class="avatar me-3">
+                    { string([]rune(inv.Name)[0]) }
+                </div>
+                <div>
+                    <h4 class="mb-0 fw-bold">{ inv.Name }</h4>
+                    <p class="mb-0 text-secondary">{ inv.Archetype.Name } { inv.Occupation.Name }</p>
+                </div>
+                <div class="ms-auto d-flex">
+                    <div class="info-pill mx-2 px-3 py-2 rounded-pill bg-light text-center">
+                        <small class="d-block text-muted">Age</small>
+                        <span class="fw-medium">{ strconv.Itoa(inv.Age) }</span>
+                    </div>
+                    <div class="info-pill mx-2 px-3 py-2 rounded-pill bg-light text-center">
+                        <small class="d-block text-muted">Origin</small>
+                        <span class="fw-medium">{ inv.Birthplace }</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

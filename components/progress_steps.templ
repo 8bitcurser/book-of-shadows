@@ -1,0 +1,72 @@
+package components
+
+templ ProgressSteps(currentStep int) {
+    <div class="mb-4">
+        <div class="progress mb-3 progress-bar-custom">
+            <div class="progress-bar progress-fill" role="progressbar" style="width: {getProgressWidth(currentStep)}%;" aria-valuenow="{getProgressWidth(currentStep)}" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center px-2">
+            <div class={getStepClass(1, currentStep)}>
+                <div class={getStepCircleClass(1, currentStep)}>
+                    <span>1</span>
+                </div>
+                <span class="step-label small fw-medium">Personal Info</span>
+            </div>
+            <div class="step-connector flex-grow-1 mx-2"></div>
+            <div class={getStepClass(2, currentStep)}>
+                <div class={getStepCircleClass(2, currentStep)}>
+                    <span>2</span>
+                </div>
+                <span class="step-label small">Attributes</span>
+            </div>
+            <div class="step-connector flex-grow-1 mx-2"></div>
+            <div class={getStepClass(3, currentStep)}>
+                <div class={getStepCircleClass(3, currentStep)}>
+                    <span>3</span>
+                </div>
+                <span class="step-label small">Skills</span>
+            </div>
+            <div class="step-connector flex-grow-1 mx-2"></div>
+            <div class={getStepClass(4, currentStep)}>
+                <div class={getStepCircleClass(4, currentStep)}>
+                    <span>4</span>
+                </div>
+                <span class="step-label small">Complete</span>
+            </div>
+        </div>
+    </div>
+}
+
+func getProgressWidth(step int) string {
+    switch step {
+    case 1:
+        return "20"
+    case 2:
+        return "50"
+    case 3:
+        return "75"
+    case 4:
+        return "100"
+    default:
+        return "0"
+    }
+}
+
+func getStepClass(stepNum int, currentStep int) string {
+    baseClass := "step-indicator d-flex flex-column align-items-center"
+    if stepNum < currentStep {
+        return baseClass + " completed"
+    }
+    if stepNum == currentStep {
+        return baseClass + " active" 
+    }
+    return baseClass
+}
+
+func getStepCircleClass(stepNum int, currentStep int) string {
+    baseClass := "step-circle mb-1"
+    if stepNum <= currentStep {
+        return baseClass + " active" 
+    }
+    return baseClass + " inactive"
+}

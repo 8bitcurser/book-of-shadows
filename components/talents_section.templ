@@ -1,0 +1,23 @@
+package components
+
+import "book-of-shadows/models"
+
+templ TalentsSection(inv *models.Investigator) {
+    if len(inv.Talents) > 0 {
+        <div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
+            <div class="card-header d-flex align-items-center p-3 card-header-custom">
+                <i class="bi bi-stars me-2 card-header-icon"></i>
+                <h4 class="section-title">Pulp Talents</h4>
+            </div>
+            <div class="card-body p-3">
+                for _, talent := range inv.Talents {
+                    <div class="talent-item p-3 mb-3 rounded shadow-sm">
+                        <div class="talent-accent"></div>
+                        <h5 class="talent-title">{talent.Name}</h5>
+                        <p class="mb-0 text-secondary">{talent.Description}</p>
+                    </div>
+                }
+            </div>
+        </div>
+    }
+}

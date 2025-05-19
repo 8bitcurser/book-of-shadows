@@ -1,0 +1,23 @@
+package components
+
+templ ImportModal() {
+    <div id="importModal" class="modal fade" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="importModalLabel">Import Investigators</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <textarea class="form-control modal-textarea" id="importCode" rows="10" placeholder="Paste export code here"></textarea>
+                </div>
+                <div class="modal-footer">
+                    <button
+                        onclick="characterUtils.importInvestigators();"
+                        type="button" class="btn btn-primary" hx-swap="none" data-bs-dismiss="modal">Import</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}

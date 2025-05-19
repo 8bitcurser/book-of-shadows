@@ -1,0 +1,54 @@
+package components
+
+import "slices"
+import "book-of-shadows/models"
+
+templ AttributeInput(key string, value string, isCoreAttr bool, formula string) {
+    <div class="col-md-6 col-lg-4 mb-3">
+        <div class="attribute-container p-3 rounded shadow-sm">
+            <div class="d-flex align-items-center mb-3">
+                <label class="form-label fw-medium mb-0 me-2 attribute-label">{value}</label>
+                if isCoreAttr {
+                    <div class="position-relative d-inline-block tooltip-container">
+                        <span class="badge core-badge">Core</span>
+                        <div class="tooltip-text">
+                            Normally start no higher than 90%; pulp heroes, however, can begin with 95% in their core characteristic. To determine a core characteristic, roll 1D6+13 and multiply the result by 5
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="input-group">
+                <input
+                    type="number"
+                    name={key}
+                    min="1"
+                    if formula == "3d6x5" {
+                        placeholder="3D6 × 5"
+                    } else {
+                        placeholder="(2D6 + 6) × 5"
+                    }
+                    max="90"
+                    class="form-control form-control-lg text-center shadow-sm attribute-input"
+                    required
+                    data-formula={formula}
+                    onchange="characterUtils.updateDerivedValues(this)"
+                />
+            </div>
+            <div class="d-flex justify-content-between mt-2 text-muted small">
+                <span>Half: <span class="attr-half">-</span></span>
+                <span>Fifth: <span class="attr-fifth">-</span></span>
+            </div>
+        </div>
+    </div>
+}
+
+func getAttributeFormula(key string) string {
+    if key == "STR" || key == "CON" || key == "LCK" || key == "DEX" || key == "APP" || key == "POW" {
+        return "3d6x5"
+    }
+    return "2d6p6x5"
+}
+
+func isInCoreCharacteristics(value string, inv *models.Investigator) bool {
+    return slices.Contains(inv.Archetype.CoreCharacteristic, value)
+}

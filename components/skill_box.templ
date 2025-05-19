@@ -1,0 +1,53 @@
+package components
+
+import "book-of-shadows/models"
+import "strconv"
+
+templ SkillBox(skillObj models.Skill, skillType string) {
+    <div class="col-md-6 col-lg-4 mb-2">
+        <div class="skill-box shadow-sm">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="skill-name-container">
+                    <span class="skill-name" title={ skillObj.Name }>{ skillObj.Name }</span>
+                    <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
+                </div>
+                <div class="skill-values">
+                    <div class="skill-input-group">
+                        <button 
+                            type="button" 
+                            class="btn-decrement"
+                            onclick="characterUtils.adjustSkillValue(this, false)"
+                        >
+                            <i class="bi bi-dash"></i>
+                        </button>
+                        <input
+                            type="number"
+                            class="skill-input"
+                            value={ strconv.Itoa(skillObj.Value) }
+                            data-skill={ skillObj.Name }
+                            data-skillvalue={ strconv.Itoa(skillObj.Value) }
+                            data-skilldefault={ strconv.Itoa(skillObj.Default) }
+                            data-skilltype={ skillType }
+                            onchange="characterUtils.recalculateSkillValues(this)"
+                            min={ strconv.Itoa(skillObj.Default) }
+                            max="90"
+                        />
+                        <button 
+                            type="button" 
+                            class="btn-increment"
+                            onclick="characterUtils.adjustSkillValue(this, true)"
+                        >
+                            <i class="bi bi-plus"></i>
+                        </button>
+                        <div class="percent-sign">%</div>
+                    </div>
+                    <div class="value-displays">
+                        <span class="half-value" data-half>{ strconv.Itoa(skillObj.Value/2) }</span>
+                        <span class="divider">|</span>
+                        <span class="fifth-value" data-fifth>{ strconv.Itoa(skillObj.Value/5) }</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
