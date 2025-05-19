@@ -1,0 +1,53 @@
+/* styles.css */
+body { font-family: 'Roboto', sans-serif; }
+.hero { background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: #fff; }
+.feature-card { border: none; border-radius: 1rem; transition: transform .2s; }
+.feature-card:hover { transform: translateY(-5px); }
+.icon-circle { width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #ffe8d6; color: #6d6875; }
+.step-number { font-size: 1.5rem; font-weight: 500; color: #b5838d; margin-right: .5rem; }
+#character-sheet { display: none; }
+
+/* Modal styling */
+.modal-header {
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    color: white;
+}
+.modal-body h4 {
+    color: #6d6875;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+}
+.modal-body p, .modal-body li {
+    margin-bottom: 0.75rem;
+}
+.footer-link {
+    cursor: pointer;
+    text-decoration: none;
+}
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+/* Floating bug report button */
+.bug-report-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1030;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.bug-report-btn:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
