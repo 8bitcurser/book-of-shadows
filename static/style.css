@@ -1,19 +1,20 @@
 /* styles.css */
 body { font-family: 'Roboto', sans-serif; }
-.hero { background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); color: #fff; }
+.hero { background: linear-gradient(135deg, #0D0D0F 0%, #29003D
+ 100%); color: #ffffff; }
 .feature-card { border: none; border-radius: 1rem; transition: transform .2s; }
 .feature-card:hover { transform: translateY(-5px); }
-.icon-circle { width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #ffe8d6; color: #6d6875; }
-.step-number { font-size: 1.5rem; font-weight: 500; color: #b5838d; margin-right: .5rem; }
+.icon-circle { width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #B0B0B5; color: #F8F8F8; }
+.step-number { font-size: 1.5rem; font-weight: 500; color: #E9168F; margin-right: .5rem; }
 #character-sheet { display: none; }
 
 /* Modal styling */
 .modal-header {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
-    color: white;
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
+    color: #F9F6EE;
 }
 .modal-body h4 {
-    color: #6d6875;
+    color: #29003D;
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
 }
@@ -41,8 +42,8 @@ body { font-family: 'Roboto', sans-serif; }
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
-    color: white;
+    background: linear-gradient(135deg, #0D0D0F 0%, #510179 100%);
+    color: #F9F6EE;
     border: none;
     transition: all 0.3s ease;
 }

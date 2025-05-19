@@ -27,12 +27,12 @@
 }
 
 .attribute-label {
-    color: #6d6875;
+    color: #0D0D0F;
     font-size: 1.1rem;
 }
 
 .core-badge {
-    background: linear-gradient(135deg, #b5838d 0%, #6d6875 100%);
+    background: linear-gradient(135deg, #29003D 0%, #0D0D0F 100%);
     color: white;
     font-weight: 500;
 }
@@ -43,7 +43,7 @@
 }
 
 .gradient-button {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     border: none;
     color: white;
     border-radius: 0.5rem;
@@ -106,7 +106,7 @@ input[type=number] {
 }
 
 .form-control:focus {
-    border-color: #b5838d;
+    border-color: #29003D;
     box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
 }
 

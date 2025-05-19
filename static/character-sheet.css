@@ -15,7 +15,7 @@
     width: 60px;
     height: 60px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     color: white;
     display: flex;
     align-items: center;
@@ -33,18 +33,18 @@
 }
 
 .gradient-button {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     color: white;
     border: none;
     border-radius: 0.5rem;
 }
 
 .card-header-icon {
-    color: #6d6875;
+    color: #0D0D0F;
 }
 
 .section-title {
-    color: #6d6875;
+    color: #0D0D0F;
     font-size: 1.1rem;
     font-weight: bold;
     margin-bottom: 0;
@@ -64,7 +64,7 @@
 }
 
 .characteristic-value {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     color: white;
 }
 
@@ -116,7 +116,7 @@
 }
 
 .skill-name {
-    color: #6d6875;
+    color: #0D0D0F;
     font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
@@ -125,7 +125,7 @@
 }
 
 .skill-badge {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     color: white;
 }
 
@@ -143,11 +143,11 @@
     left: 0;
     width: 4px;
     height: 100%;
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
 }
 
 .talent-title {
-    color: #6d6875;
+    color: #0D0D0F;
     font-weight: bold;
 }
 
@@ -160,13 +160,13 @@
 }
 
 .form-switch .form-check-input:checked {
-    background-color: #b5838d;
-    border-color: #b5838d;
+    background-color: #29003D;
+    border-color: #29003D;
 }
 
 /* Form elements */
 .form-control:focus {
-    border-color: #b5838d;
+    border-color: #29003D;
     box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
 }
 

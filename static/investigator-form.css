@@ -9,7 +9,7 @@
 }
 
 .form-control:focus, select:focus {
-    border-color: #b5838d;
+    border-color: #29003D;
     box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
 }
 
@@ -20,7 +20,7 @@
 }
 
 .form-label {
-    color: #6d6875;
+    color: #0D0D0F;
     margin-bottom: 0.5rem;
 }
 
@@ -58,7 +58,7 @@
 }
 
 .step-circle.active {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     color: white;
 }
 
@@ -77,11 +77,11 @@
 }
 
 .step-indicator.completed .step-label {
-    color: #6d6875;
+    color: #0D0D0F;
 }
 
 .step-indicator.active .step-label {
-    color: #6d6875;
+    color: #0D0D0F;
     font-weight: 500;
 }
 
@@ -112,7 +112,7 @@
 }
 
 .form-section-header {
-    color: #6d6875;
+    color: #0D0D0F;
 }
 
 .progress-bar-custom {
@@ -121,11 +121,11 @@
 }
 
 .progress-fill {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
 }
 
 .gradient-button {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     border: none;
     min-width: 240px;
 }

@@ -15,7 +15,7 @@
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     color: white;
     display: flex;
     align-items: center;
@@ -48,7 +48,7 @@
 }
 
 .nav-pills .nav-link.active {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     color: white;
     box-shadow: 0 4px 10px rgba(181, 131, 141, 0.3);
     transform: translateY(-2px);
@@ -99,7 +99,7 @@
 .skill-name {
     font-weight: 600;
     margin-right: 8px;
-    color: #6d6875;
+    color: #0D0D0F;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -135,7 +135,7 @@
     border: none;
     text-align: center;
     font-weight: 500;
-    color: #6d6875;
+    color: #0D0D0F;
     -moz-appearance: textfield;
     border-left: 1px solid rgba(0,0,0,0.1);
     border-right: 1px solid rgba(0,0,0,0.1);
@@ -159,7 +159,7 @@
     align-items: center;
     justify-content: center;
     background-color: #f1f1f1;
-    color: #6d6875;
+    color: #0D0D0F;
     border: none;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -202,7 +202,7 @@
 
 /* Action Buttons */
 .gradient-button {
-    background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
     color: white;
     border: none;
     border-radius: 0.75rem;
@@ -210,14 +210,14 @@
 }
 
 .btn-outline-secondary {
-    color: #6d6875;
-    border-color: #6d6875;
+    color: #0D0D0F;
+    border-color: #0D0D0F;
     border-radius: 0.75rem;
     transition: all 0.3s;
 }
 
 .btn-outline-secondary:hover {
-    background-color: #6d6875;
+    background-color: #0D0D0F;
     color: white;
     transform: translateY(-2px);
     box-shadow: 0 4px 10px rgba(109, 104, 117, 0.2);
