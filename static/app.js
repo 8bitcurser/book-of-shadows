@@ -56,7 +56,6 @@ function generateCaptcha() {
     messageEl.classList.remove('alert-danger', 'alert-success');
 }
 
-// Submit the issue report
 function submitIssueReport() {
     const form = document.getElementById('issueReportForm');
     const messageEl = document.getElementById('formMessage');
@@ -86,31 +85,60 @@ function submitIssueReport() {
     const description = document.getElementById('issueDescription').value;
     const email = document.getElementById('contactEmail').value || 'No email provided';
     
-    // Create mailto link
-    const subject = `CorbittFiles Issue Report: ${issueType}`;
-    const body = `Issue Type: ${issueType}\n\nDescription: ${description}\n\nUser Email: ${email}\n\nDate: ${new Date().toLocaleString()}`;
+    // Show loading state
+    const submitBtn = document.getElementById('submitIssueBtn');
+    const originalBtnText = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Sending...';
     
-    // Create and click a mailto link
-    const mailtoLink = document.createElement('a');
-    mailtoLink.href = `mailto:8bitcurser@pm.me?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    mailtoLink.style.display = 'none';
-    document.body.appendChild(mailtoLink);
-    mailtoLink.click();
-    document.body.removeChild(mailtoLink);
+    // Prepare data for sending to backend
+    const reportData = {
+        issueType: issueType,
+        description: description,
+        email: email,
+        timestamp: new Date().toISOString()
+    };
     
-    // Show success message
-    messageEl.textContent = 'Thank you for your report! We\'ll look into this issue.';
-    messageEl.classList.remove('d-none', 'alert-danger');
-    messageEl.classList.add('alert-success');
-    
-    // Reset form fields
-    document.getElementById('issueType').value = '';
-    document.getElementById('issueDescription').value = '';
-    document.getElementById('contactEmail').value = '';
-    
-    // Auto-close the modal after 2 seconds
-    setTimeout(() => {
-        const modal = bootstrap.Modal.getInstance(document.getElementById('reportIssueModal'));
-        modal.hide();
-    }, 2000);
+    // Send to your Go backend endpoint
+    fetch('/api/report-issue', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(reportData)
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Failed to send report');
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Show success message
+        messageEl.textContent = 'Thank you for your report! We\'ll look into this issue.';
+        messageEl.classList.remove('d-none', 'alert-danger');
+        messageEl.classList.add('alert-success');
+        
+        // Reset form fields
+        document.getElementById('issueType').value = '';
+        document.getElementById('issueDescription').value = '';
+        document.getElementById('contactEmail').value = '';
+        
+        // Auto-close the modal after 2 seconds
+        setTimeout(() => {
+            const modal = bootstrap.Modal.getInstance(document.getElementById('reportIssueModal'));
+            modal.hide();
+        }, 2000);
+    })
+    .catch(error => {
+        console.error('Error sending report:', error);
+        messageEl.textContent = 'Unable to send your report. Please try again later.';
+        messageEl.classList.remove('d-none', 'alert-success');
+        messageEl.classList.add('alert-danger');
+    })
+    .finally(() => {
+        // Reset button state
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+    });
 }
