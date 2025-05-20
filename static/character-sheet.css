@@ -5,7 +5,7 @@
     border-radius: 1rem;
     box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
     max-width: 1400px;
-    width: 98%;
+    width: 99%;
     margin: 0 auto;
     padding: 0 10px;
 }
@@ -83,7 +83,7 @@
 /* Skills grid */
 .skills-grid {
     column-count: 3;
-    column-gap: 20px;
+    column-gap: 15px;
 }
 
 .skill-item {
@@ -105,7 +105,8 @@
 .skill-name-container {
     flex: 1;
     min-width: 0;
-    margin-right: 8px;
+    margin-right: 5px;
+    max-width: calc(100% - 90px);
 }
 
 .skill-name-wrapper {
@@ -116,7 +117,7 @@
 }
 
 .skill-name {
-    color: #0D0D0F;
+    color: #1b1b1b; /* Ghostly White */
     font-weight: 500;
     white-space: nowrap;
     overflow: hidden;
@@ -177,37 +178,6 @@
     cursor: not-allowed;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-    .skills-grid {
-        column-count: 3;
-    }
-    
-    .skill-name {
-        max-width: 150px;
-    }
-}
-
-@media (max-width: 992px) {
-    .skills-grid {
-        column-count: 2;
-    }
-    
-    .skill-name {
-        max-width: 200px;
-    }
-}
-
-@media (max-width: 576px) {
-    .skills-grid {
-        column-count: 1;
-    }
-    
-    .skill-name {
-        max-width: 250px;
-    }
-}
-
 /* Pin button styling */
 .pin-btn {
     transition: all 0.2s ease;
@@ -237,7 +207,110 @@
     animation: scale-up 0.3s ease-in-out;
 }
 
-/* Visual distinction for priority skills - optional */
+/* Skill item and value styling improvements */
+.skill-values-container {
+    flex-shrink: 0;
+    text-align: center;
+    width: 80px;
+}
+
+.skill-value-input {
+    display: inline-flex;
+    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
+}
+
+.skill-value-field {
+    width: 40px !important;
+    padding: 0.25rem 0.1rem !important;
+    text-align: center !important;
+    -moz-appearance: textfield !important;
+    border-radius: 0.25rem 0 0 0.25rem !important;
+}
+
+.skill-value-field::-webkit-inner-spin-button,
+.skill-value-field::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.percent-symbol {
+    padding: 0.25rem 0.4rem !important;
+    background-color: #1E1E1E !important;
+    color: #F8F8F8 !important;
+    border-color: #B0B0B0 !important;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0.25rem 0.25rem 0 !important;
+}
+
+.derived-values {
+    display: block;
+    font-size: 0.75rem;
+    color: #B0B0B0 !important;
+    text-align: center;
+    margin-top: 4px;
+    width: 100%;
+}
+
+.half-value, .fifth-value {
+    width: 16px;
+    text-align: center;
+    display: inline-block;
+}
+
+.divider {
+    margin: 0 2px;
+    color: #777;
+}
+
+.skill-default {
+    color: #1b1b1b !important; /* Phantom Gray */
+    white-space: nowrap;
+}
+
+/* Priority skill styling */
 .skill-item[data-priority="true"] {
     border-left: 3px solid #C97700; /* Occult Amber */
+    background-color: rgba(201, 119, 0, 0.05) !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .skills-grid {
+        column-count: 3;
+    }
+    
+    .skill-name {
+        max-width: 140px;
+    }
+}
+
+@media (max-width: 992px) {
+    .skills-grid {
+        column-count: 2;
+    }
+    
+    .skill-name {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+    .skills-grid {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 576px) {
+    .skills-grid {
+        column-count: 1;
+    }
+    
+    .skill-name {
+        max-width: 180px;
+    }
 }

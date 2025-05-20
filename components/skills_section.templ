@@ -38,7 +38,7 @@ templ SkillsSection(inv *models.Investigator) {
 }
 
 templ SkillItem(skill models.Skill) {
-    <div class="skill-item p-2 mb-2 rounded shadow-sm">
+    <div class="skill-item p-2 mb-2 rounded shadow-sm" data-priority={strconv.FormatBool(skill.IsPriority)}>
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center skill-name-container">
                 <!-- Pin Toggle Button -->
@@ -87,26 +87,25 @@ templ SkillItem(skill models.Skill) {
                     </div>
                 }
             </div>
-            <div class="d-flex align-items-center flex-shrink-0">
-                <div class="d-flex align-items-center">
-                    <div class="input-group input-group-sm" style="width: 120px;">
-                        <input
-                            type="number"
-                            class="form-control editable"
-                            value={strconv.Itoa(skill.Value)}
-                            data-skill={skill.Name}
-                            data-skillvalue={strconv.Itoa(skill.Value)}
-                            onchange="characterUtils.recalculateSheetValues(this, 'skill')"
-                            title="Regular"
-                            min={strconv.Itoa(skill.Default)}
-                        />
-                        <span class="input-group-text" style="background-color: #1E1E1E; color: #F8F8F8; border-color: #B0B0B0;">%</span>
-                    </div>
-                    <div class="derived-values ms-2 text-secondary small">
-                        <span>{strconv.Itoa(skill.Value/2)}</span>
-                        <span class="mx-1">/</span>
-                        <span>{strconv.Itoa(skill.Value/5)}</span>
-                    </div>
+            <div class="skill-values-container">
+                <div class="skill-value-input">
+                    <input
+                        type="number"
+                        class="form-control form-control-sm editable skill-value-field"
+                        value={strconv.Itoa(skill.Value)}
+                        data-skill={skill.Name}
+                        data-skillvalue={strconv.Itoa(skill.Value)}
+                        onchange="characterUtils.recalculateSheetValues(this, 'skill')"
+                        title="Regular"
+                        min={strconv.Itoa(skill.Default)}
+                        max="90"
+                    />
+                    <span class="input-group-text percent-symbol">%</span>
+                </div>
+                <div class="derived-values">
+                    <span class="half-value">{strconv.Itoa(skill.Value/2)}</span>
+                    <span class="divider">/</span>
+                    <span class="fifth-value">{strconv.Itoa(skill.Value/5)}</span>
                 </div>
             </div>
         </div>
