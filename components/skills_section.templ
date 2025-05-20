@@ -27,7 +27,7 @@ templ SkillsSection(inv *models.Investigator) {
         </div>
         <div class="card-body p-3">
             <div class="skills-grid">
-                for _, skill := range sortSkills(inv.Skills) {
+                for _, skill := range sortSkillsByPriority(inv.Skills) {
                     if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
                         @SkillItem(skill)
                     }
@@ -41,7 +41,24 @@ templ SkillItem(skill models.Skill) {
     <div class="skill-item p-2 mb-2 rounded shadow-sm">
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center skill-name-container">
-                <div class="form-check me-2 flex-shrink-0">
+                <!-- Pin Toggle Button -->
+                <div class="pin-toggle me-2 flex-shrink-0">
+                    <button 
+                        type="button"
+                        class="btn btn-link p-0 pin-btn editable"
+                        data-skill={skill.Name}
+                        data-pinned={strconv.FormatBool(skill.IsPriority)}
+                        onclick="characterUtils.togglePinSkill(this)"
+                        style="line-height: 1; color: #B0B0B0; width: 1.3em; height: 1.3em;"
+                    >
+                        if skill.IsPriority {
+                            <i class="bi bi-pin-fill"></i>
+                        } else {
+                            <i class="bi bi-pin"></i>
+                        }
+                    </button>
+                </div>
+                <div class="form-check me-1 flex-shrink-0">
                     <input
                         type="checkbox"
                         class="form-check-input editable"
@@ -53,6 +70,7 @@ templ SkillItem(skill models.Skill) {
                         style="cursor: pointer; width: 1.1em; height: 1.1em;"
                     />
                 </div>
+                
                 if skill.NeedsFormDef == 1 {
                     <input
                         type="text"
@@ -82,7 +100,7 @@ templ SkillItem(skill models.Skill) {
                             title="Regular"
                             min={strconv.Itoa(skill.Default)}
                         />
-                        <span class="input-group-text" style="background-color: #f1f1f1;">%</span>
+                        <span class="input-group-text" style="background-color: #1E1E1E; color: #F8F8F8; border-color: #B0B0B0;">%</span>
                     </div>
                     <div class="derived-values ms-2 text-secondary small">
                         <span>{strconv.Itoa(skill.Value/2)}</span>
@@ -95,7 +113,8 @@ templ SkillItem(skill models.Skill) {
     </div>
 }
 
-func sortSkills(skills map[string]models.Skill) []models.Skill {
+// Sort skills with priority skills at the top
+func sortSkillsByPriority(skills map[string]models.Skill) []models.Skill {
     // Create a slice to hold the skills
     var skillSlice []models.Skill
 
@@ -106,8 +125,15 @@ func sortSkills(skills map[string]models.Skill) []models.Skill {
         }
     }
 
-    // Sort the slice by name
+    // Sort the slice - first by priority (IsPriority true comes first),
+    // then alphabetically within each priority group
     sort.Slice(skillSlice, func(i, j int) bool {
+        // If priorities are different, sort by priority (true comes first)
+        if skillSlice[i].IsPriority != skillSlice[j].IsPriority {
+            return skillSlice[i].IsPriority // True values come before false
+        }
+        
+        // If priorities are the same, sort alphabetically by name
         return skillSlice[i].Name < skillSlice[j].Name
     })
 

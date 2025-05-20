@@ -785,6 +785,78 @@ const characterUtils = {
         // Run initially and on window resize
         adjustSkillNames();
         window.addEventListener('resize', adjustSkillNames);
+    },
+
+    // Toggle skill pin status
+    togglePinSkill(button) {
+        const skillName = button.dataset.skill;
+        const isPinned = button.dataset.pinned === 'true';
+        const newPinnedStatus = !isPinned;
+        
+        // Update button appearance
+        button.dataset.pinned = newPinnedStatus.toString();
+        
+        // Update icon based on pinned status
+        const icon = button.querySelector('i');
+        if (icon) {
+            if (newPinnedStatus) {
+                icon.classList.remove('bi-pin');
+                icon.classList.add('bi-pin-fill');
+                icon.style.color = '#C97700'; // Occult Amber
+            } else {
+                icon.classList.remove('bi-pin-fill');
+                icon.classList.add('bi-pin');
+                icon.style.color = '#B0B0B0'; // Phantom Gray
+            }
+        }
+        
+        // Update skill item parent to show priority styling (optional)
+        const skillItem = button.closest('.skill-item');
+        if (skillItem) {
+            skillItem.dataset.priority = newPinnedStatus.toString();
+        }
+        
+        // Send update to server
+        this.updateInvestigator("skill_prio", skillName, newPinnedStatus)
+            .then(() => {
+                // Add visual feedback
+                button.classList.add('scale-up');
+                setTimeout(() => {
+                    button.classList.remove('scale-up');
+                }, 300);
+                
+                // Reload the skills section to reorder the skills
+                htmx.ajax('GET', `/api/investigator/${this.getCurrentCharacterId()}`, {
+                    target: '#character-sheet',
+                    swap: 'innerHTML'
+                });
+            })
+            .catch(error => {
+                console.error('Error updating skill priority status:', error);
+                // Revert to previous state on error
+                button.dataset.pinned = isPinned.toString();
+                if (icon) {
+                    if (isPinned) {
+                        icon.classList.remove('bi-pin');
+                        icon.classList.add('bi-pin-fill');
+                        icon.style.color = '#C97700'; // Occult Amber
+                    } else {
+                        icon.classList.remove('bi-pin-fill');
+                        icon.classList.add('bi-pin');
+                        icon.style.color = '#B0B0B0'; // Phantom Gray
+                    }
+                }
+                // Revert priority styling
+                if (skillItem) {
+                    skillItem.dataset.priority = isPinned.toString();
+                }
+            });
+    },
+
+    // Helper to get current character ID
+    getCurrentCharacterId() {
+        const input = document.querySelector('input[data-field="Name"]');
+        return input ? input.id : '';
     }
 
 };

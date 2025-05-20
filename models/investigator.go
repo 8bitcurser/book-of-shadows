@@ -24,7 +24,7 @@ const (
 
 type ProfilePic struct {
 	FilePath string `json:"path"`
-	FileName string `json:"-"`
+	FileName string `json:"name"`
 }
 
 func (pp *ProfilePic) String() string {

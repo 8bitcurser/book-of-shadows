@@ -236,6 +236,14 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 		}
 		skill.IsSelected = !skill.IsSelected
 		investigator.Skills[serializer.Field] = skill
+	case "skill_prio":
+		skill, ok := investigator.Skills[serializer.Field]
+		if !ok {
+			http.Error(w, "Skill not found", http.StatusNotFound)
+		}
+		skill.IsPriority = !skill.IsPriority
+		investigator.Skills[serializer.Field] = skill
+
 	case "skill_name":
 		skill, ok := investigator.Skills[serializer.Field]
 

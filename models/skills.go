@@ -15,6 +15,7 @@ type Skill struct {
 	Category     string `json:"Category"`
 	NeedsFormDef int    `json:"needsFormDef"`
 	IsSelected   bool   `json:"IsSelected"`
+	IsPriority   bool   `json:"IsPriority"`
 }
 
 func (skill *Skill) String() string {

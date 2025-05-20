@@ -3,6 +3,7 @@ package serializers
 import (
 	"book-of-shadows/models"
 	"encoding/json"
+	"slices"
 	"strconv"
 	"strings"
 )
@@ -243,6 +244,7 @@ var validUpdateSections = []string{
 	"skills",
 	"skill_check",
 	"skill_name",
+	"skill_prio",
 }
 
 type UpdateRequestSerializer struct {
@@ -252,12 +254,6 @@ type UpdateRequestSerializer struct {
 }
 
 func (u *UpdateRequestSerializer) IsValid() bool {
-	valid := false
-	for _, section := range validUpdateSections {
-		if u.Section == section {
-			valid = true
-			break
-		}
-	}
+	valid := slices.Contains(validUpdateSections, u.Section)
 	return valid
 }
