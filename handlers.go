@@ -210,6 +210,19 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 		}
 		skill.Value = int(serializer.Value.(float64))
 		investigator.Skills[serializer.Field] = skill
+	case "stats":
+		switch serializer.Field {
+		case "TemporaryInsane":
+			investigator.TemporaryInsane = !investigator.TemporaryInsane
+		case "IndefiniteInsane":
+			investigator.IndefiniteInsane = !investigator.IndefiniteInsane
+		case "MajorWound":
+			investigator.MajorWound = !investigator.MajorWound
+		case "Unconscious":
+			investigator.Unconscious = !investigator.Unconscious
+		case "Dying":
+			investigator.Dying = !investigator.Dying
+		}
 	case "personalInfo":
 		switch serializer.Field {
 		case "Name":

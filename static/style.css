@@ -10,7 +10,7 @@ body { font-family: 'Roboto', sans-serif; }
 
 /* Modal styling */
 .modal-header {
-    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
+    background: linear-gradient(135deg, #0D0D0F 0%, #3a0455 100%);
     color: #F9F6EE;
 }
 .modal-body h4 {

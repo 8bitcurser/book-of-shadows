@@ -1,6 +1,8 @@
 package components
 
-templ StatusConditions() {
+import "book-of-shadows/models"
+
+templ StatusConditions(inv *models.Investigator) {
     <div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
         <div class="card-header d-flex align-items-center p-3 card-header-custom">
             <i class="bi bi-heart-pulse-fill me-2 card-header-icon"></i>
@@ -9,23 +11,78 @@ templ StatusConditions() {
         <div class="card-body p-3">
             <div class="d-flex flex-wrap gap-3">
                 <div class="form-check form-switch">
-                    <input class="form-check-input editable" type="checkbox" role="switch" id="temp-insanity" style="cursor: pointer;" />
+                    <input 
+                        class="form-check-input editable"
+                        type="checkbox" role="switch"
+                        id="temp-insanity"
+                        style="cursor: pointer;"
+                        if inv.TemporaryInsane {
+                             checked
+                        }
+                        title="TempInsanity_Chk"
+                        data-stat="TemporaryInsane"
+                        onchange="characterUtils.recalculateSheetValues(this, 'base')"
+                    />
                     <label class="form-check-label" for="temp-insanity" style="cursor: pointer;">Temporary Insanity</label>
                 </div>
                 <div class="form-check form-switch">
-                    <input class="form-check-input editable" type="checkbox" role="switch" id="indef-insanity" style="cursor: pointer;" />
+                    <input 
+                        class="form-check-input editable"
+                        type="checkbox"
+                        role="switch"
+                        id="indef-insanity"
+                        style="cursor: pointer;"
+                        if inv.IndefiniteInsane {
+                             checked
+                        }
+                        title="IndefInsanity_Chk"
+                        data-stat="IndefiniteInsane"
+                        onchange="characterUtils.recalculateSheetValues(this, 'base')"
+                     />
                     <label class="form-check-label" for="indef-insanity" style="cursor: pointer;">Indefinite Insanity</label>
                 </div>
                 <div class="form-check form-switch">
-                    <input class="form-check-input editable" type="checkbox" role="switch" id="major-wound" style="cursor: pointer;" />
+                    <input
+                        class="form-check-input editable"
+                        type="checkbox"
+                        role="switch" id="major-wound"
+                        style="cursor: pointer;"
+                        if inv.MajorWound {
+                             checked
+                        }
+                        title="MajorWound_Chk"
+                        data-stat="MajorWound"
+                        onchange="characterUtils.recalculateSheetValues(this, 'base')"
+                    />
                     <label class="form-check-label" for="major-wound" style="cursor: pointer;">Major Wound</label>
                 </div>
                 <div class="form-check form-switch">
-                    <input class="form-check-input editable" type="checkbox" role="switch" id="unconscious" style="cursor: pointer;" />
+                    <input class="form-check-input editable"
+                        type="checkbox"
+                        role="switch" id="unconscious"
+                        style="cursor: pointer;"
+                        if inv.Unconscious {
+                             checked
+                        }
+                        title="Unconscious_Chk"
+                        data-stat="Unconscious"
+                        onchange="characterUtils.recalculateSheetValues(this, 'base')"
+                    />
                     <label class="form-check-label" for="unconscious" style="cursor: pointer;">Unconscious</label>
                 </div>
                 <div class="form-check form-switch">
-                    <input class="form-check-input editable" type="checkbox" role="switch" id="dying" style="cursor: pointer;" />
+                    <input
+                        class="form-check-input editable"
+                        type="checkbox"
+                        role="switch" id="dying"
+                        style="cursor: pointer;"
+                        if inv.Dying {
+                             checked
+                        }
+                        title="Dying_Chk"
+                        data-stat="Dying"
+                        onchange="characterUtils.recalculateSheetValues(this, 'base')"
+                    />
                     <label class="form-check-label" for="dying" style="cursor: pointer;">Dying</label>
                 </div>
             </div>

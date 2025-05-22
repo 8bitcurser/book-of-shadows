@@ -3,9 +3,18 @@ package components
 import "book-of-shadows/models"
 
 templ InvestigatorsGrid(investigators []*models.Investigator) {
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
-        for _, inv := range investigators {
-            @InvestigatorCard(inv)
-        }
-    </div>
+    if len(investigators) > 0 {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            for _, inv := range investigators {
+                @InvestigatorCard(inv)
+            }
+        </div>
+    } else {
+        <div class="card text-center border-0">
+            <div class="card-body">
+                <!--<h5 class="card-title"></h5>-->
+                <a class="btn btn-lg btn-dark" hx-get="/api/generate-step/" hx-target="#character-sheet">You don't have investigators 😢<br>Go create some!</a>
+            </div>
+        </div>
+    }
 }

@@ -22,7 +22,7 @@ templ CharacterSheet(investigator *models.Investigator) {
             </div>
         </div>
 
-        @components.StatusConditions()
+        @components.StatusConditions(investigator)
         @components.SkillsSection(investigator)
         @components.TalentsSection(investigator)
 

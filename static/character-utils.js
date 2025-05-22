@@ -742,6 +742,12 @@ const characterUtils = {
             
             // Update skill value tracking
             input.dataset.skillvalue = value.toString();
+        } else {
+            const statusName = input.dataset.stat;
+            const charData = this.getCurrentCharacter();
+            charData[statusName] = value;
+            this.updateInvestigator("stats", statusName, value);
+        
         }
     },
 

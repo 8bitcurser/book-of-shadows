@@ -8,7 +8,9 @@ package components
 import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
-func StatusConditions() templ.Component {
+import "book-of-shadows/models"
+
+func StatusConditions(inv *models.Investigator) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -29,7 +31,57 @@ func StatusConditions() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3 card-header-custom\"><i class=\"bi bi-heart-pulse-fill me-2 card-header-icon\"></i><h4 class=\"section-title\">Status Conditions</h4></div><div class=\"card-body p-3\"><div class=\"d-flex flex-wrap gap-3\"><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"temp-insanity\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"temp-insanity\" style=\"cursor: pointer;\">Temporary Insanity</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"indef-insanity\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"indef-insanity\" style=\"cursor: pointer;\">Indefinite Insanity</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"major-wound\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"major-wound\" style=\"cursor: pointer;\">Major Wound</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"unconscious\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"unconscious\" style=\"cursor: pointer;\">Unconscious</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"dying\" style=\"cursor: pointer;\"> <label class=\"form-check-label\" for=\"dying\" style=\"cursor: pointer;\">Dying</label></div></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"card shadow-sm mb-4\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3 card-header-custom\"><i class=\"bi bi-heart-pulse-fill me-2 card-header-icon\"></i><h4 class=\"section-title\">Status Conditions</h4></div><div class=\"card-body p-3\"><div class=\"d-flex flex-wrap gap-3\"><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"temp-insanity\" style=\"cursor: pointer;\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if inv.TemporaryInsane {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " checked")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " title=\"TempInsanity_Chk\" data-stat=\"TemporaryInsane\" onchange=\"characterUtils.recalculateSheetValues(this, &#39;base&#39;)\"> <label class=\"form-check-label\" for=\"temp-insanity\" style=\"cursor: pointer;\">Temporary Insanity</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"indef-insanity\" style=\"cursor: pointer;\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if inv.IndefiniteInsane {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, " checked")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, " title=\"IndefInsanity_Chk\" data-stat=\"IndefiniteInsane\" onchange=\"characterUtils.recalculateSheetValues(this, &#39;base&#39;)\"> <label class=\"form-check-label\" for=\"indef-insanity\" style=\"cursor: pointer;\">Indefinite Insanity</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"major-wound\" style=\"cursor: pointer;\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if inv.MajorWound {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " checked")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, " title=\"MajorWound_Chk\" data-stat=\"MajorWound\" onchange=\"characterUtils.recalculateSheetValues(this, &#39;base&#39;)\"> <label class=\"form-check-label\" for=\"major-wound\" style=\"cursor: pointer;\">Major Wound</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"unconscious\" style=\"cursor: pointer;\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if inv.Unconscious {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, " checked")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, " title=\"Unconscious_Chk\" data-stat=\"Unconscious\" onchange=\"characterUtils.recalculateSheetValues(this, &#39;base&#39;)\"> <label class=\"form-check-label\" for=\"unconscious\" style=\"cursor: pointer;\">Unconscious</label></div><div class=\"form-check form-switch\"><input class=\"form-check-input editable\" type=\"checkbox\" role=\"switch\" id=\"dying\" style=\"cursor: pointer;\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if inv.Dying {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, " checked")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, " title=\"Dying_Chk\" data-stat=\"Dying\" onchange=\"characterUtils.recalculateSheetValues(this, &#39;base&#39;)\"> <label class=\"form-check-label\" for=\"dying\" style=\"cursor: pointer;\">Dying</label></div></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
