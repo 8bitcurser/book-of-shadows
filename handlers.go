@@ -443,3 +443,87 @@ func handleReportIssue(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(map[string]bool{"success": true})
 }
+
+func handleArchetypeOccupations(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+
+	// Extract archetype name from URL path
+	// Expected format: /api/archetype/{archetypeName}/occupations
+	pathParts := strings.Split(strings.TrimPrefix(r.URL.Path, "/api/archetype/"), "/")
+	if len(pathParts) < 2 || pathParts[1] != "occupations" {
+		http.Error(w, "Invalid URL format. Expected: /api/archetype/{name}/occupations", http.StatusBadRequest)
+		return
+	}
+
+	archetypeName := pathParts[0]
+	if archetypeName == "" {
+		http.Error(w, "Archetype name is required", http.StatusBadRequest)
+		return
+	}
+
+	// Get the archetype from the models
+	archetype, exists := models.Archetypes[archetypeName]
+	if !exists {
+		http.Error(w, "Archetype not found", http.StatusNotFound)
+		return
+	}
+
+	// Create response structure
+	type OccupationInfo struct {
+		Name        string `json:"name"`
+		Description string `json:"description"`
+	}
+
+	type Response struct {
+		Suggested []OccupationInfo `json:"suggested"`
+		Others    []OccupationInfo `json:"others"`
+	}
+
+	response := Response{
+		Suggested: make([]OccupationInfo, 0),
+		Others:    make([]OccupationInfo, 0),
+	}
+
+	// Helper function to check if occupation is suggested
+	isSuggested := func(occupationName string) bool {
+		for _, suggested := range archetype.SuggestedOccupations {
+			if suggested == occupationName {
+				return true
+			}
+		}
+		return false
+	}
+
+	// Add suggested occupations first
+	for _, suggestedOccName := range archetype.SuggestedOccupations {
+		if occupation, exists := models.Occupations[suggestedOccName]; exists {
+			response.Suggested = append(response.Suggested, OccupationInfo{
+				Name:        occupation.Name,
+				Description: occupation.GetDescription(),
+			})
+		}
+	}
+
+	// Add all other occupations
+	for _, occupationName := range models.OccupationsList {
+		if !isSuggested(occupationName) {
+			if occupation, exists := models.Occupations[occupationName]; exists {
+				response.Others = append(response.Others, OccupationInfo{
+					Name:        occupation.Name,
+					Description: occupation.GetDescription(),
+				})
+			}
+		}
+	}
+
+	// Return JSON response
+	w.Header().Set("Content-Type", "application/json")
+	if err := json.NewEncoder(w).Encode(response); err != nil {
+		log.Printf("Error encoding JSON response: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+}

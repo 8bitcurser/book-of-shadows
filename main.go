@@ -27,6 +27,7 @@ func main() {
 	http.HandleFunc("/api/investigator/delete/", handleDeleteInvestigator)
 	http.HandleFunc("/api/investigator/update/", handleUpdateInvestigator)
 	http.HandleFunc("/api/investigator/", handleGetInvestigator)
+	http.HandleFunc("/api/archetype/", handleArchetypeOccupations)
 	http.HandleFunc("/api/report-issue", handleReportIssue)
 
 	log.Println("Server starting on :8080")

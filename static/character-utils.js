@@ -295,8 +295,84 @@ const characterUtils = {
         const occupationContainer = document.getElementById('occupation-container');
         occupationContainer.style.display = selectElement.value ? 'block' : 'none';
 
+        // Update occupation options based on selected archetype
+        if (selectElement.value) {
+            this.updateOccupationOptions(selectElement.value);
+        }
+
         // Check if the form is complete
         this.checkFormCompletion();
+    },
+
+    // Function to update occupation options based on selected archetype
+    async updateOccupationOptions(archetypeName) {
+        try {
+            // Get the occupation select element
+            const occupationSelect = document.getElementById('occupation-select');
+            if (!occupationSelect) return;
+
+            // Reset occupation selection
+            occupationSelect.value = '';
+            const descriptionElement = document.getElementById('occupation-description');
+            if (descriptionElement) {
+                descriptionElement.style.display = 'none';
+            }
+
+            // Fetch updated occupation options from server
+            const response = await fetch(`/api/archetype/${encodeURIComponent(archetypeName)}/occupations`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch occupation options');
+            }
+
+            const data = await response.json();
+            
+            // Clear existing options (keep the first "Select Occupation" option)
+            while (occupationSelect.options.length > 1) {
+                occupationSelect.removeChild(occupationSelect.lastChild);
+            }
+
+            // Add suggested occupations first with star indicator
+            if (data.suggested && data.suggested.length > 0) {
+                data.suggested.forEach(occupation => {
+                    const option = document.createElement('option');
+                    option.value = occupation.name;
+                    option.textContent = `⭐ ${occupation.name}`;
+                    option.setAttribute('data-description', occupation.description);
+                    option.className = 'suggested-occupation';
+                    occupationSelect.appendChild(option);
+                });
+
+                // Add separator
+                const separator = document.createElement('option');
+                separator.value = '';
+                separator.textContent = '────── Other Occupations ──────';
+                separator.disabled = true;
+                occupationSelect.appendChild(separator);
+            }
+
+            // Add other occupations
+            if (data.others && data.others.length > 0) {
+                data.others.forEach(occupation => {
+                    const option = document.createElement('option');
+                    option.value = occupation.name;
+                    option.textContent = occupation.name;
+                    option.setAttribute('data-description', occupation.description);
+                    occupationSelect.appendChild(option);
+                });
+            }
+
+        } catch (error) {
+            console.error('Error updating occupation options:', error);
+            // Fall back to showing all occupations if the API call fails
+            this.resetOccupationOptions();
+        }
+    },
+
+    // Function to reset occupation options to show all occupations
+    resetOccupationOptions() {
+        // This would be called if the archetype-specific API fails
+        // For now, we'll leave the current options as they are
+        console.log('Falling back to current occupation options');
     },
 
     // Function to handle occupation selection

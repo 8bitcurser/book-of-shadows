@@ -17,16 +17,53 @@ templ OccupationSelection(inv *models.Investigator) {
             } else {
                 <option value="">Select Occupation</option>
             }
-            for occ := range models.OccupationsList {
-                {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
-                <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
-            }
+            @renderOccupationOptions(inv)
         </select>
         <div 
             id="occupation-description"
             class="mt-3 p-3 rounded shadow-sm bg-light text-secondary description-box"
         ></div>
     </div>
+}
+
+templ renderOccupationOptions(inv *models.Investigator) {
+    if inv != nil && inv.Archetype != nil && inv.Archetype.Name != "" {
+        // First render suggested occupations for the selected archetype
+        for _, suggestedOcc := range inv.Archetype.SuggestedOccupations {
+            if occEntity, exists := models.Occupations[suggestedOcc]; exists {
+                <option value={occEntity.Name} data-description={occEntity.GetDescription()} class="suggested-occupation">
+                    ⭐ {occEntity.Name}
+                </option>
+            }
+        }
+        // Add separator if there are suggestions
+        if len(inv.Archetype.SuggestedOccupations) > 0 {
+            <option value="" disabled>────── Other Occupations ──────</option>
+        }
+        // Then render all other occupations
+        for occ := range models.OccupationsList {
+            {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
+            // Skip if this occupation is already in the suggested list
+            if !isOccupationSuggested(occEntity.Name, inv.Archetype.SuggestedOccupations) {
+                <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
+            }
+        }
+    } else {
+        // If no archetype selected, render all occupations normally
+        for occ := range models.OccupationsList {
+            {{occEntity, _ := models.Occupations[models.OccupationsList[occ]]}}
+            <option value={occEntity.Name} data-description={occEntity.GetDescription()}>{occEntity.Name}</option>
+        }
+    }
+}
+
+func isOccupationSuggested(occupationName string, suggestedOccupations []string) bool {
+    for _, suggested := range suggestedOccupations {
+        if suggested == occupationName {
+            return true
+        }
+    }
+    return false
 }
 
 func getOccupationContainerStyle(inv *models.Investigator) string {
