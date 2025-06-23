@@ -2,7 +2,6 @@ package main
 
 import (
 	"book-of-shadows/storage"
-	"fmt"
 	"log"
 	"net/http"
 )
@@ -13,7 +12,6 @@ func setupRoutes() *Router {
 	fs := http.FileServer(http.Dir("static"))
 	fsHandler := http.StripPrefix("/static/", fs)
 	router.HandleStatic("/static/", fsHandler)
-	fmt.Printf("Static handlers: %+v\n", router.statics)
 
 	// Define routes
 	router.GET("/", handleHome)
