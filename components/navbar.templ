@@ -10,13 +10,13 @@ templ Navbar() {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" hx-get="/api/investigator/list" hx-target="#character-sheet">Archive</a>
+                        <a class="nav-link" hx-get="/api/investigator" hx-target="#character-sheet">Archive</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" hx-get="/api/generate-step/" hx-target="#character-sheet">Create Investigator</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" hx-get="/api/generate-random" hx-target="#character-sheet" hx-vals='js:{mode: "pulp"}'>Random Investigator</a>
+                        <a class="nav-link" hx-get="/api/generate/" hx-target="#character-sheet" hx-vals='js:{mode: "pulp"}'>Random Investigator</a>
                     </li>
                 </ul>
             </div>

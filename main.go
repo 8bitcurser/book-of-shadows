@@ -15,7 +15,7 @@ func setupRoutes() *Router {
 
 	// Define routes
 	router.GET("/", handleHome)
-	router.GET("/api/generate", handleGenerate)
+	router.GET("/api/generate/", handleGenerate)
 
 	// Investigator CRUD operations
 	router.GET("/api/investigator", handleListInvestigators)
@@ -28,7 +28,7 @@ func setupRoutes() *Router {
 	router.GET("/api/investigator/list/export", handleListInvestigatorsExport)
 
 	router.POST("/api/investigator/list/import/", handleListInvestigatorsImport)
-	router.POST("/api/generate-step/", handleCreateStepInvestigator)
+	router.GET("/api/generate-step/", handleCreateStepInvestigator)
 	router.POST("/api/investigator/confirm-attributes/", handleConfirmAttrStepInvestigator)
 
 	router.GET("/api/archetype/", handleArchetypeOccupations)
@@ -44,18 +44,12 @@ func main() {
 	defer conn.DB.Close()
 
 	router := setupRoutes()
-	// routes
-	// http.HandleFunc("/", handleHome)
-	// http.HandleFunc("/api/generate", handleGenerate)
+
 	// http.HandleFunc("/api/investigator/export/", handleExportPDF)
-	// http.HandleFunc("/api/investigator/list", handleListInvestigators)
 	// http.HandleFunc("/api/investigator/list/export", handleListInvestigatorsExport)
 	// http.HandleFunc("/api/investigator/list/import/", handleListInvestigatorsImport)
 	// http.HandleFunc("/api/generate-step/", handleCreateStepInvestigator)
 	// http.HandleFunc("/api/investigator/confirm-attributes/", handleConfirmAttrStepInvestigator)
-	// http.HandleFunc("/api/investigator/create/", handleCreateBaseInvestigator)
-	// http.HandleFunc("/api/investigator/delete/", handleDeleteInvestigator)
-	// http.HandleFunc("/api/investigator/update/", handleUpdateInvestigator)
 	// http.HandleFunc("/api/investigator/", handleGetInvestigator)
 	// http.HandleFunc("/api/archetype/", handleArchetypeOccupations)
 	// http.HandleFunc("/api/report-issue", handleReportIssue)

@@ -10,7 +10,7 @@ templ InvestigatorCard(inv *models.Investigator) {
             <div class="card-body d-flex flex-column">
                 <h5 class="card-title mb-2">
                     <a class="link-dark link-underline-opacity-25 link-underline-opacity-100-hover text-decoration-none investigator-title"
-                        hx-get={ fmt.Sprintf("/api/investigator/%s", inv.ID) }
+                        hx-get={ fmt.Sprintf("/api/investigator/%s/", inv.ID) }
                         hx-target="#character-sheet">
                         { inv.Name }
                     </a>

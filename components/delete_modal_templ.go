@@ -76,15 +76,15 @@ func DeleteModal(inv *models.Investigator) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
-		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/delete/%s", inv.ID))
+		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(fmt.Sprintf("/api/investigator/%s", inv.ID))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/delete_modal.templ`, Line: 22, Col: 86}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/delete_modal.templ`, Line: 22, Col: 79}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" hx-target=\"closest div\" data-bs-dismiss=\"modal\">Delete</a><div hx-get=\"/api/investigator/list\" hx-trigger=\"deleted from:body\" hx-target=\"#character-sheet\" style=\"display: none;\"></div></div></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" hx-target=\"closest div\" data-bs-dismiss=\"modal\">Delete</a><div hx-get=\"/api/investigator\" hx-trigger=\"deleted from:body\" hx-target=\"#character-sheet\" style=\"display: none;\"></div></div></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

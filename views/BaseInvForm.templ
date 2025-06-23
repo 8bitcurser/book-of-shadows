@@ -13,7 +13,7 @@ templ BaseInvForm(inv *models.Investigator) {
         <form
             id="stepForm"
             class="row g-4"
-            hx-post="/api/investigator/create/"
+            hx-post="/api/investigator/"
             hx-target="#character-sheet"
         >
             @components.PersonalInfoFields(inv)

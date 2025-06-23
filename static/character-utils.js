@@ -10,7 +10,7 @@ const characterUtils = {
     async exportPDF(evt, key) {
         try {
 
-            const response = await fetch('/api/investigator/export/' + key, {
+            const response = await fetch('/api/investigator/PDF/' + key, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ const characterUtils = {
     async updateInvestigator(section, field, value) {
         try {
             const cookieId = document.querySelector('input[data-field="Name"]').id
-            const response = await fetch(`/api/investigator/update/${cookieId}`, {
+            const response = await fetch(`/api/investigator/${cookieId}/`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

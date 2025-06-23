@@ -57,15 +57,16 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			}
 			http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 			return
-		}
-		for path, route := range r.routes {
-			if strings.HasSuffix(path, "/") && strings.HasPrefix(req.URL.Path, "/static/") {
-				if handler, methodExists := route.handlers[req.Method]; methodExists {
-					handler(w, req)
+		} else {
+			for path, route := range r.routes {
+				if strings.HasSuffix(path, "/") && strings.HasPrefix(req.URL.Path, path) {
+					if handler, methodExists := route.handlers[req.Method]; methodExists {
+						handler(w, req)
+						return
+					}
+					http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 					return
 				}
-				http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-				return
 			}
 		}
 	}

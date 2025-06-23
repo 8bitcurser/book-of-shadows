@@ -19,10 +19,6 @@ import (
 )
 
 func handleHome(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 	component := views.Home()
 	err := component.Render(r.Context(), w)
 	if err != nil {
@@ -31,10 +27,6 @@ func handleHome(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleGenerate(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 	modeQParam := r.URL.Query().Get("mode")
 	mode := models.Pulp
 	if modeQParam == "classic" {
@@ -52,12 +44,8 @@ func handleGenerate(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleExportPDF(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 	data := make(map[string]string)
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/export/")
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/PDF/")
 	if key == "" {
 		http.Error(w, "No investigator Key passed", http.StatusBadRequest)
 	}
@@ -90,10 +78,6 @@ func handleExportPDF(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleListInvestigators(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 	cm := storage.NewInvestigatorCookieConfig()
 	investigators, err := cm.ListInvestigators(r)
 	if err != nil {
@@ -105,9 +89,6 @@ func handleListInvestigators(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleListInvestigatorsExport(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
 	cm := storage.NewInvestigatorCookieConfig()
 	ExportCode, _ := cm.ExportInvestigatorsList(r)
 	w.Header().Set("Content-Type", "application/json")
@@ -116,9 +97,6 @@ func handleListInvestigatorsExport(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleListInvestigatorsImport(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		log.Println(err)
@@ -135,10 +113,6 @@ func handleListInvestigatorsImport(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
-
 	if err := r.ParseForm(); err != nil {
 		log.Println(err)
 	}
@@ -171,10 +145,7 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleDeleteInvestigator(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodDelete {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/delete/")
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
 	cm := storage.NewInvestigatorCookieConfig()
 
 	cm.DeleteInvestigatorCookie(w, key)
@@ -184,10 +155,7 @@ func handleDeleteInvestigator(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPut {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/update/")
+	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
 
@@ -280,9 +248,6 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleGetInvestigator(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
 	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
@@ -298,10 +263,6 @@ func handleGetInvestigator(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleCreateStepInvestigator(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
 	key := strings.TrimPrefix(r.URL.Path, "/api/generate-step/")
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator := &models.Investigator{}
@@ -358,12 +319,6 @@ func handleConfirmAttrStepInvestigator(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleReportIssue(w http.ResponseWriter, r *http.Request) {
-	// Only allow POST method
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
 	// Get Telegram credentials from environment variables
 	telegramToken := os.Getenv("TELEGRAM_BOT_TOKEN")
 	telegramChatID := os.Getenv("TELEGRAM_CHAT_ID")
@@ -445,11 +400,6 @@ func handleReportIssue(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleArchetypeOccupations(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
-	}
-
 	// Extract archetype name from URL path
 	// Expected format: /api/archetype/{archetypeName}/occupations
 	pathParts := strings.Split(strings.TrimPrefix(r.URL.Path, "/api/archetype/"), "/")
