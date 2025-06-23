@@ -204,7 +204,7 @@ const characterUtils = {
     async updateInvestigator(section, field, value) {
         try {
             const cookieId = document.querySelector('input[data-field="Name"]').id
-            const response = await fetch(`/api/investigator/${cookieId}/`, {
+            const response = await fetch(`/api/investigator/${cookieId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

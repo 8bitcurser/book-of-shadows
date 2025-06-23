@@ -158,11 +158,9 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
-
 	if err != nil || investigator == nil {
 		http.Error(w, "Investigator cookie missing", http.StatusNotFound)
 	}
-
 	body, err := io.ReadAll(r.Body)
 	defer r.Body.Close()
 	var serializer serializers.UpdateRequestSerializer
