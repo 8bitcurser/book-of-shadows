@@ -36,11 +36,10 @@ func NewRadixTree() *RadixTree {
 	}
 }
 
-func (t *RadixTree) Insert(path string, handler *http.HandlerFunc, staticHandler *http.Handler, method string) {
-	parts := strings.Split(strings.Trim(path, "/"), "/")
+func (t *RadixTree) Insert(path []string, handler *http.HandlerFunc, staticHandler *http.Handler, method string) {
 	current := t.root
 
-	for _, part := range parts {
+	for _, part := range path {
 		if current.children[part] == nil {
 			current.children[part] = &RadixNode{
 				key:      part,
@@ -54,9 +53,8 @@ func (t *RadixTree) Insert(path string, handler *http.HandlerFunc, staticHandler
 }
 
 func (t *RadixTree) Find(path string, method string) *RadixNode {
-	parts := strings.Split(strings.Trim(path, "/"), "/")
 	current := t.root
-
+	parts := strings.Split(strings.Trim(path, "/"), "/")
 	for _, part := range parts {
 		if current.children[part] == nil {
 			return nil // No se encontró el nodo
@@ -79,11 +77,13 @@ func NewRouter() *RadixTree {
 }
 
 func (r *RadixTree) Handle(method, path string, handler http.HandlerFunc) {
-	r.Insert(path, &handler, nil, method)
+	path_split := strings.Split(strings.Trim(path, "/"), "/")
+	r.Insert(path_split, &handler, nil, method)
 }
 
 func (r *RadixTree) HandleStatic(path string, handler http.Handler) {
-	r.Insert(path, nil, &handler, http.MethodGet)
+	path_split := strings.Split(strings.Trim(path, "/"), "/")
+	r.Insert(path_split, nil, &handler, http.MethodGet)
 }
 
 func (r *RadixTree) ServeHTTP(w http.ResponseWriter, req *http.Request) {
