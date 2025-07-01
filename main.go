@@ -19,10 +19,10 @@ func setupRoutes() *RadixTree {
 
 	// Investigator CRUD operations
 	router.GET("api/investigator", handleListInvestigators)
-	router.GET("api/investigator/{:id}", handleGetInvestigator)
 	router.POST("api/investigator/", handleCreateBaseInvestigator)
-	router.PUT("api/investigator/", handleUpdateInvestigator)
-	router.DELETE("api/investigator/", handleDeleteInvestigator)
+	router.GET("api/investigator/{:id}", handleGetInvestigator)
+	router.PUT("api/investigator/{:id}", handleUpdateInvestigator)
+	router.DELETE("api/investigator/{:id}", handleDeleteInvestigator)
 
 	router.GET("api/investigator/PDF/", handleExportPDF)
 	router.GET("api/investigator/list/export", handleListInvestigatorsExport)

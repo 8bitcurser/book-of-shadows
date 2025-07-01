@@ -42,32 +42,39 @@ func (t *RadixTree) Insert(path []string, handler *http.HandlerFunc, staticHandl
 	for _, part := range path {
 		if current.children[part] == nil {
 			current.children[part] = &RadixNode{
-				key:      part,
-				children: make(map[string]*RadixNode),
-				handler:  make(map[string]*http.HandlerFunc),
+				key:           part,
+				children:      make(map[string]*RadixNode),
+				handler:       make(map[string]*http.HandlerFunc),
+				staticHandler: nil,
 			}
 		}
 		current = current.children[part]
 	}
-	current.handler[method] = handler
+	if handler == nil {
+		current.staticHandler = staticHandler
+	} else {
+		current.handler[method] = handler
+	}
 }
 
 func (t *RadixTree) Find(path string, method string) *RadixNode {
 	current := t.root
 	parts := strings.Split(strings.Trim(path, "/"), "/")
+
 	for _, part := range parts {
 		if current.children[part] == nil {
 			return nil // No se encontró el nodo
 		}
 		current = current.children[part]
 	}
-
-	if current.handler != nil || current.staticHandler != nil {
-		if handler, exists := current.handler[method]; exists && handler != nil {
+	if current.handler != nil {
+		if current.handler[method] != nil {
 			return current
 		}
+	}
 
-		return nil // No se encontró un handler adecuado
+	if current.staticHandler != nil {
+		return current
 	}
 	return nil
 }
@@ -89,7 +96,7 @@ func (r *RadixTree) HandleStatic(path string, handler http.Handler) {
 func (r *RadixTree) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	node := r.root
 	if strings.Contains(req.URL.Path, "/static/") {
-		node = r.Find("/static/", http.MethodGet)
+		node = r.Find("static", http.MethodGet)
 	} else {
 		node = r.Find(req.URL.Path, req.Method)
 	}
