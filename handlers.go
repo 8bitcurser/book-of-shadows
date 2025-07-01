@@ -146,6 +146,7 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 
 func handleDeleteInvestigator(w http.ResponseWriter, r *http.Request) {
 	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
+	key = strings.Trim(key, "/")
 	cm := storage.NewInvestigatorCookieConfig()
 
 	cm.DeleteInvestigatorCookie(w, key)
@@ -247,6 +248,7 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 
 func handleGetInvestigator(w http.ResponseWriter, r *http.Request) {
 	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
+	key = strings.Trim(key, "/")
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
 
