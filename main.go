@@ -44,7 +44,6 @@ func main() {
 	defer conn.DB.Close()
 
 	router := setupRoutes()
-	router.PrintRoutes()
 
 	log.Println("Server starting on :8080")
 	if err := http.ListenAndServe(":8080", router); err != nil {

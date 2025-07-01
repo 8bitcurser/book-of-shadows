@@ -246,7 +246,9 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleGetInvestigator(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
+	fmt.Println(r.URL.Path)
+	// key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
+	key := args[0] // Get the key from the args passed by the router
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
 
