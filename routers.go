@@ -13,6 +13,7 @@ type RadixNode struct {
 	staticHandler *http.Handler // Added to store static handlers
 	isParameter   bool          // Added to indicate if the node is a parameter node
 	args          []string
+	kwargs        map[string]string
 }
 
 type RadixTree struct {
