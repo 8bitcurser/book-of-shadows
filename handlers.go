@@ -117,17 +117,17 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Error reading request body", http.StatusBadRequest)
 		return
 	}
-	
+
 	var jsonData map[string]interface{}
 	if err := json.Unmarshal(body, &jsonData); err != nil {
 		log.Println(err)
 		http.Error(w, "Error parsing JSON", http.StatusBadRequest)
 		return
 	}
-	
+
 	payload := make(map[string]any)
 	keysToConvert := []string{"age"}
-	
+
 	for key, val := range jsonData {
 		if slices.Contains(keysToConvert, key) {
 			// Handle age conversion from string to int
@@ -346,13 +346,7 @@ func handleConfirmAttrStepInvestigator(w http.ResponseWriter, r *http.Request) {
 func handleArchetypeOccupations(w http.ResponseWriter, r *http.Request) {
 	// Extract archetype name from URL path
 	// Expected format: /api/archetype/{archetypeName}/occupations
-	pathParts := strings.Split(strings.TrimPrefix(r.URL.Path, "/api/archetype/"), "/")
-	if len(pathParts) < 2 || pathParts[1] != "occupations" {
-		http.Error(w, "Invalid URL format. Expected: /api/archetype/{name}/occupations", http.StatusBadRequest)
-		return
-	}
-
-	archetypeName := pathParts[0]
+	archetypeName := r.Context().Value("params").([]string)[0]
 	if archetypeName == "" {
 		http.Error(w, "Archetype name is required", http.StatusBadRequest)
 		return

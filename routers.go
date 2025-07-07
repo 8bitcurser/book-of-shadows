@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"net/http"
 	"strings"
 )
@@ -47,12 +48,15 @@ func (t *RadixTree) Insert(path []string, handler *http.HandlerFunc, staticHandl
 				handler:       make(map[string]*http.HandlerFunc),
 				staticHandler: nil,
 			}
+			if strings.HasPrefix(part, "{") && strings.HasSuffix(part, "}") {
+				current.children[part].isParameter = true // Mark as a parameter node
+			}
+
 		}
+
 		current = current.children[part]
 	}
-	if part := path[len(path)-1]; strings.HasPrefix(part, "{") && strings.HasSuffix(part, "}") {
-		current.isParameter = true // Mark as a parameter node
-	}
+
 	if handler == nil {
 		current.staticHandler = staticHandler
 	} else {
@@ -91,6 +95,43 @@ func (t *RadixTree) Find(path string, method string) *RadixNode {
 	return nil
 }
 
+func (t *RadixTree) FindRecursive(path []string, method string, node *RadixNode, args []string) *RadixNode {
+	if len(path) == 0 {
+		if node != nil {
+			if node.handler[method] != nil {
+				node.args = args
+				return node
+			} else {
+				return nil
+			}
+		} else {
+			return nil
+		}
+	}
+
+	if node == nil {
+		node = t.root
+	}
+
+	// current chunk
+	chunk := path[0]
+	// reviso que chunk exista entre los hijos
+	childNode, exist := node.children[chunk]
+
+	if !exist {
+		// si no existe itero por todos sus children checkeo si hay
+		// un param
+		for _, childNode := range node.children {
+			if childNode.isParameter {
+				childNode.args = append(childNode.args, chunk)
+				return t.FindRecursive(path[1:], method, childNode, childNode.args)
+			}
+		}
+	}
+
+	return t.FindRecursive(path[1:], method, childNode, args)
+}
+
 func NewRouter() *RadixTree {
 	return NewRadixTree()
 }
@@ -110,7 +151,8 @@ func (r *RadixTree) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	if strings.Contains(req.URL.Path, "/static/") {
 		node = r.Find("static", http.MethodGet)
 	} else {
-		node = r.Find(req.URL.Path, req.Method)
+		path_split := strings.Split(strings.Trim(req.URL.Path, "/"), "/")
+		node = r.FindRecursive(path_split, req.Method, nil, []string{})
 	}
 	if node == nil {
 		http.NotFound(w, req)
@@ -118,7 +160,11 @@ func (r *RadixTree) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 	handler, exists := node.handler[req.Method]
 	if exists && handler != nil {
-		(*handler)(w, req)
+		ctx := context.WithValue(
+			req.Context(),
+			"params",
+			node.args)
+		(*handler)(w, req.WithContext(ctx))
 		return
 	}
 
