@@ -12,7 +12,7 @@ templ OccupationSelection(inv *models.Investigator) {
             required
             onchange="characterUtils.handleOccupationSelection(this)"
         >
-            if inv != nil {
+            if inv != nil && inv.Occupation.Name != "" {
                 <option value={inv.Occupation.Name} data-description={inv.Occupation.GetDescription()} selected>{inv.Occupation.Name}</option>
             } else {
                 <option value="">Select Occupation</option>
@@ -67,7 +67,7 @@ func isOccupationSuggested(occupationName string, suggestedOccupations []string)
 }
 
 func getOccupationContainerStyle(inv *models.Investigator) string {
-    if inv != nil && inv.Archetype.Name != "" {
+    if inv != nil && inv.Archetype != nil && inv.Archetype.Name != "" {
         return "display: block;"
     }
     return "display: none;"

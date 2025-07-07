@@ -9,11 +9,61 @@ templ FormActions(inv *models.Investigator) {
             type="submit"
             class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center justify-content-center mx-auto"
             style={getButtonStyle(inv)}
+            onclick="handleFormSubmission(event)"
         >
             <span>Continue to Attributes</span>
             <i class="bi bi-arrow-right ms-2"></i>
         </button>
     </div>
+    <script>
+        function handleFormSubmission(event) {
+            event.preventDefault();
+            
+            const form = event.target.closest('form');
+            const formData = new FormData(form);
+            const button = event.target;
+            
+            // Convert FormData to JSON object
+            const jsonData = {};
+            for (let [key, value] of formData.entries()) {
+                jsonData[key] = value;
+            }
+            
+            // Disable button during submission
+            button.disabled = true;
+            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
+            
+            fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(jsonData)
+            })
+            .then(response => {
+                if (response.status === 201) {
+                    return response.json();
+                } else {
+                    throw new Error('Form submission failed');
+                }
+            })
+            .then(data => {
+                if (data.Key) {
+                    // Navigate to wizard/attributes/{key}
+                    window.location.href = `/wizard/attributes/${data.Key}`;
+                } else {
+                    throw new Error('No Key returned from server');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                // Re-enable button and reset text
+                button.disabled = false;
+                button.innerHTML = '<span>Continue to Attributes</span><i class="bi bi-arrow-right ms-2"></i>';
+                alert('An error occurred while processing your request. Please try again.');
+            });
+        }
+    </script>
 }
 
 func getButtonStyle(inv *models.Investigator) string {

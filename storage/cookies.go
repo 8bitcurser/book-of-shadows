@@ -27,7 +27,7 @@ func NewInvestigatorCookieConfig() *CookiesConfig {
 	}
 }
 
-func (c *CookiesConfig) SaveInvestigatorCookie(w http.ResponseWriter, inv *models.Investigator) {
+func (c *CookiesConfig) SaveInvestigatorCookie(w http.ResponseWriter, inv *models.Investigator) (string, error) {
 	id := fmt.Sprintf(
 		"%d_%s", time.Now().Unix(), strings.ToLower(strings.ReplaceAll(inv.Name, " ", "_")),
 	)
@@ -41,8 +41,7 @@ func (c *CookiesConfig) SaveInvestigatorCookie(w http.ResponseWriter, inv *model
 	writer := gzip.NewWriter(&compressed)
 	_, err = writer.Write(data)
 	if err != nil {
-		log.Printf("Failed to compress data: %s", err)
-		return
+		return "", err
 	}
 	writer.Close()
 	encodedValue := base64.URLEncoding.EncodeToString(compressed.Bytes())
@@ -56,6 +55,7 @@ func (c *CookiesConfig) SaveInvestigatorCookie(w http.ResponseWriter, inv *model
 		SameSite: http.SameSiteStrictMode,
 	}
 	http.SetCookie(w, cookie)
+	return id, nil
 }
 
 func (c *CookiesConfig) GetInvestigatorCookie(r *http.Request, id string) (*models.Investigator, error) {

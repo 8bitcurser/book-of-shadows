@@ -48,7 +48,7 @@ func OccupationSelection(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if inv != nil {
+		if inv != nil && inv.Occupation.Name != "" {
 			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<option value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
@@ -307,7 +307,7 @@ func isOccupationSuggested(occupationName string, suggestedOccupations []string)
 }
 
 func getOccupationContainerStyle(inv *models.Investigator) string {
-	if inv != nil && inv.Archetype.Name != "" {
+	if inv != nil && inv.Archetype != nil && inv.Archetype.Name != "" {
 		return "display: block;"
 	}
 	return "display: none;"

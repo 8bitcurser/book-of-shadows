@@ -1,0 +1,41 @@
+package views
+
+import (
+    "book-of-shadows/models"
+    "fmt"
+    "book-of-shadows/components"
+)
+
+var attributesWiz = map[string]string{
+    "POW": "Power",
+    "STR": "Strength",
+    "LCK": "Luck",
+    "APP": "Appearance",
+    "DEX": "Dexterity",
+    "INT": "Intelligence",
+    "EDU": "Education",
+    "SIZ": "Size",
+    "CON": "Constitution",
+}
+
+templ AttrStep(investigator *models.Investigator) {
+    <div class="container-fluid p-4 coc-sheet">
+        @components.FormHeader("Attributes Assignment", "Assign your investigator's core attributes")
+        @components.RollAllButton()
+
+        <form
+            id="stepForm"
+            hx-post={ fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID) }
+            hx-target="#character-sheet"
+        >
+            @components.AttributeCard(investigator, attributesWiz)
+            @components.AttributeFormActions(investigator.ID)
+        </form>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                characterUtils.initAttributeForm();
+            });
+        </script>
+    </div>
+}

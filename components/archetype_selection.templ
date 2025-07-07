@@ -12,10 +12,10 @@ templ ArchetypeSelection(inv *models.Investigator) {
             required
             onchange="characterUtils.handleArchetypeSelection(this)"
         >
-            if inv != nil {
-                <option value={inv.Archetype.Name} data-description={inv.Archetype.GetDescription()} selected>{inv.Archetype.Name}</option>
-            } else {
+            if inv == nil {
                 <option value="">Select Archetype</option>
+            } else {
+                <option value={inv.Archetype.Name} data-description={inv.Archetype.GetDescription()} selected>{inv.Archetype.Name}</option>
             }
 
             for arch := range models.ArchetypesList {

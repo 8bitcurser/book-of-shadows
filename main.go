@@ -1,7 +1,9 @@
 package main
 
 import (
+	"book-of-shadows/bugreporting"
 	"book-of-shadows/storage"
+	"book-of-shadows/wizard"
 	"log"
 	"net/http"
 )
@@ -31,8 +33,12 @@ func setupRoutes() *RadixTree {
 	router.GET("api/generate-step/", handleCreateStepInvestigator)
 	router.POST("api/investigator/confirm-attributes/", handleConfirmAttrStepInvestigator)
 
-	router.GET("api/archetype/", handleArchetypeOccupations)
-	router.POST("api/report-issue", handleReportIssue)
+	router.GET("api/archetype/{:name}/occupations", handleArchetypeOccupations)
+	router.POST("api/report-issue", bugreporting.HandleReportIssue)
+
+	router.GET("wizard/base", wizard.HandleBaseStep)
+	router.GET("wizard/attributes/{:key}", wizard.HandleAttrStep)
+	router.GET("wizard/skills/{:key}", wizard.HandleSkillForm)
 
 	return router
 }

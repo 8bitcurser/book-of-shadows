@@ -1,0 +1,30 @@
+package views
+
+import (
+    "book-of-shadows/models"
+    "book-of-shadows/components"
+)
+
+templ BaseStep(inv *models.Investigator) {
+    <div class="container-fluid p-4 coc-sheet">
+        @components.ProgressSteps(1)
+        @components.FormHeader("Personal Information", "Start by entering your investigator's basic details")
+
+        <form
+            id="stepForm"
+            class="row g-4"
+            action="/api/investigator/"
+            hx-post="/api/investigator/"
+            hx-target="#character-sheet"
+        >
+            @components.PersonalInfoFields(inv)
+            
+            <div class="row g-4 mt-2">
+                @components.ArchetypeSelection(inv)
+                @components.OccupationSelection(inv)
+            </div>
+
+            @components.FormActions(inv)
+        </form>
+    </div>
+}

@@ -1,0 +1,29 @@
+package views
+
+import (
+    "book-of-shadows/models"
+    "book-of-shadows/components"
+)
+
+// Main templ for the Skill Assignment Form
+templ SkillStep(investigator *models.Investigator) {
+    <div class="container-fluid p-4 coc-sheet">
+        @components.ProgressSteps(3)
+        @components.FormHeader("Skill Assignment", "Distribute skill points to customize your investigator")
+        @components.CharacterOverview(investigator)
+        @components.SkillsTabNav()
+
+        <!-- Tab content -->
+        <div class="tab-content" id="skillsTabContent">
+            @components.ArchetypeSkillsTab(investigator)
+            @components.OccupationSkillsTab(investigator)
+            @components.GeneralSkillsTab(investigator)
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                characterUtils.initSkillForm();
+            });
+        </script>
+    </div>
+}
