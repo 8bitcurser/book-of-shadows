@@ -14,8 +14,6 @@ templ BaseStep(inv *models.Investigator) {
             id="stepForm"
             class="row g-4"
             action="/api/investigator/"
-            hx-post="/api/investigator/"
-            hx-target="#character-sheet"
         >
             @components.PersonalInfoFields(inv)
             

@@ -46,7 +46,7 @@ func BaseStep(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<form id=\"stepForm\" class=\"row g-4\" action=\"/api/investigator/\" hx-post=\"/api/investigator/\" hx-target=\"#character-sheet\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<form id=\"stepForm\" class=\"row g-4\" action=\"/api/investigator/\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

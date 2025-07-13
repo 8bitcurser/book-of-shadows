@@ -12,7 +12,6 @@ templ FormActions(inv *models.Investigator) {
             onclick="handleFormSubmission(event)"
         >
             <span>Continue to Attributes</span>
-            <i class="bi bi-arrow-right ms-2"></i>
         </button>
     </div>
     <script>
@@ -49,19 +48,20 @@ templ FormActions(inv *models.Investigator) {
             })
             .then(data => {
                 if (data.Key) {
-                    // Navigate to wizard/attributes/{key}
-                    window.location.href = `/wizard/attributes/${data.Key}`;
-                } else {
-                    throw new Error('No Key returned from server');
+                    return fetch(`/wizard/attributes/${data.Key}`, {
+                        method: 'GET'
+                    });
                 }
+            })
+            .then(response => response.text())
+            .then(html => {
+                document.getElementById('character-sheet').innerHTML = html;
             })
             .catch(error => {
                 console.error('Error:', error);
-                // Re-enable button and reset text
                 button.disabled = false;
-                button.innerHTML = '<span>Continue to Attributes</span><i class="bi bi-arrow-right ms-2"></i>';
-                alert('An error occurred while processing your request. Please try again.');
-            });
+                button.innerHTML = '<span>Continue to Attributes</span>';
+            })
         }
     </script>
 }

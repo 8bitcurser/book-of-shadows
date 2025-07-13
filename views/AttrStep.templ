@@ -20,9 +20,9 @@ var attributesWiz = map[string]string{
 
 templ AttrStep(investigator *models.Investigator) {
     <div class="container-fluid p-4 coc-sheet">
+        @components.ProgressSteps(2)
         @components.FormHeader("Attributes Assignment", "Assign your investigator's core attributes")
         @components.RollAllButton()
-
         <form
             id="stepForm"
             hx-post={ fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID) }
