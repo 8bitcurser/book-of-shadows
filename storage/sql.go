@@ -5,6 +5,7 @@ import (
 	"github.com/google/uuid"
 	_ "github.com/mattn/go-sqlite3"
 	"log"
+	"os"
 	"time"
 )
 
@@ -19,7 +20,11 @@ type SQLiteDB struct {
 }
 
 func (s *SQLiteDB) Init() {
-	db, err := sql.Open("sqlite3", "data/exports.db")
+	dbPath := os.Getenv("DB_PATH")
+	if dbPath == "" {
+		dbPath = "data/exports.db"
+	}
+	db, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		log.Fatal(err)
 	}

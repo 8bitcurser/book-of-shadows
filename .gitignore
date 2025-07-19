@@ -38,6 +38,9 @@ venv/*
 *.pyc
 __pycache__/
 __init__.py
-data/
+data/*
 data/exports.db
 /data/
+.vscode/
+book-of-shadows
+*/data

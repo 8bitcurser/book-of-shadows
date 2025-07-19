@@ -6,6 +6,9 @@
 app = 'book-of-shadows'
 primary_region = 'eze'
 
+[env]
+  DB_PATH = "/data/exports.db"
+
 [build]
 
 [http_service]
@@ -21,3 +24,7 @@ primary_region = 'eze'
   cpu_kind = 'shared'
   cpus = 1
   memory_mb = 256
+
+[mounts]
+  source = "bosdb"
+  destination = "/data"
