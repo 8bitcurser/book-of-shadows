@@ -193,8 +193,19 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 	if err := json.Unmarshal(body, &serializer); err != nil {
 		http.Error(w, "Bad request", http.StatusBadRequest)
 	}
-
 	switch serializer.Section {
+	case "attributes":
+		attr, ok := investigator.Attributes[serializer.Field]
+		if !ok {
+			// TODO: validate attribute name
+			investigator.Attributes[serializer.Field] = models.Attribute{
+				Name:  serializer.Field,
+				Value: int(serializer.Value.(float64)),
+			}
+		} else {
+			attr.Value = int(serializer.Value.(float64))
+			investigator.Attributes[serializer.Field] = attr
+		}
 	case "skills":
 		skill, ok := investigator.Skills[serializer.Field]
 		if !ok {

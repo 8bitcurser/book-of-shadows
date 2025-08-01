@@ -2,7 +2,6 @@ package views
 
 import (
     "book-of-shadows/models"
-    "fmt"
     "book-of-shadows/components"
 )
 
@@ -25,9 +24,8 @@ templ AttrStep(investigator *models.Investigator) {
         @components.RollAllButton()
         <form
             id="stepForm"
-            hx-post={ fmt.Sprintf("/api/investigator/confirm-attributes/%s", investigator.ID) }
-            hx-target="#character-sheet"
         >
+            <input type="hidden" id="investigatorId" value={investigator.ID} />
             @components.AttributeCard(investigator, attributesWiz)
             @components.AttributeFormActions(investigator.ID)
         </form>

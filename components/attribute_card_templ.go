@@ -36,7 +36,9 @@ func AttributeCard(investigator *models.Investigator, attributes map[string]stri
 			return templ_7745c5c3_Err
 		}
 		for key, value := range attributes {
-			templ_7745c5c3_Err = AttributeInput(key, value, isInCoreCharacteristics(value, investigator), getAttributeFormula(key)).Render(ctx, templ_7745c5c3_Buffer)
+			templ_7745c5c3_Err = AttributeInput(
+				key, value, isInCoreCharacteristics(value, investigator),
+				getAttributeFormula(key), investigator).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

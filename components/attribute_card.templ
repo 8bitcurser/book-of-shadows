@@ -7,7 +7,9 @@ templ AttributeCard(investigator *models.Investigator, attributes map[string]str
         <div class="card-body p-4">
             <div class="row g-4">
                 for key, value := range attributes {
-                    @AttributeInput(key, value, isInCoreCharacteristics(value, investigator), getAttributeFormula(key))
+                    @AttributeInput(
+                        key, value, isInCoreCharacteristics(value, investigator),
+                        getAttributeFormula(key), investigator)
                 }
             </div>
         </div>

@@ -239,6 +239,7 @@ func FromJSON(data []byte) (*models.Investigator, error) {
 }
 
 var validUpdateSections = []string{
+	"attributes",
 	"combat",
 	"personalInfo",
 	"skills",

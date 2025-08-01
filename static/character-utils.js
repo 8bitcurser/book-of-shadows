@@ -203,7 +203,7 @@ const characterUtils = {
 
     async updateInvestigator(section, field, value) {
         try {
-            const cookieId = document.querySelector('input[data-field="Name"]').id
+            const cookieId = this.getCurrentCharacterId();
             const response = await fetch(`/api/investigator/${cookieId}`, {
                 method: 'PUT',
                 headers: {
@@ -457,18 +457,16 @@ const characterUtils = {
     // Roll a single attribute
     rollAttribute(input) {
         const formula = input.dataset.formula;
-        let result = 0;
 
         if (formula === '3d6x5') {
             // Roll 3d6 * 5 with animation
-            result = this.animateDiceRoll(3, 6, 5, input);
+            this.animateDiceRoll(3, 6, 5, input);
         } else if (formula === '2d6p6x5') {
             // Roll (2d6 + 6) * 5 with animation
-            result = this.animateDiceRoll(2, 6, 5, input, 6);
+            this.animateDiceRoll(2, 6, 5, input, 6);
         }
         
-        // Update the half and fifth values
-        this.updateDerivedValues(input);
+        // updateAttributeValue will be called by animateDiceRoll when animation completes
     },
 
     // Add a new function for dice roll animation
@@ -497,7 +495,7 @@ const characterUtils = {
                 result *= multiplier;
                 
                 input.value = result;
-                this.updateDerivedValues(input);
+                this.updateAttributeValue(input);
             }
         }, 100);
         
@@ -526,7 +524,10 @@ const characterUtils = {
             
             // Initial calculation for any pre-filled values
             characterUtils.updateDerivedValues(input);
-        })
+        });
+
+        // Check if attributes are complete on initialization
+        this.checkAttributesComplete();
     },
 
     // Add these to character-utils.js
@@ -937,31 +938,139 @@ const characterUtils = {
 
     // Helper to get current character ID
     getCurrentCharacterId() {
-        const input = document.querySelector('input[data-field="Name"]');
-        return input ? input.id : '';
+        // First try to get from name field (character sheet context)
+        const nameInput = document.querySelector('input[data-field="Name"]');
+        if (nameInput && nameInput.id) {
+            return nameInput.id;
+        }
+        
+        // Then try to get from hidden investigatorId field (wizard context)
+        const hiddenInput = document.getElementById('investigatorId');
+        if (hiddenInput && hiddenInput.value) {
+            return hiddenInput.value;
+        }
+        
+        return '';
+    },
+
+    // Function to load personal info step
+    loadPersonalInfo(investigatorId) {
+        fetch(`/wizard/base/${investigatorId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('character-sheet').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading personal info:', error);
+            });
+    },
+
+    // Function to handle personal info changes when investigator exists
+    async handlePersonalInfoChange(input) {
+        // Check if investigator exists (has hidden ID field)
+        const investigatorId = this.getCurrentCharacterId();
+        
+        if (investigatorId) {
+            // Update existing investigator
+            const field = input.dataset.field;
+            const value = field === 'Age' ? parseInt(input.value) || 0 : input.value;
+            
+            try {
+                await this.updateInvestigator("personalInfo", field, value);
+                
+                // Add visual feedback
+                input.classList.add('bg-success', 'bg-opacity-10');
+                setTimeout(() => {
+                    input.classList.remove('bg-success', 'bg-opacity-10');
+                }, 300);
+                
+            } catch (error) {
+                console.error('Error updating personal info:', error);
+                input.classList.add('bg-danger', 'bg-opacity-10');
+                setTimeout(() => {
+                    input.classList.remove('bg-danger', 'bg-opacity-10');
+                }, 300);
+            }
+        }
+        
+        // Always check form completion
+        this.checkFormCompletion();
+    },
+
+    // Function to update attribute value and check if all attributes are filled
+    async updateAttributeValue(input) {
+        const attrAbbrev = input.name;
+        const value = parseInt(input.value) || 0;
+
+        // Mapping from abbreviation to full name
+        const attributeNames = {
+            "POW": "Power",
+            "STR": "Strength", 
+            "LCK": "Luck",
+            "APP": "Appearance",
+            "DEX": "Dexterity",
+            "INT": "Intelligence",
+            "EDU": "Education",
+            "SIZ": "Size",
+            "CON": "Constitution"
+        };
+
+        const attrName = attributeNames[attrAbbrev] || attrAbbrev;
+
+        // Update derived values (half/fifth)
+        this.updateDerivedValues(input);
+
+        // Update the server with the new value
+        try {
+            await this.updateInvestigator("attributes", attrName, value);
+            
+            // Add visual feedback
+            input.classList.add('bg-success', 'bg-opacity-10');
+            setTimeout(() => {
+                input.classList.remove('bg-success', 'bg-opacity-10');
+            }, 300);
+
+            // Check if all attributes have values and enable/disable proceed button
+            this.checkAttributesComplete();
+            
+        } catch (error) {
+            console.error('Error updating attribute:', error);
+            input.classList.add('bg-danger', 'bg-opacity-10');
+            setTimeout(() => {
+                input.classList.remove('bg-danger', 'bg-opacity-10');
+            }, 300);
+        }
+    },
+
+    // Function to check if all attributes are complete and enable proceed button
+    checkAttributesComplete() {
+        const attributeInputs = document.querySelectorAll('.attribute-input');
+        const proceedButton = document.querySelector('button[type="submit"]');
+        
+        if (!proceedButton) return;
+
+        const allFilled = Array.from(attributeInputs).every(input => {
+            const value = parseInt(input.value) || 0;
+            return value > 0;
+        });
+
+        if (allFilled) {
+            proceedButton.disabled = false;
+            proceedButton.style.background = 'linear-gradient(135deg, #6d6875 0%, #b5838d 100%)';
+            proceedButton.classList.add('pulse-button');
+        } else {
+            proceedButton.disabled = true;
+            proceedButton.style.background = '#e5e5e5';
+            proceedButton.classList.remove('pulse-button');
+        }
     }
 
 };
-
-// Function to load personal info step
-function loadPersonalInfo(investigatorId) {
-    fetch(`/wizard/base/${investigatorId}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.text();
-        })
-        .then(html => {
-            document.getElementById('character-sheet').innerHTML = html;
-        })
-        .catch(error => {
-            console.error('Error loading personal info:', error);
-        });
-}
-
-// Make function globally available
-window.loadPersonalInfo = loadPersonalInfo;
 
 
 function rollDice(numDice, sides) {

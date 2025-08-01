@@ -4,6 +4,9 @@ import "book-of-shadows/models"
 import "strconv"
 
 templ PersonalInfoFields(inv *models.Investigator) {
+    if inv != nil {
+        <input type="hidden" id="investigatorId" value={inv.ID} />
+    }
     <div class="row g-4">
         <div class="col-md-6 col-lg-3">
             <label class="form-label fw-medium">Name</label>
@@ -14,7 +17,8 @@ templ PersonalInfoFields(inv *models.Investigator) {
                     class="form-control shadow-sm"
                     required
                     value={inv.Name}
-                    onchange="characterUtils.checkFormCompletion()"
+                    data-field="Name"
+                    onchange="characterUtils.handlePersonalInfoChange(this)"
                     onkeyup="characterUtils.checkFormCompletion()"
                 />
             } else {
@@ -39,7 +43,8 @@ templ PersonalInfoFields(inv *models.Investigator) {
                     value={strconv.Itoa(inv.Age)}
                     class="form-control shadow-sm"
                     required
-                    onchange="characterUtils.checkFormCompletion()"
+                    data-field="Age"
+                    onchange="characterUtils.handlePersonalInfoChange(this)"
                     onkeyup="characterUtils.checkFormCompletion()"
                 />
             } else {
@@ -64,7 +69,8 @@ templ PersonalInfoFields(inv *models.Investigator) {
                     class="form-control shadow-sm"
                     required
                     value={inv.Residence}
-                    onchange="characterUtils.checkFormCompletion()"
+                    data-field="Residence"
+                    onchange="characterUtils.handlePersonalInfoChange(this)"
                     onkeyup="characterUtils.checkFormCompletion()"
                 />
             } else {
@@ -87,7 +93,8 @@ templ PersonalInfoFields(inv *models.Investigator) {
                     class="form-control shadow-sm"
                     required
                     value={inv.Birthplace}
-                    onchange="characterUtils.checkFormCompletion()"
+                    data-field="Birthplace"
+                    onchange="characterUtils.handlePersonalInfoChange(this)"
                     onkeyup="characterUtils.checkFormCompletion()"
                 />
             } else {

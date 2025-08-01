@@ -32,119 +32,138 @@ func PersonalInfoFields(inv *models.Investigator) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"row g-4\"><div class=\"col-md-6 col-lg-3\"><label class=\"form-label fw-medium\">Name</label> ")
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
 		if inv != nil {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<input type=\"text\" name=\"name\" class=\"form-control shadow-sm\" required value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<input type=\"hidden\" id=\"investigatorId\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var2 string
-			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Name)
+			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(inv.ID)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/personal_info_fields.templ`, Line: 16, Col: 35}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/personal_info_fields.templ`, Line: 8, Col: 62}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
-			if templ_7745c5c3_Err != nil {
-				return templ_7745c5c3_Err
-			}
-		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<input type=\"text\" name=\"name\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div><div class=\"col-md-6 col-lg-3\"><label class=\"form-label fw-medium\">Age</label> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"row g-4\"><div class=\"col-md-6 col-lg-3\"><label class=\"form-label fw-medium\">Name</label> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if inv != nil {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<input type=\"number\" name=\"age\" min=\"15\" max=\"90\" value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "<input type=\"text\" name=\"name\" class=\"form-control shadow-sm\" required value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var3 string
-			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(inv.Age))
+			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/personal_info_fields.templ`, Line: 39, Col: 48}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/personal_info_fields.templ`, Line: 19, Col: 35}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" data-field=\"Name\" onchange=\"characterUtils.handlePersonalInfoChange(this)\" onkeyup=\"characterUtils.checkFormCompletion()\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<input type=\"number\" name=\"age\" min=\"15\" max=\"90\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<input type=\"text\" name=\"name\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div><div class=\"col-md-6 col-lg-3\"><label class=\"form-label fw-medium\">Residence</label> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div><div class=\"col-md-6 col-lg-3\"><label class=\"form-label fw-medium\">Age</label> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if inv != nil {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<input type=\"text\" name=\"residence\" class=\"form-control shadow-sm\" required value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<input type=\"number\" name=\"age\" min=\"15\" max=\"90\" value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var4 string
-			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Residence)
+			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(inv.Age))
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/personal_info_fields.templ`, Line: 66, Col: 40}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/personal_info_fields.templ`, Line: 43, Col: 48}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "\" onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "\" class=\"form-control shadow-sm\" required data-field=\"Age\" onchange=\"characterUtils.handlePersonalInfoChange(this)\" onkeyup=\"characterUtils.checkFormCompletion()\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<input type=\"text\" name=\"residence\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<input type=\"number\" name=\"age\" min=\"15\" max=\"90\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "</div><div class=\"col-md-6 col-lg-3\"><label class=\"form-label fw-medium\">Birthplace</label> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</div><div class=\"col-md-6 col-lg-3\"><label class=\"form-label fw-medium\">Residence</label> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		if inv != nil {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<input type=\"text\" name=\"birthplace\" class=\"form-control shadow-sm\" required value=\"")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 12, "<input type=\"text\" name=\"residence\" class=\"form-control shadow-sm\" required value=\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 			var templ_7745c5c3_Var5 string
-			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Birthplace)
+			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Residence)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/personal_info_fields.templ`, Line: 89, Col: 41}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/personal_info_fields.templ`, Line: 71, Col: 40}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 13, "\" data-field=\"Residence\" onchange=\"characterUtils.handlePersonalInfoChange(this)\" onkeyup=\"characterUtils.checkFormCompletion()\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<input type=\"text\" name=\"birthplace\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 14, "<input type=\"text\" name=\"residence\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "</div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "</div><div class=\"col-md-6 col-lg-3\"><label class=\"form-label fw-medium\">Birthplace</label> ")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		if inv != nil {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 16, "<input type=\"text\" name=\"birthplace\" class=\"form-control shadow-sm\" required value=\"")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			var templ_7745c5c3_Var6 string
+			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Birthplace)
+			if templ_7745c5c3_Err != nil {
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/personal_info_fields.templ`, Line: 95, Col: 41}
+			}
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 17, "\" data-field=\"Birthplace\" onchange=\"characterUtils.handlePersonalInfoChange(this)\" onkeyup=\"characterUtils.checkFormCompletion()\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		} else {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 18, "<input type=\"text\" name=\"birthplace\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.checkFormCompletion()\" onkeyup=\"characterUtils.checkFormCompletion()\">")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 19, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
