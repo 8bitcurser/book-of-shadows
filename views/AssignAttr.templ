@@ -29,9 +29,9 @@ templ AssignAttrForm(investigator *models.Investigator) {
             hx-target="#character-sheet"
         >
             @components.AttributeCard(investigator, attributes)
-            @components.AttributeFormActions(investigator.ID)
+            @components.AttributeFormActions(investigator.ID)    
         </form>
-
+        
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 characterUtils.initAttributeForm();

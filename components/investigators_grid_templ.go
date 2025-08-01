@@ -47,7 +47,7 @@ func InvestigatorsGrid(investigators []*models.Investigator) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		} else {
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"card text-center border-0\"><div class=\"card-body\"><!--<h5 class=\"card-title\"></h5>--><a class=\"btn btn-lg btn-dark\" hx-get=\"/api/generate-step/\" hx-target=\"#character-sheet\">You don't have investigators 😢<br>Go create some!</a></div></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<div class=\"card text-center border-0\"><div class=\"card-body\"><!--<h5 class=\"card-title\"></h5>--><a class=\"btn btn-lg btn-dark\" hx-get=\"/wizard/base/new\" hx-target=\"#character-sheet\">You don't have investigators 😢<br>Go create some!</a></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

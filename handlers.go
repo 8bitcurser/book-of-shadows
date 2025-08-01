@@ -287,24 +287,6 @@ func handleGetInvestigator(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func handleCreateStepInvestigator(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/api/generate-step/")
-	cm := storage.NewInvestigatorCookieConfig()
-	investigator := &models.Investigator{}
-	err := error(nil)
-	if key != "/api/generate-step" {
-		investigator, err = cm.GetInvestigatorCookie(r, key)
-		if err != nil {
-			http.Error(w, "Investigator cookie missing", http.StatusNotFound)
-		}
-	}
-	component := views.BaseInvForm(investigator)
-	err = component.Render(r.Context(), w)
-	if err != nil {
-		log.Println(err)
-	}
-}
-
 func handleConfirmAttrStepInvestigator(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)

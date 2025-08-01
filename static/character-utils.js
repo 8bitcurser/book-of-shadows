@@ -943,6 +943,26 @@ const characterUtils = {
 
 };
 
+// Function to load personal info step
+function loadPersonalInfo(investigatorId) {
+    fetch(`/wizard/base/${investigatorId}`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.text();
+        })
+        .then(html => {
+            document.getElementById('character-sheet').innerHTML = html;
+        })
+        .catch(error => {
+            console.error('Error loading personal info:', error);
+        });
+}
+
+// Make function globally available
+window.loadPersonalInfo = loadPersonalInfo;
+
 
 function rollDice(numDice, sides) {
     let total = 0;

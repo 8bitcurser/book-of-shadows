@@ -10,7 +10,13 @@ import (
 )
 
 func HandleBaseStep(w http.ResponseWriter, r *http.Request) {
+	key := strings.TrimPrefix(r.URL.Path, "/wizard/base/")
 	component := views.BaseStep(nil)
+	if key != "" && key != "new" {
+		cm := storage.NewInvestigatorCookieConfig()
+		investigator, _ := cm.GetInvestigatorCookie(r, key)
+		component = views.BaseStep(investigator)
+	}
 	err := component.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)

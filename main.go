@@ -30,13 +30,11 @@ func setupRoutes() *RadixTree {
 	router.GET("api/investigator/list/export", handleListInvestigatorsExport)
 
 	router.POST("api/investigator/list/import/", handleListInvestigatorsImport)
-	router.GET("api/generate-step/", handleCreateStepInvestigator)
-	router.POST("api/investigator/confirm-attributes/", handleConfirmAttrStepInvestigator)
 
 	router.GET("api/archetype/{:name}/occupations/", handleArchetypeOccupations)
 	router.POST("api/report-issue", bugreporting.HandleReportIssue)
 
-	router.GET("wizard/base", wizard.HandleBaseStep)
+	router.GET("wizard/base/{:key}", wizard.HandleBaseStep)
 	router.GET("wizard/attributes/{:key}", wizard.HandleAttrStep)
 	router.GET("wizard/skills/{:key}", wizard.HandleSkillForm)
 
