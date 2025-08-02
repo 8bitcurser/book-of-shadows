@@ -211,6 +211,22 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 		intPoints := investigator.Attributes["Intelligence"].Value * 2
 		investigator.FreePoints = intPoints
 		investigator.UnassignedFreePoints = intPoints
+		investigator.Attributes["Sanity"] = models.Attribute{
+			Name:          "CurrentSanity",
+			Value:         investigator.Attributes["Power"].Value,
+			StartingValue: investigator.Attributes["Power"].StartingValue,
+			MaxValue:      99,
+		}
+		investigator.Attributes["MagicPoints"] = models.Attribute{
+			Name:          "CurrentMagic",
+			Value:         investigator.Attributes["Power"].Value / 5,
+			StartingValue: investigator.Attributes["Power"].Value / 5,
+			MaxValue:      investigator.Attributes["Power"].Value / 5,
+		}
+		investigator.SetHP()
+		investigator.SetMovement()
+		investigator.SetBuildAndDMG()
+
 	case "skills":
 		skill, ok := investigator.Skills[serializer.Field]
 		if !ok {
