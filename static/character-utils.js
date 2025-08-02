@@ -970,6 +970,23 @@ const characterUtils = {
             });
     },
 
+    // Function to proceed to skills step
+    proceedToSkills(investigatorId) {
+        fetch(`/wizard/skills/${investigatorId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('character-sheet').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error loading skills step:', error);
+            });
+    },
+
     // Function to handle personal info changes when investigator exists
     async handlePersonalInfoChange(input) {
         // Check if investigator exists (has hidden ID field)

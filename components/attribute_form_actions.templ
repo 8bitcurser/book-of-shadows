@@ -15,8 +15,12 @@ templ AttributeFormActions(investigatorID string) {
             Back to Personal Info
         </button>
         <button
-            type="submit"
+            type="button"
             class="btn btn-lg px-4 py-2 gradient-button"
+            onclick={ templ.ComponentScript{
+                Name: "characterUtils.proceedToSkills",
+                Call: fmt.Sprintf("characterUtils.proceedToSkills('%s')", investigatorID),
+            } }
         >
             Proceed to Skills
         </button>

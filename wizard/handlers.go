@@ -1,7 +1,6 @@
 package wizard
 
 import (
-	"book-of-shadows/models"
 	"book-of-shadows/storage"
 	"book-of-shadows/views"
 	"log"
@@ -40,9 +39,16 @@ func HandleAttrStep(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleSkillForm(w http.ResponseWriter, r *http.Request) {
-	investigator := &models.Investigator{}
+	key := strings.TrimPrefix(r.URL.Path, "/wizard/skills/")
+	cm := storage.NewInvestigatorCookieConfig()
+	investigator, err := cm.GetInvestigatorCookie(r, key)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, "Investigator not found", http.StatusNotFound)
+		return
+	}
 	components := views.SkillStep(investigator)
-	err := components.Render(r.Context(), w)
+	err = components.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)
 	}
