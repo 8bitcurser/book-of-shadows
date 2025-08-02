@@ -75,8 +75,10 @@ templ GeneralTabActions(investigatorId string) {
                 id="finish-btn"
                 type="button"
                 class="btn btn-lg px-4 py-2 gradient-button"
-                hx-get={ fmt.Sprintf("/api/investigator/%s", investigatorId) }
-                hx-target="#character-sheet"
+                onclick={ templ.ComponentScript{
+                    Name: "characterUtils.completeCharacter",
+                    Call: fmt.Sprintf("characterUtils.completeCharacter('%s')", investigatorId),
+                }}
             >
                 <i class="bi bi-check-circle me-2"></i>Complete Character
             </button>

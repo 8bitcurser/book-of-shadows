@@ -205,6 +205,12 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 			attr.Value = int(serializer.Value.(float64))
 			investigator.Attributes[serializer.Field] = attr
 		}
+		occupationPoints := investigator.CalculateOccupationSkillPoints()
+		investigator.UnassignedOccupationPoints = occupationPoints
+		investigator.OccupationPoints = occupationPoints
+		intPoints := investigator.Attributes["Intelligence"].Value * 2
+		investigator.FreePoints = intPoints
+		investigator.UnassignedFreePoints = intPoints
 	case "skills":
 		skill, ok := investigator.Skills[serializer.Field]
 		if !ok {

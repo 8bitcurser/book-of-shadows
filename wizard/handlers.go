@@ -49,6 +49,7 @@ func HandleSkillForm(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Investigator not found", http.StatusNotFound)
 		return
 	}
+
 	components := views.SkillStep(investigator)
 	err = components.Render(r.Context(), w)
 	if err != nil {

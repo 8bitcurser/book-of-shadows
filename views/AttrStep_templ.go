@@ -87,7 +87,7 @@ func AttrStep(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</form><script>\n            document.addEventListener('DOMContentLoaded', function() {\n                characterUtils.initAttributeForm();\n            });\n        </script></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</form><script>\n            document.addEventListener('DOMContentLoaded', function() {\n                // Clean URL query parameters \n                if (window.location.search) {\n                    const cleanUrl = window.location.protocol + \"//\" + window.location.host + window.location.pathname;\n                    window.history.replaceState({}, document.title, cleanUrl);\n                }\n                \n                characterUtils.initAttributeForm();\n            });\n        </script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

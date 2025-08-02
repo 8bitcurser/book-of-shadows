@@ -566,6 +566,8 @@ func InvestigatorBaseCreate(data map[string]any) *Investigator {
 	inv.addMissingSkills(&inv.Archetype.Skills)
 	occupationSkills := inv.GetOccupationSkills()
 	inv.addMissingSkills(occupationSkills)
+	inv.ArchetypePoints = inv.Archetype.BonusPoints
+	inv.UnassignedArchetypePoints = inv.ArchetypePoints
 
 	return &inv
 }

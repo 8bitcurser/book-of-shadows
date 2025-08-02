@@ -32,6 +32,12 @@ templ AttrStep(investigator *models.Investigator) {
         
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                // Clean URL query parameters 
+                if (window.location.search) {
+                    const cleanUrl = window.location.protocol + "//" + window.location.host + window.location.pathname;
+                    window.history.replaceState({}, document.title, cleanUrl);
+                }
+                
                 characterUtils.initAttributeForm();
             });
         </script>

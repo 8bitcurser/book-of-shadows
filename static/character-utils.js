@@ -534,7 +534,7 @@ const characterUtils = {
 
     // Function to go back to attributes page
     goBackToAttributes(investigatorId) {
-        htmx.ajax('GET', '/api/investigator/attributes/' + investigatorId, {
+        htmx.ajax('GET', '/wizard/attributes/' + investigatorId, {
             target: '#character-sheet',
             swap: 'innerHTML'
         });
@@ -987,6 +987,23 @@ const characterUtils = {
             });
     },
 
+    // Function to complete character and navigate to character sheet
+    completeCharacter(investigatorId) {
+        fetch(`/api/investigator/${investigatorId}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text();
+            })
+            .then(html => {
+                document.getElementById('character-sheet').innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error completing character:', error);
+            });
+    },
+
     // Function to handle personal info changes when investigator exists
     async handlePersonalInfoChange(input) {
         // Check if investigator exists (has hidden ID field)
@@ -1067,7 +1084,7 @@ const characterUtils = {
     // Function to check if all attributes are complete and enable proceed button
     checkAttributesComplete() {
         const attributeInputs = document.querySelectorAll('.attribute-input');
-        const proceedButton = document.querySelector('button[type="submit"]');
+        const proceedButton = document.querySelector('.gradient-button');
         
         if (!proceedButton) return;
 
