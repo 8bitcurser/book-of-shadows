@@ -1,7 +1,7 @@
 package main
 
 import (
-	"book-of-shadows/bugReporting"
+	bugreporting "book-of-shadows/bugReporting"
 	"book-of-shadows/storage"
 	"book-of-shadows/wizard"
 	"log"
@@ -26,7 +26,7 @@ func setupRoutes() *RadixTree {
 	router.PUT("api/investigator/{:id}", handleUpdateInvestigator)
 	router.DELETE("api/investigator/{:id}", handleDeleteInvestigator)
 
-	router.GET("api/investigator/PDF/", handleExportPDF)
+	router.POST("api/investigator/PDF/{:id}", handleExportPDF)
 	router.GET("api/investigator/list/export", handleListInvestigatorsExport)
 
 	router.POST("api/investigator/list/import/", handleListInvestigatorsImport)
