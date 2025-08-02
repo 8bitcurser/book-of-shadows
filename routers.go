@@ -100,8 +100,10 @@ func (t *RadixTree) FindRecursive(path []string, method string, node *RadixNode,
 	if len(path) == 0 {
 		if node != nil {
 			if node.handler[method] != nil {
-				node.args = args
-				return node
+				// Create a copy of the node to avoid modifying the original
+				resultNode := *node
+				resultNode.args = args
+				return &resultNode
 			} else {
 				return nil
 			}
@@ -124,8 +126,9 @@ func (t *RadixTree) FindRecursive(path []string, method string, node *RadixNode,
 		// un param
 		for _, childNode := range node.children {
 			if childNode.isParameter {
-				childNode.args = append(childNode.args, chunk)
-				return t.FindRecursive(path[1:], method, childNode, childNode.args)
+				// Create a fresh args slice instead of modifying the node's args
+				newArgs := append(args, chunk)
+				return t.FindRecursive(path[1:], method, childNode, newArgs)
 			}
 		}
 	}
@@ -161,10 +164,12 @@ func (r *RadixTree) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 	}
 	handler, exists := node.handler[req.Method]
 	if exists && handler != nil {
+		// Create a fresh context with the current request's params
 		ctx := context.WithValue(
 			req.Context(),
 			"params",
-			node.args)
+			node.args,
+		)
 		(*handler)(w, req.WithContext(ctx))
 		return
 	}

@@ -43,10 +43,8 @@ func handleGenerate(w http.ResponseWriter, r *http.Request) {
 
 func handleExportPDF(w http.ResponseWriter, r *http.Request) {
 	data := make(map[string]string)
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/PDF/")
-	if key == "" {
-		http.Error(w, "No investigator Key passed", http.StatusBadRequest)
-	}
+	params := r.Context().Value("params").([]string)
+	key := params[0]
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
 
@@ -170,8 +168,8 @@ func handleCreateBaseInvestigator(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleDeleteInvestigator(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
-	key = strings.Trim(key, "/")
+	params := r.Context().Value("params").([]string)
+	key := params[0]
 	cm := storage.NewInvestigatorCookieConfig()
 
 	cm.DeleteInvestigatorCookie(w, key)
@@ -181,7 +179,8 @@ func handleDeleteInvestigator(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
+	params := r.Context().Value("params").([]string)
+	key := params[0]
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
 	if err != nil || investigator == nil {
@@ -283,8 +282,8 @@ func handleUpdateInvestigator(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleGetInvestigator(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/")
-	key = strings.Trim(key, "/")
+	params := r.Context().Value("params").([]string)
+	key := params[0]
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
 
@@ -292,44 +291,6 @@ func handleGetInvestigator(w http.ResponseWriter, r *http.Request) {
 		log.Println(err)
 	}
 	components := views.CharacterSheet(investigator)
-	err = components.Render(r.Context(), w)
-	if err != nil {
-		log.Println(err)
-	}
-}
-
-func handleConfirmAttrStepInvestigator(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-	}
-	if err := r.ParseForm(); err != nil {
-		log.Println(err)
-	}
-	key := strings.TrimPrefix(r.URL.Path, "/api/investigator/confirm-attributes/")
-	cm := storage.NewInvestigatorCookieConfig()
-	investigator, err := cm.GetInvestigatorCookie(r, key)
-	if err != nil {
-		log.Println(err)
-	}
-	formToInt := func(val string) int {
-		value, err := strconv.Atoi(val)
-		if err != nil {
-			return 0 // or some default value
-		}
-		return value
-	}
-	payload := make(map[string]int)
-	keysToConvert := []string{"STR", "CON", "DEX", "INT", "POW", "APP", "EDU", "SIZ", "LCK"}
-	for key, val := range r.PostForm {
-		val = r.PostForm[key]
-		if slices.Contains(keysToConvert, key) {
-			payload[key] = formToInt(val[0])
-		}
-	}
-	investigator.InvestigatorUpdateAttributes(payload)
-	cm.UpdateInvestigatorCookie(w, key, investigator)
-
-	components := views.SkillAssignmentForm(investigator)
 	err = components.Render(r.Context(), w)
 	if err != nil {
 		log.Println(err)

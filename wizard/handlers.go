@@ -5,11 +5,11 @@ import (
 	"book-of-shadows/views"
 	"log"
 	"net/http"
-	"strings"
 )
 
 func HandleBaseStep(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/wizard/base/")
+	params := r.Context().Value("params").([]string)
+	key := params[0]
 	component := views.BaseStep(nil)
 	if key != "" && key != "new" {
 		cm := storage.NewInvestigatorCookieConfig()
@@ -23,7 +23,8 @@ func HandleBaseStep(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleAttrStep(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/wizard/attributes/")
+	params := r.Context().Value("params").([]string)
+	key := params[0]
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
 	if err != nil {
@@ -39,7 +40,8 @@ func HandleAttrStep(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandleSkillForm(w http.ResponseWriter, r *http.Request) {
-	key := strings.TrimPrefix(r.URL.Path, "/wizard/skills/")
+	params := r.Context().Value("params").([]string)
+	key := params[0]
 	cm := storage.NewInvestigatorCookieConfig()
 	investigator, err := cm.GetInvestigatorCookie(r, key)
 	if err != nil {
