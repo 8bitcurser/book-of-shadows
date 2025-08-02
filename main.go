@@ -1,7 +1,7 @@
 package main
 
 import (
-	"book-of-shadows/bugreporting"
+	"book-of-shadows/bugReporting"
 	"book-of-shadows/storage"
 	"book-of-shadows/wizard"
 	"log"
