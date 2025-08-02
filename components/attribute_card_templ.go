@@ -9,6 +9,18 @@ import "github.com/a-h/templ"
 import templruntime "github.com/a-h/templ/runtime"
 
 import "book-of-shadows/models"
+import "sort"
+
+func getSortedAttributeKeys(attributes map[string]string) []string {
+	keys := make([]string, 0, len(attributes))
+	for key := range attributes {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool {
+		return attributes[keys[i]] < attributes[keys[j]]
+	})
+	return keys
+}
 
 func AttributeCard(investigator *models.Investigator, attributes map[string]string) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -35,9 +47,9 @@ func AttributeCard(investigator *models.Investigator, attributes map[string]stri
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for key, value := range attributes {
+		for _, key := range getSortedAttributeKeys(attributes) {
 			templ_7745c5c3_Err = AttributeInput(
-				key, value, isInCoreCharacteristics(value, investigator),
+				key, attributes[key], isInCoreCharacteristics(attributes[key], investigator),
 				getAttributeFormula(key), investigator).Render(ctx, templ_7745c5c3_Buffer)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

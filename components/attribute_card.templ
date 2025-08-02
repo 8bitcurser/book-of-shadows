@@ -1,14 +1,26 @@
 package components
 
 import "book-of-shadows/models"
+import "sort"
+
+func getSortedAttributeKeys(attributes map[string]string) []string {
+    keys := make([]string, 0, len(attributes))
+    for key := range attributes {
+        keys = append(keys, key)
+    }
+    sort.Slice(keys, func(i, j int) bool {
+        return attributes[keys[i]] < attributes[keys[j]]
+    })
+    return keys
+}
 
 templ AttributeCard(investigator *models.Investigator, attributes map[string]string) {
     <div class="card mb-4 shadow-sm" style="border-radius: 1rem; border: none;">
         <div class="card-body p-4">
             <div class="row g-4">
-                for key, value := range attributes {
+                for _, key := range getSortedAttributeKeys(attributes) {
                     @AttributeInput(
-                        key, value, isInCoreCharacteristics(value, investigator),
+                        key, attributes[key], isInCoreCharacteristics(attributes[key], investigator),
                         getAttributeFormula(key), investigator)
                 }
             </div>

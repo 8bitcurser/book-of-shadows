@@ -1012,7 +1012,7 @@ const characterUtils = {
         if (investigatorId) {
             // Update existing investigator
             const field = input.dataset.field;
-            const value = field === 'Age' ? parseInt(input.value) || 0 : input.value;
+            const value = input.value;
             
             try {
                 await this.updateInvestigator("personalInfo", field, value);
