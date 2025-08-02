@@ -34,6 +34,8 @@ COPY --from=builder /app/models ./models
 COPY --from=builder /app/storage ./storage
 COPY --from=builder /app/components ./components
 COPY --from=builder /app/export.go ./export.go
+COPY --from=builder /app/bugReporting ./bugReporting
+COPY --from=builder /app/wizard ./wizard
 
 
 WORKDIR /app/scripts
