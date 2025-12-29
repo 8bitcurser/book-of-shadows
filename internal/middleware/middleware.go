@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"runtime/debug"
+	"strings"
 	"time"
 )
 
@@ -119,4 +120,40 @@ func SecurityHeaders(next http.Handler) http.Handler {
 		w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
 		next.ServeHTTP(w, r)
 	})
+}
+
+// MaxBodySize limits the size of request bodies
+func MaxBodySize(maxBytes int64) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.ContentLength > maxBytes {
+				http.Error(w, `{"error": "Request body too large"}`, http.StatusRequestEntityTooLarge)
+				return
+			}
+			r.Body = http.MaxBytesReader(w, r.Body, maxBytes)
+			next.ServeHTTP(w, r)
+		})
+	}
+}
+
+// ContentTypeJSON validates that POST/PUT requests have application/json content type
+func ContentTypeJSON(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if r.Method == http.MethodPost || r.Method == http.MethodPut {
+			contentType := r.Header.Get("Content-Type")
+			if contentType != "" && !strings.HasPrefix(contentType, "application/json") {
+				http.Error(w, `{"error": "Content-Type must be application/json"}`, http.StatusUnsupportedMediaType)
+				return
+			}
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
+// ValidateAPIRequest combines common validations for API endpoints
+func ValidateAPIRequest(maxBodyBytes int64) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		maxBodyMiddleware := MaxBodySize(maxBodyBytes)
+		return maxBodyMiddleware(ContentTypeJSON(next))
+	}
 }

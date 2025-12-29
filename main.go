@@ -103,6 +103,7 @@ func (s *Server) Run() error {
 		middleware.Logger(s.logger),
 		middleware.SecurityHeaders,
 		middleware.RequestID,
+		middleware.ValidateAPIRequest(1<<20), // 1MB max body size
 	)
 
 	// Create HTTP server with timeouts

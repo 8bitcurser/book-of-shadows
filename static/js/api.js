@@ -126,6 +126,17 @@ const API = {
     },
 
     /**
+     * Delete investigator
+     * @param {string} id - Investigator ID
+     * @returns {Promise<Response>}
+     */
+    async deleteInvestigator(id) {
+        return this.request(`/api/investigator/${id}`, {
+            method: 'DELETE',
+        });
+    },
+
+    /**
      * Export investigator as PDF
      * @param {string} id - Investigator ID
      * @returns {Promise<Blob>}
