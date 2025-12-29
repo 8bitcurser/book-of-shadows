@@ -479,12 +479,14 @@ func RandomInvestigator(mode GameMode) *Investigator {
 	}
 
 	SAN.Value = POW.Value
-	SAN.StartingValue = POW.StartingValue
+	SAN.StartingValue = POW.Value
+	SAN.MaxValue = 99 // Max sanity is 99 in Call of Cthulhu
 	inv.Attributes[AttrSanity] = SAN
 	inv.SetHP()
 	inv.SetMovement()
 	inv.SetBuildAndDMG()
 	MP.Value = POW.Value / 5
+	MP.MaxValue = POW.Value / 5 // Max MP equals starting MP
 	inv.Attributes[AttrMagicPoints] = MP
 	inv.GetSkills()
 
@@ -655,12 +657,14 @@ func (i *Investigator) InvestigatorUpdateAttributes(data map[string]int) {
 	EDU := i.Attributes[AttrEducation]
 	INT := i.Attributes[AttrIntelligence]
 	SAN.Value = POW.Value
-	SAN.StartingValue = POW.StartingValue
+	SAN.StartingValue = POW.Value
+	SAN.MaxValue = 99 // Max sanity is 99 in Call of Cthulhu
 	i.Attributes[AttrSanity] = SAN
 	i.SetHP()
 	i.SetMovement()
 	i.SetBuildAndDMG()
 	MP.Value = POW.Value / 5
+	MP.MaxValue = POW.Value / 5 // Max MP equals starting MP
 	i.Attributes[AttrMagicPoints] = MP
 	i.Skills["Dodge_Copy"] = Skill{
 		Name:         "Dodge_Copy",

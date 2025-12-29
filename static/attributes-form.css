@@ -1,17 +1,21 @@
-/* attributes-form.css */
+/* =============================================================================
+   Attributes Form - Page-specific styles
+   ============================================================================= */
+
+/* Attribute Container */
 .attribute-container {
     position: relative;
     overflow: hidden;
-    background-color: #f8f9fa;
-    transition: all 0.3s;
+    background-color: var(--color-bg-light);
+    transition: all var(--transition-normal);
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
 }
 
 .attribute-container:hover {
     transform: translateY(-3px);
-    box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.1);
-    background-color: #f0f0f0;
+    box-shadow: var(--shadow-md);
+    background-color: var(--color-bg-hover);
 }
 
 .attribute-container.highlight::after {
@@ -27,39 +31,22 @@
 }
 
 .attribute-label {
-    color: #0D0D0F;
+    color: var(--color-primary-dark);
     font-size: 1.1rem;
 }
 
 .core-badge {
-    background: linear-gradient(135deg, #29003D 0%, #0D0D0F 100%);
+    background: linear-gradient(135deg, var(--color-primary-purple) 0%, var(--color-primary-dark) 100%);
     color: white;
     font-weight: 500;
 }
 
 .attribute-input {
-    border-radius: 0.5rem !important;
+    border-radius: var(--radius-md) !important;
     border: 1px solid #ced4da !important;
 }
 
-.gradient-button {
-    background: linear-gradient(135deg, #0D0D0F 0%, #29003D 100%);
-    border: none;
-    color: white;
-    border-radius: 0.5rem;
-    transition: all 0.3s;
-}
-
-.form-button {
-    border-radius: 0.5rem;
-    transition: all 0.3s;
-}
-
-.form-button:hover, .gradient-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-
+/* Tooltip */
 .tooltip-container {
     position: relative;
     cursor: help;
@@ -73,14 +60,14 @@
     left: 0;
     top: 100%;
     width: 300px;
-    background-color: #fff;
+    background-color: var(--color-bg-white);
     color: #333;
     text-align: left;
-    border-radius: 0.5rem;
+    border-radius: var(--radius-md);
     padding: 12px 16px;
     font-size: 0.875rem;
-    box-shadow: 0 0.25rem 1rem rgba(0,0,0,0.15);
-    transition: opacity 0.3s, transform 0.3s;
+    box-shadow: var(--shadow-lg);
+    transition: opacity var(--transition-normal), transform var(--transition-normal);
     transform: translateY(10px);
 }
 
@@ -88,36 +75,4 @@
     visibility: visible;
     opacity: 1;
     transform: translateY(5px);
-}
-
-@keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-input[type=number]::-webkit-inner-spin-button,
-input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-input[type=number] {
-    -moz-appearance: textfield;
-}
-
-.form-control:focus {
-    border-color: #29003D;
-    box-shadow: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
-}
-
-/* Dice rolling animation */
-@keyframes dice-roll {
-    0% { transform: translateY(0) rotate(0); }
-    25% { transform: translateY(-5px) rotate(5deg); }
-    75% { transform: translateY(-3px) rotate(-3deg); }
-    100% { transform: translateY(0) rotate(0); }
-}
-
-.dice-rolling {
-    animation: dice-roll 0.5s ease-in-out;
 }

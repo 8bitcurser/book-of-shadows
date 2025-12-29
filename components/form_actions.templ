@@ -9,81 +9,11 @@ templ FormActions(inv *models.Investigator) {
             type="submit"
             class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center justify-content-center mx-auto"
             style={getButtonStyle(inv)}
-            onclick="handleFormSubmission(event)"
+            onclick="Wizard.handleFormSubmission(event)"
         >
             <span>Continue to Attributes</span>
         </button>
     </div>
-    <script>
-        function handleFormSubmission(event) {
-            event.preventDefault();
-            
-            const form = event.target.closest('form');
-            const formData = new FormData(form);
-            const button = event.target;
-            
-            // Check if investigator already exists
-            const existingId = document.getElementById('investigatorId');
-            
-            // Disable button during submission
-            button.disabled = true;
-            button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Processing...';
-            
-            if (existingId && existingId.value) {
-                // Investigator exists, go directly to attributes
-                fetch(`/wizard/attributes/${existingId.value}`, {
-                    method: 'GET'
-                })
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('character-sheet').innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    button.disabled = false;
-                    button.innerHTML = '<span>Continue to Attributes</span>';
-                });
-            } else {
-                // Create new investigator
-                // Convert FormData to JSON object
-                const jsonData = {};
-                for (let [key, value] of formData.entries()) {
-                    jsonData[key] = value;
-                }
-                
-                fetch(form.action, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(jsonData)
-                })
-                .then(response => {
-                    if (response.status === 201) {
-                        return response.json();
-                    } else {
-                        throw new Error('Form submission failed');
-                    }
-                })
-                .then(data => {
-                    if (data.Key) {
-                        return fetch(`/wizard/attributes/${data.Key}`, {
-                            method: 'GET'
-                        });
-                    }
-                })
-                .then(response => response.text())
-                .then(html => {
-                    document.getElementById('character-sheet').innerHTML = html;
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    button.disabled = false;
-                    button.innerHTML = '<span>Continue to Attributes</span>';
-                });
-            }
-        }
-    </script>
 }
 
 func getButtonStyle(inv *models.Investigator) string {

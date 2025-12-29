@@ -1,54 +1,638 @@
-/* styles.css */
-body { font-family: 'Roboto', sans-serif; }
-.hero { background: linear-gradient(135deg, #0D0D0F 0%, #29003D
- 100%); color: #ffffff; }
-.feature-card { border: none; border-radius: 1rem; transition: transform .2s; }
-.feature-card:hover { transform: translateY(-5px); }
-.icon-circle { width: 3rem; height: 3rem; display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #B0B0B5; color: #F8F8F8; }
-.step-number { font-size: 1.5rem; font-weight: 500; color: #E9168F; margin-right: .5rem; }
-#character-sheet { display: none; }
+/* =============================================================================
+   Book of Shadows - Main Stylesheet
+   Call of Cthulhu Character Sheet Manager
+   ============================================================================= */
 
-/* Modal styling */
-.modal-header {
-    background: linear-gradient(135deg, #0D0D0F 0%, #3a0455 100%);
-    color: #F9F6EE;
+/* -----------------------------------------------------------------------------
+   CSS Custom Properties (Design Tokens)
+   ----------------------------------------------------------------------------- */
+:root {
+    /* Primary Colors - Dark Occult Theme */
+    --color-primary-dark: #0D0D0F;
+    --color-primary-purple: #29003D;
+    --color-accent-rose: #b5838d;
+    --color-accent-gray: #6d6875;
+
+    /* Secondary Colors */
+    --color-occult-amber: #C97700;
+    --color-eldritch-pink: #E9168F;
+    --color-phantom-gray: #B0B0B5;
+
+    /* Neutral Colors */
+    --color-bg-light: #f8f9fa;
+    --color-bg-hover: #f0f0f0;
+    --color-bg-white: #ffffff;
+    --color-text-primary: #1b1b1b;
+    --color-text-secondary: #6c757d;
+    --color-text-muted: #95a5a6;
+    --color-border-light: rgba(0, 0, 0, 0.05);
+    --color-border-medium: rgba(0, 0, 0, 0.1);
+
+    /* Status Colors */
+    --color-danger: #dc3545;
+    --color-success: #28a745;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-purple) 100%);
+    --gradient-hero: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-purple) 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --shadow-md: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    --shadow-card: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
+    --shadow-focus: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
+
+    /* Border Radius */
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-pill: 50px;
+    --radius-circle: 50%;
+
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s ease;
+
+    /* Typography */
+    --font-family: 'Roboto', sans-serif;
 }
+
+/* -----------------------------------------------------------------------------
+   Base Styles
+   ----------------------------------------------------------------------------- */
+body {
+    font-family: var(--font-family);
+    color: var(--color-text-primary);
+    background-color: var(--color-bg-white);
+}
+
+/* -----------------------------------------------------------------------------
+   Layout Components
+   ----------------------------------------------------------------------------- */
+.coc-sheet {
+    font-family: var(--font-family);
+    background-color: var(--color-bg-white);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    max-width: 1400px;
+    width: 99%;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+#character-sheet {
+    display: none;
+}
+
+/* -----------------------------------------------------------------------------
+   Hero Section
+   ----------------------------------------------------------------------------- */
+.hero {
+    background: var(--gradient-hero);
+    color: #ffffff;
+}
+
+/* -----------------------------------------------------------------------------
+   Card Components
+   ----------------------------------------------------------------------------- */
+.feature-card {
+    border: none;
+    border-radius: var(--radius-xl);
+    transition: transform var(--transition-fast);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header-custom {
+    background: rgba(109, 104, 117, 0.1);
+    border: none;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+}
+
+.card-header-icon {
+    color: var(--color-primary-dark);
+}
+
+.section-title {
+    color: var(--color-primary-dark);
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+/* -----------------------------------------------------------------------------
+   Avatar
+   ----------------------------------------------------------------------------- */
+.avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: var(--radius-circle);
+    background: var(--gradient-primary);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    box-shadow: var(--shadow-md);
+}
+
+.avatar-sm {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Buttons
+   ----------------------------------------------------------------------------- */
+.gradient-button {
+    background: var(--gradient-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+    min-width: 240px;
+}
+
+.gradient-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    color: white;
+}
+
+.gradient-button:disabled {
+    background: #e5e5e5 !important;
+    color: #999;
+    transform: none;
+    box-shadow: none;
+}
+
+.form-button {
+    border-radius: var(--radius-md);
+    transition: all var(--transition-normal);
+}
+
+.form-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Icon Circle */
+.icon-circle {
+    width: 3rem;
+    height: 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius-circle);
+    background: var(--color-phantom-gray);
+    color: var(--color-bg-light);
+}
+
+/* Step Number */
+.step-number {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--color-eldritch-pink);
+    margin-right: 0.5rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Form Elements
+   ----------------------------------------------------------------------------- */
+.form-control,
+select {
+    border-radius: var(--radius-md);
+    padding: 0.625rem 0.75rem;
+    transition: all var(--transition-fast);
+}
+
+.form-control:focus,
+select:focus {
+    border-color: var(--color-primary-purple);
+    box-shadow: var(--shadow-focus);
+}
+
+.form-control[disabled],
+.form-check-input[disabled] {
+    background-color: var(--color-bg-light);
+    opacity: 0.8;
+    cursor: not-allowed;
+}
+
+.form-label {
+    color: var(--color-primary-dark);
+    margin-bottom: 0.5rem;
+}
+
+/* Hide number spinners */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+/* Lock Toggle Switch */
+.form-switch .form-check-input {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
+    background-color: #adb5bd;
+    border-color: #adb5bd;
+    cursor: pointer;
+}
+
+.form-switch .form-check-input:checked {
+    background-color: var(--color-primary-purple);
+    border-color: var(--color-primary-purple);
+}
+
+/* -----------------------------------------------------------------------------
+   Stat Pills
+   ----------------------------------------------------------------------------- */
+.stat-pill {
+    background-color: var(--color-bg-light);
+    border: 1px solid var(--color-border-light);
+    transition: all var(--transition-fast);
+}
+
+.stat-pill:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md) !important;
+    background-color: #f0e6ea !important;
+}
+
+.info-pill {
+    margin: 0 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--radius-pill);
+    background-color: var(--color-bg-light);
+    text-align: center;
+}
+
+/* -----------------------------------------------------------------------------
+   Characteristic Boxes
+   ----------------------------------------------------------------------------- */
+.characteristic-box {
+    background-color: var(--color-bg-light);
+    transition: all var(--transition-fast);
+    border: 1px solid var(--color-border-light);
+}
+
+.characteristic-box:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md) !important;
+    background-color: var(--color-bg-white) !important;
+}
+
+.characteristic-value {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+/* -----------------------------------------------------------------------------
+   Skills
+   ----------------------------------------------------------------------------- */
+.skills-grid {
+    column-count: 3;
+    column-gap: 15px;
+}
+
+.skill-item {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    -webkit-column-break-inside: avoid;
+    background-color: var(--color-bg-light);
+    transition: all var(--transition-fast);
+    border: 1px solid var(--color-border-light);
+}
+
+.skill-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md) !important;
+    background-color: var(--color-bg-white) !important;
+    border-color: rgba(181, 131, 141, 0.2) !important;
+}
+
+.skill-item[data-priority="true"] {
+    border-left: 3px solid var(--color-occult-amber);
+    background-color: rgba(201, 119, 0, 0.05) !important;
+}
+
+.skill-name-container {
+    flex: 1;
+    min-width: 0;
+    margin-right: 5px;
+    max-width: calc(100% - 90px);
+}
+
+.skill-name-wrapper {
+    display: flex;
+    align-items: baseline;
+    min-width: 0;
+    overflow: hidden;
+}
+
+.skill-name {
+    color: var(--color-text-primary);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+.skill-default {
+    color: var(--color-text-muted) !important;
+    white-space: nowrap;
+    font-size: 0.8rem;
+}
+
+.skill-badge {
+    background: var(--gradient-primary);
+    color: white;
+}
+
+/* Skill Values */
+.skill-values-container {
+    flex-shrink: 0;
+    text-align: center;
+    width: 80px;
+}
+
+.skill-value-input {
+    display: inline-flex;
+    width: 70px;
+    min-width: 70px;
+    max-width: 70px;
+}
+
+.skill-value-field {
+    width: 40px !important;
+    padding: 0.25rem 0.1rem !important;
+    text-align: center !important;
+    -moz-appearance: textfield !important;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm) !important;
+}
+
+.skill-value-field::-webkit-inner-spin-button,
+.skill-value-field::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.percent-symbol {
+    padding: 0.25rem 0.4rem !important;
+    background-color: #1E1E1E !important;
+    color: var(--color-bg-light) !important;
+    border-color: var(--color-phantom-gray) !important;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
+}
+
+.derived-values {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--color-phantom-gray) !important;
+    text-align: center;
+    margin-top: 4px;
+    width: 100%;
+}
+
+.half-value,
+.fifth-value {
+    width: 16px;
+    text-align: center;
+    display: inline-block;
+    min-width: 20px;
+    font-weight: 500;
+}
+
+.divider {
+    margin: 0 2px;
+    color: #777;
+}
+
+/* Pin Button */
+.pin-btn {
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.95rem;
+}
+
+.pin-btn:hover {
+    color: var(--color-occult-amber) !important;
+    transform: scale(1.1);
+}
+
+.pin-btn .bi-pin-fill {
+    color: var(--color-occult-amber) !important;
+}
+
+/* -----------------------------------------------------------------------------
+   Talents
+   ----------------------------------------------------------------------------- */
+.talent-item {
+    background-color: var(--color-bg-light);
+    border: 1px solid var(--color-border-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.talent-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+    background: var(--gradient-primary);
+}
+
+.talent-title {
+    color: var(--color-primary-dark);
+    font-weight: bold;
+}
+
+/* -----------------------------------------------------------------------------
+   Modals
+   ----------------------------------------------------------------------------- */
+.modal-content {
+    border-radius: var(--radius-md);
+    border: none;
+}
+
+.modal-header {
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, #3a0455 100%);
+    color: #F9F6EE;
+    border-bottom: none;
+}
+
 .modal-body h4 {
-    color: #29003D;
+    color: var(--color-primary-purple);
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
 }
-.modal-body p, .modal-body li {
+
+.modal-body p,
+.modal-body li {
     margin-bottom: 0.75rem;
 }
+
+.modal-textarea {
+    resize: none;
+    font-family: monospace;
+    font-size: 0.9rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Footer
+   ----------------------------------------------------------------------------- */
 .footer-link {
     cursor: pointer;
     text-decoration: none;
 }
+
 .footer-link:hover {
     text-decoration: underline;
 }
 
-/* Floating bug report button */
+/* -----------------------------------------------------------------------------
+   Bug Report Button
+   ----------------------------------------------------------------------------- */
 .bug-report-btn {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 1030;
-    border-radius: 50%;
+    border-radius: var(--radius-circle);
     width: 60px;
     height: 60px;
     display: flex;
     align-items: center;
     justify-content: center;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(135deg, #0D0D0F 0%, #510179 100%);
+    background: linear-gradient(135deg, var(--color-primary-dark) 0%, #510179 100%);
     color: #F9F6EE;
     border: none;
-    transition: all 0.3s ease;
+    transition: all var(--transition-normal);
 }
 
 .bug-report-btn:hover {
     transform: translateY(-5px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+}
+
+/* -----------------------------------------------------------------------------
+   Animations
+   ----------------------------------------------------------------------------- */
+@keyframes pulse-button {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
+}
+
+.pulse-button {
+    animation: pulse-button 1.5s infinite;
+}
+
+@keyframes scale-up {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.scale-up {
+    animation: scale-up 0.3s ease-in-out;
+}
+
+@keyframes flash-highlight {
+    0% { background-color: rgba(181, 131, 141, 0.3); }
+    100% { background-color: var(--color-bg-light); }
+}
+
+.flash-highlight {
+    animation: flash-highlight 0.8s ease-out;
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+@keyframes field-highlight {
+    0% { background-color: rgba(181, 131, 141, 0.1); }
+    100% { background-color: transparent; }
+}
+
+.field-highlight {
+    animation: field-highlight 1s;
+}
+
+@keyframes dice-roll {
+    0% { transform: translateY(0) rotate(0); }
+    25% { transform: translateY(-5px) rotate(5deg); }
+    75% { transform: translateY(-3px) rotate(-3deg); }
+    100% { transform: translateY(0) rotate(0); }
+}
+
+.dice-rolling {
+    animation: dice-roll 0.5s ease-in-out;
+}
+
+/* -----------------------------------------------------------------------------
+   Transitions
+   ----------------------------------------------------------------------------- */
+.transition-opacity {
+    transition: opacity var(--transition-normal);
+}
+
+/* -----------------------------------------------------------------------------
+   Responsive Design
+   ----------------------------------------------------------------------------- */
+@media (max-width: 1200px) {
+    .skills-grid {
+        column-count: 3;
+    }
+
+    .skill-name {
+        max-width: 140px;
+    }
+}
+
+@media (max-width: 992px) {
+    .skills-grid {
+        column-count: 2;
+    }
+
+    .skill-name {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+    .skills-grid {
+        column-count: 2;
+    }
+}
+
+@media (max-width: 576px) {
+    .skills-grid {
+        column-count: 1;
+    }
+
+    .skill-name {
+        max-width: 180px;
+    }
 }

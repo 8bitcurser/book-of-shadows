@@ -1,0 +1,378 @@
+/**
+ * Character Sheet Module - Handles character sheet viewing and editing
+ * @module character-sheet
+ */
+
+const CharacterSheet = {
+    // =========================================================================
+    // Initialization
+    // =========================================================================
+
+    /**
+     * Initialize character sheet functionality
+     */
+    init() {
+        this.initHoverEffects();
+        this.initSkillNameAdjustment();
+    },
+
+    /**
+     * Initialize hover effects for interactive elements
+     */
+    initHoverEffects() {
+        const hoverElements = Utils.qsa('.stat-pill, .characteristic-box, .skill-item');
+        hoverElements.forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                const card = this.closest('.card');
+                if (!card || !card.classList.contains('locked')) {
+                    this.style.backgroundColor = '#f0f0f0';
+                }
+            });
+            element.addEventListener('mouseleave', function() {
+                const card = this.closest('.card');
+                if (!card || !card.classList.contains('locked')) {
+                    this.style.backgroundColor = '#f8f9fa';
+                }
+            });
+        });
+    },
+
+    /**
+     * Adjust skill names based on container width
+     */
+    initSkillNameAdjustment() {
+        const adjustSkillNames = () => {
+            Utils.qsa('.skill-item').forEach(item => {
+                const container = item.querySelector('.skill-name-container');
+                const name = item.querySelector('.skill-name');
+
+                if (container && name) {
+                    const containerWidth = container.offsetWidth;
+                    if (containerWidth < 120) {
+                        name.style.maxWidth = (containerWidth - 30) + 'px';
+                    }
+                }
+            });
+        };
+
+        adjustSkillNames();
+        window.addEventListener('resize', adjustSkillNames);
+    },
+
+    // =========================================================================
+    // Lock/Unlock Functionality
+    // =========================================================================
+
+    /**
+     * Toggle lock state of character sheet
+     * @param {HTMLInputElement} checkbox - Lock checkbox element
+     */
+    toggleLock(checkbox) {
+        const isLocked = checkbox.checked;
+
+        Utils.qsa('.editable').forEach(element => {
+            element.disabled = isLocked;
+        });
+
+        const title = isLocked ? 'Locked' : 'Unlocked';
+        const icon = isLocked ? '\uD83D\uDD12' : '\uD83D\uDD13';
+        const message = isLocked
+            ? 'Character sheet is now locked. Unlock to make changes.'
+            : 'Character sheet is now editable.';
+
+        Utils.showToast(title, message, icon);
+    },
+
+    // =========================================================================
+    // Value Updates
+    // =========================================================================
+
+    /**
+     * Recalculate and update sheet values
+     * @param {HTMLInputElement} input - Input element
+     * @param {string} type - Value type (attribute, skill, stat)
+     */
+    async recalculateValues(input, type) {
+        const value = Utils.parseInt(input.value);
+
+        // Update derived values
+        const container = input.closest('.characteristic-box') || input.parentElement;
+        Utils.updateDerivedValues(container, value);
+
+        const investigatorId = Utils.getCurrentCharacterId();
+        if (!investigatorId) return;
+
+        try {
+            if (type === 'attribute') {
+                await this.updateAttribute(input, value);
+            } else if (type === 'skill') {
+                await this.updateSkill(input, value);
+            } else {
+                await this.updateStat(input, value);
+            }
+            Utils.showSuccess(input);
+        } catch (error) {
+            console.error(`Error updating ${type}:`, error);
+            Utils.showError(input);
+        }
+    },
+
+    /**
+     * Update attribute value
+     * @param {HTMLInputElement} input - Attribute input
+     * @param {number} value - New value
+     */
+    async updateAttribute(input, value) {
+        const attrName = input.dataset.attr;
+        await API.updateInvestigator(
+            Utils.getCurrentCharacterId(),
+            'combat',
+            attrName,
+            value
+        );
+    },
+
+    /**
+     * Update skill value
+     * @param {HTMLInputElement} input - Skill input
+     * @param {number} value - New value
+     */
+    async updateSkill(input, value) {
+        const skillName = input.dataset.skill;
+
+        // Update derived values in skill item
+        const skillItem = input.closest('.skill-item');
+        if (skillItem) {
+            const derivedValues = skillItem.querySelector('.derived-values');
+            if (derivedValues) {
+                const spans = derivedValues.querySelectorAll('span');
+                if (spans.length >= 3) {
+                    spans[0].textContent = Utils.half(value);
+                    spans[2].textContent = Utils.fifth(value);
+                }
+            }
+        }
+
+        await API.updateInvestigator(
+            Utils.getCurrentCharacterId(),
+            'skills',
+            skillName,
+            value
+        );
+
+        input.dataset.skillvalue = value.toString();
+    },
+
+    /**
+     * Update stat value
+     * @param {HTMLInputElement} input - Stat input
+     * @param {number} value - New value
+     */
+    async updateStat(input, value) {
+        const statName = input.dataset.stat;
+        await API.updateInvestigator(
+            Utils.getCurrentCharacterId(),
+            'stats',
+            statName,
+            value
+        );
+    },
+
+    // =========================================================================
+    // Personal Info
+    // =========================================================================
+
+    /**
+     * Update personal info field
+     * @param {HTMLInputElement} input - Personal info input
+     */
+    async updatePersonalInfo(input) {
+        const field = input.dataset.field;
+        const value = field === 'age' ? Utils.parseInt(input.value) : input.value;
+        const investigatorId = Utils.getCurrentCharacterId();
+
+        if (!investigatorId) return;
+
+        try {
+            await API.updateInvestigator(investigatorId, 'personalInfo', field, value);
+            Utils.showSuccess(input);
+        } catch (error) {
+            console.error('Error updating personal info:', error);
+            Utils.showError(input);
+        }
+    },
+
+    // =========================================================================
+    // Skill Management
+    // =========================================================================
+
+    /**
+     * Toggle skill check mark
+     * @param {HTMLInputElement} input - Checkbox input
+     */
+    async handleSkillToggleCheck(input) {
+        const skillName = input.dataset.skill;
+        try {
+            await API.updateInvestigator(
+                Utils.getCurrentCharacterId(),
+                'skill_check',
+                skillName,
+                true
+            );
+        } catch (error) {
+            console.error('Error toggling skill check:', error);
+        }
+    },
+
+    /**
+     * Handle skill name change (for custom skills)
+     * @param {HTMLInputElement} input - Name input
+     */
+    async handleSkillNameChange(input) {
+        const skillName = input.dataset.skill;
+        try {
+            await API.updateInvestigator(
+                Utils.getCurrentCharacterId(),
+                'skill_name',
+                skillName,
+                input.value
+            );
+        } catch (error) {
+            console.error('Error updating skill name:', error);
+        }
+    },
+
+    /**
+     * Toggle skill pin/priority status
+     * @param {HTMLButtonElement} button - Pin button
+     */
+    async togglePinSkill(button) {
+        const skillName = button.dataset.skill;
+        const isPinned = button.dataset.pinned === 'true';
+        const newPinnedStatus = !isPinned;
+
+        // Update button appearance
+        button.dataset.pinned = newPinnedStatus.toString();
+
+        const icon = button.querySelector('i');
+        if (icon) {
+            if (newPinnedStatus) {
+                icon.classList.remove('bi-pin');
+                icon.classList.add('bi-pin-fill');
+                icon.style.color = '#C97700'; // Occult Amber
+            } else {
+                icon.classList.remove('bi-pin-fill');
+                icon.classList.add('bi-pin');
+                icon.style.color = '#B0B0B0'; // Phantom Gray
+            }
+        }
+
+        const skillItem = button.closest('.skill-item');
+        if (skillItem) {
+            skillItem.dataset.priority = newPinnedStatus.toString();
+        }
+
+        try {
+            await API.updateInvestigator(
+                Utils.getCurrentCharacterId(),
+                'skill_prio',
+                skillName,
+                newPinnedStatus
+            );
+
+            // Add visual feedback
+            button.classList.add('scale-up');
+            setTimeout(() => button.classList.remove('scale-up'), 300);
+
+            // Reload skills section to reorder
+            const html = await API.getInvestigator(Utils.getCurrentCharacterId());
+            Utils.setHTML('character-sheet', html);
+        } catch (error) {
+            console.error('Error updating skill priority:', error);
+            // Revert on error
+            button.dataset.pinned = isPinned.toString();
+            if (skillItem) {
+                skillItem.dataset.priority = isPinned.toString();
+            }
+            if (icon) {
+                if (isPinned) {
+                    icon.classList.remove('bi-pin');
+                    icon.classList.add('bi-pin-fill');
+                    icon.style.color = '#C97700';
+                } else {
+                    icon.classList.remove('bi-pin-fill');
+                    icon.classList.add('bi-pin');
+                    icon.style.color = '#B0B0B0';
+                }
+            }
+        }
+    },
+
+    // =========================================================================
+    // Export/Import
+    // =========================================================================
+
+    /**
+     * Export character as PDF
+     * @param {Event} evt - Click event
+     * @param {string} key - Character key/ID
+     */
+    async exportPDF(evt, key) {
+        try {
+            const blob = await API.exportPDF(key);
+            Utils.downloadBlob(blob, key + '.pdf');
+        } catch (error) {
+            console.error('Error exporting PDF:', error);
+            Utils.showToast('Error', 'Failed to export PDF. Please try again.', '\u274C');
+        }
+    },
+
+    /**
+     * Import investigators from code
+     */
+    async importInvestigators() {
+        const importCode = Utils.getValue('importCode');
+
+        if (!importCode) {
+            Utils.showToast('Error', 'Please enter an import code.', '\u274C');
+            return;
+        }
+
+        try {
+            await API.importInvestigators(importCode);
+
+            // Close modal and trigger HTMX refresh
+            const modal = Utils.$('importModal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+            htmx.trigger('body', 'import');
+
+            Utils.showToast('Success', 'Investigators imported successfully!', '\u2705');
+        } catch (error) {
+            console.error('Error importing investigators:', error);
+            Utils.showToast('Error', 'Failed to import investigators. Please try again.', '\u274C');
+        }
+    },
+
+    /**
+     * Get export code for all investigators
+     */
+    async getExportCode() {
+        try {
+            return await API.getExportCode();
+        } catch (error) {
+            console.error('Error getting export code:', error);
+            Utils.showToast('Error', 'Failed to get export code.', '\u274C');
+            return null;
+        }
+    },
+};
+
+// Export for module usage
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = CharacterSheet;
+}
+
+// Make available globally
+window.CharacterSheet = CharacterSheet;

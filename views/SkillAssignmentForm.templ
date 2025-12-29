@@ -21,9 +21,10 @@ templ SkillAssignmentForm(investigator *models.Investigator) {
         </div>
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                characterUtils.initSkillForm();
-            });
+            // Initialize immediately (works for both initial load and HTMX swap)
+            if (typeof Wizard !== 'undefined') {
+                Wizard.initSkillForm();
+            }
         </script>
     </div>
 }

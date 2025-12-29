@@ -33,9 +33,10 @@ templ AssignAttrForm(investigator *models.Investigator) {
         </form>
         
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                characterUtils.initAttributeForm();
-            });
+            // Initialize immediately (works for both initial load and HTMX swap)
+            if (typeof Wizard !== 'undefined') {
+                Wizard.initAttributeForm();
+            }
         </script>
     </div>
 }

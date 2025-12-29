@@ -1,19 +1,23 @@
-/* investigators-list.css */
+/* =============================================================================
+   Investigators List - Page-specific styles
+   ============================================================================= */
+
+/* Investigator Card */
 .investigator-card {
-    transition: transform 0.2s ease, box-shadow 0.3s ease;
-    border-radius: 0.5rem;
+    transition: transform var(--transition-fast), box-shadow var(--transition-normal);
+    border-radius: var(--radius-md);
     overflow: hidden;
 }
 
 .investigator-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+    box-shadow: var(--shadow-lg) !important;
 }
 
 .investigator-img {
     object-fit: cover;
     height: 200px;
-    transition: filter 0.3s ease;
+    transition: filter var(--transition-normal);
 }
 
 .investigator-card:hover .investigator-img {
@@ -22,18 +26,19 @@
 
 .investigator-title {
     font-weight: 600;
-    transition: color 0.2s ease;
+    transition: color var(--transition-fast);
 }
 
 .investigator-title:hover {
-    color: #b5838d;
+    color: var(--color-accent-rose);
 }
 
 .investigator-occupation {
     font-size: 0.9rem;
-    color: #6c757d;
+    color: var(--color-text-secondary);
 }
 
+/* Card Actions */
 .card-actions {
     margin-top: auto;
     display: flex;
@@ -44,46 +49,30 @@
     font-size: 0.85rem;
     border-radius: 0.375rem;
     padding: 0.375rem 0.75rem;
-    transition: all 0.2s ease;
+    transition: all var(--transition-fast);
 }
 
 .delete-button {
-    color: #dc3545;
-    border-color: #dc3545;
+    color: var(--color-danger);
+    border-color: var(--color-danger);
 }
 
 .delete-button:hover {
-    background-color: #dc3545;
+    background-color: var(--color-danger);
     color: white;
 }
 
 .export-button {
-    color: #6c757d;
-    border-color: #6c757d;
+    color: var(--color-text-secondary);
+    border-color: var(--color-text-secondary);
 }
 
 .export-button:hover {
-    background-color: #6c757d;
+    background-color: var(--color-text-secondary);
     color: white;
 }
 
 .export-import-group {
     display: flex;
     gap: 0.5rem;
-}
-
-.modal-content {
-    border-radius: 0.5rem;
-    border: none;
-}
-
-.modal-header {
-    border-bottom: 1px solid #dee2e6;
-    background-color: #f8f9fa;
-}
-
-.modal-textarea {
-    resize: none;
-    font-family: monospace;
-    font-size: 0.9rem;
 }

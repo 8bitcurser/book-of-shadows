@@ -27,9 +27,10 @@ templ CharacterSheet(investigator *models.Investigator) {
         @components.TalentsSection(investigator)
 
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                characterUtils.initCharacterSheet();
-            });
+            // Initialize immediately (works for both initial load and HTMX swap)
+            if (typeof CharacterSheet !== 'undefined') {
+                CharacterSheet.init();
+            }
         </script>
     </div>
 }
