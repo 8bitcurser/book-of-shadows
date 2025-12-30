@@ -4,7 +4,7 @@ import "strconv"
 
 templ PointsDisplay(title string, totalPoints int, pointsId string) {
     <div class="d-flex justify-content-between align-items-center mb-4">
-        <h3 class="mb-0 fw-bold" style="color: #6d6875;">
+        <h3 class="mb-0 fw-bold section-header">
             if title == "Archetype Skills" {
                 <i class="bi bi-person-badge me-2"></i>
             } else if title == "Occupation Skills" {
@@ -14,16 +14,16 @@ templ PointsDisplay(title string, totalPoints int, pointsId string) {
             }
             { title }
         </h3>
-        <div class="points-display shadow-sm d-flex align-items-center p-2 px-3 rounded-pill">
+        <div class="points-display d-flex align-items-center p-2 px-3 rounded-pill">
             <div class="me-3">
                 <span class="text-muted">Total:</span>
-                <span class="fw-bold ms-1 text-dark" id={ pointsId + "-total" }>
+                <span class="fw-bold ms-1" id={ pointsId + "-total" }>
                     { strconv.Itoa(totalPoints) }
                 </span>
             </div>
             <div class="points-remaining">
                 <span class="text-muted">Remaining:</span>
-                <span class="fw-bold ms-1" id={ pointsId } style="color: #b5838d;">
+                <span class="fw-bold ms-1 points-value" id={ pointsId }>
                     { strconv.Itoa(totalPoints) }
                 </span>
             </div>

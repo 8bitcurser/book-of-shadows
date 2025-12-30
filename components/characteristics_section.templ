@@ -18,14 +18,14 @@ templ CharacteristicsSection(inv *models.Investigator) {
                     if (!strings.HasPrefix(attr.Name, "Current") && !strings.HasPrefix(attr.Name, "Max") && 
                          attr.Name != "HitPoints" && attr.Name != "MagicPoints" && attr.Name != "Sanity") {
                         <div class="col-md-3 col-sm-4 mb-2">
-                            <div class="characteristic-box p-2 rounded shadow-sm">
+                            <div class="characteristic-box p-2 rounded">
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <strong style="color: #6d6875;">{attr.Name}</strong>
+                                    <strong class="characteristic-name">{attr.Name}</strong>
                                     <span class="badge fw-bold characteristic-value" data-attr={attr.Name}>{strconv.Itoa(attr.Value)}</span>
                                 </div>
                                 <div class="d-flex justify-content-end mt-1">
-                                    <small class="me-2 text-secondary" title="Half value" data-half>{strconv.Itoa(attr.Value/2)}</small>
-                                    <small class="ms-2 text-secondary" title="Fifth value" data-fifth>{strconv.Itoa(attr.Value/5)}</small>
+                                    <small class="characteristic-derived me-2" title="Half value" data-half>{strconv.Itoa(attr.Value/2)}</small>
+                                    <small class="characteristic-derived ms-2" title="Fifth value" data-fifth>{strconv.Itoa(attr.Value/5)}</small>
                                 </div>
                             </div>
                         </div>

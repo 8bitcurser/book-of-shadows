@@ -1,5 +1,5 @@
 /* =============================================================================
-   Investigator Form - Page-specific styles
+   Investigator Form - Retro 8-Bit Theme
    ============================================================================= */
 
 /* Progress Steps */
@@ -9,69 +9,329 @@
 }
 
 .step-circle {
-    transition: all var(--transition-normal);
-    width: 30px;
-    height: 30px;
-    border-radius: var(--radius-circle);
+    transition: all var(--transition-quick);
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-none);
     display: flex;
     align-items: center;
     justify-content: center;
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    border: 2px solid var(--color-border-light);
 }
 
 .step-circle.active {
-    background: var(--gradient-primary);
-    color: white;
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    box-shadow: var(--shadow-pixel-sm);
+    border-color: var(--color-black);
 }
 
 .step-circle.inactive {
-    background: #e5e5e5;
-    color: #999;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+    border-color: var(--color-border-light);
 }
 
 .step-label {
-    transition: all var(--transition-normal);
+    transition: all var(--transition-quick);
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 1rem;
 }
 
 .step-connector {
-    height: 2px;
-    background: #f0f0f0;
+    height: 4px;
+    background: var(--color-border-light);
+}
+
+.step-indicator.completed .step-circle {
+    background: var(--color-green);
+    border-color: var(--color-black);
 }
 
 .step-indicator.completed .step-label {
-    color: var(--color-primary-dark);
+    color: var(--color-green);
 }
 
 .step-indicator.active .step-label {
-    color: var(--color-primary-dark);
+    color: var(--color-text-primary);
     font-weight: 500;
 }
 
 /* Next Step Button */
 #next-step-button {
-    transition: all var(--transition-normal);
+    transition: all var(--transition-quick);
 }
 
 #next-step-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--color-black);
 }
 
-/* Description Box */
+#next-step-button:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--color-black);
+}
+
+/* Description Box - Retro Terminal Style */
 .description-box {
-    min-height: 4em;
+    min-height: 3em;
     display: none;
+    color: var(--color-text-primary) !important;
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+    line-height: 1.5;
+    background: var(--color-bg-primary) !important;
+    border: 2px solid var(--color-accent-primary) !important;
+    border-radius: 0 !important;
+    padding: 1rem !important;
+    margin-top: 0.75rem;
+    position: relative;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* Description intro/flavor text */
+.description-box .desc-intro {
+    font-style: italic;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+/* Description stats grid */
+.description-box .desc-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.description-box .desc-stat {
+    background: var(--color-bg-tertiary);
+    padding: 0.5rem 0.75rem;
+    border-left: 3px solid var(--color-accent-primary);
+}
+
+.description-box .desc-stat-label {
+    font-size: 0.7rem;
+    font-family: var(--font-pixel);
+    color: var(--color-accent-tertiary);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.description-box .desc-stat-value {
+    color: var(--color-text-primary);
+    font-size: 1.1rem;
+}
+
+/* Skills list */
+.description-box .desc-skills {
+    background: var(--color-bg-tertiary);
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+}
+
+.description-box .desc-skills-label {
+    font-size: 0.7rem;
+    font-family: var(--font-pixel);
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.description-box .desc-skills-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.description-box .desc-skill-tag {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.95rem;
+    border: 1px solid var(--color-border-light);
+}
+
+/* Suggestions section */
+.description-box .desc-suggestions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+}
+
+.description-box .desc-suggestion {
+    padding: 0.5rem;
+}
+
+.description-box .desc-suggestion-label {
+    font-size: 0.65rem;
+    font-family: var(--font-pixel);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.description-box .desc-suggestion-value {
+    color: var(--color-accent-tertiary);
+    font-size: 1rem;
+}
+
+/* Scrollbar for description box */
+.description-box::-webkit-scrollbar {
+    width: 8px;
+}
+
+.description-box::-webkit-scrollbar-track {
+    background: var(--color-bg-tertiary);
+}
+
+.description-box::-webkit-scrollbar-thumb {
+    background: var(--color-accent-primary);
 }
 
 .form-section-header {
-    color: var(--color-primary-dark);
+    color: var(--color-accent-primary);
+    font-family: var(--font-pixel);
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    text-shadow: 2px 2px 0px var(--color-black);
+    margin-bottom: 0.5rem;
+}
+
+/* Wizard Form Cards */
+.wizard-section {
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-border-light);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: none;
+}
+
+.wizard-section:hover {
+    border-color: var(--color-accent-primary);
+    box-shadow: none;
+}
+
+.wizard-section-title {
+    font-family: var(--font-pixel);
+    font-size: 0.8rem;
+    color: var(--color-accent-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--color-border-light);
+}
+
+.wizard-section-title i {
+    color: var(--color-accent-primary);
+    margin-right: 0.5rem;
+}
+
+/* Form Field Groups */
+.form-field-group {
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    transition: border-color var(--transition-quick);
+}
+
+.form-field-group:hover {
+    border-color: var(--color-accent-primary);
+}
+
+.form-field-group:focus-within {
+    border-color: var(--color-accent-primary);
+}
+
+/* Selection Cards for Archetype/Occupation */
+.selection-card {
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-border-light);
+    padding: 1.25rem;
+    height: 100%;
+    transition: border-color var(--transition-quick);
+    box-shadow: none;
+}
+
+.selection-card:hover {
+    border-color: var(--color-accent-primary);
+    box-shadow: none;
+}
+
+.selection-card .form-label {
+    font-size: 0.85rem;
+    color: var(--color-accent-tertiary);
+    margin-bottom: 0.75rem;
+}
+
+.selection-card .form-control {
+    margin-bottom: 0;
 }
 
 /* Progress Bar */
 .progress-bar-custom {
-    height: 8px;
-    background-color: #f0f0f0;
+    height: 16px;
+    background-color: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-none);
+    overflow: hidden;
+    position: relative;
 }
 
 .progress-fill {
-    background: var(--gradient-primary);
+    background: var(--color-accent-primary);
+    box-shadow: none;
+    transition: width 0.3s step-end;
+    position: relative;
+    z-index: 1;
+}
+
+/* CRT scanlines on progress bar */
+.progress-bar-custom::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.15) 2px,
+        rgba(0, 0, 0, 0.15) 4px
+    );
+    pointer-events: none;
+    z-index: 2;
+    animation: crt-flicker 0.15s infinite;
+}
+
+/* Retro Progress Segments */
+.progress-bar-custom::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 8px,
+        var(--color-bg-primary) 8px,
+        var(--color-bg-primary) 10px
+    );
+    pointer-events: none;
+    z-index: 3;
 }

@@ -12,15 +12,28 @@ templ BaseInvForm(inv *models.Investigator) {
 
         <form
             id="stepForm"
-            class="row g-4"
             hx-post="/api/investigator/"
             hx-target="#character-sheet"
         >
-            @components.PersonalInfoFields(inv)
-            
-            <div class="row g-4 mt-2">
-                @components.ArchetypeSelection(inv)
-                @components.OccupationSelection(inv)
+            <!-- Personal Details Section -->
+            <div class="wizard-section">
+                <div class="wizard-section-title">
+                    <i class="bi bi-person-badge"></i>
+                    Identity
+                </div>
+                @components.PersonalInfoFields(inv)
+            </div>
+
+            <!-- Character Class Section -->
+            <div class="wizard-section">
+                <div class="wizard-section-title">
+                    <i class="bi bi-star"></i>
+                    Character Class
+                </div>
+                <div class="row g-4">
+                    @components.ArchetypeSelection(inv)
+                    @components.OccupationSelection(inv)
+                </div>
             </div>
 
             @components.FormActions(inv)

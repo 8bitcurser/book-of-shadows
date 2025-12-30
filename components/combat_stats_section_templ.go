@@ -32,7 +32,7 @@ func CombatStatsSection(inv *models.Investigator) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"card shadow-sm h-100\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3 card-header-custom\"><i class=\"bi bi-shield-fill me-2 card-header-icon\"></i><h4 class=\"section-title\">Combat Stats</h4></div><div class=\"card-body p-3\"><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span style=\"color: #6d6875;\">Hit Points</span> <span class=\"text-secondary small\">Current / Max</span></label><div class=\"input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"card h-100\"><div class=\"card-header d-flex align-items-center p-3 card-header-custom\"><i class=\"bi bi-shield-fill me-2 card-header-icon\"></i><h4 class=\"section-title\">Combat Stats</h4></div><div class=\"card-body p-3\"><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span class=\"stat-label\">Hit Points</span> <span class=\"text-muted small\">Current / Max</span></label><div class=\"input-group stat-input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -45,7 +45,7 @@ func CombatStatsSection(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" data-attr=\"HitPoints\" title=\"CurrentHP\" min=\"0\" onchange=\"characterUtils.recalculateSheetValues(this, 'attribute')\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">/</span> <input type=\"number\" class=\"form-control\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" data-attr=\"HitPoints\" title=\"CurrentHP\" min=\"0\" onchange=\"characterUtils.recalculateSheetValues(this, 'attribute')\"> <span class=\"input-group-text stat-divider\">/</span> <input type=\"number\" class=\"form-control stat-max-value\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -58,105 +58,105 @@ func CombatStatsSection(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" readonly style=\"background-color: #f8f9fa;\"></div></div><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span style=\"color: #6d6875;\">Magic Points</span> <span class=\"text-secondary small\">Current / Max</span></label><div class=\"input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" readonly></div></div><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span class=\"stat-label\">Magic Points</span> <span class=\"text-muted small\">Current / Max</span></label><div class=\"input-group stat-input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(inv.Attributes["MagicPoints"].Value))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 47, Col: 80}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 46, Col: 80}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" data-attr=\"MagicPoints\" title=\"CurrentMP\" min=\"0\" onchange=\"characterUtils.recalculateSheetValues(this, 'attribute')\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">/</span> <input type=\"number\" class=\"form-control\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\" data-attr=\"MagicPoints\" title=\"CurrentMP\" min=\"0\" onchange=\"characterUtils.recalculateSheetValues(this, 'attribute')\"> <span class=\"input-group-text stat-divider\">/</span> <input type=\"number\" class=\"form-control stat-max-value\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(inv.Attributes["MagicPoints"].MaxValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 57, Col: 83}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 56, Col: 83}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" readonly style=\"background-color: #f8f9fa;\"></div></div><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span style=\"color: #6d6875;\">Sanity</span> <span class=\"text-secondary small\">Current / Max</span></label><div class=\"input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\" readonly></div></div><div class=\"mb-3\"><label class=\"d-flex justify-content-between fw-medium\"><span class=\"stat-label\">Sanity</span> <span class=\"text-muted small\">Current / Max</span></label><div class=\"input-group stat-input-group\"><input type=\"number\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var6 string
 		templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(inv.Attributes["Sanity"].Value))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 72, Col: 75}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 70, Col: 75}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" data-attr=\"Sanity\" title=\"CurrentSanity\" onchange=\"characterUtils.recalculateSheetValues(this, 'attribute')\" min=\"0\"> <span class=\"input-group-text\" style=\"background-color: #f1f1f1;\">/</span> <input type=\"number\" class=\"form-control\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "\" data-attr=\"Sanity\" title=\"CurrentSanity\" onchange=\"characterUtils.recalculateSheetValues(this, 'attribute')\" min=\"0\"> <span class=\"input-group-text stat-divider\">/</span> <input type=\"number\" class=\"form-control stat-max-value\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(inv.Attributes["Sanity"].MaxValue))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 82, Col: 78}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 80, Col: 78}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" readonly style=\"background-color: #f8f9fa;\"></div></div><div class=\"mb-3\"><label class=\"fw-medium\" style=\"color: #6d6875;\">Luck</label> <input type=\"number\" class=\"form-control editable\" value=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "\" readonly></div></div><div class=\"mb-3\"><label class=\"fw-medium stat-label\">Luck</label> <input type=\"number\" class=\"form-control editable\" value=\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var8 string
 		templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(inv.Attributes["Luck"].Value))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 93, Col: 69}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 90, Col: 69}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" data-attr=\"Luck\" title=\"CurrentLuck\" min=\"0\" onchange=\"characterUtils.recalculateSheetValues(this, 'attribute')\"></div><div class=\"d-flex flex-wrap gap-3\"><div class=\"stat-pill px-3 py-2 rounded-pill shadow-sm\"><small class=\"d-block text-muted\">Move</small> <span class=\"fw-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" data-attr=\"Luck\" title=\"CurrentLuck\" min=\"0\" onchange=\"characterUtils.recalculateSheetValues(this, 'attribute')\"></div><div class=\"d-flex flex-wrap gap-3\"><div class=\"stat-pill px-3 py-2 rounded-pill\"><small class=\"d-block text-muted\">Move</small> <span class=\"fw-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var9 string
 		templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(inv.Move))
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 103, Col: 67}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 100, Col: 67}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</span></div><div class=\"stat-pill px-3 py-2 rounded-pill shadow-sm\"><small class=\"d-block text-muted\">Build</small> <span class=\"fw-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</span></div><div class=\"stat-pill px-3 py-2 rounded-pill\"><small class=\"d-block text-muted\">Build</small> <span class=\"fw-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var10 string
 		templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Build)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 107, Col: 54}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 104, Col: 54}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</span></div><div class=\"stat-pill px-3 py-2 rounded-pill shadow-sm\"><small class=\"d-block text-muted\">Damage Bonus</small> <span class=\"fw-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "</span></div><div class=\"stat-pill px-3 py-2 rounded-pill\"><small class=\"d-block text-muted\">Damage Bonus</small> <span class=\"fw-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var11 string
 		templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(inv.DamageBonus)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 111, Col: 60}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/combat_stats_section.templ`, Line: 108, Col: 60}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 		if templ_7745c5c3_Err != nil {

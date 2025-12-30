@@ -58,7 +58,7 @@ func CharacterOverview(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" data-field=\"Name\" onchange=\"characterUtils.updatePersonalInfo(this)\"><!-- Character Overview Card --><div class=\"card mb-4 shadow-sm\" style=\"border-radius: 1rem; border: none; background-color: #f8f9fa;\"><div class=\"card-body py-3\"><div class=\"d-flex align-items-center\"><div class=\"avatar me-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\" data-field=\"Name\" onchange=\"characterUtils.updatePersonalInfo(this)\"><!-- Character Overview Card --><div class=\"card mb-4 character-overview-card\"><div class=\"card-body py-3\"><div class=\"d-flex align-items-center\"><div class=\"avatar me-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -97,20 +97,20 @@ func CharacterOverview(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, " · ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var7 string
 		templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/character_overview.templ`, Line: 26, Col: 95}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/character_overview.templ`, Line: 26, Col: 98}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</p></div><div class=\"ms-auto d-flex\"><div class=\"info-pill mx-2 px-3 py-2 rounded-pill bg-light text-center\"><small class=\"d-block text-muted\">Age</small> <span class=\"fw-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</p></div><div class=\"ms-auto d-flex\"><div class=\"info-pill mx-2 px-3 py-2 rounded-pill text-center\"><small class=\"d-block text-muted\">Age</small> <span class=\"fw-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -123,7 +123,7 @@ func CharacterOverview(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span></div><div class=\"info-pill mx-2 px-3 py-2 rounded-pill bg-light text-center\"><small class=\"d-block text-muted\">Origin</small> <span class=\"fw-medium\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</span></div><div class=\"info-pill mx-2 px-3 py-2 rounded-pill text-center\"><small class=\"d-block text-muted\">Origin</small> <span class=\"fw-medium\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

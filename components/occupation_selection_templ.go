@@ -44,7 +44,7 @@ func OccupationSelection(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"><label class=\"form-label fw-medium\">Occupation</label> <select name=\"occupation\" id=\"occupation-select\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.handleOccupationSelection(this)\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\"><div class=\"selection-card\"><label class=\"form-label fw-medium\"><i class=\"bi bi-briefcase me-1\"></i> Occupation</label> <select name=\"occupation\" id=\"occupation-select\" class=\"form-control\" required onchange=\"characterUtils.handleOccupationSelection(this)\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -56,7 +56,7 @@ func OccupationSelection(inv *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 16, Col: 50}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 20, Col: 54}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -69,7 +69,7 @@ func OccupationSelection(inv *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.GetDescription())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 16, Col: 101}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 20, Col: 105}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -82,7 +82,7 @@ func OccupationSelection(inv *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Occupation.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 16, Col: 132}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 20, Col: 136}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -102,7 +102,7 @@ func OccupationSelection(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</select><div id=\"occupation-description\" class=\"mt-3 p-3 rounded shadow-sm bg-light text-secondary description-box\"></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</select><div id=\"occupation-description\" class=\"description-box\"></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -141,7 +141,7 @@ func renderOccupationOptions(inv *models.Investigator) templ.Component {
 					var templ_7745c5c3_Var7 string
 					templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 34, Col: 45}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 39, Col: 45}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 					if templ_7745c5c3_Err != nil {
@@ -154,7 +154,7 @@ func renderOccupationOptions(inv *models.Investigator) templ.Component {
 					var templ_7745c5c3_Var8 string
 					templ_7745c5c3_Var8, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.GetDescription())
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 34, Col: 91}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 39, Col: 91}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 					if templ_7745c5c3_Err != nil {
@@ -167,7 +167,7 @@ func renderOccupationOptions(inv *models.Investigator) templ.Component {
 					var templ_7745c5c3_Var9 string
 					templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 35, Col: 39}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 40, Col: 39}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 					if templ_7745c5c3_Err != nil {
@@ -207,7 +207,7 @@ func renderOccupationOptions(inv *models.Investigator) templ.Component {
 					var templ_7745c5c3_Var10 string
 					templ_7745c5c3_Var10, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 48, Col: 45}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 53, Col: 45}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 					if templ_7745c5c3_Err != nil {
@@ -220,7 +220,7 @@ func renderOccupationOptions(inv *models.Investigator) templ.Component {
 					var templ_7745c5c3_Var11 string
 					templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.GetDescription())
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 48, Col: 91}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 53, Col: 91}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 					if templ_7745c5c3_Err != nil {
@@ -233,7 +233,7 @@ func renderOccupationOptions(inv *models.Investigator) templ.Component {
 					var templ_7745c5c3_Var12 string
 					templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 					if templ_7745c5c3_Err != nil {
-						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 48, Col: 108}
+						return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 53, Col: 108}
 					}
 					_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 					if templ_7745c5c3_Err != nil {
@@ -255,7 +255,7 @@ func renderOccupationOptions(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 55, Col: 41}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 60, Col: 41}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -268,7 +268,7 @@ func renderOccupationOptions(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var14 string
 				templ_7745c5c3_Var14, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.GetDescription())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 55, Col: 87}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 60, Col: 87}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var14))
 				if templ_7745c5c3_Err != nil {
@@ -281,7 +281,7 @@ func renderOccupationOptions(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var15 string
 				templ_7745c5c3_Var15, templ_7745c5c3_Err = templ.JoinStringErrs(occEntity.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 55, Col: 104}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/occupation_selection.templ`, Line: 60, Col: 104}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var15))
 				if templ_7745c5c3_Err != nil {

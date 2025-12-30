@@ -249,10 +249,12 @@ const Utils = {
     updateButtonState(button, enabled) {
         button.disabled = !enabled;
         if (enabled) {
-            button.style.background = 'linear-gradient(135deg, #6d6875 0%, #b5838d 100%)';
+            // Use CSS variable colors - retro green
+            button.style.background = '#63c74d';
             button.classList.add('pulse-button');
         } else {
-            button.style.background = '#e5e5e5';
+            // Disabled state - dark gray
+            button.style.background = '#595652';
             button.classList.remove('pulse-button');
         }
     },
@@ -350,6 +352,106 @@ const Utils = {
     getAttributeName(abbrev) {
         return this.ATTRIBUTE_NAMES[abbrev] || abbrev;
     },
+
+    // =========================================================================
+    // Pixel Art Avatar Generator
+    // =========================================================================
+
+    /** Color palette for pixel avatars (retro theme) */
+    AVATAR_COLORS: [
+        '#63c74d', // Green
+        '#3e8948', // Dark Green
+        '#41a6f6', // Cyan
+        '#e84a5f', // Red/Pink
+        '#ead4aa', // Gold
+        '#a63de8', // Purple
+        '#f77622', // Orange
+        '#5a6188', // Gray-blue
+    ],
+
+    /**
+     * Simple hash function for strings
+     * @param {string} str - Input string
+     * @returns {number}
+     */
+    hashString(str) {
+        let hash = 0;
+        for (let i = 0; i < str.length; i++) {
+            const char = str.charCodeAt(i);
+            hash = ((hash << 5) - hash) + char;
+            hash = hash & hash;
+        }
+        return Math.abs(hash);
+    },
+
+    /**
+     * Generate pixel art avatar on a canvas
+     * @param {HTMLCanvasElement} canvas - Canvas element
+     * @param {string} seed - Seed string (e.g., investigator ID or name)
+     * @param {number} size - Canvas size in pixels
+     */
+    generatePixelAvatar(canvas, seed, size = 200) {
+        const ctx = canvas.getContext('2d');
+        const gridSize = 5;
+        const pixelSize = size / gridSize;
+        const hash = this.hashString(seed);
+
+        // Pick colors based on hash
+        const bgColorIndex = hash % this.AVATAR_COLORS.length;
+        const fgColorIndex = (hash >> 4) % this.AVATAR_COLORS.length;
+        const bgColor = '#1a1c2c'; // Dark background
+        const fgColor = this.AVATAR_COLORS[fgColorIndex];
+        const accentColor = this.AVATAR_COLORS[(fgColorIndex + 3) % this.AVATAR_COLORS.length];
+
+        canvas.width = size;
+        canvas.height = size;
+
+        // Fill background
+        ctx.fillStyle = bgColor;
+        ctx.fillRect(0, 0, size, size);
+
+        // Generate symmetric pattern (only need left half + middle)
+        const pattern = [];
+        for (let y = 0; y < gridSize; y++) {
+            pattern[y] = [];
+            for (let x = 0; x <= Math.floor(gridSize / 2); x++) {
+                // Use different bits of the hash for each cell
+                const bitIndex = y * 3 + x;
+                const isOn = (hash >> bitIndex) & 1;
+                pattern[y][x] = isOn;
+            }
+        }
+
+        // Draw pixels (symmetric)
+        for (let y = 0; y < gridSize; y++) {
+            for (let x = 0; x < gridSize; x++) {
+                const sourceX = x <= Math.floor(gridSize / 2) ? x : gridSize - 1 - x;
+                if (pattern[y][sourceX]) {
+                    // Alternate between fg and accent color
+                    ctx.fillStyle = ((y + x) % 3 === 0) ? accentColor : fgColor;
+                    ctx.fillRect(x * pixelSize, y * pixelSize, pixelSize, pixelSize);
+                }
+            }
+        }
+
+        // Add scanline effect
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+        for (let y = 0; y < size; y += 4) {
+            ctx.fillRect(0, y, size, 2);
+        }
+    },
+
+    /**
+     * Initialize all pixel avatars on the page
+     */
+    initPixelAvatars() {
+        const avatars = this.qsa('.pixel-avatar');
+        avatars.forEach(canvas => {
+            const seed = canvas.dataset.seed || 'default';
+            const size = parseInt(canvas.dataset.size) || 200;
+            this.generatePixelAvatar(canvas, seed, size);
+        });
+    },
 };
 
 // Export for module usage
@@ -359,3 +461,13 @@ if (typeof module !== 'undefined' && module.exports) {
 
 // Make available globally
 window.Utils = Utils;
+
+// Initialize pixel avatars when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    Utils.initPixelAvatars();
+});
+
+// Also initialize on htmx content swap
+document.addEventListener('htmx:afterSwap', () => {
+    Utils.initPixelAvatars();
+});

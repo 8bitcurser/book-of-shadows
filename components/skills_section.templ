@@ -7,7 +7,7 @@ import (
 )
 
 templ SkillsSection(inv *models.Investigator) {
-    <div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
+    <div class="card mb-4">
         <div class="card-header d-flex align-items-center p-3 card-header-custom">
             <i class="bi bi-tools me-2 card-header-icon"></i>
             <h4 class="section-title">Skills</h4>
@@ -43,13 +43,12 @@ templ SkillItem(skill models.Skill) {
             <div class="d-flex align-items-center skill-name-container">
                 <!-- Pin Toggle Button -->
                 <div class="pin-toggle me-2 flex-shrink-0">
-                    <button 
+                    <button
                         type="button"
                         class="btn btn-link p-0 pin-btn editable"
                         data-skill={skill.Name}
                         data-pinned={strconv.FormatBool(skill.IsPriority)}
                         onclick="characterUtils.togglePinSkill(this)"
-                        style="line-height: 1; color: #B0B0B0; width: 1.3em; height: 1.3em;"
                     >
                         if skill.IsPriority {
                             <i class="bi bi-pin-fill"></i>

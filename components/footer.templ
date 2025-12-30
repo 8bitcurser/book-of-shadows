@@ -1,13 +1,17 @@
 package components
 
 templ Footer() {
-    <footer id="footer" class="bg-dark text-white py-3">
+    <footer id="footer" class="py-4">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-            <p class="mb-2 mb-md-0">&copy; 2025 CorbittFiles. All rights reserved.</p>
+            <p class="mb-2 mb-md-0 text-secondary" style="font-size: 0.9rem;">
+                &copy; 2025 CorbittFiles
+                <span class="text-muted mx-2">|</span>
+                <span class="text-muted" style="font-style: italic;">"The oldest and strongest emotion of mankind is fear"</span>
+            </p>
             <nav>
-                <a class="text-white me-3 footer-link" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
-                <a class="text-white me-3 footer-link" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
-                <a class="text-white footer-link" data-bs-toggle="modal" data-bs-target="#reportIssueModal">Report Issue</a>
+                <a class="me-3 footer-link" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>
+                <a class="me-3 footer-link" data-bs-toggle="modal" data-bs-target="#termsModal">Terms of Service</a>
+                <a class="footer-link" data-bs-toggle="modal" data-bs-target="#reportIssueModal">Report Issue</a>
             </nav>
         </div>
     </footer>

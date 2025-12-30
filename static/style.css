@@ -1,233 +1,877 @@
 /* =============================================================================
-   Book of Shadows - Main Stylesheet
+   Book of Shadows - Retro 8-Bit Theme
    Call of Cthulhu Character Sheet Manager
+   "INSERT COIN TO CONTINUE"
    ============================================================================= */
 
 /* -----------------------------------------------------------------------------
-   CSS Custom Properties (Design Tokens)
+   CSS Custom Properties (Retro Design Tokens)
    ----------------------------------------------------------------------------- */
 :root {
-    /* Primary Colors - Dark Occult Theme */
-    --color-primary-dark: #0D0D0F;
-    --color-primary-purple: #29003D;
-    --color-accent-rose: #b5838d;
-    --color-accent-gray: #6d6875;
+    /* Retro Color Palette - Inspired by C64/NES */
+    --color-black: #0f0f0f;
+    --color-dark-blue: #1a1c2c;
+    --color-purple: #5d275d;
+    --color-dark-green: #306850;
+    --color-brown: #8a6f30;
+    --color-dark-gray: #595652;
+    --color-light-gray: #e8e8e8;
+    --color-white: #f4f4f4;
+    --color-red: #be4a2f;
+    --color-orange: #d77643;
+    --color-yellow: #ead4aa;
+    --color-green: #63c74d;
+    --color-cyan: #3e8948;
+    --color-blue: #265c42;
+    --color-indigo: #124e89;
+    --color-pink: #e84a5f;
 
-    /* Secondary Colors */
-    --color-occult-amber: #C97700;
-    --color-eldritch-pink: #E9168F;
-    --color-phantom-gray: #B0B0B5;
+    /* Primary UI Colors */
+    --color-bg-primary: #1a1c2c;
+    --color-bg-secondary: #262b44;
+    --color-bg-tertiary: #3a4466;
+    --color-bg-card: #2a2f4a;
 
-    /* Neutral Colors */
-    --color-bg-light: #f8f9fa;
-    --color-bg-hover: #f0f0f0;
-    --color-bg-white: #ffffff;
-    --color-text-primary: #1b1b1b;
-    --color-text-secondary: #6c757d;
-    --color-text-muted: #95a5a6;
-    --color-border-light: rgba(0, 0, 0, 0.05);
-    --color-border-medium: rgba(0, 0, 0, 0.1);
+    /* Accent Colors */
+    --color-accent-primary: #63c74d;
+    --color-accent-secondary: #e84a5f;
+    --color-accent-tertiary: #ead4aa;
+    --color-accent-cyan: #41a6f6;
+
+    /* Text Colors - High Contrast */
+    --color-text-primary: #ffffff;
+    --color-text-secondary: #f0f0f0;
+    --color-text-muted: #b8bcc8;
+    --color-text-highlight: #7ddf64;
+
+    /* Pixel Border Colors */
+    --color-border-light: #5a6188;
+    --color-border-dark: #1a1c2c;
+    --color-border-highlight: #63c74d;
 
     /* Status Colors */
-    --color-danger: #dc3545;
-    --color-success: #28a745;
+    --color-hp: #be4a2f;
+    --color-mp: #41a6f6;
+    --color-san: #9b59b6;
+    --color-luck: #ead4aa;
 
-    /* Gradients */
-    --gradient-primary: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-purple) 100%);
-    --gradient-hero: linear-gradient(135deg, var(--color-primary-dark) 0%, var(--color-primary-purple) 100%);
+    /* Shadows - Chunky pixel style */
+    --shadow-pixel: 4px 4px 0px var(--color-black);
+    --shadow-pixel-sm: 2px 2px 0px var(--color-black);
+    --shadow-pixel-inset: inset 2px 2px 0px rgba(255,255,255,0.1), inset -2px -2px 0px rgba(0,0,0,0.3);
+    --shadow-glow: 0 0 10px var(--color-accent-primary), 0 0 20px rgba(99, 199, 77, 0.3);
 
-    /* Shadows */
-    --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
-    --shadow-md: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    --shadow-card: 0 0.5rem 1rem rgba(0, 0, 0, 0.08);
-    --shadow-focus: 0 0 0 0.25rem rgba(181, 131, 141, 0.25);
+    /* No border radius - everything is pixelated/square */
+    --radius-none: 0px;
+    --radius-sm: 2px;
 
-    /* Border Radius */
-    --radius-sm: 0.25rem;
-    --radius-md: 0.5rem;
-    --radius-lg: 0.75rem;
-    --radius-xl: 1rem;
-    --radius-pill: 50px;
-    --radius-circle: 50%;
-
-    /* Transitions */
-    --transition-fast: 0.2s ease;
-    --transition-normal: 0.3s ease;
+    /* Pixel-perfect transitions */
+    --transition-instant: 0.1s step-end;
+    --transition-quick: 0.15s ease-out;
 
     /* Typography */
-    --font-family: 'Roboto', sans-serif;
+    --font-pixel: 'Press Start 2P', monospace;
+    --font-display: 'Press Start 2P', monospace;
+    --font-body: 'VT323', monospace;
+    --font-ui: 'VT323', monospace;
+
+    /* Pixel sizes */
+    --pixel: 4px;
+}
+
+/* -----------------------------------------------------------------------------
+   CRT Effects - Page Specific
+   ----------------------------------------------------------------------------- */
+/* Global CRT disabled, but available for specific pages */
+body::before,
+body::after {
+    display: none;
+}
+
+/* Animated CRT scanlines for wizard and archives pages */
+.crt-background {
+    position: relative;
+}
+
+.crt-background::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.1) 2px,
+        rgba(0, 0, 0, 0.1) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
+    animation: crt-flicker 0.1s infinite;
+}
+
+.crt-background::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%,
+        rgba(0, 0, 0, 0.05) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 0;
+    animation: crt-scroll 8s linear infinite;
+}
+
+@keyframes crt-flicker {
+    0% { opacity: 0.95; }
+    25% { opacity: 1; }
+    50% { opacity: 0.97; }
+    75% { opacity: 1; }
+    100% { opacity: 0.96; }
+}
+
+@keyframes crt-scroll {
+    0% { transform: translateY(-66.66%); }
+    100% { transform: translateY(0%); }
+}
+
+@keyframes crt-scroll-contained {
+    0% { background-position: 0% 0%; }
+    100% { background-position: 0% 200%; }
+}
+
+/* Ensure content stays above the CRT effect */
+.crt-background > * {
+    position: relative;
+    z-index: 1;
 }
 
 /* -----------------------------------------------------------------------------
    Base Styles
    ----------------------------------------------------------------------------- */
 body {
-    font-family: var(--font-family);
+    font-family: var(--font-body);
+    font-size: 24px;
     color: var(--color-text-primary);
-    background-color: var(--color-bg-white);
+    background: var(--color-bg-primary);
+    min-height: 100vh;
+}
+
+/* Pixel Grid Background */
+.pixel-bg {
+    background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+    background-size: 8px 8px;
+}
+
+/* -----------------------------------------------------------------------------
+   Typography - Pixel Perfect
+   ----------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6,
+.display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
+    font-family: var(--font-pixel);
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 0px var(--color-black);
+}
+
+h1, .display-3 { font-size: 2rem; line-height: 2; }
+h2 { font-size: 1.5rem; line-height: 1.8; }
+h3 { font-size: 1.2rem; line-height: 1.6; }
+h4, h5, h6 { font-size: 1rem; line-height: 1.5; }
+
+p, span, label, .lead {
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    line-height: 1.6;
+}
+
+.lead {
+    color: var(--color-text-primary);
+    font-size: 1.6rem;
 }
 
 /* -----------------------------------------------------------------------------
    Layout Components
    ----------------------------------------------------------------------------- */
 .coc-sheet {
-    font-family: var(--font-family);
-    background-color: var(--color-bg-white);
-    border-radius: var(--radius-xl);
-    box-shadow: var(--shadow-card);
+    font-family: var(--font-body);
+    background: var(--color-bg-secondary);
+    border: none;
+    box-shadow: none;
     max-width: 1400px;
     width: 99%;
     margin: 0 auto;
-    padding: 0 10px;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* CRT effect on wizard and archives pages */
+.coc-sheet::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 3px,
+        rgba(0, 0, 0, 0.08) 3px,
+        rgba(0, 0, 0, 0.08) 6px
+    );
+    pointer-events: none !important;
+    z-index: 0;
+    animation: crt-flicker 0.15s infinite;
+}
+
+.coc-sheet::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        transparent 0%,
+        rgba(99, 199, 77, 0.03) 50%,
+        transparent 100%
+    );
+    background-size: 100% 200%;
+    pointer-events: none !important;
+    z-index: 0;
+    animation: crt-scroll-contained 2s linear infinite;
+}
+
+/* Ensure all content in coc-sheet stays above CRT effect */
+.coc-sheet > * {
+    position: relative;
+    z-index: 1;
 }
 
 #character-sheet {
     display: none;
 }
 
-/* -----------------------------------------------------------------------------
-   Hero Section
-   ----------------------------------------------------------------------------- */
-.hero {
-    background: var(--gradient-hero);
-    color: #ffffff;
+.container {
+    position: relative;
+    z-index: 1;
 }
 
 /* -----------------------------------------------------------------------------
-   Card Components
+   Navbar - Top Score Bar
    ----------------------------------------------------------------------------- */
+.navbar {
+    background: var(--color-bg-primary) !important;
+    border-bottom: var(--pixel) solid var(--color-accent-primary);
+    box-shadow: 0 var(--pixel) 0 var(--color-black);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-family: var(--font-pixel) !important;
+    color: var(--color-accent-primary) !important;
+    font-size: 1rem !important;
+    text-shadow: 2px 2px 0px var(--color-black);
+    letter-spacing: 2px;
+}
+
+.navbar-brand:hover {
+    color: var(--color-accent-tertiary) !important;
+    text-shadow: 2px 2px 0px var(--color-black), 0 0 10px var(--color-accent-tertiary);
+}
+
+.nav-link {
+    font-family: var(--font-pixel) !important;
+    color: var(--color-text-secondary) !important;
+    font-size: 0.7rem !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.5rem 1rem !important;
+    transition: color var(--transition-quick);
+    position: relative;
+}
+
+.nav-link:hover {
+    color: var(--color-accent-primary) !important;
+}
+
+.nav-link::before {
+    content: '>';
+    position: absolute;
+    left: 0;
+    opacity: 0;
+    color: var(--color-accent-primary);
+    transition: opacity var(--transition-quick);
+}
+
+.nav-link:hover::before {
+    opacity: 1;
+}
+
+.navbar-toggler {
+    border: 2px solid var(--color-accent-primary) !important;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* -----------------------------------------------------------------------------
+   Hero Section - Title Screen
+   ----------------------------------------------------------------------------- */
+.hero {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    position: relative;
+    overflow: hidden;
+    padding: 4rem 0 !important;
+    text-align: center;
+    border-bottom: var(--pixel) solid var(--color-accent-primary);
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(rgba(99, 199, 77, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99, 199, 77, 0.03) 1px, transparent 1px);
+    background-size: 16px 16px;
+    pointer-events: none;
+}
+
+.hero h1 {
+    font-family: var(--font-pixel);
+    font-size: 1.8rem;
+    color: var(--color-accent-primary);
+    text-shadow:
+        3px 3px 0px var(--color-black),
+        0 0 20px rgba(99, 199, 77, 0.5);
+    animation: title-glow 2s ease-in-out infinite;
+    position: relative;
+    z-index: 1;
+}
+
+@keyframes title-glow {
+    0%, 100% { text-shadow: 3px 3px 0px var(--color-black), 0 0 10px rgba(99, 199, 77, 0.3); }
+    50% { text-shadow: 3px 3px 0px var(--color-black), 0 0 30px rgba(99, 199, 77, 0.6); }
+}
+
+.hero .lead {
+    font-family: var(--font-body);
+    font-size: 1.3rem;
+    color: var(--color-text-primary);
+    max-width: 600px;
+    margin: 1rem auto;
+    position: relative;
+    z-index: 1;
+}
+
+.hero .btn-light {
+    background: var(--color-accent-primary);
+    border: var(--pixel) solid var(--color-black);
+    color: var(--color-black);
+    font-family: var(--font-pixel);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow-pixel);
+    position: relative;
+    z-index: 1;
+    transition: all var(--transition-quick);
+    animation: blink-border 1s step-end infinite;
+}
+
+@keyframes blink-border {
+    0%, 100% { border-color: var(--color-black); }
+    50% { border-color: var(--color-accent-tertiary); }
+}
+
+.hero .btn-light:hover {
+    background: var(--color-accent-tertiary);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--color-black);
+}
+
+.hero .btn-light:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--color-black);
+}
+
+/* Blinking "Press Start" style text */
+.text-ancient {
+    font-family: var(--font-pixel) !important;
+    font-size: 0.6rem !important;
+    color: var(--color-accent-tertiary);
+    animation: blink 1s step-end infinite;
+    letter-spacing: 2px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* -----------------------------------------------------------------------------
+   Card Components - Game Windows
+   ----------------------------------------------------------------------------- */
+.card {
+    background: var(--color-bg-card);
+    border: var(--pixel) solid var(--color-border-light);
+    border-radius: var(--radius-none);
+    box-shadow: var(--shadow-pixel);
+    overflow: hidden;
+}
+
+.card:hover {
+    border-color: var(--color-accent-primary);
+}
+
 .feature-card {
-    border: none;
-    border-radius: var(--radius-xl);
-    transition: transform var(--transition-fast);
+    background: var(--color-bg-card);
+    border: var(--pixel) solid var(--color-border-light);
+    border-radius: var(--radius-none);
+    box-shadow: var(--shadow-pixel);
+    transition: all var(--transition-quick);
 }
 
 .feature-card:hover {
-    transform: translateY(-5px);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--color-black);
+    border-color: var(--color-accent-primary);
 }
 
 .card-header-custom {
-    background: rgba(109, 104, 117, 0.1);
-    border: none;
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    background: var(--color-bg-primary);
+    border-bottom: var(--pixel) solid var(--color-border-light);
+    border-radius: 0;
+    padding: 0.75rem 1rem;
 }
 
 .card-header-icon {
-    color: var(--color-primary-dark);
+    color: var(--color-accent-primary);
+    font-size: 1rem;
+}
+
+.card-body {
+    background: transparent;
+    color: var(--color-text-primary);
+}
+
+.card-title {
+    font-family: var(--font-pixel);
+    color: var(--color-text-primary);
+    font-size: 0.85rem;
+}
+
+.card-text {
+    color: var(--color-text-primary);
+    font-size: 1.3rem;
+}
+
+/* Feature card text should be bright and readable */
+.feature-card p,
+.card p {
+    color: var(--color-text-primary);
 }
 
 .section-title {
-    color: var(--color-primary-dark);
-    font-size: 1.1rem;
-    font-weight: bold;
-    margin-bottom: 0;
+    font-family: var(--font-pixel);
+    color: var(--color-accent-primary);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 0px var(--color-black);
 }
 
 /* -----------------------------------------------------------------------------
-   Avatar
+   Avatar - Player Icon
    ----------------------------------------------------------------------------- */
 .avatar {
-    width: 60px;
-    height: 60px;
-    border-radius: var(--radius-circle);
-    background: var(--gradient-primary);
-    color: white;
+    width: 64px;
+    height: 64px;
+    border-radius: var(--radius-none);
+    background: var(--color-accent-primary);
+    color: var(--color-black);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    box-shadow: var(--shadow-md);
+    font-family: var(--font-pixel);
+    border: var(--pixel) solid var(--color-black);
+    box-shadow: var(--shadow-pixel-sm);
 }
 
 .avatar-sm {
-    width: 50px;
-    height: 50px;
-    font-size: 1.5rem;
+    width: 48px;
+    height: 48px;
+    font-size: 1rem;
 }
 
 /* -----------------------------------------------------------------------------
-   Buttons
+   Buttons - Arcade Style
    ----------------------------------------------------------------------------- */
 .gradient-button {
-    background: var(--gradient-primary);
-    color: white;
-    border: none;
-    border-radius: var(--radius-md);
-    transition: all var(--transition-normal);
-    min-width: 240px;
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    border: var(--pixel) solid var(--color-black);
+    border-radius: var(--radius-none);
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 0.75rem 1.5rem;
+    box-shadow: var(--shadow-pixel);
+    transition: all var(--transition-quick);
+    min-width: 200px;
 }
 
 .gradient-button:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-    color: white;
+    background: var(--color-accent-tertiary);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--color-black);
+    color: var(--color-black);
+}
+
+.gradient-button:active:not(:disabled) {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--color-black);
 }
 
 .gradient-button:disabled {
-    background: #e5e5e5 !important;
-    color: #999;
-    transform: none;
-    box-shadow: none;
+    background: var(--color-dark-gray) !important;
+    color: var(--color-bg-primary);
+    box-shadow: var(--shadow-pixel-sm);
 }
 
-.form-button {
-    border-radius: var(--radius-md);
-    transition: all var(--transition-normal);
+.btn-primary {
+    background: var(--color-accent-primary);
+    border: var(--pixel) solid var(--color-black);
+    color: var(--color-black);
+    font-family: var(--font-body);
+    box-shadow: var(--shadow-pixel-sm);
 }
 
-.form-button:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
+.btn-primary:hover {
+    background: var(--color-accent-tertiary);
+    border-color: var(--color-black);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--color-black);
+}
+
+.btn-secondary {
+    background: var(--color-bg-tertiary);
+    border: var(--pixel) solid var(--color-border-light);
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    box-shadow: var(--shadow-pixel-sm);
+}
+
+.btn-secondary:hover {
+    background: var(--color-bg-card);
+    border-color: var(--color-accent-primary);
+    color: var(--color-text-primary);
+}
+
+.btn-outline-secondary {
+    border: 2px solid var(--color-border-light);
+    color: var(--color-text-secondary);
+    background: transparent;
+}
+
+.btn-outline-secondary:hover {
+    background: var(--color-bg-tertiary);
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
 }
 
 /* Icon Circle */
 .icon-circle {
-    width: 3rem;
-    height: 3rem;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--radius-circle);
-    background: var(--color-phantom-gray);
-    color: var(--color-bg-light);
+    background: var(--color-bg-tertiary);
+    color: var(--color-accent-primary);
+    border: 2px solid var(--color-border-light);
 }
 
 /* Step Number */
 .step-number {
-    font-size: 1.5rem;
-    font-weight: 500;
-    color: var(--color-eldritch-pink);
-    margin-right: 0.5rem;
+    font-family: var(--font-pixel);
+    font-size: 1rem;
+    color: var(--color-accent-primary);
+    text-shadow: 2px 2px 0px var(--color-black);
 }
 
 /* -----------------------------------------------------------------------------
-   Form Elements
+   Form Elements - Input Fields
    ----------------------------------------------------------------------------- */
 .form-control,
 select {
-    border-radius: var(--radius-md);
-    padding: 0.625rem 0.75rem;
-    transition: all var(--transition-fast);
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-none);
+    color: var(--color-text-primary);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-body);
+    font-size: 1.5rem;
+    box-shadow: none;
+}
+
+.form-control::placeholder {
+    color: var(--color-text-muted);
 }
 
 .form-control:focus,
 select:focus {
-    border-color: var(--color-primary-purple);
-    box-shadow: var(--shadow-focus);
+    background: var(--color-bg-secondary);
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 2px var(--color-accent-primary);
+    color: var(--color-text-primary);
+    outline: none;
 }
 
-.form-control[disabled],
-.form-check-input[disabled] {
-    background-color: var(--color-bg-light);
-    opacity: 0.8;
-    cursor: not-allowed;
+.form-control[disabled] {
+    background: var(--color-bg-primary);
+    border-color: var(--color-dark-gray);
+    color: var(--color-text-muted);
+    opacity: 0.7;
 }
 
 .form-label {
-    color: var(--color-primary-dark);
+    font-family: var(--font-pixel);
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     margin-bottom: 0.5rem;
+}
+
+select option {
+    background: var(--color-bg-primary);
+    color: var(--color-text-primary);
+    padding: 0.5rem;
+}
+
+/* Custom Select Styling */
+select.form-control {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2363c74d' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 16px;
+    padding-right: 2.5rem;
+    cursor: pointer;
+    background-color: var(--color-bg-primary) !important;
+    border: 2px solid var(--color-border-light) !important;
+    color: var(--color-text-primary) !important;
+    font-size: 1.3rem;
+    transition: all var(--transition-quick);
+}
+
+select.form-control:hover {
+    border-color: var(--color-accent-primary) !important;
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-black);
+}
+
+select.form-control:focus {
+    border-color: var(--color-accent-primary) !important;
+    box-shadow: 4px 4px 0px var(--color-black);
+    outline: none;
+}
+
+/* Hide native select when custom dropdown is active */
+select.form-control.has-custom-dropdown {
+    display: none;
+}
+
+/* =============================================================================
+   Custom Dropdown - Retro 8-Bit Theme
+   ============================================================================= */
+
+.custom-dropdown {
+    position: relative;
+    width: 100%;
+    font-family: var(--font-body);
+}
+
+.custom-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    color: var(--color-text-primary);
+    font-size: 1.3rem;
+    font-family: var(--font-body);
+    cursor: pointer;
+    transition: all var(--transition-quick);
+    text-align: left;
+}
+
+.custom-dropdown-trigger:hover {
+    border-color: var(--color-accent-primary);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-black);
+}
+
+.custom-dropdown.open .custom-dropdown-trigger {
+    border-color: var(--color-accent-primary);
+    box-shadow: 4px 4px 0px var(--color-black);
+}
+
+.custom-dropdown-arrow {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid var(--color-accent-primary);
+    transition: transform var(--transition-quick);
+}
+
+.custom-dropdown.open .custom-dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+.custom-dropdown-placeholder {
+    color: var(--color-text-muted);
+}
+
+.custom-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-accent-primary);
+    box-shadow: 6px 6px 0px var(--color-black);
+    z-index: 9999;
+    display: none;
+}
+
+.custom-dropdown.open .custom-dropdown-menu {
+    display: block;
+    animation: dropdown-open 0.15s ease-out;
+}
+
+@keyframes dropdown-open {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.custom-dropdown-option {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    color: var(--color-text-primary);
+    font-size: 1.2rem;
+    transition: all var(--transition-quick);
+    border-bottom: 1px solid var(--color-border-light);
+}
+
+.custom-dropdown-option:last-child {
+    border-bottom: none;
+}
+
+.custom-dropdown-option:hover {
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    padding-left: 1.5rem;
+}
+
+.custom-dropdown-option.selected {
+    background: var(--color-bg-tertiary);
+    color: var(--color-accent-primary);
+    font-weight: bold;
+}
+
+.custom-dropdown-option.selected::before {
+    content: '>';
+    margin-right: 0.5rem;
+    color: var(--color-accent-primary);
+}
+
+.custom-dropdown-option.disabled {
+    color: var(--color-text-muted);
+    cursor: default;
+    background: var(--color-bg-tertiary);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 0.5rem 1rem;
+}
+
+.custom-dropdown-option.disabled:hover {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+    padding-left: 1rem;
+}
+
+.custom-dropdown-option.suggested {
+    color: var(--color-accent-tertiary);
+}
+
+.custom-dropdown-option.suggested::before {
+    content: '*';
+    margin-right: 0.5rem;
+    color: var(--color-accent-tertiary);
+}
+
+.custom-dropdown-option.suggested:hover {
+    background: var(--color-accent-tertiary);
+    color: var(--color-black);
+}
+
+.custom-dropdown-option.suggested:hover::before {
+    color: var(--color-black);
+}
+
+/* Scrollbar styling for dropdown */
+.custom-dropdown-menu::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-dropdown-menu::-webkit-scrollbar-track {
+    background: var(--color-bg-primary);
+}
+
+.custom-dropdown-menu::-webkit-scrollbar-thumb {
+    background: var(--color-accent-primary);
+    border: 2px solid var(--color-bg-primary);
+}
+
+.custom-dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-tertiary);
 }
 
 /* Hide number spinners */
@@ -241,64 +885,93 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-/* Lock Toggle Switch */
+/* Toggle Switch */
 .form-switch .form-check-input {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='%23fff'/%3e%3c/svg%3e");
-    background-color: #adb5bd;
-    border-color: #adb5bd;
-    cursor: pointer;
+    background-color: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-none);
 }
 
 .form-switch .form-check-input:checked {
-    background-color: var(--color-primary-purple);
-    border-color: var(--color-primary-purple);
+    background-color: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+}
+
+.form-check-input {
+    background-color: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-none);
+}
+
+.form-check-input:checked {
+    background-color: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
 }
 
 /* -----------------------------------------------------------------------------
-   Stat Pills
+   Stat Pills - Status Bars
    ----------------------------------------------------------------------------- */
 .stat-pill {
-    background-color: var(--color-bg-light);
-    border: 1px solid var(--color-border-light);
-    transition: all var(--transition-fast);
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
 }
 
 .stat-pill:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md) !important;
-    background-color: #f0e6ea !important;
+    border-color: var(--color-accent-primary);
+    background: var(--color-bg-card);
 }
 
 .info-pill {
     margin: 0 0.5rem;
     padding: 0.5rem 0.75rem;
-    border-radius: var(--radius-pill);
-    background-color: var(--color-bg-light);
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
     text-align: center;
+    color: var(--color-text-primary);
 }
 
 /* -----------------------------------------------------------------------------
-   Characteristic Boxes
+   Characteristic Boxes - Stats Display
    ----------------------------------------------------------------------------- */
 .characteristic-box {
-    background-color: var(--color-bg-light);
-    transition: all var(--transition-fast);
-    border: 1px solid var(--color-border-light);
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-none);
+    transition: all var(--transition-quick);
 }
 
 .characteristic-box:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md) !important;
-    background-color: var(--color-bg-white) !important;
+    border-color: var(--color-accent-primary);
+    background: var(--color-bg-card);
+}
+
+.characteristic-name {
+    font-family: var(--font-pixel);
+    color: var(--color-text-secondary);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.characteristic-derived {
+    color: var(--color-accent-cyan);
+    font-family: var(--font-body);
+    font-weight: bold;
 }
 
 .characteristic-value {
-    background: var(--gradient-primary);
-    color: white;
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    border: 2px solid var(--color-black);
+    font-family: var(--font-pixel);
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
 }
 
 /* -----------------------------------------------------------------------------
-   Skills
+   Skills - Skill List
    ----------------------------------------------------------------------------- */
 .skills-grid {
     column-count: 3;
@@ -309,21 +982,20 @@ input[type=number] {
     break-inside: avoid;
     page-break-inside: avoid;
     -webkit-column-break-inside: avoid;
-    background-color: var(--color-bg-light);
-    transition: all var(--transition-fast);
-    border: 1px solid var(--color-border-light);
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-none);
+    transition: all var(--transition-quick);
 }
 
 .skill-item:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md) !important;
-    background-color: var(--color-bg-white) !important;
-    border-color: rgba(181, 131, 141, 0.2) !important;
+    border-color: var(--color-accent-primary);
+    background: var(--color-bg-card);
 }
 
 .skill-item[data-priority="true"] {
-    border-left: 3px solid var(--color-occult-amber);
-    background-color: rgba(201, 119, 0, 0.05) !important;
+    border-left: 4px solid var(--color-accent-tertiary);
+    background: linear-gradient(90deg, rgba(234, 212, 170, 0.1) 0%, var(--color-bg-tertiary) 100%);
 }
 
 .skill-name-container {
@@ -343,21 +1015,26 @@ input[type=number] {
 .skill-name {
     color: var(--color-text-primary);
     font-weight: 500;
+    font-family: var(--font-body);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: 180px;
+    font-size: 1.3rem;
 }
 
 .skill-default {
     color: var(--color-text-muted) !important;
     white-space: nowrap;
-    font-size: 0.8rem;
+    font-size: 1.1rem;
 }
 
 .skill-badge {
-    background: var(--gradient-primary);
-    color: white;
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    border: 2px solid var(--color-black);
+    font-family: var(--font-pixel);
+    font-size: 0.55rem;
 }
 
 /* Skill Values */
@@ -378,77 +1055,69 @@ input[type=number] {
     width: 40px !important;
     padding: 0.25rem 0.1rem !important;
     text-align: center !important;
-    -moz-appearance: textfield !important;
-    border-radius: var(--radius-sm) 0 0 var(--radius-sm) !important;
-}
-
-.skill-value-field::-webkit-inner-spin-button,
-.skill-value-field::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    border-right: none;
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
 }
 
 .percent-symbol {
     padding: 0.25rem 0.4rem !important;
-    background-color: #1E1E1E !important;
-    color: var(--color-bg-light) !important;
-    border-color: var(--color-phantom-gray) !important;
-    font-size: 0.875rem;
+    background: var(--color-bg-primary) !important;
+    color: var(--color-accent-primary) !important;
+    border: 2px solid var(--color-border-light) !important;
+    font-family: var(--font-body);
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0 var(--radius-sm) var(--radius-sm) 0 !important;
 }
 
 .derived-values {
     display: block;
-    font-size: 0.75rem;
-    color: var(--color-phantom-gray) !important;
+    font-size: 1.3rem;
+    color: var(--color-text-muted) !important;
     text-align: center;
     margin-top: 4px;
     width: 100%;
+    font-family: var(--font-body);
 }
 
 .half-value,
 .fifth-value {
-    width: 16px;
-    text-align: center;
-    display: inline-block;
-    min-width: 20px;
-    font-weight: 500;
+    color: var(--color-accent-cyan);
+    font-weight: bold;
+    font-size: 1.4rem;
 }
 
 .divider {
     margin: 0 2px;
-    color: #777;
+    color: var(--color-text-muted);
 }
 
 /* Pin Button */
 .pin-btn {
-    transition: all var(--transition-fast);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.95rem;
+    transition: all var(--transition-quick);
+    color: var(--color-text-muted);
+    font-size: 1rem;
 }
 
 .pin-btn:hover {
-    color: var(--color-occult-amber) !important;
-    transform: scale(1.1);
+    color: var(--color-accent-tertiary) !important;
 }
 
 .pin-btn .bi-pin-fill {
-    color: var(--color-occult-amber) !important;
+    color: var(--color-accent-tertiary) !important;
 }
 
 /* -----------------------------------------------------------------------------
-   Talents
+   Talents - Special Abilities
    ----------------------------------------------------------------------------- */
 .talent-item {
-    background-color: var(--color-bg-light);
-    border: 1px solid var(--color-border-light);
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-none);
     position: relative;
-    overflow: hidden;
 }
 
 .talent-accent {
@@ -457,228 +1126,520 @@ input[type=number] {
     left: 0;
     width: 4px;
     height: 100%;
-    background: var(--gradient-primary);
+    background: var(--color-accent-secondary);
 }
 
 .talent-title {
-    color: var(--color-primary-dark);
-    font-weight: bold;
+    font-family: var(--font-pixel);
+    color: var(--color-accent-secondary);
+    font-size: 0.6rem;
 }
 
 /* -----------------------------------------------------------------------------
-   Modals
+   Modals - Dialog Boxes
    ----------------------------------------------------------------------------- */
 .modal-content {
-    border-radius: var(--radius-md);
-    border: none;
+    background: var(--color-bg-card);
+    border: var(--pixel) solid var(--color-accent-primary);
+    border-radius: var(--radius-none);
+    box-shadow: 8px 8px 0px var(--color-black);
 }
 
 .modal-header {
-    background: linear-gradient(135deg, var(--color-primary-dark) 0%, #3a0455 100%);
-    color: #F9F6EE;
-    border-bottom: none;
+    background: var(--color-bg-primary);
+    border-bottom: var(--pixel) solid var(--color-border-light);
+    padding: 1rem;
+}
+
+.modal-title {
+    font-family: var(--font-pixel);
+    font-size: 0.7rem;
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+}
+
+.modal-body {
+    padding: 1.5rem;
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
 }
 
 .modal-body h4 {
-    color: var(--color-primary-purple);
+    font-family: var(--font-pixel);
+    color: var(--color-accent-tertiary);
+    font-size: 0.6rem;
     margin-top: 1.5rem;
     margin-bottom: 0.75rem;
 }
 
-.modal-body p,
-.modal-body li {
-    margin-bottom: 0.75rem;
+.modal-footer {
+    background: var(--color-bg-primary);
+    border-top: var(--pixel) solid var(--color-border-light);
+    padding: 1rem;
 }
 
 .modal-textarea {
-    resize: none;
-    font-family: monospace;
+    font-family: var(--font-body);
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    color: var(--color-text-primary);
+}
+
+.btn-close {
+    filter: invert(1);
+}
+
+/* Disable CRT effects when modal is open */
+body.modal-open .coc-sheet::before,
+body.modal-open .coc-sheet::after {
+    display: none !important;
+}
+
+/* Reset stacking context when modal is open */
+body.modal-open .coc-sheet {
+    z-index: auto;
+}
+
+/* Hide modal backdrop - it was blocking clicks */
+.modal-backdrop {
+    display: none !important;
+}
+
+.modal {
+    z-index: 1050 !important;
+    pointer-events: none;
+}
+
+.modal.show {
+    pointer-events: auto;
+}
+
+.modal-dialog {
+    z-index: 1060 !important;
+    position: relative;
+    pointer-events: auto;
+}
+
+.modal-content {
+    z-index: 1070 !important;
+    position: relative;
+    pointer-events: auto;
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-accent-primary);
+    border-radius: 0;
+    box-shadow: 8px 8px 0px var(--color-black);
+}
+
+/* Modal styling */
+.modal-backdrop.show {
+    background-color: rgba(10, 10, 15, 0.9);
+}
+
+.modal-header {
+    background: var(--color-bg-primary);
+    border-bottom: 2px solid var(--color-border-light);
+}
+
+.modal-title {
+    font-family: var(--font-pixel);
     font-size: 0.9rem;
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+}
+
+.modal-body {
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 1.2rem;
+}
+
+.modal-footer {
+    background: var(--color-bg-tertiary);
+    border-top: 2px solid var(--color-border-light);
+}
+
+.modal-footer .btn-secondary {
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    color: var(--color-text-primary);
+}
+
+.modal-footer .btn-secondary:hover {
+    border-color: var(--color-accent-primary);
+}
+
+.btn-danger {
+    background: var(--color-hp);
+    border: var(--pixel) solid var(--color-black);
+    color: var(--color-white);
+    font-family: var(--font-body);
+    box-shadow: var(--shadow-pixel-sm);
+}
+
+.btn-danger:hover {
+    background: var(--color-pink);
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--color-black);
 }
 
 /* -----------------------------------------------------------------------------
-   Footer
+   Footer - Credits
    ----------------------------------------------------------------------------- */
+footer {
+    background: var(--color-bg-primary);
+    border-top: var(--pixel) solid var(--color-accent-primary);
+    padding: 1.5rem 0;
+}
+
 .footer-link {
-    cursor: pointer;
-    text-decoration: none;
+    font-family: var(--font-body);
+    color: var(--color-text-secondary);
+    transition: color var(--transition-quick);
 }
 
 .footer-link:hover {
-    text-decoration: underline;
+    color: var(--color-accent-primary);
+    text-decoration: none;
 }
 
 /* -----------------------------------------------------------------------------
-   Bug Report Button
+   Bug Report Button - Help Button
    ----------------------------------------------------------------------------- */
 .bug-report-btn {
     position: fixed;
     bottom: 20px;
     right: 20px;
     z-index: 1030;
-    border-radius: var(--radius-circle);
-    width: 60px;
-    height: 60px;
+    width: 56px;
+    height: 56px;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(135deg, var(--color-primary-dark) 0%, #510179 100%);
-    color: #F9F6EE;
-    border: none;
-    transition: all var(--transition-normal);
+    background: var(--color-accent-secondary);
+    color: var(--color-white);
+    border: var(--pixel) solid var(--color-black);
+    box-shadow: var(--shadow-pixel);
+    transition: all var(--transition-quick);
 }
 
 .bug-report-btn:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--color-black);
+    background: var(--color-pink);
+    color: var(--color-white);
 }
 
 /* -----------------------------------------------------------------------------
-   Animations
+   Animations - Retro Effects
    ----------------------------------------------------------------------------- */
 @keyframes pulse-button {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.03); }
-    100% { transform: scale(1); }
+    0%, 100% { box-shadow: var(--shadow-pixel); }
+    50% { box-shadow: var(--shadow-pixel), 0 0 10px var(--color-accent-primary); }
 }
 
 .pulse-button {
-    animation: pulse-button 1.5s infinite;
+    animation: pulse-button 1s step-end infinite;
 }
 
 @keyframes scale-up {
     0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
+    50% { transform: scale(1.1); }
     100% { transform: scale(1); }
 }
 
 .scale-up {
-    animation: scale-up 0.3s ease-in-out;
+    animation: scale-up 0.2s step-end;
 }
 
 @keyframes flash-highlight {
-    0% { background-color: rgba(181, 131, 141, 0.3); }
-    100% { background-color: var(--color-bg-light); }
+    0% { background-color: var(--color-accent-primary); }
+    100% { background-color: var(--color-bg-tertiary); }
 }
 
 .flash-highlight {
-    animation: flash-highlight 0.8s ease-out;
-}
-
-@keyframes fadeOut {
-    0% { opacity: 1; }
-    100% { opacity: 0; }
-}
-
-@keyframes field-highlight {
-    0% { background-color: rgba(181, 131, 141, 0.1); }
-    100% { background-color: transparent; }
-}
-
-.field-highlight {
-    animation: field-highlight 1s;
+    animation: flash-highlight 0.5s step-end;
 }
 
 @keyframes dice-roll {
-    0% { transform: translateY(0) rotate(0); }
-    25% { transform: translateY(-5px) rotate(5deg); }
-    75% { transform: translateY(-3px) rotate(-3deg); }
-    100% { transform: translateY(0) rotate(0); }
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(10deg); }
+    75% { transform: rotate(-10deg); }
 }
 
 .dice-rolling {
-    animation: dice-roll 0.5s ease-in-out;
+    animation: dice-roll 0.3s step-end 3;
 }
 
 /* -----------------------------------------------------------------------------
-   Transitions
+   Utility Classes
    ----------------------------------------------------------------------------- */
-.transition-opacity {
-    transition: opacity var(--transition-normal);
+.text-pixel {
+    font-family: var(--font-pixel) !important;
+}
+
+.text-retro {
+    font-family: var(--font-body) !important;
+}
+
+.border-pixel {
+    border: var(--pixel) solid var(--color-border-light) !important;
+}
+
+.shadow-pixel {
+    box-shadow: var(--shadow-pixel) !important;
+}
+
+/* Bootstrap Overrides */
+.text-muted {
+    color: var(--color-text-muted) !important;
+}
+
+.text-secondary {
+    color: var(--color-text-secondary) !important;
+}
+
+.bg-light {
+    background: var(--color-bg-tertiary) !important;
+}
+
+.bg-white {
+    background: var(--color-bg-card) !important;
+}
+
+.border {
+    border-color: var(--color-border-light) !important;
+}
+
+.shadow, .shadow-sm, .shadow-lg {
+    box-shadow: var(--shadow-pixel) !important;
 }
 
 /* -----------------------------------------------------------------------------
    Responsive Design
    ----------------------------------------------------------------------------- */
 @media (max-width: 1200px) {
-    .skills-grid {
-        column-count: 3;
-    }
-
-    .skill-name {
-        max-width: 140px;
-    }
+    .skills-grid { column-count: 3; }
+    .skill-name { max-width: 140px; }
 }
 
 @media (max-width: 992px) {
-    .skills-grid {
-        column-count: 2;
+    .skills-grid { column-count: 2; }
+    .skill-name { max-width: 120px; }
+    .hero h1 { font-size: 1.4rem; }
+
+    .navbar-brand {
+        font-size: 0.8rem !important;
     }
 
-    .skill-name {
-        max-width: 120px;
+    .nav-link {
+        font-size: 0.6rem !important;
+        padding: 0.4rem 0.6rem !important;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .gradient-button {
+        min-width: 150px;
+        font-size: 0.55rem;
+        padding: 0.6rem 1rem;
     }
 }
 
 @media (max-width: 768px) {
-    .skills-grid {
-        column-count: 2;
+    body {
+        font-size: 20px;
+    }
+
+    .skills-grid { column-count: 1; }
+    .skill-name { max-width: 200px; }
+
+    .hero {
+        padding: 2.5rem 1rem !important;
+    }
+
+    .hero h1 {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+
+    .hero .lead {
+        font-size: 1.2rem;
+    }
+
+    h1, .display-3 { font-size: 1.2rem; }
+    h2 { font-size: 1rem; }
+    h3 { font-size: 0.9rem; }
+    h4, h5, h6 { font-size: 0.75rem; }
+
+    .section-title {
+        font-size: 0.7rem;
+    }
+
+    .card-title {
+        font-size: 0.7rem;
+    }
+
+    .navbar {
+        padding: 0.75rem 0;
+    }
+
+    .navbar-brand {
+        font-size: 0.7rem !important;
+    }
+
+    .coc-sheet {
+        padding: 0 5px;
+        width: 100%;
+    }
+
+    .characteristic-box {
+        padding: 0.75rem;
+    }
+
+    .characteristic-name {
+        font-size: 0.5rem;
+    }
+
+    .skill-item {
+        padding: 0.5rem;
+    }
+
+    .skill-name {
+        font-size: 1.1rem;
+    }
+
+    .skill-default {
+        font-size: 1rem;
+    }
+
+    .gradient-button {
+        min-width: 120px;
+        font-size: 0.5rem;
+        padding: 0.5rem 0.8rem;
+    }
+
+    .modal-dialog {
+        margin: 0.5rem;
+    }
+
+    .modal-content {
+        box-shadow: 4px 4px 0px var(--color-black);
+    }
+
+    /* Disable CRT effects on mobile for performance */
+    body::before {
+        display: none;
+    }
+
+    body::after {
+        display: none;
+    }
+
+    /* Stack skill badges on mobile */
+    .skill-points {
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+
+    .skill-badge {
+        font-size: 0.45rem;
+    }
+
+    /* Better touch targets */
+    .btn, button {
+        min-height: 44px;
+    }
+
+    .form-control, select {
+        min-height: 44px;
+        font-size: 1.2rem;
+    }
+
+    .form-check-input {
+        width: 1.3em;
+        height: 1.3em;
     }
 }
 
 @media (max-width: 576px) {
-    .skills-grid {
-        column-count: 1;
+    body {
+        font-size: 18px;
     }
 
-    .skill-name {
-        max-width: 180px;
+    .hero h1 {
+        font-size: 0.8rem;
+        letter-spacing: 0;
+    }
+
+    .hero .lead {
+        font-size: 1.1rem;
+    }
+
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .card {
+        border-width: 2px;
+        box-shadow: 2px 2px 0px var(--color-black);
+    }
+
+    .skill-values-container {
+        width: 70px;
+    }
+
+    .skill-value-input {
+        width: 60px;
+        min-width: 60px;
+        max-width: 60px;
+    }
+
+    /* Full width buttons on small screens */
+    .gradient-button {
+        width: 100%;
+        min-width: unset;
+    }
+
+    /* Simplified shadows for performance */
+    .shadow-pixel {
+        box-shadow: 2px 2px 0px var(--color-black) !important;
     }
 }
 
 /* -----------------------------------------------------------------------------
-   Modal Styles
+   Scrollbar - Retro Style
    ----------------------------------------------------------------------------- */
-.modal-content {
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-lg);
-    border: none;
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
 }
 
-.modal-header {
-    border-bottom: 1px solid var(--color-border-light);
-    padding: 1rem 1.5rem;
+::-webkit-scrollbar-track {
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
 }
 
-.modal-title {
-    font-weight: 600;
-    color: var(--color-primary-dark);
+::-webkit-scrollbar-thumb {
+    background: var(--color-accent-primary);
+    border: 2px solid var(--color-black);
 }
 
-.modal-body {
-    padding: 1.5rem;
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent-tertiary);
 }
 
-.modal-footer {
-    border-top: 1px solid var(--color-border-light);
-    padding: 1rem 1.5rem;
-    gap: 0.5rem;
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent-primary) var(--color-bg-primary);
 }
 
-/* Delete Modal Specific */
-.modal-backdrop.show {
-    backdrop-filter: blur(2px);
-}
-
-.btn-danger {
-    background-color: var(--color-danger);
-    border-color: var(--color-danger);
-    transition: all var(--transition-fast);
-}
-
-.btn-danger:hover {
-    background-color: #c82333;
-    border-color: #bd2130;
-    transform: translateY(-1px);
+/* -----------------------------------------------------------------------------
+   Selection
+   ----------------------------------------------------------------------------- */
+::selection {
+    background: var(--color-accent-primary);
+    color: var(--color-black);
 }

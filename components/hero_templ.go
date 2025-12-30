@@ -29,7 +29,7 @@ func Hero() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<header class=\"hero text-center py-5\"><div class=\"container\"><h1 class=\"display-3 mb-3\">Welcome to CorbittFiles</h1><p class=\"lead mb-4\">Create Call of Cthulhu v7 investigators quickly, privately, and for free—no sign-up required.</p><a hx-get=\"/wizard/base/new\" hx-target=\"#character-sheet\" class=\"btn btn-lg btn-light\">Start Creating</a></div></header>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<header class=\"hero text-center py-5\"><div class=\"container\"><p class=\"text-ancient mb-2\" style=\"font-family: var(--font-body); font-style: italic; letter-spacing: 0.2em; font-size: 0.9rem;\">\"That is not dead which can eternal lie...\"</p><h1 class=\"display-3 mb-3\">Welcome to CorbittFiles</h1><p class=\"lead mb-4\">Create Call of Cthulhu v7 investigators quickly, privately, and for free—no sign-up required.</p><a hx-get=\"/wizard/base/new\" hx-target=\"#character-sheet\" class=\"btn btn-lg btn-light\">Begin Your Investigation</a></div></header>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

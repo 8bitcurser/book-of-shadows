@@ -31,7 +31,7 @@ func ArchetypeSelection(inv *models.Investigator) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"col-md-6\"><label class=\"form-label fw-medium\">Archetype</label> <select name=\"archetype\" id=\"archetype-select\" class=\"form-control shadow-sm\" required onchange=\"characterUtils.handleArchetypeSelection(this)\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"col-md-6\"><div class=\"selection-card\"><label class=\"form-label fw-medium\"><i class=\"bi bi-shield-shaded me-1\"></i> Archetype</label> <select name=\"archetype\" id=\"archetype-select\" class=\"form-control\" required onchange=\"characterUtils.handleArchetypeSelection(this)\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -48,7 +48,7 @@ func ArchetypeSelection(inv *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Archetype.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 18, Col: 49}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 22, Col: 53}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {
@@ -61,7 +61,7 @@ func ArchetypeSelection(inv *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var3 string
 			templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Archetype.GetDescription())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 18, Col: 99}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 22, Col: 103}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 			if templ_7745c5c3_Err != nil {
@@ -74,7 +74,7 @@ func ArchetypeSelection(inv *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var4 string
 			templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(inv.Archetype.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 18, Col: 129}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 22, Col: 133}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
@@ -94,7 +94,7 @@ func ArchetypeSelection(inv *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var5 string
 			templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 23, Col: 46}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 27, Col: 50}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 			if templ_7745c5c3_Err != nil {
@@ -107,7 +107,7 @@ func ArchetypeSelection(inv *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var6 string
 			templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.GetDescription())
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 23, Col: 93}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 27, Col: 97}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 			if templ_7745c5c3_Err != nil {
@@ -120,7 +120,7 @@ func ArchetypeSelection(inv *models.Investigator) templ.Component {
 			var templ_7745c5c3_Var7 string
 			templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(archEntity.Name)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 23, Col: 111}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/archetype_selection.templ`, Line: 27, Col: 115}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 			if templ_7745c5c3_Err != nil {
@@ -131,7 +131,7 @@ func ArchetypeSelection(inv *models.Investigator) templ.Component {
 				return templ_7745c5c3_Err
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</select><div id=\"archetype-description\" class=\"mt-3 p-3 rounded shadow-sm bg-light text-secondary description-box\"></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</select><div id=\"archetype-description\" class=\"description-box\"></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

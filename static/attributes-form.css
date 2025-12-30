@@ -1,21 +1,22 @@
 /* =============================================================================
-   Attributes Form - Page-specific styles
+   Attributes Form - Retro 8-Bit Theme
    ============================================================================= */
 
 /* Attribute Container */
 .attribute-container {
     position: relative;
-    overflow: hidden;
-    background-color: var(--color-bg-light);
-    transition: all var(--transition-normal);
+    overflow: visible;
+    background: var(--color-bg-tertiary);
+    transition: all var(--transition-quick);
     padding: 1rem;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-none);
+    border: 2px solid var(--color-border-light);
 }
 
 .attribute-container:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
-    background-color: var(--color-bg-hover);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-black);
+    border-color: var(--color-accent-primary);
 }
 
 .attribute-container.highlight::after {
@@ -25,25 +26,38 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(181, 131, 141, 0.2);
+    background-color: rgba(99, 199, 77, 0.2);
     pointer-events: none;
-    animation: fadeOut 0.5s forwards;
+    animation: flash-highlight 0.5s step-end forwards;
 }
 
 .attribute-label {
-    color: var(--color-primary-dark);
+    color: var(--color-text-primary);
     font-size: 1.1rem;
+    font-family: var(--font-body);
 }
 
 .core-badge {
-    background: linear-gradient(135deg, var(--color-primary-purple) 0%, var(--color-primary-dark) 100%);
-    color: white;
-    font-weight: 500;
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    font-weight: bold;
+    border: 2px solid var(--color-black);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    border-radius: var(--radius-none);
 }
 
 .attribute-input {
-    border-radius: var(--radius-md) !important;
-    border: 1px solid #ced4da !important;
+    border-radius: var(--radius-none) !important;
+    border: 2px solid var(--color-border-light) !important;
+    background: var(--color-bg-primary) !important;
+    color: var(--color-text-primary) !important;
+    font-family: var(--font-body) !important;
+}
+
+.attribute-input:focus {
+    border-color: var(--color-accent-primary) !important;
+    box-shadow: var(--shadow-pixel-inset), 0 0 0 2px var(--color-accent-primary) !important;
 }
 
 /* Tooltip */
@@ -60,14 +74,16 @@
     left: 0;
     top: 100%;
     width: 300px;
-    background-color: var(--color-bg-white);
-    color: #333;
+    background: var(--color-bg-card);
+    color: var(--color-text-primary);
     text-align: left;
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-none);
     padding: 12px 16px;
-    font-size: 0.875rem;
-    box-shadow: var(--shadow-lg);
-    transition: opacity var(--transition-normal), transform var(--transition-normal);
+    font-size: 1rem;
+    font-family: var(--font-body);
+    box-shadow: var(--shadow-pixel);
+    border: 2px solid var(--color-accent-primary);
+    transition: opacity var(--transition-quick);
     transform: translateY(10px);
 }
 
@@ -75,4 +91,26 @@
     visibility: visible;
     opacity: 1;
     transform: translateY(5px);
+}
+
+/* Dice Roll Button */
+.dice-roll-btn {
+    background: var(--color-accent-tertiary);
+    border: 2px solid var(--color-black);
+    color: var(--color-black);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    box-shadow: var(--shadow-pixel-sm);
+    transition: all var(--transition-quick);
+}
+
+.dice-roll-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0px var(--color-black);
+    background: var(--color-yellow);
+}
+
+.dice-roll-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0px var(--color-black);
 }

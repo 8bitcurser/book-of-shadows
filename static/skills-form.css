@@ -1,60 +1,72 @@
 /* =============================================================================
-   Skills Form - Page-specific styles
+   Skills Form - Retro 8-Bit Theme
    ============================================================================= */
 
 /* Tab Navigation */
 .nav-pills .nav-link {
     color: var(--color-text-secondary);
-    background-color: var(--color-bg-light);
-    border: 1px solid var(--color-border-light);
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
     margin: 0 5px;
-    transition: all var(--transition-normal);
-    border-radius: var(--radius-lg);
+    transition: all var(--transition-quick);
+    border-radius: var(--radius-none);
+    font-family: var(--font-body);
+    font-size: 1.3rem;
 }
 
 .nav-pills .nav-link:hover:not([disabled]) {
-    background-color: var(--color-bg-hover);
-    transform: translateY(-2px);
+    background: var(--color-bg-card);
+    border-color: var(--color-accent-primary);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-black);
+    color: var(--color-text-primary);
 }
 
 .nav-pills .nav-link.active {
-    background: var(--gradient-primary);
-    color: white;
-    box-shadow: 0 4px 10px rgba(181, 131, 141, 0.3);
-    transform: translateY(-2px);
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    box-shadow: var(--shadow-pixel-sm);
+    transform: translate(-2px, -2px);
+    border-color: var(--color-black);
 }
 
 .nav-pills .nav-link[disabled] {
-    color: #adb5bd;
+    color: var(--color-text-muted);
     cursor: not-allowed;
+    background: var(--color-bg-primary);
+    opacity: 0.5;
 }
 
 /* Points Display */
 .points-display {
-    background-color: var(--color-bg-light);
-    border-radius: var(--radius-pill);
-    border: 1px solid var(--color-border-light);
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-none);
+    border: 2px solid var(--color-border-light);
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
 }
 
 .points-remaining span:last-child {
-    transition: color var(--transition-normal);
+    transition: color var(--transition-quick);
+    color: var(--color-accent-primary);
+    font-weight: bold;
 }
 
 /* Skill Box */
 .skill-box {
     padding: 12px 15px;
-    border-radius: var(--radius-lg);
-    background-color: var(--color-bg-light);
+    border-radius: var(--radius-none);
+    background: var(--color-bg-tertiary);
     margin-bottom: 10px;
-    transition: all var(--transition-fast);
-    border: 1px solid var(--color-border-light);
+    transition: all var(--transition-quick);
+    border: 2px solid var(--color-border-light);
 }
 
 .skill-box:hover {
-    background-color: var(--color-bg-white);
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md) !important;
-    border-color: rgba(181, 131, 141, 0.2);
+    background: var(--color-bg-card);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-black) !important;
+    border-color: var(--color-accent-primary);
 }
 
 /* Skill Values */
@@ -69,10 +81,10 @@
     display: flex;
     align-items: center;
     height: 38px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-none);
     overflow: hidden;
-    border: 1px solid var(--color-border-medium);
-    background-color: var(--color-bg-white);
+    border: 2px solid var(--color-border-light);
+    background: var(--color-bg-primary);
 }
 
 .skill-input {
@@ -81,15 +93,18 @@
     border: none;
     text-align: center;
     font-weight: 500;
-    color: var(--color-primary-dark);
+    color: var(--color-text-primary);
+    background: var(--color-bg-primary);
+    font-family: var(--font-body);
     -moz-appearance: textfield;
-    border-left: 1px solid var(--color-border-medium);
-    border-right: 1px solid var(--color-border-medium);
+    border-left: 2px solid var(--color-border-light);
+    border-right: 2px solid var(--color-border-light);
 }
 
 .skill-input:focus {
     outline: none;
-    box-shadow: inset 0 0 0 2px rgba(181, 131, 141, 0.25);
+    background: var(--color-bg-secondary);
+    box-shadow: inset 0 0 0 2px var(--color-accent-primary);
 }
 
 .skill-input::-webkit-inner-spin-button,
@@ -106,16 +121,24 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f1f1f1;
-    color: var(--color-primary-dark);
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
     border: none;
     cursor: pointer;
-    transition: background-color var(--transition-fast);
+    transition: all var(--transition-quick);
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
 }
 
 .btn-increment:hover,
 .btn-decrement:hover {
-    background-color: #e1e1e1;
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+}
+
+.btn-increment:active,
+.btn-decrement:active {
+    background: var(--color-accent-tertiary);
 }
 
 /* Percent Sign */
@@ -125,32 +148,40 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #f1f1f1;
-    color: var(--color-text-muted);
-    font-weight: 500;
+    background: var(--color-bg-tertiary);
+    color: var(--color-accent-primary);
+    font-weight: bold;
+    font-family: var(--font-body);
 }
 
 /* Value Displays */
 .value-displays {
     display: flex;
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: var(--color-text-muted);
     margin-top: 5px;
     justify-content: center;
     width: 100%;
+    font-family: var(--font-body);
+}
+
+.value-displays span {
+    color: var(--color-accent-cyan);
+    font-weight: bold;
 }
 
 /* Outline Secondary Button Override */
 .btn-outline-secondary {
-    color: var(--color-primary-dark);
-    border-color: var(--color-primary-dark);
-    border-radius: var(--radius-lg);
-    transition: all var(--transition-normal);
+    color: var(--color-text-secondary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-none);
+    transition: all var(--transition-quick);
 }
 
 .btn-outline-secondary:hover {
-    background-color: var(--color-primary-dark);
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(109, 104, 117, 0.2);
+    background: var(--color-bg-card);
+    color: var(--color-accent-primary);
+    border-color: var(--color-accent-primary);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--color-black);
 }

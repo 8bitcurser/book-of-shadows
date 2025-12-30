@@ -5,6 +5,121 @@
 
 const Wizard = {
     // =========================================================================
+    // Description Formatting
+    // =========================================================================
+
+    /**
+     * Format archetype/occupation description into structured HTML
+     * @param {string} text - Raw description text
+     * @returns {string} - Formatted HTML
+     */
+    formatDescription(text) {
+        if (!text) return '';
+
+        // Parse the description into sections
+        const sections = {
+            intro: '',
+            coreChar: '',
+            bonusPoints: '',
+            skills: '',
+            talents: '',
+            traits: '',
+            occupations: ''
+        };
+
+        // Extract intro (text before first "Core Characteristics:" or other keywords)
+        const keywordPattern = /(Core Characteristics:|Bonus Points:|Archetype Skills:|Occupation Skills:|Number of Talents:|Suggested Traits:|Suggested Occupations:)/;
+        const firstKeyword = text.search(keywordPattern);
+
+        if (firstKeyword > 0) {
+            sections.intro = text.substring(0, firstKeyword).trim();
+        }
+
+        // Extract each section
+        const extractSection = (label) => {
+            const regex = new RegExp(label + '\\s*([^]*?)(?=Core Characteristics:|Bonus Points:|Archetype Skills:|Occupation Skills:|Number of Talents:|Suggested Traits:|Suggested Occupations:|$)', 'i');
+            const match = text.match(regex);
+            return match ? match[1].trim() : '';
+        };
+
+        sections.coreChar = extractSection('Core Characteristics:');
+        sections.bonusPoints = extractSection('Bonus Points:');
+        sections.skills = extractSection('Archetype Skills:') || extractSection('Occupation Skills:');
+        sections.talents = extractSection('Number of Talents:');
+        sections.traits = extractSection('Suggested Traits:');
+        sections.occupations = extractSection('Suggested Occupations:');
+
+        // Build HTML
+        let html = '';
+
+        // Intro
+        if (sections.intro) {
+            html += `<div class="desc-intro">${sections.intro}</div>`;
+        }
+
+        // Stats grid
+        const stats = [];
+        if (sections.coreChar) {
+            stats.push({ label: 'Core Stats', value: sections.coreChar });
+        }
+        if (sections.bonusPoints) {
+            stats.push({ label: 'Bonus Points', value: sections.bonusPoints });
+        }
+        if (sections.talents) {
+            stats.push({ label: 'Talents', value: sections.talents });
+        }
+
+        if (stats.length > 0) {
+            html += '<div class="desc-stats">';
+            stats.forEach(stat => {
+                html += `<div class="desc-stat">
+                    <span class="desc-stat-label">${stat.label}</span>
+                    <span class="desc-stat-value">${stat.value}</span>
+                </div>`;
+            });
+            html += '</div>';
+        }
+
+        // Skills
+        if (sections.skills) {
+            const skillList = sections.skills.split(',').map(s => s.trim()).filter(s => s);
+            html += `<div class="desc-skills">
+                <span class="desc-skills-label">Skills</span>
+                <div class="desc-skills-list">
+                    ${skillList.map(skill => `<span class="desc-skill-tag">${skill}</span>`).join('')}
+                </div>
+            </div>`;
+        }
+
+        // Suggestions
+        const suggestions = [];
+        if (sections.traits) {
+            suggestions.push({ label: 'Suggested Traits', value: sections.traits });
+        }
+        if (sections.occupations) {
+            suggestions.push({ label: 'Suggested Occupations', value: sections.occupations });
+        }
+
+        if (suggestions.length > 0) {
+            html += '<div class="desc-suggestions">';
+            suggestions.forEach(sug => {
+                html += `<div class="desc-suggestion">
+                    <span class="desc-suggestion-label">${sug.label}</span>
+                    <span class="desc-suggestion-value">${sug.value}</span>
+                </div>`;
+            });
+            html += '</div>';
+        }
+
+        // If no structured content found, return plain text
+        if (!html) {
+            return `<div class="desc-intro">${text}</div>`;
+        }
+
+        return html;
+    },
+
+    // =========================================================================
     // Step 1: Personal Info / Base Step
     // =========================================================================
 
@@ -36,9 +151,9 @@ const Wizard = {
         const occupationContainer = Utils.$('occupation-container');
         const selectedOption = selectElement.options[selectElement.selectedIndex];
 
-        // Update description
+        // Update description with formatted HTML
         if (selectedOption && selectedOption.dataset.description) {
-            descriptionElement.textContent = selectedOption.dataset.description;
+            descriptionElement.innerHTML = this.formatDescription(selectedOption.dataset.description);
             descriptionElement.style.display = 'block';
         } else {
             descriptionElement.style.display = 'none';
@@ -108,6 +223,11 @@ const Wizard = {
                     occupationSelect.appendChild(option);
                 });
             }
+
+            // Refresh custom dropdown to reflect new options
+            if (window.CustomDropdown) {
+                CustomDropdown.refresh('occupation-select');
+            }
         } catch (error) {
             console.error('Error updating occupation options:', error);
         }
@@ -122,7 +242,7 @@ const Wizard = {
         const selectedOption = selectElement.options[selectElement.selectedIndex];
 
         if (selectedOption && selectedOption.dataset.description) {
-            descriptionElement.textContent = selectedOption.dataset.description;
+            descriptionElement.innerHTML = this.formatDescription(selectedOption.dataset.description);
             descriptionElement.style.display = 'block';
         } else {
             descriptionElement.style.display = 'none';
@@ -380,25 +500,8 @@ const Wizard = {
             container.style.pointerEvents = 'auto';
         });
 
-        // Add hover effects to skill boxes
-        Utils.qsa('.skill-box').forEach(box => {
-            box.addEventListener('mouseenter', function() {
-                this.style.backgroundColor = '#f0f0f0';
-            });
-            box.addEventListener('mouseleave', function() {
-                this.style.backgroundColor = '#f8f9fa';
-            });
-        });
-
-        // Initialize skill inputs
-        Utils.qsa('.skill-input').forEach(input => {
-            input.addEventListener('focus', function() {
-                this.closest('.skill-box').style.borderColor = '#b5838d';
-            });
-            input.addEventListener('blur', function() {
-                this.closest('.skill-box').style.borderColor = 'rgba(0,0,0,0.05)';
-            });
-        });
+        // Hover effects are now handled via CSS :hover selectors
+        // No JavaScript color overrides needed
     },
 
     /**
@@ -456,7 +559,7 @@ const Wizard = {
 
             // Update points display
             pointsElement.textContent = newPoints;
-            pointsElement.style.color = newPoints < 10 ? '#e74c3c' : '#b5838d';
+            pointsElement.style.color = newPoints < 10 ? '#e84a5f' : '#63c74d';
 
             // Flash highlight the skill box
             const skillBox = input.closest('.skill-box');

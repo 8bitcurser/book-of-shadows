@@ -18,23 +18,11 @@ const CharacterSheet = {
 
     /**
      * Initialize hover effects for interactive elements
+     * Note: Hover effects are now handled purely in CSS for better theme support
      */
     initHoverEffects() {
-        const hoverElements = Utils.qsa('.stat-pill, .characteristic-box, .skill-item');
-        hoverElements.forEach(element => {
-            element.addEventListener('mouseenter', function() {
-                const card = this.closest('.card');
-                if (!card || !card.classList.contains('locked')) {
-                    this.style.backgroundColor = '#f0f0f0';
-                }
-            });
-            element.addEventListener('mouseleave', function() {
-                const card = this.closest('.card');
-                if (!card || !card.classList.contains('locked')) {
-                    this.style.backgroundColor = '#f8f9fa';
-                }
-            });
-        });
+        // Hover effects are handled via CSS :hover selectors
+        // This method is kept for backwards compatibility
     },
 
     /**
