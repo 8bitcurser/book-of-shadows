@@ -148,11 +148,11 @@ func GeneralSkillsTab(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"mb-4\"><div class=\"row g-3\"><!-- General Skills (Alphabetically Sorted) -->")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<div class=\"mb-4\"><p class=\"text-muted small mb-2\"><i class=\"bi bi-star-fill text-warning me-1\"></i> Skills marked with a star are recommended for your occupation</p><div class=\"row g-3\"><!-- General Skills (Alphabetically Sorted, Recommended First) -->")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = renderGeneralSkills(investigator).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = renderGeneralSkillsWithRecommendations(investigator).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -234,6 +234,40 @@ func renderGeneralSkills(investigator *models.Investigator) templ.Component {
 	})
 }
 
+func renderGeneralSkillsWithRecommendations(investigator *models.Investigator) templ.Component {
+	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
+		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
+		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
+			return templ_7745c5c3_CtxErr
+		}
+		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templruntime.GetBuffer(templ_7745c5c3_W)
+		if !templ_7745c5c3_IsBuffer {
+			defer func() {
+				templ_7745c5c3_BufErr := templruntime.ReleaseBuffer(templ_7745c5c3_Buffer)
+				if templ_7745c5c3_Err == nil {
+					templ_7745c5c3_Err = templ_7745c5c3_BufErr
+				}
+			}()
+		}
+		ctx = templ.InitializeContext(ctx)
+		templ_7745c5c3_Var6 := templ.GetChildren(ctx)
+		if templ_7745c5c3_Var6 == nil {
+			templ_7745c5c3_Var6 = templ.NopComponent
+		}
+		ctx = templ.ClearChildren(ctx)
+		recommendedSkills := getRecommendedSkills(investigator)
+		sortedSkills := getSortedSkillsWithRecommendedFirst(investigator, recommendedSkills)
+		for _, skillObj := range sortedSkills {
+			_, isRecommended := recommendedSkills[skillObj.Name]
+			templ_7745c5c3_Err = SkillBoxWithRecommendation(skillObj, "general", isRecommended).Render(ctx, templ_7745c5c3_Buffer)
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
+		}
+		return nil
+	})
+}
+
 func getSortedSkillNames(investigator *models.Investigator, skills []string) []string {
 	// Create a slice to hold valid skills
 	var validSkills []string
@@ -267,6 +301,54 @@ func getSortedSkills(investigator *models.Investigator) []models.Skill {
 
 	// Sort skills alphabetically by name
 	sort.Slice(validSkills, func(i, j int) bool {
+		return validSkills[i].Name < validSkills[j].Name
+	})
+
+	return validSkills
+}
+
+// getRecommendedSkills returns a map of skill names that are recommended for the investigator's occupation
+func getRecommendedSkills(investigator *models.Investigator) map[string]bool {
+	recommended := make(map[string]bool)
+
+	// Always recommend Credit Rating
+	recommended["Credit Rating"] = true
+
+	// Add occupation skills
+	if investigator.Occupation.Name != "" {
+		for _, req := range investigator.Occupation.SkillRequirements {
+			if req.Type == "required" {
+				recommended[req.Skill] = true
+			} else if req.Type == "choice" {
+				// Add all choice skills as recommended
+				for _, skill := range req.SkillChoice.Skills {
+					recommended[skill] = true
+				}
+			}
+		}
+	}
+
+	return recommended
+}
+
+// getSortedSkillsWithRecommendedFirst returns skills sorted with recommended skills first, then alphabetically
+func getSortedSkillsWithRecommendedFirst(investigator *models.Investigator, recommended map[string]bool) []models.Skill {
+	var validSkills []models.Skill
+
+	for _, skill := range investigator.Skills {
+		if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
+			validSkills = append(validSkills, skill)
+		}
+	}
+
+	// Sort: recommended first, then alphabetically within each group
+	sort.Slice(validSkills, func(i, j int) bool {
+		iRec := recommended[validSkills[i].Name]
+		jRec := recommended[validSkills[j].Name]
+
+		if iRec != jRec {
+			return iRec // Recommended skills come first
+		}
 		return validSkills[i].Name < validSkills[j].Name
 	})
 

@@ -102,13 +102,17 @@ const CharacterSheet = {
      */
     async refreshCombatStats(investigatorId) {
         try {
-            // Use HTMX to reload the character sheet with updated derivatives
-            const sheetContainer = Utils.qs('#character-sheet');
-            if (sheetContainer) {
-                htmx.ajax('GET', `/api/investigator/${investigatorId}`, {
-                    target: '#character-sheet',
-                    swap: 'innerHTML'
-                });
+            // Save scroll position before reload
+            const scrollY = window.scrollY;
+
+            // Use same approach as togglePinSkill for consistency
+            const html = await API.getInvestigator(investigatorId);
+            Utils.setHTML('character-sheet', html);
+            window.scrollTo(0, scrollY);
+
+            // Re-initialize skills manager
+            if (window.SkillsManager) {
+                SkillsManager.init();
             }
         } catch (error) {
             console.error('Error refreshing character sheet:', error);
@@ -376,9 +380,16 @@ const CharacterSheet = {
             button.classList.add('scale-up');
             setTimeout(() => button.classList.remove('scale-up'), 300);
 
-            // Reload skills section to reorder
+            // Save scroll position and reload skills section
+            const scrollY = window.scrollY;
             const html = await API.getInvestigator(Utils.getCurrentCharacterId());
             Utils.setHTML('character-sheet', html);
+            window.scrollTo(0, scrollY);
+
+            // Re-initialize skills manager to restore collapsed state
+            if (window.SkillsManager) {
+                SkillsManager.init();
+            }
         } catch (error) {
             console.error('Error updating skill priority:', error);
             // Revert on error
@@ -512,9 +523,12 @@ const CharacterSheet = {
         try {
             await API.updateInvestigator(investigatorId, section, conditionName, true);
 
-            // Reload the character sheet to show the new condition
+            // Save scroll position and reload the character sheet
+            const scrollY = window.scrollY;
             const html = await API.getInvestigator(investigatorId);
             Utils.setHTML('character-sheet', html);
+            window.scrollTo(0, scrollY);
+            if (window.SkillsManager) SkillsManager.init();
 
             Utils.showToast('Added', `${conditionName} has been added.`, '\uD83D\uDCA5');
         } catch (error) {
@@ -538,9 +552,12 @@ const CharacterSheet = {
         try {
             await API.updateInvestigator(investigatorId, section, conditionName, false);
 
-            // Reload the character sheet to reflect the removal
+            // Save scroll position and reload the character sheet
+            const scrollY = window.scrollY;
             const html = await API.getInvestigator(investigatorId);
             Utils.setHTML('character-sheet', html);
+            window.scrollTo(0, scrollY);
+            if (window.SkillsManager) SkillsManager.init();
 
             Utils.showToast('Removed', `${conditionName} has been removed.`, '\u2705');
         } catch (error) {

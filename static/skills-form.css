@@ -185,3 +185,21 @@
     transform: translate(-2px, -2px);
     box-shadow: 4px 4px 0px var(--color-black);
 }
+
+/* Recommended Skills */
+.skill-recommended {
+    border-color: var(--color-accent-tertiary) !important;
+    background: linear-gradient(135deg, var(--color-bg-card) 0%, rgba(234, 212, 170, 0.1) 100%);
+}
+
+.skill-recommended-icon {
+    color: var(--color-accent-tertiary);
+    font-size: 0.75rem;
+    margin-right: 0.35rem;
+    animation: pulse-star 2s ease-in-out infinite;
+}
+
+@keyframes pulse-star {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}

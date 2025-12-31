@@ -4,10 +4,17 @@ import "book-of-shadows/models"
 import "strconv"
 
 templ SkillBox(skillObj models.Skill, skillType string) {
+    @SkillBoxWithRecommendation(skillObj, skillType, false)
+}
+
+templ SkillBoxWithRecommendation(skillObj models.Skill, skillType string, isRecommended bool) {
     <div class="col-md-6 col-lg-4 mb-2">
-        <div class="skill-box shadow-sm">
+        <div class={ "skill-box shadow-sm", templ.KV("skill-recommended", isRecommended) }>
             <div class="d-flex justify-content-between align-items-center">
                 <div class="skill-name-container">
+                    if isRecommended {
+                        <i class="bi bi-star-fill skill-recommended-icon" title="Recommended for your occupation"></i>
+                    }
                     <span class="skill-name" title={ skillObj.Name }>{ skillObj.Name }</span>
                     <span class="skill-default">({ strconv.Itoa(skillObj.Default) }%)</span>
                 </div>

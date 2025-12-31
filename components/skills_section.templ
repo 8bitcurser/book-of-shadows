@@ -26,19 +26,95 @@ templ SkillsSection(inv *models.Investigator) {
             </div>
         </div>
         <div class="card-body p-3">
-            <div class="skills-grid">
-                for _, skill := range sortSkillsByPriority(inv.Skills) {
+            <!-- Pinned Skills Section -->
+            @PinnedSkillsSection(inv.Skills)
+
+            <!-- All Skills Section (Collapsible) -->
+            @AllSkillsSection(inv.Skills)
+        </div>
+    </div>
+}
+
+templ PinnedSkillsSection(skills map[string]models.Skill) {
+    {{
+        pinnedSkills := getPinnedSkills(skills)
+    }}
+    if len(pinnedSkills) > 0 {
+        <div class="pinned-skills-section mb-3">
+            <div class="pinned-skills-header">
+                <i class="bi bi-pin-fill me-2"></i>
+                <span>Pinned Skills</span>
+                <span class="badge pinned-count ms-2">{strconv.Itoa(len(pinnedSkills))}</span>
+            </div>
+            <div class="skills-grid pinned-skills-grid">
+                for _, skill := range pinnedSkills {
+                    @SkillItem(skill)
+                }
+            </div>
+        </div>
+    } else {
+        <div class="pinned-skills-empty">
+            <i class="bi bi-pin me-2"></i>
+            <span>Pin your frequently used skills for quick access</span>
+        </div>
+    }
+}
+
+templ AllSkillsSection(skills map[string]models.Skill) {
+    {{
+        allSkills := sortSkillsAlphabetically(skills)
+    }}
+    <div class="all-skills-section">
+        <!-- Collapsible Header -->
+        <div class="all-skills-header" onclick="SkillsManager.toggleCollapse()">
+            <div class="all-skills-header-left">
+                <i class="bi bi-chevron-down all-skills-chevron"></i>
+                <span>All Skills</span>
+                <span class="badge all-skills-count ms-2">{strconv.Itoa(len(allSkills))}</span>
+            </div>
+            <div class="all-skills-header-right" onclick="event.stopPropagation()">
+                <!-- Search Input -->
+                <div class="skills-search-container">
+                    <i class="bi bi-search skills-search-icon"></i>
+                    <input
+                        type="text"
+                        class="form-control skills-search-input"
+                        id="skills-search"
+                        placeholder="Search skills..."
+                        oninput="SkillsManager.filterSkills(this.value)"
+                        onclick="event.stopPropagation(); SkillsManager.expand()"
+                    />
+                    <button
+                        type="button"
+                        class="skills-search-clear"
+                        onclick="SkillsManager.clearSearch()"
+                        title="Clear search"
+                    >
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collapsible Content -->
+        <div class="all-skills-content collapsed" id="all-skills-content">
+            <div class="skills-grid" id="skills-grid">
+                for _, skill := range allSkills {
                     if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
                         @SkillItem(skill)
                     }
                 }
+            </div>
+            <div class="skills-no-results" id="skills-no-results" style="display: none;">
+                <i class="bi bi-search me-2"></i>
+                <span>No skills found matching your search</span>
             </div>
         </div>
     </div>
 }
 
 templ SkillItem(skill models.Skill) {
-    <div class="skill-item p-2 mb-2 rounded shadow-sm" data-priority={strconv.FormatBool(skill.IsPriority)}>
+    <div class="skill-item p-2 mb-2 rounded shadow-sm" data-priority={strconv.FormatBool(skill.IsPriority)} data-skill-name={skill.Name}>
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center skill-name-container">
                 <!-- Pin Toggle Button -->
@@ -69,7 +145,7 @@ templ SkillItem(skill models.Skill) {
                         style="cursor: pointer; width: 1.1em; height: 1.1em;"
                     />
                 </div>
-                
+
                 if skill.NeedsFormDef == 1 {
                     <input
                         type="text"
@@ -111,29 +187,48 @@ templ SkillItem(skill models.Skill) {
     </div>
 }
 
-// Sort skills with priority skills at the top
-func sortSkillsByPriority(skills map[string]models.Skill) []models.Skill {
-    // Create a slice to hold the skills
-    var skillSlice []models.Skill
+// Get only pinned skills, sorted alphabetically
+func getPinnedSkills(skills map[string]models.Skill) []models.Skill {
+    var pinned []models.Skill
+    for _, skill := range skills {
+        if skill.IsPriority && skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
+            pinned = append(pinned, skill)
+        }
+    }
+    sort.Slice(pinned, func(i, j int) bool {
+        return pinned[i].Name < pinned[j].Name
+    })
+    return pinned
+}
 
-    // Convert map to slice
+// Sort all skills alphabetically, excluding pinned skills
+func sortSkillsAlphabetically(skills map[string]models.Skill) []models.Skill {
+    var skillSlice []models.Skill
+    for _, skill := range skills {
+        // Exclude pinned skills - they appear in the pinned section
+        if skill.Name != "" && skill.Name != "Dodge_Copy" && !skill.IsPriority {
+            skillSlice = append(skillSlice, skill)
+        }
+    }
+    sort.Slice(skillSlice, func(i, j int) bool {
+        return skillSlice[i].Name < skillSlice[j].Name
+    })
+    return skillSlice
+}
+
+// Keep for backward compatibility
+func sortSkillsByPriority(skills map[string]models.Skill) []models.Skill {
+    var skillSlice []models.Skill
     for _, skill := range skills {
         if skill.Name != "" && skill.Name != "Dodge_Copy" {
             skillSlice = append(skillSlice, skill)
         }
     }
-
-    // Sort the slice - first by priority (IsPriority true comes first),
-    // then alphabetically within each priority group
     sort.Slice(skillSlice, func(i, j int) bool {
-        // If priorities are different, sort by priority (true comes first)
         if skillSlice[i].IsPriority != skillSlice[j].IsPriority {
-            return skillSlice[i].IsPriority // True values come before false
+            return skillSlice[i].IsPriority
         }
-        
-        // If priorities are the same, sort alphabetically by name
         return skillSlice[i].Name < skillSlice[j].Name
     })
-
     return skillSlice
 }

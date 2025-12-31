@@ -40,9 +40,13 @@ templ GeneralSkillsTab(investigator *models.Investigator) {
         @PointsDisplay("General Skills", investigator.FreePoints, "general-points")
 
         <div class="mb-4">
+            <p class="text-muted small mb-2">
+                <i class="bi bi-star-fill text-warning me-1"></i>
+                Skills marked with a star are recommended for your occupation
+            </p>
             <div class="row g-3">
-                <!-- General Skills (Alphabetically Sorted) -->
-                @renderGeneralSkills(investigator)
+                <!-- General Skills (Alphabetically Sorted, Recommended First) -->
+                @renderGeneralSkillsWithRecommendations(investigator)
             </div>
         </div>
 
@@ -59,6 +63,19 @@ templ renderSkills(investigator *models.Investigator, skills []string, skillType
 templ renderGeneralSkills(investigator *models.Investigator) {
     for _, skillObj := range getSortedSkills(investigator) {
         @SkillBox(skillObj, "general")
+    }
+}
+
+templ renderGeneralSkillsWithRecommendations(investigator *models.Investigator) {
+    {{
+        recommendedSkills := getRecommendedSkills(investigator)
+        sortedSkills := getSortedSkillsWithRecommendedFirst(investigator, recommendedSkills)
+    }}
+    for _, skillObj := range sortedSkills {
+        {{
+            _, isRecommended := recommendedSkills[skillObj.Name]
+        }}
+        @SkillBoxWithRecommendation(skillObj, "general", isRecommended)
     }
 }
 
@@ -85,18 +102,66 @@ func getSortedSkillNames(investigator *models.Investigator, skills []string) []s
 func getSortedSkills(investigator *models.Investigator) []models.Skill {
     // Create a slice to hold valid skills
     var validSkills []models.Skill
-    
+
     // Add skills to the valid skills slice
     for _, skill := range investigator.Skills {
         if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
             validSkills = append(validSkills, skill)
         }
     }
-    
+
     // Sort skills alphabetically by name
     sort.Slice(validSkills, func(i, j int) bool {
         return validSkills[i].Name < validSkills[j].Name
     })
-    
+
+    return validSkills
+}
+
+// getRecommendedSkills returns a map of skill names that are recommended for the investigator's occupation
+func getRecommendedSkills(investigator *models.Investigator) map[string]bool {
+    recommended := make(map[string]bool)
+
+    // Always recommend Credit Rating
+    recommended["Credit Rating"] = true
+
+    // Add occupation skills
+    if investigator.Occupation.Name != "" {
+        for _, req := range investigator.Occupation.SkillRequirements {
+            if req.Type == "required" {
+                recommended[req.Skill] = true
+            } else if req.Type == "choice" {
+                // Add all choice skills as recommended
+                for _, skill := range req.SkillChoice.Skills {
+                    recommended[skill] = true
+                }
+            }
+        }
+    }
+
+    return recommended
+}
+
+// getSortedSkillsWithRecommendedFirst returns skills sorted with recommended skills first, then alphabetically
+func getSortedSkillsWithRecommendedFirst(investigator *models.Investigator, recommended map[string]bool) []models.Skill {
+    var validSkills []models.Skill
+
+    for _, skill := range investigator.Skills {
+        if skill.Name != "" && skill.Name != "Dodge_Copy" && skill.Base == 0 {
+            validSkills = append(validSkills, skill)
+        }
+    }
+
+    // Sort: recommended first, then alphabetically within each group
+    sort.Slice(validSkills, func(i, j int) bool {
+        iRec := recommended[validSkills[i].Name]
+        jRec := recommended[validSkills[j].Name]
+
+        if iRec != jRec {
+            return iRec // Recommended skills come first
+        }
+        return validSkills[i].Name < validSkills[j].Name
+    })
+
     return validSkills
 }

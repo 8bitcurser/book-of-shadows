@@ -2304,3 +2304,221 @@ footer {
     }
 }
 
+/* =============================================================================
+   Skills Section - Pinned & Collapsible
+   ============================================================================= */
+
+/* Pinned Skills Section */
+.pinned-skills-section {
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-accent-primary);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pinned-skills-header {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    color: var(--color-accent-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px dashed var(--color-border-light);
+}
+
+.pinned-skills-header i {
+    color: var(--color-accent-tertiary);
+}
+
+.pinned-count {
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.pinned-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.5rem;
+}
+
+.pinned-skills-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: var(--color-bg-tertiary);
+    border: 2px dashed var(--color-border-light);
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+}
+
+.pinned-skills-empty i {
+    color: var(--color-border-light);
+}
+
+/* All Skills Section */
+.all-skills-section {
+    border: 2px solid var(--color-border-light);
+    background: var(--color-bg-card);
+}
+
+.all-skills-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1rem;
+    background: var(--color-bg-secondary);
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s ease;
+}
+
+.all-skills-header:hover {
+    background: var(--color-bg-tertiary);
+}
+
+.all-skills-header-left {
+    display: flex;
+    align-items: center;
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    color: var(--color-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.all-skills-chevron {
+    margin-right: 0.5rem;
+    transition: transform 0.2s ease;
+    color: var(--color-accent-primary);
+}
+
+.all-skills-chevron.rotated {
+    transform: rotate(180deg);
+}
+
+.all-skills-count {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    padding: 0.2rem 0.5rem;
+}
+
+.all-skills-header-right {
+    display: flex;
+    align-items: center;
+}
+
+/* Skills Search */
+.skills-search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.skills-search-icon {
+    position: absolute;
+    left: 0.75rem;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.skills-search-input {
+    width: 280px;
+    padding: 0.4rem 2rem 0.4rem 2rem;
+    background: var(--color-bg-primary);
+    border: 2px solid var(--color-border-light);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.skills-search-input:focus {
+    outline: none;
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 0 2px rgba(99, 199, 77, 0.2);
+}
+
+.skills-search-input::placeholder {
+    color: var(--color-text-muted);
+}
+
+.skills-search-clear {
+    position: absolute;
+    right: 0.5rem;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition: color 0.15s ease;
+}
+
+.skills-search-clear:hover {
+    color: var(--color-accent-secondary);
+}
+
+/* Collapsible Content */
+.all-skills-content {
+    max-height: 2000px;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding 0.3s ease;
+    padding: 1rem;
+}
+
+.all-skills-content.collapsed {
+    max-height: 0;
+    padding: 0 1rem;
+}
+
+/* No Results */
+.skills-no-results {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+}
+
+.skills-no-results i {
+    color: var(--color-border-light);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .all-skills-header {
+        flex-direction: column;
+        gap: 0.75rem;
+        align-items: stretch;
+    }
+
+    .all-skills-header-right {
+        width: 100%;
+    }
+
+    .skills-search-input {
+        width: 100%;
+    }
+
+    .pinned-skills-grid {
+        grid-template-columns: 1fr;
+    }
+}
+

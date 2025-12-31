@@ -50,7 +50,7 @@ func Layout(title string) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- Bootstrap JS --><script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz\" crossorigin=\"anonymous\"></script><!-- Application JS Modules (order matters) --><script src=\"/static/js/utils.js\"></script><script src=\"/static/js/api.js\"></script><script src=\"/static/js/custom-dropdown.js\"></script><script src=\"/static/js/wizard.js\"></script><script src=\"/static/js/character-sheet.js\"></script><script src=\"/static/js/rules-drawer.js\"></script><script src=\"/static/js/app.js\"></script></body></html>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- Bootstrap JS --><script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz\" crossorigin=\"anonymous\"></script><!-- Application JS Modules (order matters) --><script src=\"/static/js/utils.js\"></script><script src=\"/static/js/api.js\"></script><script src=\"/static/js/custom-dropdown.js\"></script><script src=\"/static/js/wizard.js\"></script><script src=\"/static/js/character-sheet.js\"></script><script src=\"/static/js/rules-drawer.js\"></script><script src=\"/static/js/skills-manager.js\"></script><script src=\"/static/js/app.js\"></script></body></html>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
