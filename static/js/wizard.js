@@ -317,8 +317,8 @@ const Wizard = {
 
         try {
             if (existingId?.value) {
-                // Investigator exists, go to attributes
-                const html = await API.getWizardStep('attributes', existingId.value);
+                // Investigator exists, go to talent selection
+                const html = await API.getWizardStep('talents', existingId.value);
                 Utils.setHTML('character-sheet', html);
             } else {
                 // Create new investigator
@@ -327,7 +327,7 @@ const Wizard = {
 
                 const data = await API.createInvestigator(jsonData);
                 if (data.Key) {
-                    const html = await API.getWizardStep('attributes', data.Key);
+                    const html = await API.getWizardStep('talents', data.Key);
                     Utils.setHTML('character-sheet', html);
                 }
             }
@@ -577,6 +577,11 @@ const Wizard = {
             if (confirmContainer && newPoints === 0) {
                 confirmContainer.style.opacity = '1';
                 confirmContainer.style.pointerEvents = 'auto';
+
+                // If general skills tab and points hit 0, show ready to play popup
+                if (type === 'general') {
+                    this.showReadyToPlayPopup();
+                }
             }
         }
 
@@ -642,13 +647,70 @@ const Wizard = {
     },
 
     /**
+     * Show the "Ready to play?" popup when general skill points hit 0
+     */
+    showReadyToPlayPopup() {
+        // Create modal overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'ready-popup-overlay';
+        overlay.innerHTML = `
+            <div class="ready-popup">
+                <h3 class="ready-popup-title">Are you ready to start playing?</h3>
+                <div class="ready-popup-buttons">
+                    <button class="btn btn-lg gradient-button ready-popup-yes">
+                        <i class="bi bi-play-fill me-2"></i>Yes, let's go!
+                    </button>
+                    <button class="btn btn-outline-secondary ready-popup-no">
+                        Not yet
+                    </button>
+                </div>
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        // Handle Yes button
+        overlay.querySelector('.ready-popup-yes').addEventListener('click', async () => {
+            overlay.remove();
+            const investigatorId = Utils.getValue('investigatorId');
+            await this.completeCharacter(investigatorId, true);
+        });
+
+        // Handle No button
+        overlay.querySelector('.ready-popup-no').addEventListener('click', () => {
+            overlay.remove();
+        });
+
+        // Close on overlay click
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                overlay.remove();
+            }
+        });
+    },
+
+    /**
      * Complete character creation and show character sheet
      * @param {string} investigatorId - Investigator ID
+     * @param {boolean} skipConfirm - Skip confirmation dialog
      */
-    async completeCharacter(investigatorId) {
+    async completeCharacter(investigatorId, skipConfirm = false) {
+        if (!skipConfirm) {
+            // Show confirmation dialog
+            const confirmed = confirm(
+                'Are you sure you want to complete character creation?\n\n' +
+                'You can still edit your investigator afterwards from the character sheet.'
+            );
+
+            if (!confirmed) {
+                return;
+            }
+        }
+
         try {
             const html = await API.getInvestigator(investigatorId);
             Utils.setHTML('character-sheet', html);
+            Utils.showToast('Success', 'Character creation complete!', '\u2705');
         } catch (error) {
             console.error('Error completing character:', error);
             Utils.showToast('Error', 'Failed to load character sheet.', '\u274C');
@@ -666,6 +728,127 @@ const Wizard = {
         } catch (error) {
             console.error('Error loading personal info:', error);
             Utils.showToast('Error', 'Failed to load personal info step.', '\u274C');
+        }
+    },
+
+    // =========================================================================
+    // Talent Selection
+    // =========================================================================
+
+    /**
+     * Initialize talent form
+     */
+    initTalentForm() {
+        this.updateTalentContinueButton();
+    },
+
+    /**
+     * Toggle talent selection
+     * @param {HTMLElement} card - The talent card element
+     * @param {string} talentName - Name of the talent
+     * @param {number} maxTalents - Maximum talents allowed
+     */
+    async toggleTalent(card, talentName, maxTalents) {
+        const isSelected = card.dataset.selected === 'true';
+        const remainingEl = Utils.$('talents-remaining');
+        const remaining = Utils.parseInt(remainingEl.textContent);
+
+        // If trying to select but no remaining slots
+        if (!isSelected && remaining <= 0) {
+            Utils.showToast('Limit Reached', 'You have already selected the maximum number of talents.', '\u26A0\uFE0F');
+            return;
+        }
+
+        const newSelected = !isSelected;
+        const investigatorId = Utils.getValue('investigatorId');
+
+        try {
+            // Update server
+            await API.updateInvestigator(
+                investigatorId,
+                'talents',
+                talentName,
+                newSelected
+            );
+
+            // Update UI
+            card.dataset.selected = newSelected.toString();
+            card.classList.toggle('talent-selected', newSelected);
+
+            const checkbox = card.querySelector('.talent-checkbox i');
+            if (checkbox) {
+                checkbox.className = newSelected ? 'bi bi-check-circle-fill text-success' : 'bi bi-circle';
+            }
+
+            // Update remaining count
+            const newRemaining = newSelected ? remaining - 1 : remaining + 1;
+            remainingEl.textContent = newRemaining;
+            remainingEl.classList.toggle('bg-success', newRemaining > 0);
+            remainingEl.classList.toggle('bg-danger', newRemaining === 0);
+
+            this.updateTalentContinueButton();
+        } catch (error) {
+            console.error('Error toggling talent:', error);
+            Utils.showToast('Error', 'Failed to update talent selection.', '\u274C');
+        }
+    },
+
+    /**
+     * Update the continue button visibility based on talent selection
+     */
+    updateTalentContinueButton() {
+        const remainingEl = Utils.$('talents-remaining');
+        if (!remainingEl) return;
+
+        const remaining = Utils.parseInt(remainingEl.textContent);
+        const container = Utils.$('confirm-talents-container');
+
+        if (container) {
+            // Show button when all talents are selected (remaining = 0)
+            container.style.opacity = remaining === 0 ? '1' : '0.5';
+            container.style.pointerEvents = remaining === 0 ? 'auto' : 'none';
+        }
+    },
+
+    /**
+     * Go back to base step from talents
+     * @param {string} investigatorId - Investigator ID
+     */
+    async goBackToBase(investigatorId) {
+        try {
+            const html = await API.getWizardStep('base', investigatorId);
+            Utils.setHTML('character-sheet', html);
+        } catch (error) {
+            console.error('Error loading base step:', error);
+            Utils.showToast('Error', 'Failed to load personal info step.', '\u274C');
+        }
+    },
+
+    /**
+     * Proceed to attributes step from talents
+     * @param {string} investigatorId - Investigator ID
+     */
+    async proceedToAttributes(investigatorId) {
+        try {
+            const html = await API.getWizardStep('attributes', investigatorId);
+            Utils.setHTML('character-sheet', html);
+        } catch (error) {
+            console.error('Error loading attributes step:', error);
+            Utils.showToast('Error', 'Failed to load attributes step.', '\u274C');
+        }
+    },
+
+    /**
+     * Proceed to talents step from base
+     * @param {string} investigatorId - Investigator ID
+     */
+    async proceedToTalents(investigatorId) {
+        try {
+            const html = await API.getWizardStep('talents', investigatorId);
+            Utils.setHTML('character-sheet', html);
+        } catch (error) {
+            console.error('Error loading talents step:', error);
+            Utils.showToast('Error', 'Failed to load talents step.', '\u274C');
         }
     },
 };

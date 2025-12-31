@@ -75,6 +75,8 @@ func (h *Handler) applyInvestigatorUpdate(inv *models.Investigator, req *UpdateR
 		return h.toggleSkillPriority(inv, req.Field)
 	case "skill_name":
 		return h.updateSkillName(inv, req.Field, req.Value)
+	case "talents":
+		return h.updateTalent(inv, req.Field, req.Value)
 	default:
 		return errors.NewHTTPError(400, "Unknown section", nil)
 	}
@@ -255,6 +257,49 @@ func (h *Handler) updateSkillName(inv *models.Investigator, field string, value 
 	skill.Name = newName
 	inv.Skills[newName] = skill
 	delete(inv.Skills, field)
+
+	return nil
+}
+
+// updateTalent adds or removes a talent from an investigator
+func (h *Handler) updateTalent(inv *models.Investigator, talentName string, value interface{}) error {
+	// Check if talent exists in the global list
+	talent, exists := models.Talents[talentName]
+	if !exists {
+		return errors.NewValidationError(talentName, "unknown talent")
+	}
+
+	// Determine if we're adding or removing
+	shouldAdd, ok := value.(bool)
+	if !ok {
+		return errors.NewValidationError(talentName, "value must be boolean")
+	}
+
+	if shouldAdd {
+		// Check if already at max talents
+		if len(inv.Talents) >= inv.Archetype.AmountOfTalents {
+			return errors.NewValidationError(talentName, "maximum talents already selected")
+		}
+
+		// Check if talent already exists
+		for _, t := range inv.Talents {
+			if t.Name == talentName {
+				return nil // Already has this talent
+			}
+		}
+
+		// Add the talent
+		inv.Talents = append(inv.Talents, talent)
+	} else {
+		// Remove the talent
+		newTalents := make([]models.Talent, 0, len(inv.Talents))
+		for _, t := range inv.Talents {
+			if t.Name != talentName {
+				newTalents = append(newTalents, t)
+			}
+		}
+		inv.Talents = newTalents
+	}
 
 	return nil
 }

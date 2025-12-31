@@ -5,22 +5,19 @@ import "fmt"
 
 templ InvestigatorCard(inv *models.Investigator) {
     <div class="col">
-        <div class="card h-100 border-light shadow-sm investigator-card">
+        <div class="card h-100 border-light shadow-sm investigator-card"
+            hx-get={ fmt.Sprintf("/api/investigator/%s/", inv.ID) }
+            hx-target="#character-sheet"
+            style="cursor: pointer;">
             <canvas
                 class="card-img-top investigator-img pixel-avatar"
                 data-seed={ inv.ID + inv.Name }
                 data-size="200"
             ></canvas>
             <div class="card-body d-flex flex-column">
-                <h5 class="card-title mb-2">
-                    <a class="investigator-title investigator-name-link"
-                        hx-get={ fmt.Sprintf("/api/investigator/%s/", inv.ID) }
-                        hx-target="#character-sheet">
-                        { inv.Name }
-                    </a>
-                </h5>
+                <h5 class="card-title mb-2 investigator-title">{ inv.Name }</h5>
                 <p class="card-text investigator-occupation mb-3">{ inv.Occupation.Name }</p>
-                <div class="card-actions">
+                <div class="card-actions mt-auto" onclick="event.stopPropagation();">
                     <button type="button" class="btn btn-sm btn-outline-danger delete-button action-button" data-bs-toggle="modal" data-bs-target={ fmt.Sprintf("#d-%s", inv.ID) }>
                         Delete
                     </button>

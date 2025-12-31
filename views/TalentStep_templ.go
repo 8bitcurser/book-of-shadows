@@ -13,19 +13,7 @@ import (
 	"book-of-shadows/models"
 )
 
-var attributesWiz = map[string]string{
-	"POW": "Power",
-	"STR": "Strength",
-	"LCK": "Luck",
-	"APP": "Appearance",
-	"DEX": "Dexterity",
-	"INT": "Intelligence",
-	"EDU": "Education",
-	"SIZ": "Size",
-	"CON": "Constitution",
-}
-
-func AttrStep(investigator *models.Investigator) templ.Component {
+func TalentStep(investigator *models.Investigator) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_W, ctx := templ_7745c5c3_Input.Writer, templ_7745c5c3_Input.Context
 		if templ_7745c5c3_CtxErr := ctx.Err(); templ_7745c5c3_CtxErr != nil {
@@ -50,15 +38,11 @@ func AttrStep(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.ProgressSteps(3).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.ProgressSteps(2).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.FormHeader("Attributes Assignment", "Assign your investigator's core attributes").Render(ctx, templ_7745c5c3_Buffer)
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = components.RollAllButton().Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.FormHeader("Talent Selection", "Choose your pulp talents").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -69,7 +53,7 @@ func AttrStep(investigator *models.Investigator) templ.Component {
 		var templ_7745c5c3_Var2 string
 		templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(investigator.ID)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/AttrStep.templ`, Line: 28, Col: 75}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/TalentStep.templ`, Line: 13, Col: 75}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 		if templ_7745c5c3_Err != nil {
@@ -79,15 +63,15 @@ func AttrStep(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.AttributeCard(investigator, attributesWiz).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.TalentSelection(investigator).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = components.AttributeFormActions(investigator.ID).Render(ctx, templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = components.TalentFormActions(investigator.ID).Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</form><script>\n            // Initialize immediately (works for both initial load and HTMX swap)\n            if (typeof Wizard !== 'undefined') {\n                Wizard.initAttributeForm();\n            }\n        </script></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</form><script>\n            // Initialize talent form\n            if (typeof Wizard !== 'undefined') {\n                Wizard.initTalentForm();\n            }\n        </script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

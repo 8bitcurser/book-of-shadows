@@ -1,0 +1,25 @@
+package views
+
+import (
+    "book-of-shadows/models"
+    "book-of-shadows/components"
+)
+
+templ TalentStep(investigator *models.Investigator) {
+    <div class="container-fluid p-4 coc-sheet">
+        @components.ProgressSteps(2)
+        @components.FormHeader("Talent Selection", "Choose your pulp talents")
+        <form id="stepForm">
+            <input type="hidden" id="investigatorId" value={investigator.ID} />
+            @components.TalentSelection(investigator)
+            @components.TalentFormActions(investigator.ID)
+        </form>
+
+        <script>
+            // Initialize talent form
+            if (typeof Wizard !== 'undefined') {
+                Wizard.initTalentForm();
+            }
+        </script>
+    </div>
+}

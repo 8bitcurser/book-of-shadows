@@ -31,33 +31,22 @@ func FormActions(inv *models.Investigator) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"col-12 mt-4 text-center\"><button id=\"next-step-button\" type=\"submit\" class=\"btn btn-primary btn-lg px-4 py-2 d-flex align-items-center justify-content-center mx-auto\" style=\"")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"col-12 mt-4 text-end\"><button id=\"next-step-button\" type=\"submit\" class=\"btn btn-lg px-4 py-2 gradient-button\"")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		var templ_7745c5c3_Var2 string
-		templ_7745c5c3_Var2, templ_7745c5c3_Err = templruntime.SanitizeStyleAttributeValues(getButtonStyle(inv))
-		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/form_actions.templ`, Line: 11, Col: 38}
+		if inv == nil || inv.Archetype.Name == "" || inv.Occupation.Name == "" {
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, " disabled")
+			if templ_7745c5c3_Err != nil {
+				return templ_7745c5c3_Err
+			}
 		}
-		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
-		if templ_7745c5c3_Err != nil {
-			return templ_7745c5c3_Err
-		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\" onclick=\"Wizard.handleFormSubmission(event)\"><span>Continue to Attributes</span></button></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, " onclick=\"Wizard.handleFormSubmission(event)\"><i class=\"bi bi-arrow-right-circle me-2\"></i>Continue to Talents</button></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		return nil
 	})
-}
-
-func getButtonStyle(inv *models.Investigator) string {
-	if inv != nil && (inv.Archetype.Name != "" && inv.Occupation.Name != "") {
-		return "background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; min-width: 240px;"
-	} else {
-		return "background: #e5e5e5; border: none; min-width: 240px;"
-	}
 }
 
 var _ = templruntime.GeneratedTemplate

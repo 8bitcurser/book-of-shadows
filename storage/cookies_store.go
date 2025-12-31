@@ -275,5 +275,12 @@ func (cs *CookieStore) decodeInvestigator(encodedData string) (*models.Investiga
 		return nil, fmt.Errorf("failed to unmarshal investigator: %w", err)
 	}
 
+	// Populate SpecialArchetypeRules from the Archetypes map (not serialized with json:"-")
+	if investigator.Archetype != nil && investigator.Archetype.Name != "" {
+		if archetype, exists := models.Archetypes[investigator.Archetype.Name]; exists {
+			investigator.Archetype.SpecialArchetypeRules = archetype.SpecialArchetypeRules
+		}
+	}
+
 	return &investigator, nil
 }

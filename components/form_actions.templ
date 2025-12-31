@@ -3,23 +3,15 @@ package components
 import "book-of-shadows/models"
 
 templ FormActions(inv *models.Investigator) {
-    <div class="col-12 mt-4 text-center">
+    <div class="col-12 mt-4 text-end">
         <button
             id="next-step-button"
             type="submit"
-            class="btn btn-primary btn-lg px-4 py-2 d-flex align-items-center justify-content-center mx-auto"
-            style={getButtonStyle(inv)}
+            class="btn btn-lg px-4 py-2 gradient-button"
+            disabled?={inv == nil || inv.Archetype.Name == "" || inv.Occupation.Name == ""}
             onclick="Wizard.handleFormSubmission(event)"
         >
-            <span>Continue to Attributes</span>
+            <i class="bi bi-arrow-right-circle me-2"></i>Continue to Talents
         </button>
     </div>
-}
-
-func getButtonStyle(inv *models.Investigator) string {
-    if inv != nil && (inv.Archetype.Name != "" && inv.Occupation.Name != "") {
-        return "background: linear-gradient(135deg, #6d6875 0%, #b5838d 100%); border: none; min-width: 240px;"
-    } else {
-        return "background: #e5e5e5; border: none; min-width: 240px;"
-    }
 }

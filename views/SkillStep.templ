@@ -8,7 +8,8 @@ import (
 // Main templ for the Skill Assignment Form
 templ SkillStep(investigator *models.Investigator) {
     <div class="container-fluid p-4 coc-sheet">
-        @components.ProgressSteps(3)
+        <input type="hidden" id="investigatorId" value={investigator.ID} />
+        @components.ProgressSteps(4)
         @components.FormHeader("Skill Assignment", "Distribute skill points to customize your investigator")
         @components.CharacterOverview(investigator)
         @components.SkillsTabNav()

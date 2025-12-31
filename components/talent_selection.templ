@@ -1,0 +1,231 @@
+package components
+
+import (
+    "book-of-shadows/models"
+    "strconv"
+    "fmt"
+)
+
+// Talent categories for organized display
+var talentCategories = []struct {
+    Type models.TalentType
+    Name string
+    ID   string
+}{
+    {models.Physical, "Physical", "physical"},
+    {models.Mental, "Mental", "mental"},
+    {models.Combat, "Combat", "combat"},
+    {models.Miscellaneous, "Miscellaneous", "misc"},
+}
+
+templ TalentSelection(inv *models.Investigator) {
+    <div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
+        <div class="card-header d-flex justify-content-between align-items-center p-3 card-header-custom">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-stars me-2 card-header-icon"></i>
+                <h4 class="section-title mb-0">Select Your Talents</h4>
+            </div>
+            <div class="d-flex align-items-center">
+                <span class="me-2">Talents remaining:</span>
+                <span id="talents-remaining" class="badge bg-success fs-5">{strconv.Itoa(inv.Archetype.AmountOfTalents - len(inv.Talents))}</span>
+                <span class="ms-1">/ {strconv.Itoa(inv.Archetype.AmountOfTalents)}</span>
+            </div>
+        </div>
+        <div class="card-body p-3">
+            <p class="text-muted mb-4">
+                Your archetype <strong>{inv.Archetype.Name}</strong> allows you to select <strong>{strconv.Itoa(inv.Archetype.AmountOfTalents)}</strong> talents.
+                Choose wisely - these represent your character's special abilities.
+            </p>
+
+            <div class="accordion" id="talentAccordion">
+                for i, category := range talentCategories {
+                    @TalentCategory(category.Name, category.ID, category.Type, inv, i == 0)
+                }
+            </div>
+        </div>
+    </div>
+}
+
+templ TalentCategory(name string, id string, talentType models.TalentType, inv *models.Investigator, expanded bool) {
+    <div class="accordion-item talent-accordion-item">
+        <h2 class="accordion-header">
+            <button
+                class={"accordion-button talent-accordion-btn " + collapseClass(expanded)}
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target={"#collapse-" + id}
+                aria-expanded={strconv.FormatBool(expanded)}
+                aria-controls={"collapse-" + id}
+            >
+                <i class={getCategoryIcon(talentType) + " me-2"}></i>
+                {name} Talents
+                <span class="badge bg-secondary ms-2">{strconv.Itoa(countTalentsInCategory(talentType))}</span>
+            </button>
+        </h2>
+        <div
+            id={"collapse-" + id}
+            class={"accordion-collapse collapse " + showClass(expanded)}
+            data-bs-parent="#talentAccordion"
+        >
+            <div class="accordion-body">
+                <div class="row g-3">
+                    for talentName, talent := range models.Talents {
+                        if talent.Type == talentType {
+                            @TalentCard(talentName, talent, isSelected(inv, talentName), inv.Archetype.AmountOfTalents, isRecommended(inv, talentName), isRequired(inv, talentName))
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+templ TalentCard(name string, talent models.Talent, selected bool, maxTalents int, recommended bool, required bool) {
+    <div class="col-md-6 col-lg-4">
+        <div
+            class={"talent-card p-3 h-100 " + selectedClass(selected) + recommendedClass(recommended) + requiredClass(required)}
+            data-talent={name}
+            data-selected={strconv.FormatBool(selected)}
+            onclick={templ.ComponentScript{
+                Name: "Wizard.toggleTalent",
+                Call: fmt.Sprintf("Wizard.toggleTalent(this, '%s', %d)", name, maxTalents),
+            }}
+        >
+            <div class="d-flex justify-content-between align-items-start mb-2">
+                <div>
+                    <h6 class="talent-name mb-0">
+                        {talent.Name}
+                        if required {
+                            <span class="badge bg-danger ms-1" title="Required for this archetype">REQ</span>
+                        } else if recommended {
+                            <span class="badge bg-warning text-dark ms-1" title="Recommended for this archetype">REC</span>
+                        }
+                    </h6>
+                </div>
+                <div class="talent-checkbox">
+                    if selected {
+                        <i class="bi bi-check-circle-fill text-success"></i>
+                    } else {
+                        <i class="bi bi-circle"></i>
+                    }
+                </div>
+            </div>
+            <p class="talent-description mb-0 small">{talent.Description}</p>
+        </div>
+    </div>
+}
+
+func getCategoryIcon(t models.TalentType) string {
+    switch t {
+    case models.Physical:
+        return "bi bi-heart-pulse"
+    case models.Mental:
+        return "bi bi-brain"
+    case models.Combat:
+        return "bi bi-crosshair"
+    case models.Miscellaneous:
+        return "bi bi-puzzle"
+    default:
+        return "bi bi-star"
+    }
+}
+
+func isSelected(inv *models.Investigator, talentName string) bool {
+    for _, t := range inv.Talents {
+        if t.Name == talentName {
+            return true
+        }
+    }
+    return false
+}
+
+func selectedClass(selected bool) string {
+    if selected {
+        return "talent-selected "
+    }
+    return ""
+}
+
+func recommendedClass(recommended bool) string {
+    if recommended {
+        return "talent-recommended "
+    }
+    return ""
+}
+
+func requiredClass(required bool) string {
+    if required {
+        return "talent-required "
+    }
+    return ""
+}
+
+func collapseClass(expanded bool) string {
+    if expanded {
+        return ""
+    }
+    return "collapsed"
+}
+
+func showClass(expanded bool) string {
+    if expanded {
+        return "show"
+    }
+    return ""
+}
+
+func countTalentsInCategory(talentType models.TalentType) int {
+    count := 0
+    for _, talent := range models.Talents {
+        if talent.Type == talentType {
+            count++
+        }
+    }
+    return count
+}
+
+func isRecommended(inv *models.Investigator, talentName string) bool {
+    for _, name := range inv.Archetype.SpecialArchetypeRules.RecommendedTalents {
+        if name == talentName {
+            return true
+        }
+    }
+    return false
+}
+
+func isRequired(inv *models.Investigator, talentName string) bool {
+    for _, name := range inv.Archetype.SpecialArchetypeRules.RequiredTalents {
+        if name == talentName {
+            return true
+        }
+    }
+    return false
+}
+
+templ TalentFormActions(investigatorId string) {
+    <div class="d-flex justify-content-between mt-4">
+        <button
+            type="button"
+            class="btn btn-outline-secondary px-4 py-2"
+            onclick={templ.ComponentScript{
+                Name: "Wizard.goBackToBase",
+                Call: fmt.Sprintf("Wizard.goBackToBase('%s')", investigatorId),
+            }}
+        >
+            <i class="bi bi-arrow-left me-2"></i>Back to Personal Info
+        </button>
+        <div id="confirm-talents-container" class="transition-opacity">
+            <button
+                id="talents-continue-btn"
+                type="button"
+                class="btn btn-lg px-4 py-2 gradient-button"
+                onclick={templ.ComponentScript{
+                    Name: "Wizard.proceedToAttributes",
+                    Call: fmt.Sprintf("Wizard.proceedToAttributes('%s')", investigatorId),
+                }}
+            >
+                <i class="bi bi-arrow-right-circle me-2"></i>Continue to Attributes
+            </button>
+        </div>
+    </div>
+}

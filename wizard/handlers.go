@@ -81,3 +81,22 @@ func (h *Handler) SkillStep(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 	}
 }
+
+// TalentStep handles the talent selection step of the wizard
+func (h *Handler) TalentStep(w http.ResponseWriter, r *http.Request) {
+	params := r.Context().Value("params").([]string)
+	key := params[0]
+
+	investigator, err := h.store.GetInvestigator(r, key)
+	if err != nil {
+		h.logger.Printf("Failed to get investigator: %v", err)
+		http.Error(w, "Investigator not found", http.StatusNotFound)
+		return
+	}
+
+	component := views.TalentStep(investigator)
+	if err := component.Render(r.Context(), w); err != nil {
+		h.logger.Printf("Failed to render talent step: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+	}
+}

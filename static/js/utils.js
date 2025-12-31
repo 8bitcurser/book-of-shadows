@@ -248,13 +248,11 @@ const Utils = {
      */
     updateButtonState(button, enabled) {
         button.disabled = !enabled;
+        // Clear any inline background style to let CSS classes work
+        button.style.background = '';
         if (enabled) {
-            // Use CSS variable colors - retro green
-            button.style.background = '#63c74d';
             button.classList.add('pulse-button');
         } else {
-            // Disabled state - dark gray
-            button.style.background = '#595652';
             button.classList.remove('pulse-button');
         }
     },
@@ -467,7 +465,11 @@ document.addEventListener('DOMContentLoaded', () => {
     Utils.initPixelAvatars();
 });
 
-// Also initialize on htmx content swap
+// Also initialize on htmx content swap and settle
 document.addEventListener('htmx:afterSwap', () => {
+    Utils.initPixelAvatars();
+});
+
+document.addEventListener('htmx:afterSettle', () => {
     Utils.initPixelAvatars();
 });

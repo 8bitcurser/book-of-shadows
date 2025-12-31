@@ -36,8 +36,8 @@ func AttributeFormActions(investigatorID string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{
-			Name: "characterUtils.loadPersonalInfo",
-			Call: fmt.Sprintf("characterUtils.loadPersonalInfo('%s')", investigatorID),
+			Name: "Wizard.proceedToTalents",
+			Call: fmt.Sprintf("Wizard.proceedToTalents('%s')", investigatorID),
 		})
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
@@ -47,14 +47,14 @@ func AttributeFormActions(investigatorID string) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var2 templ.ComponentScript = templ.ComponentScript{
-			Name: "characterUtils.loadPersonalInfo",
-			Call: fmt.Sprintf("characterUtils.loadPersonalInfo('%s')", investigatorID),
+			Name: "Wizard.proceedToTalents",
+			Call: fmt.Sprintf("Wizard.proceedToTalents('%s')", investigatorID),
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2.Call)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\">Back to Personal Info</button> ")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><i class=\"bi bi-arrow-left me-2\"></i>Back to Talents</button> ")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
