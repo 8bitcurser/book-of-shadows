@@ -11,7 +11,7 @@ templ SheetHeader() {
                     type="checkbox"
                     id="lockToggle"
                     role="switch"
-                    onchange="characterUtils.toggleLock(this)"
+                    onclick="characterUtils.toggleLock(this); this.blur()"
                 />
                 <label class="form-check-label visually-hidden" for="lockToggle">Lock Character Sheet Editing</label>
             </div>

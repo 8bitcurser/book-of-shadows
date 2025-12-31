@@ -65,7 +65,7 @@ templ SkillItem(skill models.Skill) {
                         if skill.IsSelected {
                             checked
                         }
-                        onchange="characterUtils.handleSkillToggleCheck(this)"
+                        onclick="characterUtils.handleSkillToggleCheck(this); this.blur()"
                         style="cursor: pointer; width: 1.1em; height: 1.1em;"
                     />
                 </div>

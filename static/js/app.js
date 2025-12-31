@@ -206,6 +206,7 @@ const characterUtils = {
     handleSkillToggleCheck: (input) => CharacterSheet.handleSkillToggleCheck(input),
     handleSkillNameChange: (input) => CharacterSheet.handleSkillNameChange(input),
     updatePersonalInfo: (input) => CharacterSheet.updatePersonalInfo(input),
+    updateHeaderName: (input) => CharacterSheet.updateHeaderName(input),
     exportPDF: (evt, key) => CharacterSheet.exportPDF(evt, key),
     importInvestigators: () => CharacterSheet.importInvestigators(),
 

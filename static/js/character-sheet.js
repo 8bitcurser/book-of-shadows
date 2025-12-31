@@ -258,6 +258,42 @@ const CharacterSheet = {
         }
     },
 
+    /** Timer for typewriter effect */
+    _typingTimer: null,
+
+    /**
+     * Update header name and avatar in real-time as user types
+     * @param {HTMLInputElement} input - Name input field
+     */
+    updateHeaderName(input) {
+        const newName = input.value.trim();
+
+        // Update the header name
+        const headerName = Utils.$('header-name');
+        if (headerName) {
+            headerName.textContent = newName || 'Unnamed';
+
+            // Add typing class for typewriter cursor effect
+            headerName.classList.add('typing');
+
+            // Clear existing timer
+            if (this._typingTimer) {
+                clearTimeout(this._typingTimer);
+            }
+
+            // Remove typing class after user stops typing
+            this._typingTimer = setTimeout(() => {
+                headerName.classList.remove('typing');
+            }, 800);
+        }
+
+        // Update the avatar with the first character
+        const headerAvatar = Utils.$('header-avatar');
+        if (headerAvatar) {
+            headerAvatar.textContent = newName ? newName.charAt(0).toUpperCase() : '?';
+        }
+    },
+
     // =========================================================================
     // Skill Management
     // =========================================================================

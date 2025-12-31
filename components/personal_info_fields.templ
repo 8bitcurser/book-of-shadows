@@ -20,6 +20,7 @@ templ PersonalInfoFields(inv *models.Investigator) {
                     data-field="Name"
                     onchange="characterUtils.handlePersonalInfoChange(this)"
                     onkeyup="characterUtils.checkFormCompletion()"
+                    oninput="characterUtils.updateHeaderName(this)"
                 />
             } else {
                 <input

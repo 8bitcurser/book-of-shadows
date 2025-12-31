@@ -29,7 +29,7 @@ func SheetHeader() templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"d-flex justify-content-between align-items-center mb-4\"><h2 class=\"fw-bold section-header\">Character Sheet</h2><div class=\"lock-toggle d-flex align-items-center\"><span class=\"me-2 text-secondary small\">Lock Editing</span><div class=\"form-check form-switch\"><input class=\"form-check-input\" type=\"checkbox\" id=\"lockToggle\" role=\"switch\" onchange=\"characterUtils.toggleLock(this)\"> <label class=\"form-check-label visually-hidden\" for=\"lockToggle\">Lock Character Sheet Editing</label></div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"d-flex justify-content-between align-items-center mb-4\"><h2 class=\"fw-bold section-header\">Character Sheet</h2><div class=\"lock-toggle d-flex align-items-center\"><span class=\"me-2 text-secondary small\">Lock Editing</span><div class=\"form-check form-switch\"><input class=\"form-check-input\" type=\"checkbox\" id=\"lockToggle\" role=\"switch\" onclick=\"characterUtils.toggleLock(this); this.blur()\"> <label class=\"form-check-label visually-hidden\" for=\"lockToggle\">Lock Character Sheet Editing</label></div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
