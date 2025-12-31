@@ -11,7 +11,36 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"book-of-shadows/components"
 	"book-of-shadows/models"
+	"strings"
 )
+
+// Generate CSS classes based on investigator status conditions
+func statusEffectClasses(inv *models.Investigator) string {
+	var classes []string
+
+	if inv.Dying {
+		classes = append(classes, "status-dying")
+	}
+	if inv.MajorWound {
+		classes = append(classes, "status-major-wound")
+	}
+	if inv.TemporaryInsane {
+		classes = append(classes, "status-temp-insanity")
+	}
+	if inv.IndefiniteInsane {
+		classes = append(classes, "status-indef-insanity")
+	}
+	if inv.Unconscious {
+		classes = append(classes, "status-unconscious")
+	}
+
+	// Combined critical state (dying + any other condition)
+	if inv.Dying && (inv.MajorWound || inv.TemporaryInsane || inv.IndefiniteInsane) {
+		classes = append(classes, "status-critical")
+	}
+
+	return strings.Join(classes, " ")
+}
 
 func CharacterSheet(investigator *models.Investigator) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -38,7 +67,25 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"container-fluid p-4 coc-sheet\">")
+		var templ_7745c5c3_Var2 = []any{"container-fluid p-4 coc-sheet", statusEffectClasses(investigator)}
+		templ_7745c5c3_Err = templ.RenderCSSItems(ctx, templ_7745c5c3_Buffer, templ_7745c5c3_Var2...)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		var templ_7745c5c3_Var3 string
+		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(templ.CSSClasses(templ_7745c5c3_Var2).String())
+		if templ_7745c5c3_Err != nil {
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `views/sheet.templ`, Line: 1, Col: 0}
+		}
+		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -54,7 +101,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<!-- Characteristics and Combat Stats --><div class=\"row mb-4 g-3\"><div class=\"col-md-8\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "<!-- Characteristics and Combat Stats --><div class=\"row mb-4 g-3\"><div class=\"col-md-8\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -62,7 +109,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</div><div class=\"col-md-4\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div><div class=\"col-md-4\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -70,7 +117,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -86,7 +133,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<!-- Phobias and Manias (acquired during gameplay) --><div class=\"row mb-4 g-3\"><div class=\"col-md-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<!-- Phobias and Manias (acquired during gameplay) --><div class=\"row mb-4 g-3\"><div class=\"col-md-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -94,7 +141,7 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</div><div class=\"col-md-6\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div><div class=\"col-md-6\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -102,7 +149,15 @@ func CharacterSheet(investigator *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</div></div><script>\n            // Initialize immediately (works for both initial load and HTMX swap)\n            if (typeof CharacterSheet !== 'undefined') {\n                CharacterSheet.init();\n            }\n        </script></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div></div><!-- Floating Helper Panel -->")
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = components.HelperPanel(investigator).Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "<script>\n            // Initialize immediately (works for both initial load and HTMX swap)\n            if (typeof CharacterSheet !== 'undefined') {\n                CharacterSheet.init();\n            }\n            if (typeof HelperPanel !== 'undefined') {\n                HelperPanel.init();\n            }\n        </script></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

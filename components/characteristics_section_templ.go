@@ -46,7 +46,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"card shadow-sm h-100\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center p-3 card-header-custom\"><i class=\"bi bi-bar-chart-fill me-2 card-header-icon\"></i><h4 class=\"section-title\">Characteristics</h4></div><div class=\"card-body p-3\"><div class=\"row g-3\">")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<div class=\"card shadow-sm h-100\" style=\"border-radius: 1rem; border: none;\"><div class=\"card-header d-flex align-items-center justify-content-between p-3 card-header-custom\"><div class=\"d-flex align-items-center\"><i class=\"bi bi-bar-chart-fill me-2 card-header-icon\"></i><h4 class=\"section-title\">Characteristics</h4></div><button type=\"button\" class=\"btn btn-sm btn-outline-secondary editable\" id=\"char-edit-btn\" onclick=\"CharacterSheet.toggleCharacteristicsEdit(this)\" title=\"Edit Characteristics\"><i class=\"bi bi-pencil me-1\"></i>Edit</button></div><div class=\"card-body p-3\"><div class=\"row g-3\">")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -59,7 +59,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var2 string
 				templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 31, Col: 96}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 42, Col: 96}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 				if templ_7745c5c3_Err != nil {
@@ -72,7 +72,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 33, Col: 82}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 44, Col: 82}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -85,7 +85,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 34, Col: 105}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 45, Col: 105}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -98,20 +98,20 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 34, Col: 132}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 45, Col: 132}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</span></div><div class=\"d-flex justify-content-between align-items-center mt-1\"><div class=\"attr-controls\"><button type=\"button\" class=\"attr-btn attr-btn-minus editable\" onclick=\"CharacterSheet.adjustAttribute(this, -1)\">-</button> <button type=\"button\" class=\"attr-btn attr-btn-plus editable\" onclick=\"CharacterSheet.adjustAttribute(this, 1)\">+</button></div><div><small class=\"characteristic-derived me-2\" title=\"Half value\" data-half>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</span></div><div class=\"d-flex justify-content-between align-items-center mt-1\"><div class=\"attr-controls char-edit-controls\" style=\"visibility: hidden;\"><button type=\"button\" class=\"attr-btn attr-btn-minus editable\" onclick=\"CharacterSheet.adjustAttribute(this, -1)\">-</button> <button type=\"button\" class=\"attr-btn attr-btn-plus editable\" onclick=\"CharacterSheet.adjustAttribute(this, 1)\">+</button></div><div><small class=\"characteristic-derived me-2\" title=\"Half value\" data-half>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 2))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 42, Col: 139}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 53, Col: 139}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -124,7 +124,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 5))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 43, Col: 141}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 54, Col: 141}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {

@@ -225,17 +225,22 @@ p, span, label, .lead {
     top: 0;
     left: 0;
     width: 100%;
-    height: 100%;
+    height: 300%;
     background: repeating-linear-gradient(
         0deg,
-        transparent,
-        transparent 3px,
-        rgba(0, 0, 0, 0.08) 3px,
-        rgba(0, 0, 0, 0.08) 6px
+        transparent 0px,
+        transparent 2px,
+        rgba(0, 0, 0, 0.12) 2px,
+        rgba(0, 0, 0, 0.12) 4px
     );
     pointer-events: none !important;
     z-index: 0;
-    animation: crt-flicker 0.15s infinite;
+    animation: crt-scanline-scroll 4s linear infinite;
+}
+
+@keyframes crt-scanline-scroll {
+    0% { transform: translateY(-66.66%); }
+    100% { transform: translateY(0%); }
 }
 
 .coc-sheet::after {
@@ -247,7 +252,7 @@ p, span, label, .lead {
     height: 100%;
     background: linear-gradient(
         transparent 0%,
-        rgba(99, 199, 77, 0.03) 50%,
+        rgba(99, 199, 77, 0.05) 50%,
         transparent 100%
     );
     background-size: 100% 200%;
@@ -260,6 +265,215 @@ p, span, label, .lead {
 .coc-sheet > * {
     position: relative;
     z-index: 1;
+}
+
+/* =============================================================================
+   Status Condition Visual Effects
+   ============================================================================= */
+
+/* --- Major Wound: Vibrant red scanlines --- */
+.coc-sheet.status-major-wound::before {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(255, 50, 50, 0.35) 2px,
+        rgba(255, 50, 50, 0.35) 4px
+    ) !important;
+    animation: crt-scanline-scroll 2.5s linear infinite !important;
+}
+
+.coc-sheet.status-major-wound::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 50, 50, 0.25) 0%,
+        rgba(255, 50, 50, 0.08) 30%,
+        rgba(255, 50, 50, 0.08) 70%,
+        rgba(255, 50, 50, 0.25) 100%
+    ) !important;
+    background-size: 100% 200% !important;
+}
+
+/* --- Dying: Red scanlines, fast, pulsing --- */
+.coc-sheet.status-dying::before {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(232, 74, 95, 0.25) 2px,
+        rgba(232, 74, 95, 0.25) 4px
+    ) !important;
+    animation: crt-scanline-scroll 1.5s linear infinite !important;
+}
+
+.coc-sheet.status-dying::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(232, 74, 95, 0.2) 0%,
+        rgba(232, 74, 95, 0.05) 30%,
+        rgba(232, 74, 95, 0.05) 70%,
+        rgba(232, 74, 95, 0.2) 100%
+    ) !important;
+    background-size: 100% 200% !important;
+    animation: crt-scroll-contained 0.5s linear infinite !important;
+}
+
+.coc-sheet.status-dying {
+    animation: dying-pulse 1s ease-in-out infinite;
+}
+
+@keyframes dying-pulse {
+    0%, 100% {
+        filter: brightness(1);
+    }
+    50% {
+        filter: brightness(0.85) saturate(1.3);
+    }
+}
+
+/* --- Temporary Insanity: Purple scanlines, fast --- */
+.coc-sheet.status-temp-insanity::before {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(168, 85, 247, 0.2) 2px,
+        rgba(168, 85, 247, 0.2) 4px
+    ) !important;
+    animation: crt-scanline-scroll 1s linear infinite !important;
+}
+
+.coc-sheet.status-temp-insanity::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(168, 85, 247, 0.15) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(168, 85, 247, 0.15) 100%
+    ) !important;
+    background-size: 100% 200% !important;
+    animation: crt-scroll-contained 0.6s linear infinite !important;
+}
+
+/* --- Indefinite Insanity: Purple scanlines, slow, eerie --- */
+.coc-sheet.status-indef-insanity::before {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 3px,
+        rgba(93, 39, 93, 0.25) 3px,
+        rgba(93, 39, 93, 0.25) 6px
+    ) !important;
+    animation: crt-scanline-scroll 8s linear infinite !important;
+}
+
+.coc-sheet.status-indef-insanity::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(93, 39, 93, 0.15) 0%,
+        transparent 40%,
+        transparent 60%,
+        rgba(93, 39, 93, 0.15) 100%
+    ) !important;
+    background-size: 100% 200% !important;
+    animation: crt-scroll-contained 6s linear infinite !important;
+}
+
+.coc-sheet.status-indef-insanity {
+    animation: insanity-warp 8s ease-in-out infinite;
+}
+
+@keyframes insanity-warp {
+    0%, 100% {
+        filter: hue-rotate(0deg);
+    }
+    50% {
+        filter: hue-rotate(10deg);
+    }
+}
+
+/* --- Unconscious: Dimmed, slow fade --- */
+.coc-sheet.status-unconscious::before {
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.2) 0px,
+        rgba(0, 0, 0, 0.2) 4px,
+        rgba(0, 0, 0, 0.1) 4px,
+        rgba(0, 0, 0, 0.1) 8px
+    ) !important;
+    animation: crt-flicker 0.5s infinite !important;
+}
+
+.coc-sheet.status-unconscious {
+    animation: unconscious-fade 3s ease-in-out infinite;
+}
+
+@keyframes unconscious-fade {
+    0%, 100% {
+        filter: brightness(0.8) grayscale(0.3);
+    }
+    50% {
+        filter: brightness(0.6) grayscale(0.5);
+    }
+}
+
+/* --- Critical State: Combined dying + insanity = red with shake --- */
+.coc-sheet.status-critical {
+    animation: critical-shake 0.15s infinite, dying-pulse 0.5s ease-in-out infinite;
+}
+
+.coc-sheet.status-critical::before {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(232, 74, 95, 0.3) 2px,
+        rgba(168, 85, 247, 0.2) 4px
+    ) !important;
+    animation: crt-scanline-scroll 0.8s linear infinite !important;
+}
+
+.coc-sheet.status-critical::after {
+    background: linear-gradient(
+        to bottom,
+        rgba(232, 74, 95, 0.25) 0%,
+        rgba(168, 85, 247, 0.15) 50%,
+        rgba(232, 74, 95, 0.25) 100%
+    ) !important;
+    background-size: 100% 200% !important;
+    animation: crt-scroll-contained 0.3s linear infinite !important;
+}
+
+@keyframes critical-shake {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-2px, -1px); }
+    20% { transform: translate(2px, 1px); }
+    30% { transform: translate(-1px, 2px); }
+    40% { transform: translate(1px, -2px); }
+    50% { transform: translate(-2px, 1px); }
+    60% { transform: translate(2px, -1px); }
+    70% { transform: translate(-1px, -2px); }
+    80% { transform: translate(1px, 2px); }
+    90% { transform: translate(-2px, -1px); }
+}
+
+/* --- Combined states priority handling --- */
+/* Insanity combinations - temp overrides indef for speed */
+.coc-sheet.status-temp-insanity.status-indef-insanity::before {
+    animation: crt-scanline-scroll 0.8s linear infinite !important;
+}
+
+/* Wound + Insanity = mixed color scanlines */
+.coc-sheet.status-major-wound.status-temp-insanity::before,
+.coc-sheet.status-major-wound.status-indef-insanity::before {
+    background: repeating-linear-gradient(
+        0deg,
+        transparent 0px,
+        transparent 2px,
+        rgba(190, 74, 47, 0.2) 2px,
+        rgba(168, 85, 247, 0.15) 4px
+    ) !important;
+    animation: crt-scanline-scroll 2s linear infinite !important;
 }
 
 #character-sheet {
@@ -1019,9 +1233,21 @@ input[type=number] {
     font-family: var(--font-body);
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 180px;
-    font-size: 1.3rem;
+}
+
+/* Text input for custom skill names (Firearms, Art, etc.) */
+.skill-name-input {
+    width: 160px !important;
+    font-weight: 500;
+    font-family: var(--font-body);
+    background: var(--color-bg-input) !important;
+    border: 2px solid var(--color-border) !important;
+    color: var(--color-text-primary) !important;
+}
+
+.skill-name-input:focus {
+    border-color: var(--color-accent-primary) !important;
+    box-shadow: 0 0 0 2px rgba(99, 199, 77, 0.2) !important;
 }
 
 .skill-default {
@@ -1061,6 +1287,13 @@ input[type=number] {
     border-right: none;
     color: var(--color-text-primary);
     font-family: var(--font-body);
+}
+
+.skill-value-field.skill-locked {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+    opacity: 0.7;
 }
 
 .percent-symbol {
@@ -1781,11 +2014,13 @@ footer {
    ----------------------------------------------------------------------------- */
 @media (max-width: 1200px) {
     .skills-grid { column-count: 3; }
+    .pinned-skills-grid { column-count: 3; }
     .skill-name { max-width: 140px; }
 }
 
 @media (max-width: 992px) {
     .skills-grid { column-count: 2; }
+    .pinned-skills-grid { column-count: 2; }
     .skill-name { max-width: 120px; }
     .hero h1 { font-size: 1.4rem; }
 
@@ -1815,6 +2050,7 @@ footer {
     }
 
     .skills-grid { column-count: 1; }
+    .pinned-skills-grid { column-count: 1; }
     .skill-name { max-width: 200px; }
 
     .hero {
@@ -2350,9 +2586,8 @@ footer {
 }
 
 .pinned-skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 0.5rem;
+    column-count: 3;
+    column-gap: 15px;
 }
 
 .pinned-skills-empty {
@@ -2526,7 +2761,517 @@ footer {
     }
 
     .pinned-skills-grid {
-        grid-template-columns: 1fr;
+        column-count: 1;
     }
+}
+
+/* =============================================================================
+   Helper Panel - Floating Dice Roller & Tools
+   ============================================================================= */
+
+/* Toggle Button */
+.helper-panel-toggle {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-none);
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    border: 3px solid var(--color-black);
+    box-shadow: 4px 4px 0px var(--color-black);
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    transition: all var(--transition-quick);
+}
+
+.helper-panel-toggle:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px var(--color-black);
+}
+
+.helper-panel-toggle.active {
+    background: var(--color-accent-tertiary);
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0px var(--color-black);
+}
+
+/* Panel Overlay */
+.helper-panel-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-quick);
+}
+
+.helper-panel-overlay.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Panel */
+.helper-panel {
+    position: fixed;
+    bottom: 90px;
+    right: 24px;
+    width: 360px;
+    max-height: 70vh;
+    background: var(--color-bg-secondary);
+    border: 3px solid var(--color-black);
+    box-shadow: 6px 6px 0px var(--color-black);
+    z-index: 1002;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all var(--transition-normal);
+}
+
+.helper-panel.open {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Panel Header */
+.helper-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-bg-tertiary);
+    border-bottom: 2px solid var(--color-border-light);
+    padding: 0;
+}
+
+.helper-panel-tabs {
+    display: flex;
+    flex: 1;
+}
+
+.helper-tab {
+    flex: 1;
+    padding: 0.75rem 0.5rem;
+    background: transparent;
+    border: none;
+    border-right: 1px solid var(--color-border-light);
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all var(--transition-quick);
+}
+
+.helper-tab:hover {
+    background: var(--color-bg-card);
+    color: var(--color-text-primary);
+}
+
+.helper-tab.active {
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    font-weight: bold;
+}
+
+.helper-panel-close {
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: all var(--transition-quick);
+}
+
+.helper-panel-close:hover {
+    background: var(--color-accent-danger);
+    color: var(--color-white);
+}
+
+/* Panel Body */
+.helper-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.helper-tab-content {
+    display: none;
+}
+
+.helper-tab-content.active {
+    display: block;
+}
+
+.helper-section-title {
+    font-family: var(--font-pixel);
+    font-size: 0.55rem;
+    color: var(--color-accent-primary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Dice Roller */
+.dice-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+}
+
+.dice-btn {
+    padding: 0.5rem;
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    color: var(--color-text-primary);
+    font-family: var(--font-body);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all var(--transition-quick);
+}
+
+.dice-btn:hover {
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    border-color: var(--color-black);
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0px var(--color-black);
+}
+
+.dice-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: none;
+}
+
+/* Dice Result */
+.dice-result-container {
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    padding: 1rem;
+    text-align: center;
+}
+
+.dice-result {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.result-label {
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+}
+
+.result-value {
+    font-size: 2rem;
+    font-weight: bold;
+    font-family: var(--font-pixel);
+    color: var(--color-accent-primary);
+}
+
+.result-value.critical-success {
+    color: var(--color-green);
+    animation: pulse 0.5s ease-in-out;
+}
+
+.result-value.extreme-success {
+    color: var(--color-accent-cyan);
+}
+
+.result-value.hard-success {
+    color: var(--color-accent-secondary);
+}
+
+.result-value.success {
+    color: var(--color-accent-primary);
+}
+
+.result-value.failure {
+    color: var(--color-text-muted);
+}
+
+.result-value.fumble {
+    color: var(--color-accent-danger);
+    animation: shake 0.5s ease-in-out;
+}
+
+.dice-outcome {
+    margin-top: 0.5rem;
+    font-family: var(--font-body);
+    font-weight: bold;
+}
+
+.dice-outcome.critical-success {
+    color: var(--color-green);
+}
+
+.dice-outcome.extreme-success {
+    color: var(--color-accent-cyan);
+}
+
+.dice-outcome.hard-success {
+    color: var(--color-accent-secondary);
+}
+
+.dice-outcome.success {
+    color: var(--color-accent-primary);
+}
+
+.dice-outcome.failure {
+    color: var(--color-text-muted);
+}
+
+.dice-outcome.fumble {
+    color: var(--color-accent-danger);
+}
+
+/* Roll History */
+.roll-history-list {
+    max-height: 120px;
+    overflow-y: auto;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.25rem 0.5rem;
+    border-bottom: 1px solid var(--color-border-light);
+    font-size: 0.85rem;
+}
+
+.history-type {
+    color: var(--color-text-secondary);
+}
+
+.history-result {
+    font-weight: bold;
+    color: var(--color-accent-primary);
+}
+
+.history-outcome {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+}
+
+/* Recovery Calculator */
+.recovery-section {
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    padding: 0.75rem;
+}
+
+.recovery-result {
+    text-align: center;
+    padding: 0.5rem;
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border-light);
+}
+
+.recovery-amount {
+    font-size: 1.25rem;
+}
+
+/* Quick Rules */
+.rule-card {
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    padding: 0.75rem;
+}
+
+.result-breakdown {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.result-final {
+    font-size: 1.1rem;
+}
+
+/* Alert for Pulp Mode */
+.alert-sm {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+/* Shake animation for fumbles */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 480px) {
+    .helper-panel {
+        right: 12px;
+        left: 12px;
+        width: auto;
+        bottom: 80px;
+    }
+
+    .helper-panel-toggle {
+        right: 12px;
+        bottom: 12px;
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* =============================================================================
+   Quick Roll - Clickable Skills
+   ============================================================================= */
+
+/* Skill item - entire container is clickable for rolling */
+.skill-item.skill-rollable {
+    cursor: pointer;
+    transition: all var(--transition-quick);
+}
+
+.skill-item.skill-rollable:hover {
+    background: var(--color-bg-card);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.skill-item.skill-rollable:active {
+    transform: scale(0.99);
+}
+
+/* Quick Roll Toast */
+.quick-roll-toast {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    background: var(--color-bg-secondary);
+    border: 3px solid var(--color-black);
+    box-shadow: 8px 8px 0px var(--color-black);
+    padding: 1.5rem 2rem;
+    z-index: 9999;
+    text-align: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.2s ease-out;
+    min-width: 200px;
+}
+
+.quick-roll-toast.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.toast-skill-name {
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    color: var(--color-accent-primary);
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.toast-roll-result {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.toast-roll {
+    font-size: 3rem;
+    font-weight: bold;
+    font-family: var(--font-pixel);
+    line-height: 1;
+}
+
+.toast-vs {
+    color: var(--color-text-muted);
+    font-size: 1rem;
+}
+
+.toast-target {
+    font-size: 1.5rem;
+    color: var(--color-text-secondary);
+    font-family: var(--font-body);
+}
+
+.toast-outcome {
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: var(--font-body);
+}
+
+/* Toast color variants */
+.quick-roll-toast.toast-critical {
+    border-color: var(--color-green);
+    box-shadow: 8px 8px 0px var(--color-green), 0 0 30px rgba(99, 199, 77, 0.5);
+}
+.toast-critical .toast-roll,
+.toast-critical .toast-outcome {
+    color: var(--color-green);
+}
+
+.quick-roll-toast.toast-extreme {
+    border-color: var(--color-accent-cyan);
+}
+.toast-extreme .toast-roll,
+.toast-extreme .toast-outcome {
+    color: var(--color-accent-cyan);
+}
+
+.quick-roll-toast.toast-hard {
+    border-color: var(--color-accent-secondary);
+}
+.toast-hard .toast-roll,
+.toast-hard .toast-outcome {
+    color: var(--color-accent-secondary);
+}
+
+.quick-roll-toast.toast-success {
+    border-color: var(--color-accent-primary);
+}
+.toast-success .toast-roll,
+.toast-success .toast-outcome {
+    color: var(--color-accent-primary);
+}
+
+.quick-roll-toast.toast-failure {
+    border-color: var(--color-text-muted);
+}
+.toast-failure .toast-roll,
+.toast-failure .toast-outcome {
+    color: var(--color-text-muted);
+}
+
+.quick-roll-toast.toast-fumble {
+    border-color: var(--color-accent-danger);
+    box-shadow: 8px 8px 0px var(--color-accent-danger), 0 0 30px rgba(232, 74, 95, 0.5);
+    animation: fumble-shake 0.5s ease-in-out;
+}
+.toast-fumble .toast-roll,
+.toast-fumble .toast-outcome {
+    color: var(--color-accent-danger);
+}
+
+@keyframes fumble-shake {
+    0%, 100% { transform: translate(-50%, -50%) scale(1) rotate(0deg); }
+    20% { transform: translate(-50%, -50%) scale(1) rotate(-5deg); }
+    40% { transform: translate(-50%, -50%) scale(1) rotate(5deg); }
+    60% { transform: translate(-50%, -50%) scale(1) rotate(-5deg); }
+    80% { transform: translate(-50%, -50%) scale(1) rotate(5deg); }
 }
 

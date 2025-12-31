@@ -114,7 +114,14 @@ templ AllSkillsSection(skills map[string]models.Skill) {
 }
 
 templ SkillItem(skill models.Skill) {
-    <div class="skill-item p-2 mb-2 rounded shadow-sm" data-priority={strconv.FormatBool(skill.IsPriority)} data-skill-name={skill.Name}>
+    <div
+        class="skill-item p-2 mb-2 rounded shadow-sm skill-rollable"
+        data-priority={strconv.FormatBool(skill.IsPriority)}
+        data-skill-name={skill.Name}
+        data-skill-value={strconv.Itoa(skill.Value)}
+        onclick="SkillsManager.handleSkillClick(event, this)"
+        title="Click to roll"
+    >
         <div class="d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center skill-name-container">
                 <!-- Pin Toggle Button -->
@@ -124,7 +131,7 @@ templ SkillItem(skill models.Skill) {
                         class="btn btn-link p-0 pin-btn editable"
                         data-skill={skill.Name}
                         data-pinned={strconv.FormatBool(skill.IsPriority)}
-                        onclick="characterUtils.togglePinSkill(this)"
+                        onclick="event.stopPropagation(); characterUtils.togglePinSkill(this)"
                     >
                         if skill.IsPriority {
                             <i class="bi bi-pin-fill"></i>
@@ -133,7 +140,7 @@ templ SkillItem(skill models.Skill) {
                         }
                     </button>
                 </div>
-                <div class="form-check me-1 flex-shrink-0">
+                <div class="form-check me-1 flex-shrink-0" onclick="event.stopPropagation()">
                     <input
                         type="checkbox"
                         class="form-check-input editable"
@@ -147,33 +154,39 @@ templ SkillItem(skill models.Skill) {
                 </div>
 
                 if skill.NeedsFormDef == 1 {
-                    <input
-                        type="text"
-                        class="form-control form-control-sm editable"
-                        style="width: 150px;"
-                        value={skill.Name}
-                        data-skill={skill.Name}
-                        onchange="characterUtils.handleSkillNameChange(this)"
-                    />
+                    <div class="d-flex align-items-center">
+                        <input
+                            type="text"
+                            class="form-control form-control-sm editable skill-name-input"
+                            value={skill.Name}
+                            data-skill={skill.Name}
+                            onchange="characterUtils.handleSkillNameChange(this)"
+                            onclick="event.stopPropagation()"
+                            onfocus="event.stopPropagation()"
+                        />
+                    </div>
                 } else {
                     <div class="skill-name-wrapper">
-                        <span class="skill-name" title={skill.Name}>{skill.Name}</span>
+                        <span class="skill-name">{ skill.Name }</span>
                         <span class="skill-default ms-1 small text-secondary">({strconv.Itoa(skill.Default)}%)</span>
                     </div>
                 }
             </div>
-            <div class="skill-values-container">
+            <div class="skill-values-container" onclick="event.stopPropagation()">
                 <div class="skill-value-input">
                     <input
                         type="number"
-                        class="form-control form-control-sm editable skill-value-field"
+                        class={ "form-control form-control-sm skill-value-field", templ.KV("editable", skill.IsSelected), templ.KV("skill-locked", !skill.IsSelected) }
                         value={strconv.Itoa(skill.Value)}
                         data-skill={skill.Name}
                         data-skillvalue={strconv.Itoa(skill.Value)}
                         onchange="characterUtils.recalculateSheetValues(this, 'skill')"
-                        title="Regular"
+                        title={ skillInputTitle(skill.IsSelected) }
                         min={strconv.Itoa(skill.Default)}
                         max="90"
+                        if !skill.IsSelected {
+                            disabled
+                        }
                     />
                     <span class="input-group-text percent-symbol">%</span>
                 </div>
@@ -231,4 +244,12 @@ func sortSkillsByPriority(skills map[string]models.Skill) []models.Skill {
         return skillSlice[i].Name < skillSlice[j].Name
     })
     return skillSlice
+}
+
+// Helper function for skill input title
+func skillInputTitle(isSelected bool) string {
+    if isSelected {
+        return "Click to modify skill value"
+    }
+    return "Check the box to enable skill improvement"
 }

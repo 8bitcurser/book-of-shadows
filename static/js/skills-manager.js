@@ -104,6 +104,27 @@ const SkillsManager = {
     },
 
     /**
+     * Handle click on skill item to roll dice
+     * @param {Event} event - Click event
+     * @param {HTMLElement} skillItem - The skill item element
+     */
+    handleSkillClick(event, skillItem) {
+        // For custom skills with text input, get the current name from the input
+        const nameInput = skillItem.querySelector('.skill-name-input');
+        const skillName = nameInput ? nameInput.value : skillItem.dataset.skillName;
+
+        // Get skill value from the value input (most current)
+        const valueInput = skillItem.querySelector('.skill-value-field');
+        const skillValue = valueInput
+            ? parseInt(valueInput.value, 10)
+            : parseInt(skillItem.dataset.skillValue, 10);
+
+        if (skillName && !isNaN(skillValue) && window.HelperPanel) {
+            HelperPanel.quickRollSkill(skillName, skillValue);
+        }
+    },
+
+    /**
      * Initialize the skills manager
      */
     init() {

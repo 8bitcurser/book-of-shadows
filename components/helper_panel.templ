@@ -1,0 +1,214 @@
+package components
+
+import "book-of-shadows/models"
+
+templ HelperPanel(inv *models.Investigator) {
+    <!-- Floating Helper Button -->
+    <button
+        type="button"
+        class="helper-panel-toggle"
+        onclick="HelperPanel.toggle()"
+        title="Open Helper Panel"
+    >
+        <i class="bi bi-dice-5-fill"></i>
+    </button>
+
+    <!-- Helper Panel -->
+    <div class="helper-panel" id="helper-panel">
+        <div class="helper-panel-header">
+            <div class="helper-panel-tabs">
+                <button class="helper-tab active" data-tab="dice" onclick="HelperPanel.switchTab('dice')">
+                    <i class="bi bi-dice-5 me-1"></i>Dice
+                </button>
+                <button class="helper-tab" data-tab="recovery" onclick="HelperPanel.switchTab('recovery')">
+                    <i class="bi bi-heart-pulse me-1"></i>Recovery
+                </button>
+                <button class="helper-tab" data-tab="rules" onclick="HelperPanel.switchTab('rules')">
+                    <i class="bi bi-book me-1"></i>Rules
+                </button>
+            </div>
+            <button class="helper-panel-close" onclick="HelperPanel.close()">
+                <i class="bi bi-x-lg"></i>
+            </button>
+        </div>
+
+        <div class="helper-panel-body">
+            <!-- Dice Tab -->
+            <div class="helper-tab-content active" id="tab-dice">
+                @DiceRollerContent()
+            </div>
+
+            <!-- Recovery Tab -->
+            <div class="helper-tab-content" id="tab-recovery">
+                @RecoveryContent(inv)
+            </div>
+
+            <!-- Rules Tab -->
+            <div class="helper-tab-content" id="tab-rules">
+                @QuickRulesContent(inv)
+            </div>
+        </div>
+    </div>
+
+    <!-- Panel Overlay -->
+    <div class="helper-panel-overlay" id="helper-panel-overlay" onclick="HelperPanel.close()"></div>
+}
+
+templ DiceRollerContent() {
+    <div class="dice-roller">
+        <h6 class="helper-section-title">Quick Roll</h6>
+        <div class="dice-buttons">
+            <button class="dice-btn" onclick="HelperPanel.roll(100)">d100</button>
+            <button class="dice-btn" onclick="HelperPanel.roll(20)">d20</button>
+            <button class="dice-btn" onclick="HelperPanel.roll(10)">d10</button>
+            <button class="dice-btn" onclick="HelperPanel.roll(8)">d8</button>
+            <button class="dice-btn" onclick="HelperPanel.roll(6)">d6</button>
+            <button class="dice-btn" onclick="HelperPanel.roll(4)">d4</button>
+        </div>
+
+        <h6 class="helper-section-title mt-3">Skill Check</h6>
+        <div class="skill-check-roller">
+            <div class="input-group input-group-sm mb-2">
+                <span class="input-group-text">Target</span>
+                <input type="number" class="form-control" id="skill-target" value="50" min="1" max="100" />
+                <span class="input-group-text">%</span>
+            </div>
+            <button class="btn btn-sm gradient-button w-100" onclick="HelperPanel.skillCheck()">
+                <i class="bi bi-bullseye me-1"></i>Roll Skill Check
+            </button>
+        </div>
+
+        <div class="dice-result-container mt-3">
+            <div class="dice-result" id="dice-result">
+                <span class="result-label">Roll:</span>
+                <span class="result-value" id="result-value">--</span>
+            </div>
+            <div class="dice-outcome" id="dice-outcome"></div>
+        </div>
+
+        <div class="roll-history mt-3">
+            <h6 class="helper-section-title">History</h6>
+            <div class="roll-history-list" id="roll-history"></div>
+        </div>
+    </div>
+}
+
+templ RecoveryContent(inv *models.Investigator) {
+    <div class="recovery-calculator">
+        <h6 class="helper-section-title">Rest & Recovery</h6>
+
+        if inv.Archetype.Name != "" {
+            <div class="alert alert-info alert-sm mb-3">
+                <i class="bi bi-stars me-1"></i>
+                <strong>Pulp Mode:</strong> Enhanced recovery rates apply
+            </div>
+        }
+
+        <!-- HP Recovery -->
+        <div class="recovery-section mb-3">
+            <label class="form-label fw-bold"><i class="bi bi-heart-fill text-danger me-1"></i>HP Recovery</label>
+            <div class="input-group input-group-sm mb-2">
+                <span class="input-group-text">Rest for</span>
+                <input type="number" class="form-control" id="hp-rest-amount" value="1" min="1" max="365" />
+                <select class="form-select" id="hp-rest-unit" style="max-width: 100px;">
+                    if inv.Archetype.Name != "" {
+                        <option value="hours">Hours</option>
+                    }
+                    <option value="days" selected>Days</option>
+                    <option value="weeks">Weeks</option>
+                </select>
+            </div>
+            <button class="btn btn-sm btn-outline-danger w-100" onclick="HelperPanel.calculateHPRecovery()">
+                Calculate HP Recovery
+            </button>
+            <div class="recovery-result mt-2" id="hp-recovery-result"></div>
+        </div>
+
+        <!-- Sanity Recovery -->
+        <div class="recovery-section mb-3">
+            <label class="form-label fw-bold"><i class="bi bi-brain text-info me-1"></i>Sanity Recovery</label>
+            <div class="input-group input-group-sm mb-2">
+                <span class="input-group-text">Therapy for</span>
+                <input type="number" class="form-control" id="san-rest-amount" value="1" min="1" max="52" />
+                <select class="form-select" id="san-rest-unit" style="max-width: 100px;">
+                    <option value="sessions">Sessions</option>
+                    <option value="months" selected>Months</option>
+                </select>
+            </div>
+            <button class="btn btn-sm btn-outline-info w-100" onclick="HelperPanel.calculateSanityRecovery()">
+                Calculate Sanity Recovery
+            </button>
+            <div class="recovery-result mt-2" id="san-recovery-result"></div>
+        </div>
+
+        <!-- First Aid (Pulp) -->
+        if inv.Archetype.Name != "" {
+            <div class="recovery-section">
+                <label class="form-label fw-bold"><i class="bi bi-bandaid text-success me-1"></i>First Aid (Pulp)</label>
+                <p class="small text-muted mb-2">
+                    Successful First Aid restores 1d6+1 HP (once per injury).
+                    Successful Medicine restores 1d6+2 HP additional.
+                </p>
+                <button class="btn btn-sm btn-outline-success w-100" onclick="HelperPanel.rollFirstAid()">
+                    <i class="bi bi-bandaid me-1"></i>Roll First Aid (1d6+1)
+                </button>
+                <div class="recovery-result mt-2" id="first-aid-result"></div>
+            </div>
+        }
+    </div>
+}
+
+templ QuickRulesContent(inv *models.Investigator) {
+    <div class="quick-rules">
+        <h6 class="helper-section-title">Luck Spending</h6>
+        <div class="rule-card mb-3">
+            <p class="small mb-1"><strong>Spend Luck:</strong> 1-for-1 to improve a failed roll</p>
+            <p class="small mb-0 text-muted">Can turn a failure into a success, but Luck is limited!</p>
+        </div>
+
+        if inv.Archetype.Name != "" {
+            <h6 class="helper-section-title">Pulp: Luck Recovery</h6>
+            <div class="rule-card mb-3">
+                <p class="small mb-1"><strong>Between Sessions:</strong> Roll 2d6+10 and regain that much Luck</p>
+                <button class="btn btn-sm btn-outline-primary w-100 mt-2" onclick="HelperPanel.rollLuckRecovery()">
+                    <i class="bi bi-clover me-1"></i>Roll Luck Recovery (2d6+10)
+                </button>
+                <div class="recovery-result mt-2" id="luck-recovery-result"></div>
+            </div>
+
+            <h6 class="helper-section-title">Pulp: Spend Luck for Sanity</h6>
+            <div class="rule-card mb-3">
+                <p class="small mb-0">Spend 10 Luck to recover 1d6 Sanity points</p>
+            </div>
+        }
+
+        <h6 class="helper-section-title">Pushing Rolls</h6>
+        <div class="rule-card mb-3">
+            <p class="small mb-1"><strong>Push a Roll:</strong> Re-roll a failed skill check</p>
+            <p class="small mb-0 text-muted">Failure on a pushed roll has severe consequences!</p>
+        </div>
+
+        <h6 class="helper-section-title">Bonus & Penalty Dice</h6>
+        <div class="rule-card mb-3">
+            <p class="small mb-1"><strong>Bonus Die:</strong> Roll extra tens die, keep the lower</p>
+            <p class="small mb-0"><strong>Penalty Die:</strong> Roll extra tens die, keep the higher</p>
+            <div class="mt-2">
+                <button class="btn btn-sm btn-outline-success me-1" onclick="HelperPanel.rollWithBonus()">
+                    <i class="bi bi-plus-circle me-1"></i>Bonus
+                </button>
+                <button class="btn btn-sm btn-outline-danger" onclick="HelperPanel.rollWithPenalty()">
+                    <i class="bi bi-dash-circle me-1"></i>Penalty
+                </button>
+            </div>
+            <div class="recovery-result mt-2" id="bonus-penalty-result"></div>
+        </div>
+
+        <h6 class="helper-section-title">Success Levels</h6>
+        <div class="rule-card">
+            <p class="small mb-1"><strong>Regular:</strong> Roll &le; skill value</p>
+            <p class="small mb-1"><strong>Hard:</strong> Roll &le; half skill value</p>
+            <p class="small mb-1"><strong>Extreme:</strong> Roll &le; one-fifth skill value</p>
+            <p class="small mb-0"><strong>Critical:</strong> Roll exactly 01</p>
+        </div>
+    </div>
+}

@@ -14,6 +14,81 @@ const CharacterSheet = {
     init() {
         this.initHoverEffects();
         this.initSkillNameAdjustment();
+        this.initStatusEffects();
+        this.restoreCharacteristicsEditMode();
+    },
+
+    /**
+     * Restore characteristics edit mode from session storage
+     */
+    restoreCharacteristicsEditMode() {
+        const savedEditMode = sessionStorage.getItem('characteristicsEditMode');
+        if (savedEditMode === 'true') {
+            this._charEditMode = true;
+            const controls = Utils.qsa('.char-edit-controls');
+            controls.forEach(control => {
+                control.style.visibility = 'visible';
+            });
+            // Update button appearance
+            const button = Utils.$('char-edit-btn');
+            if (button) {
+                button.classList.remove('btn-outline-secondary');
+                button.classList.add('btn-success');
+                button.innerHTML = '<i class="bi bi-check-lg me-1"></i>Done';
+            }
+        }
+    },
+
+    /**
+     * Initialize status effect listeners and apply current state
+     */
+    initStatusEffects() {
+        // Apply status classes based on current checkbox states
+        this.updateStatusClasses();
+    },
+
+    /**
+     * Update CRT visual effects based on current status conditions
+     */
+    updateStatusClasses() {
+        const sheet = Utils.qs('.coc-sheet');
+        if (!sheet) return;
+
+        // Status condition mappings
+        const statusMap = {
+            'dying': 'status-dying',
+            'major-wound': 'status-major-wound',
+            'temp-insanity': 'status-temp-insanity',
+            'indef-insanity': 'status-indef-insanity',
+            'unconscious': 'status-unconscious'
+        };
+
+        // Check each status condition
+        let dying = false;
+        let hasOtherCondition = false;
+
+        for (const [checkboxId, className] of Object.entries(statusMap)) {
+            const checkbox = Utils.$(checkboxId);
+            const isChecked = checkbox?.checked || false;
+
+            if (isChecked) {
+                sheet.classList.add(className);
+                if (checkboxId === 'dying') {
+                    dying = true;
+                } else if (checkboxId !== 'unconscious') {
+                    hasOtherCondition = true;
+                }
+            } else {
+                sheet.classList.remove(className);
+            }
+        }
+
+        // Handle critical state (dying + another condition)
+        if (dying && hasOtherCondition) {
+            sheet.classList.add('status-critical');
+        } else {
+            sheet.classList.remove('status-critical');
+        }
     },
 
     /**
@@ -50,6 +125,37 @@ const CharacterSheet = {
     // =========================================================================
     // Core Attribute Adjustment
     // =========================================================================
+
+    /** Whether characteristics are in edit mode */
+    _charEditMode: false,
+
+    /**
+     * Toggle characteristics edit mode
+     * @param {HTMLButtonElement} button - The edit button
+     */
+    toggleCharacteristicsEdit(button) {
+        this._charEditMode = !this._charEditMode;
+
+        // Save state to sessionStorage so it persists across sheet refreshes
+        sessionStorage.setItem('characteristicsEditMode', this._charEditMode ? 'true' : 'false');
+
+        const controls = Utils.qsa('.char-edit-controls');
+
+        controls.forEach(control => {
+            control.style.visibility = this._charEditMode ? 'visible' : 'hidden';
+        });
+
+        // Update button appearance
+        if (this._charEditMode) {
+            button.classList.remove('btn-outline-secondary');
+            button.classList.add('btn-success');
+            button.innerHTML = '<i class="bi bi-check-lg me-1"></i>Done';
+        } else {
+            button.classList.remove('btn-success');
+            button.classList.add('btn-outline-secondary');
+            button.innerHTML = '<i class="bi bi-pencil me-1"></i>Edit';
+        }
+    },
 
     /**
      * Adjust attribute value by delta (triggered by +/- buttons)
@@ -108,10 +214,14 @@ const CharacterSheet = {
             // Use same approach as togglePinSkill for consistency
             const html = await API.getInvestigator(investigatorId);
             Utils.setHTML('character-sheet', html);
-            // Init skills first to restore expanded state, then scroll
+
+            // Re-initialize components after HTML replacement
             if (window.SkillsManager) {
                 SkillsManager.init();
             }
+            // Re-init CharacterSheet to restore edit mode and status effects
+            this.init();
+
             window.scrollTo(0, scrollY);
         } catch (error) {
             console.error('Error refreshing character sheet:', error);
@@ -307,15 +417,33 @@ const CharacterSheet = {
      */
     async handleSkillToggleCheck(input) {
         const skillName = input.dataset.skill;
+        const isChecked = input.checked;
+        const skillItem = input.closest('.skill-item');
+
         try {
             await API.updateInvestigator(
                 Utils.getCurrentCharacterId(),
                 'skill_check',
                 skillName,
-                true
+                isChecked
             );
+
+            // Enable/disable the skill value input based on checkbox state
+            if (skillItem) {
+                const valueInput = skillItem.querySelector('.skill-value-field');
+                if (valueInput) {
+                    valueInput.disabled = !isChecked;
+                    valueInput.classList.toggle('skill-locked', !isChecked);
+                    valueInput.classList.toggle('editable', isChecked);
+                    valueInput.title = isChecked
+                        ? 'Click to modify skill value'
+                        : 'Check the box to enable skill improvement';
+                }
+            }
         } catch (error) {
             console.error('Error toggling skill check:', error);
+            // Revert checkbox on error
+            input.checked = !isChecked;
         }
     },
 
@@ -383,10 +511,11 @@ const CharacterSheet = {
             const scrollY = window.scrollY;
             const html = await API.getInvestigator(Utils.getCurrentCharacterId());
             Utils.setHTML('character-sheet', html);
-            // Init skills first to restore expanded state, then scroll
+            // Re-initialize components after HTML replacement
             if (window.SkillsManager) {
                 SkillsManager.init();
             }
+            this.init();
             window.scrollTo(0, scrollY);
         } catch (error) {
             console.error('Error updating skill priority:', error);
@@ -525,8 +654,9 @@ const CharacterSheet = {
             const scrollY = window.scrollY;
             const html = await API.getInvestigator(investigatorId);
             Utils.setHTML('character-sheet', html);
-            // Init skills first to restore expanded state, then scroll
+            // Re-initialize components after HTML replacement
             if (window.SkillsManager) SkillsManager.init();
+            this.init();
             window.scrollTo(0, scrollY);
 
             Utils.showToast('Added', `${conditionName} has been added.`, '\uD83D\uDCA5');
@@ -555,8 +685,9 @@ const CharacterSheet = {
             const scrollY = window.scrollY;
             const html = await API.getInvestigator(investigatorId);
             Utils.setHTML('character-sheet', html);
-            // Init skills first to restore expanded state, then scroll
+            // Re-initialize components after HTML replacement
             if (window.SkillsManager) SkillsManager.init();
+            this.init();
             window.scrollTo(0, scrollY);
 
             Utils.showToast('Removed', `${conditionName} has been removed.`, '\u2705');

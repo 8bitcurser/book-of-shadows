@@ -21,7 +21,7 @@ templ StatusConditions(inv *models.Investigator) {
                         }
                         title="TempInsanity_Chk"
                         data-stat="TemporaryInsane"
-                        onclick="characterUtils.recalculateSheetValues(this, 'base'); this.blur()"
+                        onclick="characterUtils.recalculateSheetValues(this, 'base'); CharacterSheet.updateStatusClasses(); this.blur()"
                     />
                     <label class="form-check-label" for="temp-insanity" style="cursor: pointer;">Temporary Insanity</label>
                 </div>
@@ -37,7 +37,7 @@ templ StatusConditions(inv *models.Investigator) {
                         }
                         title="IndefInsanity_Chk"
                         data-stat="IndefiniteInsane"
-                        onclick="characterUtils.recalculateSheetValues(this, 'base'); this.blur()"
+                        onclick="characterUtils.recalculateSheetValues(this, 'base'); CharacterSheet.updateStatusClasses(); this.blur()"
                      />
                     <label class="form-check-label" for="indef-insanity" style="cursor: pointer;">Indefinite Insanity</label>
                 </div>
@@ -52,7 +52,7 @@ templ StatusConditions(inv *models.Investigator) {
                         }
                         title="MajorWound_Chk"
                         data-stat="MajorWound"
-                        onclick="characterUtils.recalculateSheetValues(this, 'base'); this.blur()"
+                        onclick="characterUtils.recalculateSheetValues(this, 'base'); CharacterSheet.updateStatusClasses(); this.blur()"
                     />
                     <label class="form-check-label" for="major-wound" style="cursor: pointer;">Major Wound</label>
                 </div>
@@ -66,7 +66,7 @@ templ StatusConditions(inv *models.Investigator) {
                         }
                         title="Unconscious_Chk"
                         data-stat="Unconscious"
-                        onclick="characterUtils.recalculateSheetValues(this, 'base'); this.blur()"
+                        onclick="characterUtils.recalculateSheetValues(this, 'base'); CharacterSheet.updateStatusClasses(); this.blur()"
                     />
                     <label class="form-check-label" for="unconscious" style="cursor: pointer;">Unconscious</label>
                 </div>
@@ -81,7 +81,7 @@ templ StatusConditions(inv *models.Investigator) {
                         }
                         title="Dying_Chk"
                         data-stat="Dying"
-                        onclick="characterUtils.recalculateSheetValues(this, 'base'); this.blur()"
+                        onclick="characterUtils.recalculateSheetValues(this, 'base'); CharacterSheet.updateStatusClasses(); this.blur()"
                     />
                     <label class="form-check-label" for="dying" style="cursor: pointer;">Dying</label>
                 </div>

@@ -572,6 +572,18 @@ const Wizard = {
             const container = input.closest('.skill-values');
             if (container) Utils.updateDerivedValues(container, value);
 
+            // IMPORTANT: Update ALL inputs with the same skill name across all tabs
+            // This ensures skill values carry through between archetype, occupation, and general tabs
+            Utils.qsa(`input[data-skill="${skillName}"]`).forEach(otherInput => {
+                if (otherInput !== input) {
+                    otherInput.value = value;
+                    otherInput.dataset.skillvalue = value;
+                    // Update derived values for this input too
+                    const otherContainer = otherInput.closest('.skill-values');
+                    if (otherContainer) Utils.updateDerivedValues(otherContainer, value);
+                }
+            });
+
             // Show continue button if all points used
             const confirmContainer = Utils.$(confirmId);
             if (confirmContainer && newPoints === 0) {

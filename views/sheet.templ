@@ -3,11 +3,40 @@ package views
 import (
     "book-of-shadows/models"
     "book-of-shadows/components"
+    "strings"
 )
+
+// Generate CSS classes based on investigator status conditions
+func statusEffectClasses(inv *models.Investigator) string {
+    var classes []string
+
+    if inv.Dying {
+        classes = append(classes, "status-dying")
+    }
+    if inv.MajorWound {
+        classes = append(classes, "status-major-wound")
+    }
+    if inv.TemporaryInsane {
+        classes = append(classes, "status-temp-insanity")
+    }
+    if inv.IndefiniteInsane {
+        classes = append(classes, "status-indef-insanity")
+    }
+    if inv.Unconscious {
+        classes = append(classes, "status-unconscious")
+    }
+
+    // Combined critical state (dying + any other condition)
+    if inv.Dying && (inv.MajorWound || inv.TemporaryInsane || inv.IndefiniteInsane) {
+        classes = append(classes, "status-critical")
+    }
+
+    return strings.Join(classes, " ")
+}
 
 templ CharacterSheet(investigator *models.Investigator) {
     @components.HiddenCharacterData(investigator)
-    <div class="container-fluid p-4 coc-sheet">
+    <div class={ "container-fluid p-4 coc-sheet", statusEffectClasses(investigator) }>
         @components.SheetHeader()
         @components.CharacterHeaderCard(investigator)
         @components.PersonalInfoSection(investigator)
@@ -36,10 +65,16 @@ templ CharacterSheet(investigator *models.Investigator) {
             </div>
         </div>
 
+        <!-- Floating Helper Panel -->
+        @components.HelperPanel(investigator)
+
         <script>
             // Initialize immediately (works for both initial load and HTMX swap)
             if (typeof CharacterSheet !== 'undefined') {
                 CharacterSheet.init();
+            }
+            if (typeof HelperPanel !== 'undefined') {
+                HelperPanel.init();
             }
         </script>
     </div>
