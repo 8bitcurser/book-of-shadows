@@ -565,6 +565,109 @@ const CharacterSheet = {
             Utils.showToast('Error', `Failed to remove ${type}.`, '\u274C');
         }
     },
+
+    // =========================================================================
+    // Talent Management
+    // =========================================================================
+
+    /**
+     * Toggle talent selection from character sheet
+     * @param {HTMLElement} card - The talent card element
+     * @param {string} talentName - Name of the talent
+     * @param {number} maxTalents - Maximum talents allowed
+     */
+    async toggleTalent(card, talentName, maxTalents) {
+        const isSelected = card.dataset.selected === 'true';
+        const countEl = Utils.$('sheet-talents-count');
+        const currentCount = Utils.parseInt(countEl?.textContent || '0');
+
+        // If trying to select but already at max
+        if (!isSelected && currentCount >= maxTalents) {
+            Utils.showToast('Limit Reached',
+                'You have already selected the maximum number of talents. Deselect one first.', '\u26A0\uFE0F');
+            return;
+        }
+
+        const newSelected = !isSelected;
+        const investigatorId = Utils.getCurrentCharacterId();
+
+        if (!investigatorId) return;
+
+        try {
+            // Update server
+            await API.updateInvestigator(
+                investigatorId,
+                'talents',
+                talentName,
+                newSelected
+            );
+
+            // Update card UI
+            card.dataset.selected = newSelected.toString();
+            card.classList.toggle('talent-selected', newSelected);
+
+            // Update checkbox icon
+            const checkbox = card.querySelector('.talent-checkbox i');
+            if (checkbox) {
+                if (newSelected) {
+                    checkbox.classList.remove('bi-circle');
+                    checkbox.classList.add('bi-check-circle-fill', 'text-success');
+                } else {
+                    checkbox.classList.remove('bi-check-circle-fill', 'text-success');
+                    checkbox.classList.add('bi-circle');
+                }
+            }
+
+            // Update counter
+            if (countEl) {
+                const newCount = newSelected ? currentCount + 1 : currentCount - 1;
+                countEl.textContent = newCount.toString();
+            }
+
+            // Update the main talents section (outside modal)
+            await this.refreshTalentsSection(investigatorId);
+
+        } catch (error) {
+            console.error('Error toggling talent:', error);
+            Utils.showToast('Error', 'Failed to update talent.', '\u274C');
+        }
+    },
+
+    /**
+     * Refresh the talents section after changes
+     * @param {string} investigatorId - The investigator ID
+     */
+    async refreshTalentsSection(investigatorId) {
+        try {
+            // Reload just the character sheet content
+            const html = await API.getInvestigator(investigatorId);
+
+            // Create a temporary container to parse the response
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+
+            // Find the talents section in the response
+            const newTalentsCard = temp.querySelector('.card-header-custom .bi-stars')?.closest('.card');
+            const currentTalentsCard = Utils.qs('.card-header-custom .bi-stars')?.closest('.card');
+
+            if (newTalentsCard && currentTalentsCard) {
+                // Only update the card body (not the modal)
+                const newBody = newTalentsCard.querySelector('.card-body');
+                const currentBody = currentTalentsCard.querySelector('.card-body');
+                const newBadge = newTalentsCard.querySelector('.talent-count-badge');
+                const currentBadge = currentTalentsCard.querySelector('.talent-count-badge');
+
+                if (newBody && currentBody) {
+                    currentBody.innerHTML = newBody.innerHTML;
+                }
+                if (newBadge && currentBadge) {
+                    currentBadge.textContent = newBadge.textContent;
+                }
+            }
+        } catch (error) {
+            console.error('Error refreshing talents section:', error);
+        }
+    },
 };
 
 // Export for module usage

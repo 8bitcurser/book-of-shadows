@@ -1136,6 +1136,14 @@ input[type=number] {
     font-size: 0.6rem;
 }
 
+.talent-count-badge {
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    padding: 0.25em 0.6em;
+}
+
 /* -----------------------------------------------------------------------------
    Conditions - Phobias & Manias
    ----------------------------------------------------------------------------- */
