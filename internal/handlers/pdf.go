@@ -108,12 +108,8 @@ func (h *Handler) ExportPDF(w http.ResponseWriter, r *http.Request) {
 func convertInvestigatorToMap(investigator *models.Investigator) map[string]string {
 	data := make(map[string]string)
 
-	// Debug: Print attributes
-	fmt.Printf("DEBUG: Investigator %s has %d attributes\n", investigator.Name, len(investigator.Attributes))
-
 	// Handle Attributes
 	for key, attr := range investigator.Attributes {
-		fmt.Printf("DEBUG: Attribute key=%s, name=%s, value=%d\n", key, attr.Name, attr.Value)
 		data[attr.Name] = strconv.Itoa(attr.Value)
 		data[attr.Name+"_half"] = strconv.Itoa(attr.Value / 2)
 		data[attr.Name+"_fifth"] = strconv.Itoa(attr.Value / 5)

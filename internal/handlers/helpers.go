@@ -82,6 +82,18 @@ func (h *Handler) applyInvestigatorUpdate(inv *models.Investigator, req *UpdateR
 	}
 }
 
+// Mapping from internal attribute names to PDF field names
+var attrNameToPdfField = map[string]string{
+	models.AttrStrength:     "STR",
+	models.AttrConstitution: "CON",
+	models.AttrSize:         "SIZ",
+	models.AttrDexterity:    "DEX",
+	models.AttrAppearance:   "APP",
+	models.AttrIntelligence: "INT",
+	models.AttrPower:        "POW",
+	models.AttrEducation:    "EDU",
+}
+
 // updateAttribute updates an investigator's attribute
 func (h *Handler) updateAttribute(inv *models.Investigator, field string, value interface{}) error {
 	intValue, err := toInt(value)
@@ -92,8 +104,13 @@ func (h *Handler) updateAttribute(inv *models.Investigator, field string, value 
 	attr, exists := inv.Attributes[field]
 	if !exists {
 		// Create new attribute if it doesn't exist
+		// Use the PDF field name (STR, CON, etc.) for the Name field
+		pdfName := field
+		if mapped, ok := attrNameToPdfField[field]; ok {
+			pdfName = mapped
+		}
 		inv.Attributes[field] = models.Attribute{
-			Name:  field,
+			Name:  pdfName,
 			Value: intValue,
 		}
 	} else {
