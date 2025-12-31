@@ -31,10 +31,9 @@ def process_pdf(options_json):
             for page in reader.pages:
                 writer.add_page(page)
 
-            # Update metadata
-            writer.update_page_form_field_values(
-                writer.pages[0], metadata
-            )
+            # Update metadata on all pages
+            for page in writer.pages:
+                writer.update_page_form_field_values(page, metadata)
 
             # Save the modified PDF
             with open(output_path, 'wb') as output_file:

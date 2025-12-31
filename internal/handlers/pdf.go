@@ -164,5 +164,24 @@ func convertInvestigatorToMap(investigator *models.Investigator) map[string]stri
 	}
 	data["Pulp Talents"] = talents.String()
 
+	// Handle phobias and manias
+	var phobiasManias strings.Builder
+	for i, phobia := range investigator.Phobias {
+		if i > 0 {
+			phobiasManias.WriteString(", ")
+		}
+		phobiasManias.WriteString(phobia.Name)
+	}
+	if len(investigator.Phobias) > 0 && len(investigator.Manias) > 0 {
+		phobiasManias.WriteString(" | ")
+	}
+	for i, mania := range investigator.Manias {
+		if i > 0 {
+			phobiasManias.WriteString(", ")
+		}
+		phobiasManias.WriteString(mania.Name)
+	}
+	data["Phobias/Manias"] = phobiasManias.String()
+
 	return data
 }
