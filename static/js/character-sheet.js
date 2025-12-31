@@ -459,6 +459,95 @@ const CharacterSheet = {
             return null;
         }
     },
+
+    // =========================================================================
+    // Phobias & Manias Management
+    // =========================================================================
+
+    /**
+     * Preview a condition's description when selected from dropdown
+     * @param {HTMLSelectElement} select - The select element
+     * @param {string} type - 'phobia' or 'mania'
+     */
+    previewCondition(select, type) {
+        const previewId = type === 'phobia' ? 'phobia-preview' : 'mania-preview';
+        const preview = Utils.$(previewId);
+
+        if (!preview) return;
+
+        const selectedOption = select.options[select.selectedIndex];
+        const name = selectedOption.value;
+        const description = selectedOption.dataset.description;
+
+        if (name && description) {
+            preview.innerHTML = `
+                <p class="condition-preview-name mb-1">${name}</p>
+                <p class="condition-preview-description mb-0">${description}</p>
+            `;
+        } else {
+            const typeLabel = type === 'phobia' ? 'phobia' : 'mania';
+            preview.innerHTML = `<p class="condition-preview-empty mb-0">Select a ${typeLabel} to see its description</p>`;
+        }
+    },
+
+    /**
+     * Add a condition (phobia or mania) to the investigator
+     * @param {string} type - 'phobia' or 'mania'
+     */
+    async addCondition(type) {
+        const selectId = type === 'phobia' ? 'phobia-select' : 'mania-select';
+        const select = Utils.$(selectId);
+
+        if (!select || !select.value) {
+            Utils.showToast('Error', `Please select a ${type} to add.`, '\u274C');
+            return;
+        }
+
+        const conditionName = select.value;
+        const section = type === 'phobia' ? 'phobias' : 'manias';
+        const investigatorId = Utils.getCurrentCharacterId();
+
+        if (!investigatorId) return;
+
+        try {
+            await API.updateInvestigator(investigatorId, section, conditionName, true);
+
+            // Reload the character sheet to show the new condition
+            const html = await API.getInvestigator(investigatorId);
+            Utils.setHTML('character-sheet', html);
+
+            Utils.showToast('Added', `${conditionName} has been added.`, '\uD83D\uDCA5');
+        } catch (error) {
+            console.error(`Error adding ${type}:`, error);
+            Utils.showToast('Error', `Failed to add ${type}.`, '\u274C');
+        }
+    },
+
+    /**
+     * Remove a condition (phobia or mania) from the investigator
+     * @param {HTMLButtonElement} button - The remove button clicked
+     */
+    async removeCondition(button) {
+        const conditionName = button.dataset.condition;
+        const type = button.dataset.type;
+        const section = type === 'phobia' ? 'phobias' : 'manias';
+        const investigatorId = Utils.getCurrentCharacterId();
+
+        if (!investigatorId) return;
+
+        try {
+            await API.updateInvestigator(investigatorId, section, conditionName, false);
+
+            // Reload the character sheet to reflect the removal
+            const html = await API.getInvestigator(investigatorId);
+            Utils.setHTML('character-sheet', html);
+
+            Utils.showToast('Removed', `${conditionName} has been removed.`, '\u2705');
+        } catch (error) {
+            console.error(`Error removing ${type}:`, error);
+            Utils.showToast('Error', `Failed to remove ${type}.`, '\u274C');
+        }
+    },
 };
 
 // Export for module usage

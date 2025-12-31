@@ -354,6 +354,8 @@ type Investigator struct {
 	Build                      string               `json:"Build"`
 	DamageBonus                string               `json:"DamageBonus"`
 	Talents                    []Talent             `json:"Pulp-Talents"`
+	Phobias                    []Phobia             `json:"Phobias"`
+	Manias                     []Mania              `json:"Manias"`
 	OccupationPoints           int                  `json:"OccupationPoints"`
 	ArchetypePoints            int                  `json:"ArchetypePoints"`
 	FreePoints                 int                  `json:"FreePoints"`

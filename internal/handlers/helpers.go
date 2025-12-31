@@ -77,6 +77,10 @@ func (h *Handler) applyInvestigatorUpdate(inv *models.Investigator, req *UpdateR
 		return h.updateSkillName(inv, req.Field, req.Value)
 	case "talents":
 		return h.updateTalent(inv, req.Field, req.Value)
+	case "phobias":
+		return h.updatePhobia(inv, req.Field, req.Value)
+	case "manias":
+		return h.updateMania(inv, req.Field, req.Value)
 	default:
 		return errors.NewHTTPError(400, "Unknown section", nil)
 	}
@@ -316,6 +320,82 @@ func (h *Handler) updateTalent(inv *models.Investigator, talentName string, valu
 			}
 		}
 		inv.Talents = newTalents
+	}
+
+	return nil
+}
+
+// updatePhobia adds or removes a phobia from an investigator
+func (h *Handler) updatePhobia(inv *models.Investigator, phobiaName string, value interface{}) error {
+	// Check if phobia exists in the global list
+	phobia, exists := models.Phobias[phobiaName]
+	if !exists {
+		return errors.NewValidationError(phobiaName, "unknown phobia")
+	}
+
+	// Determine if we're adding or removing
+	shouldAdd, ok := value.(bool)
+	if !ok {
+		return errors.NewValidationError(phobiaName, "value must be boolean")
+	}
+
+	if shouldAdd {
+		// Check if phobia already exists
+		for _, p := range inv.Phobias {
+			if p.Name == phobiaName {
+				return nil // Already has this phobia
+			}
+		}
+
+		// Add the phobia
+		inv.Phobias = append(inv.Phobias, phobia)
+	} else {
+		// Remove the phobia
+		newPhobias := make([]models.Phobia, 0, len(inv.Phobias))
+		for _, p := range inv.Phobias {
+			if p.Name != phobiaName {
+				newPhobias = append(newPhobias, p)
+			}
+		}
+		inv.Phobias = newPhobias
+	}
+
+	return nil
+}
+
+// updateMania adds or removes a mania from an investigator
+func (h *Handler) updateMania(inv *models.Investigator, maniaName string, value interface{}) error {
+	// Check if mania exists in the global list
+	mania, exists := models.Manias[maniaName]
+	if !exists {
+		return errors.NewValidationError(maniaName, "unknown mania")
+	}
+
+	// Determine if we're adding or removing
+	shouldAdd, ok := value.(bool)
+	if !ok {
+		return errors.NewValidationError(maniaName, "value must be boolean")
+	}
+
+	if shouldAdd {
+		// Check if mania already exists
+		for _, m := range inv.Manias {
+			if m.Name == maniaName {
+				return nil // Already has this mania
+			}
+		}
+
+		// Add the mania
+		inv.Manias = append(inv.Manias, mania)
+	} else {
+		// Remove the mania
+		newManias := make([]models.Mania, 0, len(inv.Manias))
+		for _, m := range inv.Manias {
+			if m.Name != maniaName {
+				newManias = append(newManias, m)
+			}
+		}
+		inv.Manias = newManias
 	}
 
 	return nil

@@ -26,6 +26,16 @@ templ CharacterSheet(investigator *models.Investigator) {
         @components.SkillsSection(investigator)
         @components.TalentsSection(investigator)
 
+        <!-- Phobias and Manias (acquired during gameplay) -->
+        <div class="row mb-4 g-3">
+            <div class="col-md-6">
+                @components.PhobiasSection(investigator)
+            </div>
+            <div class="col-md-6">
+                @components.ManiasSection(investigator)
+            </div>
+        </div>
+
         <script>
             // Initialize immediately (works for both initial load and HTMX swap)
             if (typeof CharacterSheet !== 'undefined') {

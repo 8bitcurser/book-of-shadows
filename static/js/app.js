@@ -209,6 +209,9 @@ const characterUtils = {
     updateHeaderName: (input) => CharacterSheet.updateHeaderName(input),
     exportPDF: (evt, key) => CharacterSheet.exportPDF(evt, key),
     importInvestigators: () => CharacterSheet.importInvestigators(),
+    addCondition: (type) => CharacterSheet.addCondition(type),
+    removeCondition: (button) => CharacterSheet.removeCondition(button),
+    previewCondition: (select, type) => CharacterSheet.previewCondition(select, type),
 
     // Utility functions
     getCurrentCharacter: () => Utils.getCurrentCharacter(),

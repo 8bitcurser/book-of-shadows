@@ -304,3 +304,8 @@ document.addEventListener('DOMContentLoaded', () => {
 document.addEventListener('htmx:afterSwap', () => {
     CustomDropdown.init();
 });
+
+// Re-initialize on HTMX content settle (for fully settled DOM)
+document.addEventListener('htmx:afterSettle', () => {
+    CustomDropdown.init();
+});

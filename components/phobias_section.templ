@@ -1,0 +1,96 @@
+package components
+
+import (
+	"book-of-shadows/models"
+	"sort"
+)
+
+templ PhobiasSection(inv *models.Investigator) {
+	<div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
+		<div class="card-header d-flex align-items-center p-3 card-header-custom">
+			<i class="bi bi-exclamation-triangle-fill me-2 card-header-icon"></i>
+			<h4 class="section-title">Phobias</h4>
+			<span class="badge ms-auto condition-badge">{ len(inv.Phobias) } active</span>
+		</div>
+		<div class="card-body p-3">
+			<!-- Existing Phobias -->
+			if len(inv.Phobias) > 0 {
+				<div class="mb-3">
+					for _, phobia := range inv.Phobias {
+						<div class="condition-item p-3 mb-2 rounded shadow-sm">
+							<div class="d-flex justify-content-between align-items-start">
+								<div class="condition-content">
+									<div class="condition-accent phobia-accent"></div>
+									<h5 class="condition-title">{ phobia.Name }</h5>
+									<p class="mb-0 text-secondary small">{ phobia.Description }</p>
+								</div>
+								<button
+									type="button"
+									class="btn btn-sm btn-outline-danger condition-remove editable"
+									data-condition={ phobia.Name }
+									data-type="phobia"
+									onclick="characterUtils.removeCondition(this)"
+									title="Remove phobia"
+								>
+									<i class="bi bi-x-lg"></i>
+								</button>
+							</div>
+						</div>
+					}
+				</div>
+			} else {
+				<p class="text-secondary mb-3 small">No phobias acquired... yet.</p>
+			}
+
+			<!-- Add Phobia Dropdown -->
+			<div class="condition-add-section">
+				<label class="form-label small text-secondary">Add Phobia</label>
+				<div class="d-flex gap-2">
+					<select
+						class="form-control editable condition-select"
+						id="phobia-select"
+						onchange="characterUtils.previewCondition(this, 'phobia')"
+					>
+						<option value="" data-description="">Select a phobia...</option>
+						for _, name := range getSortedPhobiaNames() {
+							if !hasPhobia(inv, name) {
+								<option value={ name } data-description={ models.Phobias[name].Description }>{ name }</option>
+							}
+						}
+					</select>
+					<button
+						type="button"
+						class="btn btn-sm gradient-button editable"
+						onclick="characterUtils.addCondition('phobia')"
+					>
+						<i class="bi bi-plus-lg"></i>
+					</button>
+				</div>
+				<!-- Description Preview -->
+				<div class="condition-preview phobia-preview" id="phobia-preview">
+					<p class="condition-preview-empty mb-0">Select a phobia to see its description</p>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+// Helper function to check if investigator has a phobia
+func hasPhobia(inv *models.Investigator, name string) bool {
+	for _, p := range inv.Phobias {
+		if p.Name == name {
+			return true
+		}
+	}
+	return false
+}
+
+// Helper function to get sorted phobia names
+func getSortedPhobiaNames() []string {
+	names := make([]string, 0, len(models.Phobias))
+	for name := range models.Phobias {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	return names
+}

@@ -1,0 +1,96 @@
+package components
+
+import (
+	"book-of-shadows/models"
+	"sort"
+)
+
+templ ManiasSection(inv *models.Investigator) {
+	<div class="card shadow-sm mb-4" style="border-radius: 1rem; border: none;">
+		<div class="card-header d-flex align-items-center p-3 card-header-custom">
+			<i class="bi bi-lightning-fill me-2 card-header-icon"></i>
+			<h4 class="section-title">Manias</h4>
+			<span class="badge ms-auto condition-badge">{ len(inv.Manias) } active</span>
+		</div>
+		<div class="card-body p-3">
+			<!-- Existing Manias -->
+			if len(inv.Manias) > 0 {
+				<div class="mb-3">
+					for _, mania := range inv.Manias {
+						<div class="condition-item p-3 mb-2 rounded shadow-sm">
+							<div class="d-flex justify-content-between align-items-start">
+								<div class="condition-content">
+									<div class="condition-accent mania-accent"></div>
+									<h5 class="condition-title">{ mania.Name }</h5>
+									<p class="mb-0 text-secondary small">{ mania.Description }</p>
+								</div>
+								<button
+									type="button"
+									class="btn btn-sm btn-outline-danger condition-remove editable"
+									data-condition={ mania.Name }
+									data-type="mania"
+									onclick="characterUtils.removeCondition(this)"
+									title="Remove mania"
+								>
+									<i class="bi bi-x-lg"></i>
+								</button>
+							</div>
+						</div>
+					}
+				</div>
+			} else {
+				<p class="text-secondary mb-3 small">No manias acquired... yet.</p>
+			}
+
+			<!-- Add Mania Dropdown -->
+			<div class="condition-add-section">
+				<label class="form-label small text-secondary">Add Mania</label>
+				<div class="d-flex gap-2">
+					<select
+						class="form-control editable condition-select"
+						id="mania-select"
+						onchange="characterUtils.previewCondition(this, 'mania')"
+					>
+						<option value="" data-description="">Select a mania...</option>
+						for _, name := range getSortedManiaNames() {
+							if !hasMania(inv, name) {
+								<option value={ name } data-description={ models.Manias[name].Description }>{ name }</option>
+							}
+						}
+					</select>
+					<button
+						type="button"
+						class="btn btn-sm gradient-button editable"
+						onclick="characterUtils.addCondition('mania')"
+					>
+						<i class="bi bi-plus-lg"></i>
+					</button>
+				</div>
+				<!-- Description Preview -->
+				<div class="condition-preview mania-preview" id="mania-preview">
+					<p class="condition-preview-empty mb-0">Select a mania to see its description</p>
+				</div>
+			</div>
+		</div>
+	</div>
+}
+
+// Helper function to check if investigator has a mania
+func hasMania(inv *models.Investigator, name string) bool {
+	for _, m := range inv.Manias {
+		if m.Name == name {
+			return true
+		}
+	}
+	return false
+}
+
+// Helper function to get sorted mania names
+func getSortedManiaNames() []string {
+	names := make([]string, 0, len(models.Manias))
+	for name := range models.Manias {
+		names = append(names, name)
+	}
+	sort.Strings(names)
+	return names
+}

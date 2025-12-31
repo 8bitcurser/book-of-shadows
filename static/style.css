@@ -12,6 +12,7 @@
     --color-black: #0f0f0f;
     --color-dark-blue: #1a1c2c;
     --color-purple: #5d275d;
+    --color-purple-light: #a855f7;
     --color-dark-green: #306850;
     --color-brown: #8a6f30;
     --color-dark-gray: #595652;
@@ -1133,6 +1134,146 @@ input[type=number] {
     font-family: var(--font-pixel);
     color: var(--color-accent-secondary);
     font-size: 0.6rem;
+}
+
+/* -----------------------------------------------------------------------------
+   Conditions - Phobias & Manias
+   ----------------------------------------------------------------------------- */
+.condition-item {
+    background: var(--color-bg-tertiary);
+    border: 2px solid var(--color-border-light);
+    border-radius: var(--radius-none);
+    position: relative;
+    transition: all var(--transition-quick);
+}
+
+.condition-item:hover {
+    border-color: var(--color-accent-primary);
+}
+
+.condition-content {
+    position: relative;
+    padding-left: 12px;
+    flex: 1;
+}
+
+.condition-accent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 4px;
+    height: 100%;
+}
+
+.phobia-accent {
+    background: var(--color-red);
+}
+
+.mania-accent {
+    background: var(--color-purple-light);
+}
+
+.condition-title {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    margin-bottom: 0.25rem;
+    text-transform: uppercase;
+}
+
+.condition-item:has(.phobia-accent) .condition-title {
+    color: var(--color-red);
+}
+
+.condition-item:has(.mania-accent) .condition-title {
+    color: var(--color-purple-light);
+}
+
+.condition-remove {
+    opacity: 0.6;
+    transition: opacity var(--transition-quick);
+    border: none;
+    padding: 0.25rem 0.5rem;
+}
+
+.condition-remove:hover {
+    opacity: 1;
+}
+
+.condition-badge {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    border: 1px solid var(--color-border-light);
+}
+
+.condition-add-section {
+    border-top: 1px solid var(--color-border-light);
+    padding-top: 1rem;
+}
+
+select.condition-select.form-control {
+    flex: 1;
+    min-width: 0;
+    font-size: 1rem !important;
+}
+
+.condition-select option {
+    background: var(--color-bg-card);
+    color: var(--color-text-primary);
+    padding: 0.5rem;
+}
+
+.condition-preview {
+    margin-top: 0.75rem;
+    padding: 0.75rem;
+    background: var(--color-bg-tertiary);
+    border: 1px dashed var(--color-border-light);
+    border-radius: var(--radius-none);
+    min-height: 3rem;
+}
+
+.condition-preview-empty {
+    color: var(--color-text-muted);
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+.condition-preview-name {
+    font-family: var(--font-pixel);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.condition-preview.phobia-preview .condition-preview-name {
+    color: var(--color-red);
+}
+
+.condition-preview.mania-preview .condition-preview-name {
+    color: var(--color-purple-light);
+}
+
+.condition-preview-description {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+/* Responsive adjustments for condition selects */
+@media (max-width: 768px) {
+    .condition-add-section .d-flex {
+        flex-direction: column;
+    }
+
+    .condition-add-section .d-flex .btn {
+        width: 100%;
+        margin-top: 0.5rem;
+    }
+
+    select.condition-select.form-control {
+        width: 100%;
+    }
 }
 
 /* -----------------------------------------------------------------------------
