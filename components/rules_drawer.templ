@@ -34,6 +34,10 @@ templ RulesDrawer() {
 					<i class="bi bi-speedometer2"></i>
 					<span>Chase</span>
 				</button>
+				<button class="rules-tab" data-tab="pulp" onclick="RulesDrawer.switchTab('pulp')">
+					<i class="bi bi-star-fill"></i>
+					<span>Pulp</span>
+				</button>
 			</div>
 
 			<!-- Tab Content -->
@@ -56,6 +60,11 @@ templ RulesDrawer() {
 				<!-- Chase Tab -->
 				<div id="tab-chase" class="rules-panel">
 					@ChaseRules()
+				</div>
+
+				<!-- Pulp Tab -->
+				<div id="tab-pulp" class="rules-panel">
+					@PulpRules()
 				</div>
 			</div>
 		</div>
@@ -379,6 +388,92 @@ templ ChaseRules() {
 				<li><strong>Damage:</strong> Crashes deal damage based on speed</li>
 				<li><strong>Passengers:</strong> Can take actions without movement penalty</li>
 				<li><strong>Ramming:</strong> Opposed Drive rolls; loser takes collision damage</li>
+			</ul>
+		</div>
+	</div>
+}
+
+templ PulpRules() {
+	<div class="rules-section">
+		<h3 class="rules-heading">Pulp Hero Benefits</h3>
+		<div class="rules-card">
+			<ul class="rules-list">
+				<li><strong>Double HP:</strong> Pulp heroes have twice normal Hit Points</li>
+				<li><strong>Faster Healing:</strong> Recover 2 HP per day (instead of 1)</li>
+				<li><strong>Pulp Talents:</strong> Special abilities from archetype</li>
+				<li><strong>Higher Power:</strong> Core characteristics can exceed 100</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="rules-section">
+		<h3 class="rules-heading">Spending Luck</h3>
+		<div class="rules-table-container">
+			<table class="rules-table">
+				<thead>
+					<tr>
+						<th>Use</th>
+						<th>Cost</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr><td>Improve skill/characteristic roll</td><td>1 Luck per 1%</td></tr>
+					<tr><td>Reduce Sanity loss</td><td>2 Luck per 1 SAN saved</td></tr>
+					<tr><td>Avoid falling unconscious</td><td>1 Luck (doubles each round)</td></tr>
+					<tr><td>Avoid dying</td><td>All Luck (requires 30+ Luck)</td></tr>
+					<tr><td>Avoid malfunction/fumble</td><td>10 Luck</td></tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="rules-section">
+		<h3 class="rules-heading">Luck Recovery</h3>
+		<div class="rules-card">
+			<p class="rules-label">Between Sessions</p>
+			<p class="rules-text">At start of each session, roll 1D10 + current Luck improvement check mark. If result > current Luck, reset to starting value.</p>
+
+			<p class="rules-label mt-2">Improvement Check</p>
+			<p class="rules-text">Gain a Luck improvement check when Luck drops below half starting value.</p>
+		</div>
+	</div>
+
+	<div class="rules-section">
+		<h3 class="rules-heading">Ignoring Major Wounds</h3>
+		<div class="rules-card">
+			<p class="rules-text">Pulp heroes can spend <strong>5 Luck</strong> to ignore the effects of a Major Wound for the remainder of the combat.</p>
+			<ul class="rules-list">
+				<li>Still take the damage</li>
+				<li>Don't fall unconscious</li>
+				<li>Don't need immediate First Aid</li>
+				<li>Must be treated after combat ends</li>
+			</ul>
+		</div>
+	</div>
+
+	<div class="rules-section">
+		<h3 class="rules-heading">Pulp Talents</h3>
+		<div class="rules-card">
+			<p class="rules-label">Activation</p>
+			<ul class="rules-list">
+				<li><strong>Passive:</strong> Always active (e.g., Tough Guy)</li>
+				<li><strong>Per Session:</strong> Once per game session</li>
+				<li><strong>Per Scene:</strong> Once per scene/encounter</li>
+			</ul>
+
+			<p class="rules-label mt-2">Gaining Talents</p>
+			<p class="rules-text">Heroes start with 2 talents from their archetype. Additional talents may be gained through character development.</p>
+		</div>
+	</div>
+
+	<div class="rules-section">
+		<h3 class="rules-heading">Hero Development</h3>
+		<div class="rules-card">
+			<ul class="rules-list">
+				<li><strong>Skill Checks:</strong> Mark skills used successfully for improvement</li>
+				<li><strong>Between Adventures:</strong> Roll improvement checks (1D100 > skill = +1D10)</li>
+				<li><strong>New Talents:</strong> Keeper may award new talents for heroic deeds</li>
+				<li><strong>Sanity Rewards:</strong> Completing goals can restore SAN</li>
 			</ul>
 		</div>
 	</div>
