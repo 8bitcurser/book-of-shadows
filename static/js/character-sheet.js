@@ -108,12 +108,11 @@ const CharacterSheet = {
             // Use same approach as togglePinSkill for consistency
             const html = await API.getInvestigator(investigatorId);
             Utils.setHTML('character-sheet', html);
-            window.scrollTo(0, scrollY);
-
-            // Re-initialize skills manager
+            // Init skills first to restore expanded state, then scroll
             if (window.SkillsManager) {
                 SkillsManager.init();
             }
+            window.scrollTo(0, scrollY);
         } catch (error) {
             console.error('Error refreshing character sheet:', error);
         }
@@ -384,12 +383,11 @@ const CharacterSheet = {
             const scrollY = window.scrollY;
             const html = await API.getInvestigator(Utils.getCurrentCharacterId());
             Utils.setHTML('character-sheet', html);
-            window.scrollTo(0, scrollY);
-
-            // Re-initialize skills manager to restore collapsed state
+            // Init skills first to restore expanded state, then scroll
             if (window.SkillsManager) {
                 SkillsManager.init();
             }
+            window.scrollTo(0, scrollY);
         } catch (error) {
             console.error('Error updating skill priority:', error);
             // Revert on error
@@ -527,8 +525,9 @@ const CharacterSheet = {
             const scrollY = window.scrollY;
             const html = await API.getInvestigator(investigatorId);
             Utils.setHTML('character-sheet', html);
-            window.scrollTo(0, scrollY);
+            // Init skills first to restore expanded state, then scroll
             if (window.SkillsManager) SkillsManager.init();
+            window.scrollTo(0, scrollY);
 
             Utils.showToast('Added', `${conditionName} has been added.`, '\uD83D\uDCA5');
         } catch (error) {
@@ -556,8 +555,9 @@ const CharacterSheet = {
             const scrollY = window.scrollY;
             const html = await API.getInvestigator(investigatorId);
             Utils.setHTML('character-sheet', html);
-            window.scrollTo(0, scrollY);
+            // Init skills first to restore expanded state, then scroll
             if (window.SkillsManager) SkillsManager.init();
+            window.scrollTo(0, scrollY);
 
             Utils.showToast('Removed', `${conditionName} has been removed.`, '\u2705');
         } catch (error) {
