@@ -18,6 +18,9 @@ templ Navbar() {
                     <li class="nav-item">
                         <a class="nav-link" hx-get="/api/generate/" hx-target="#character-sheet" hx-vals='js:{mode: "pulp"}'>Random Investigator</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" onclick="RulesDrawer.open(); return false;">Rules</a>
+                    </li>
                 </ul>
             </div>
         </div>

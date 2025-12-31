@@ -1997,3 +1997,310 @@ footer {
     background: var(--color-accent-primary);
     color: var(--color-black);
 }
+
+/* =============================================================================
+   Rules Drawer - Slide-out Reference Panel
+   ============================================================================= */
+
+/* Overlay */
+.rules-drawer-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+.rules-drawer-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Drawer Container */
+.rules-drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 420px;
+    max-width: 90vw;
+    height: 100vh;
+    background: var(--color-bg-primary);
+    border-left: 4px solid var(--color-accent-primary);
+    box-shadow: -8px 0 0 var(--color-black);
+    z-index: 1050;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.rules-drawer.open {
+    transform: translateX(0);
+}
+
+/* Header */
+.rules-drawer-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    background: var(--color-bg-secondary);
+    border-bottom: 4px solid var(--color-black);
+}
+
+.rules-drawer-title {
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    color: var(--color-accent-primary);
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.rules-drawer-close {
+    background: transparent;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: color 0.15s ease, transform 0.15s ease;
+}
+
+.rules-drawer-close:hover {
+    color: var(--color-accent-secondary);
+    transform: scale(1.1);
+}
+
+/* Tab Navigation */
+.rules-tabs {
+    display: flex;
+    background: var(--color-bg-secondary);
+    border-bottom: 4px solid var(--color-black);
+    padding: 0;
+}
+
+.rules-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.75rem 0.5rem;
+    background: transparent;
+    border: none;
+    border-right: 2px solid var(--color-border-dark);
+    color: var(--color-text-muted);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.rules-tab:last-child {
+    border-right: none;
+}
+
+.rules-tab i {
+    font-size: 1.25rem;
+}
+
+.rules-tab span {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rules-tab:hover {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+}
+
+.rules-tab.active {
+    background: var(--color-bg-card);
+    color: var(--color-accent-primary);
+    box-shadow: inset 0 -3px 0 var(--color-accent-primary);
+}
+
+/* Content Area */
+.rules-drawer-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.rules-tab-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/* Tab Panels */
+.rules-panel {
+    display: none;
+}
+
+.rules-panel.active {
+    display: block;
+}
+
+/* Rules Sections */
+.rules-section {
+    margin-bottom: 1.25rem;
+}
+
+.rules-section:last-child {
+    margin-bottom: 0;
+}
+
+.rules-heading {
+    font-family: var(--font-pixel);
+    font-size: 0.6rem;
+    color: var(--color-accent-tertiary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px dashed var(--color-border-light);
+}
+
+/* Rules Card */
+.rules-card {
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-border-light);
+    padding: 0.875rem;
+    box-shadow: var(--shadow-pixel-sm);
+}
+
+.rules-label {
+    font-family: var(--font-pixel);
+    font-size: 0.5rem;
+    color: var(--color-accent-cyan);
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+}
+
+.rules-text {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.4;
+    margin-bottom: 0.5rem;
+}
+
+.rules-text:last-child {
+    margin-bottom: 0;
+}
+
+.rules-text strong {
+    color: var(--color-text-highlight);
+}
+
+/* Rules Lists */
+.rules-list {
+    font-family: var(--font-body);
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    padding-left: 1.25rem;
+    margin: 0;
+}
+
+.rules-list li {
+    margin-bottom: 0.35rem;
+    line-height: 1.4;
+}
+
+.rules-list li:last-child {
+    margin-bottom: 0;
+}
+
+.rules-list li strong {
+    color: var(--color-accent-tertiary);
+}
+
+.rules-list-numbered {
+    list-style: decimal;
+}
+
+/* Rules Tables */
+.rules-table-container {
+    overflow-x: auto;
+}
+
+.rules-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-body);
+    font-size: 1rem;
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-border-light);
+}
+
+.rules-table th,
+.rules-table td {
+    padding: 0.5rem 0.625rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border-dark);
+}
+
+.rules-table th {
+    font-family: var(--font-pixel);
+    font-size: 0.45rem;
+    text-transform: uppercase;
+    color: var(--color-accent-primary);
+    background: var(--color-bg-secondary);
+    letter-spacing: 0.5px;
+}
+
+.rules-table td {
+    color: var(--color-text-secondary);
+}
+
+.rules-table tr:last-child td {
+    border-bottom: none;
+}
+
+.rules-table tr:nth-child(even) {
+    background: var(--color-bg-tertiary);
+}
+
+.rules-table td:first-child {
+    color: var(--color-accent-tertiary);
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* Utility classes */
+.mt-2 {
+    margin-top: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+    .rules-drawer {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .rules-drawer-title {
+        font-size: 0.6rem;
+    }
+
+    .rules-tab span {
+        display: none;
+    }
+
+    .rules-tab i {
+        font-size: 1.5rem;
+    }
+}
+
