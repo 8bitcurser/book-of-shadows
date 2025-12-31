@@ -23,7 +23,6 @@ var coreAttributeOrder = []string{
 	models.AttrIntelligence,
 	models.AttrPower,
 	models.AttrEducation,
-	models.AttrLuck,
 }
 
 func CharacteristicsSection(inv *models.Investigator) templ.Component {
@@ -60,7 +59,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var2 string
 				templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 32, Col: 96}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 31, Col: 96}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 				if templ_7745c5c3_Err != nil {
@@ -73,7 +72,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 34, Col: 82}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 33, Col: 82}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
@@ -86,7 +85,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var4 string
 				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 35, Col: 105}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 34, Col: 105}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
@@ -99,7 +98,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 35, Col: 132}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 34, Col: 132}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -112,7 +111,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 2))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 43, Col: 139}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 42, Col: 139}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -125,7 +124,7 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 5))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 44, Col: 141}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 43, Col: 141}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
