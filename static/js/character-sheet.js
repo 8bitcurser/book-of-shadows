@@ -48,6 +48,74 @@ const CharacterSheet = {
     },
 
     // =========================================================================
+    // Core Attribute Adjustment
+    // =========================================================================
+
+    /**
+     * Adjust attribute value by delta (triggered by +/- buttons)
+     * @param {HTMLButtonElement} button - The +/- button clicked
+     * @param {number} delta - Amount to change (+1 or -1)
+     */
+    async adjustAttribute(button, delta) {
+        const charBox = button.closest('.characteristic-box');
+        if (!charBox) return;
+
+        const badge = charBox.querySelector('.characteristic-value');
+        if (!badge) return;
+
+        const abbrev = badge.dataset.attr;
+        const currentValue = Utils.parseInt(badge.textContent);
+        const newValue = Math.max(1, Math.min(99, currentValue + delta));
+
+        if (newValue === currentValue) return;
+
+        // Update display immediately
+        badge.textContent = newValue;
+        Utils.updateDerivedValues(charBox, newValue);
+
+        const investigatorId = Utils.getCurrentCharacterId();
+        if (!investigatorId) return;
+
+        const attrName = Utils.getAttributeName(abbrev);
+
+        try {
+            await API.updateInvestigator(
+                investigatorId,
+                'attributes',
+                attrName,
+                newValue
+            );
+
+            // Refresh character sheet to show updated derivatives (HP, MP, Move, etc.)
+            this.refreshCombatStats(investigatorId);
+        } catch (error) {
+            console.error('Error updating core attribute:', error);
+            // Revert on error
+            badge.textContent = currentValue;
+            Utils.updateDerivedValues(charBox, currentValue);
+        }
+    },
+
+    /**
+     * Refresh the character sheet to show updated derivative values
+     * @param {string} investigatorId - The investigator ID
+     */
+    async refreshCombatStats(investigatorId) {
+        try {
+            // Use HTMX to reload the character sheet with updated derivatives
+            const sheetContainer = Utils.qs('#character-sheet');
+            if (sheetContainer) {
+                htmx.ajax('GET', `/api/investigator/${investigatorId}`, {
+                    target: '#character-sheet',
+                    swap: 'innerHTML'
+                });
+            }
+        } catch (error) {
+            console.error('Error refreshing character sheet:', error);
+        }
+    },
+
+    // =========================================================================
     // Lock/Unlock Functionality
     // =========================================================================
 

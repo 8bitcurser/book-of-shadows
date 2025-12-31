@@ -231,3 +231,72 @@
     border-color: var(--color-accent-primary);
     box-shadow: var(--shadow-pixel-inset);
 }
+
+/* =============================================================================
+   Attribute Controls - +/- Buttons
+   ============================================================================= */
+
+.attr-controls {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.attr-btn {
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    font-family: var(--font-pixel);
+    font-size: 0.75rem;
+    font-weight: bold;
+    border: 2px solid var(--color-border-light);
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+    cursor: pointer;
+    transition: all var(--transition-quick);
+    line-height: 1;
+}
+
+.attr-btn:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 2px 2px 0px var(--color-black);
+}
+
+.attr-btn:active {
+    transform: translate(1px, 1px);
+    box-shadow: none;
+}
+
+.attr-btn-minus {
+    border-color: var(--color-hp);
+    color: var(--color-hp);
+}
+
+.attr-btn-minus:hover {
+    background: var(--color-hp);
+    color: var(--color-white);
+}
+
+.attr-btn-plus {
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+}
+
+.attr-btn-plus:hover {
+    background: var(--color-accent-primary);
+    color: var(--color-black);
+}
+
+.attr-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.attr-btn:disabled:hover {
+    transform: none;
+    box-shadow: none;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-muted);
+}

@@ -11,8 +11,20 @@ import templruntime "github.com/a-h/templ/runtime"
 import (
 	"book-of-shadows/models"
 	"strconv"
-	"strings"
 )
+
+// Ordered list of core attributes to display
+var coreAttributeOrder = []string{
+	models.AttrStrength,
+	models.AttrConstitution,
+	models.AttrSize,
+	models.AttrDexterity,
+	models.AttrAppearance,
+	models.AttrIntelligence,
+	models.AttrPower,
+	models.AttrEducation,
+	models.AttrLuck,
+}
 
 func CharacteristicsSection(inv *models.Investigator) templ.Component {
 	return templruntime.GeneratedTemplate(func(templ_7745c5c3_Input templruntime.GeneratedComponentInput) (templ_7745c5c3_Err error) {
@@ -39,81 +51,93 @@ func CharacteristicsSection(inv *models.Investigator) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		for _, attr := range inv.Attributes {
-			if !strings.HasPrefix(attr.Name, "Current") && !strings.HasPrefix(attr.Name, "Max") &&
-				attr.Name != "HitPoints" && attr.Name != "MagicPoints" && attr.Name != "Sanity" {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"col-md-3 col-sm-4 mb-2\"><div class=\"characteristic-box p-2 rounded\"><div class=\"d-flex justify-content-between align-items-center\"><strong class=\"characteristic-name\">")
+		for _, key := range coreAttributeOrder {
+			if attr, ok := inv.Attributes[key]; ok {
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 2, "<div class=\"col-md-3 col-sm-4 mb-2\"><div class=\"characteristic-box p-2 rounded\" data-attr-box=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var2 string
 				templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 23, Col: 82}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 32, Col: 96}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "</strong> <span class=\"badge fw-bold characteristic-value\" data-attr=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 3, "\"><div class=\"d-flex justify-content-between align-items-center\"><strong class=\"characteristic-name\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var3 string
 				templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 24, Col: 105}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 34, Col: 82}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 4, "</strong> <span class=\"badge fw-bold characteristic-value\" data-attr=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var4 string
-				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value))
+				templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(attr.Name)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 24, Col: 132}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 35, Col: 105}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "</span></div><div class=\"d-flex justify-content-end mt-1\"><small class=\"characteristic-derived me-2\" title=\"Half value\" data-half>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var5 string
-				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 2))
+				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 27, Col: 135}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 35, Col: 132}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</small> <small class=\"characteristic-derived ms-2\" title=\"Fifth value\" data-fifth>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "</span></div><div class=\"d-flex justify-content-between align-items-center mt-1\"><div class=\"attr-controls\"><button type=\"button\" class=\"attr-btn attr-btn-minus editable\" onclick=\"CharacterSheet.adjustAttribute(this, -1)\">-</button> <button type=\"button\" class=\"attr-btn attr-btn-plus editable\" onclick=\"CharacterSheet.adjustAttribute(this, 1)\">+</button></div><div><small class=\"characteristic-derived me-2\" title=\"Half value\" data-half>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var6 string
-				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 5))
+				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 2))
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 28, Col: 137}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 43, Col: 139}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</small></div></div></div>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "</small> <small class=\"characteristic-derived ms-2\" title=\"Fifth value\" data-fifth>")
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				var templ_7745c5c3_Var7 string
+				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(strconv.Itoa(attr.Value / 5))
+				if templ_7745c5c3_Err != nil {
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `components/characteristics_section.templ`, Line: 44, Col: 141}
+				}
+				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
+				if templ_7745c5c3_Err != nil {
+					return templ_7745c5c3_Err
+				}
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</small></div></div></div></div>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 			}
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "</div></div></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 9, "</div></div></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

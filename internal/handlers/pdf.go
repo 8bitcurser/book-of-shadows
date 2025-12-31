@@ -108,12 +108,26 @@ func (h *Handler) ExportPDF(w http.ResponseWriter, r *http.Request) {
 func convertInvestigatorToMap(investigator *models.Investigator) map[string]string {
 	data := make(map[string]string)
 
+	// Debug: Print attributes
+	fmt.Printf("DEBUG: Investigator %s has %d attributes\n", investigator.Name, len(investigator.Attributes))
+
 	// Handle Attributes
 	for key, attr := range investigator.Attributes {
-		attrName := investigator.Attributes[key]
-		data[attrName.Name] = strconv.Itoa(attr.Value)
-		data[attrName.Name+"_half"] = strconv.Itoa(attr.Value / 2)
-		data[attrName.Name+"_fifth"] = strconv.Itoa(attr.Value / 5)
+		fmt.Printf("DEBUG: Attribute key=%s, name=%s, value=%d\n", key, attr.Name, attr.Value)
+		data[attr.Name] = strconv.Itoa(attr.Value)
+		data[attr.Name+"_half"] = strconv.Itoa(attr.Value / 2)
+		data[attr.Name+"_fifth"] = strconv.Itoa(attr.Value / 5)
+
+		// Add Starting/Max values for HP, Magic, and Sanity
+		// Note: StartingValue is not serialized (json:"-"), so we use MaxValue
+		if key == models.AttrHitPoints {
+			data["StartingHP"] = strconv.Itoa(attr.MaxValue)
+		} else if key == models.AttrMagicPoints {
+			data["StartingMagic"] = strconv.Itoa(attr.MaxValue)
+		} else if key == models.AttrSanity {
+			data["StartingSanity"] = strconv.Itoa(attr.Value) // Starting sanity = current sanity at creation
+			data["MaxSanity"] = strconv.Itoa(attr.MaxValue)
+		}
 	}
 
 	// Handle Skills

@@ -47,7 +47,7 @@ func (i *Investigator) SetHP() {
 	}
 	hp := rawHP / divider
 	HP := i.Attributes[AttrHitPoints]
-	HP.Name = "CurrentHitPoints"
+	HP.Name = "CurrentHP"
 	HP.Value = hp
 	HP.MaxValue = hp
 	HP.StartingValue = hp
