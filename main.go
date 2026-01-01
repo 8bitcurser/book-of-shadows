@@ -90,6 +90,11 @@ func (s *Server) setupRoutes() *RadixTree {
 	router.GET("wizard/attributes/{:key}", s.wizard.AttrStep)
 	router.GET("wizard/skills/{:key}", s.wizard.SkillStep)
 
+	// Keeper routes
+	router.GET("keeper", s.handlers.KeeperDashboard)
+	router.GET("keeper/chase", s.handlers.ChaseTracker)
+	router.GET("keeper/combat", s.handlers.CombatTracker)
+
 	return router
 }
 

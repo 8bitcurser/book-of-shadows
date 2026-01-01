@@ -10,16 +10,19 @@ templ Navbar() {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" hx-get="/api/investigator" hx-target="#character-sheet">Archive</a>
+                        <a class="nav-link" href="/?view=archive" onclick="return App.navigate('/api/investigator', 'archive');">Archive</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" hx-get="/wizard/base/new" hx-target="#character-sheet">Create Investigator</a>
+                        <a class="nav-link" href="/?view=create" onclick="return App.navigate('/wizard/base/new', 'create');">Create Investigator</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" hx-get="/api/generate/" hx-target="#character-sheet" hx-vals='js:{mode: "pulp"}'>Random Investigator</a>
+                        <a class="nav-link" href="/?view=random" onclick="return App.navigate('/api/generate/?mode=pulp', 'random');">Random Investigator</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" onclick="RulesDrawer.open(); return false;">Rules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/keeper"><i class="bi bi-shield-shaded me-1"></i>Keeper</a>
                     </li>
                 </ul>
             </div>

@@ -14,6 +14,53 @@ const App = {
     init() {
         this.initHTMXHandlers();
         this.initBugReportModal();
+        this.handleViewParam();
+    },
+
+    /**
+     * Handle ?view= query parameter for navigation from other pages
+     */
+    handleViewParam() {
+        const params = new URLSearchParams(window.location.search);
+        const view = params.get('view');
+        const characterSheet = document.getElementById('character-sheet');
+
+        if (!view || !characterSheet) return;
+
+        // Clear the query param from URL without reload
+        window.history.replaceState({}, '', window.location.pathname);
+
+        // Trigger the appropriate view
+        switch (view) {
+            case 'archive':
+                htmx.ajax('GET', '/api/investigator', { target: '#character-sheet' });
+                break;
+            case 'create':
+                htmx.ajax('GET', '/wizard/base/new', { target: '#character-sheet' });
+                break;
+            case 'random':
+                htmx.ajax('GET', '/api/generate/?mode=pulp', { target: '#character-sheet' });
+                break;
+        }
+    },
+
+    /**
+     * Navigate to a view - uses HTMX if on home page, otherwise redirects
+     * @param {string} url - The API URL to load
+     * @param {string} view - The view name for redirect fallback
+     * @returns {boolean} - false to prevent default if using HTMX, true to allow redirect
+     */
+    navigate(url, view) {
+        const characterSheet = document.getElementById('character-sheet');
+
+        if (characterSheet) {
+            // On home page - use HTMX
+            htmx.ajax('GET', url, { target: '#character-sheet' });
+            return false;
+        }
+
+        // Not on home page - allow default href navigation
+        return true;
     },
 
     /**

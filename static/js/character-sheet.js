@@ -262,7 +262,33 @@ const CharacterSheet = {
      * @param {string} type - Value type (attribute, skill, stat)
      */
     async recalculateValues(input, type) {
-        const value = Utils.parseInt(input.value);
+        let value = Utils.parseInt(input.value);
+
+        // For attributes with max values (HP, MP, Sanity), clamp to max
+        if (type === 'attribute') {
+            const inputGroup = input.closest('.stat-input-group');
+            if (inputGroup) {
+                const maxInput = inputGroup.querySelector('.stat-max-value');
+                if (maxInput) {
+                    const maxValue = Utils.parseInt(maxInput.value);
+                    if (value > maxValue) {
+                        value = maxValue;
+                        input.value = value;
+                    }
+                }
+            } else if (input.dataset.attr === 'Luck') {
+                // Luck caps at 99
+                if (value > 99) {
+                    value = 99;
+                    input.value = value;
+                }
+            }
+            // Ensure minimum of 0
+            if (value < 0) {
+                value = 0;
+                input.value = value;
+            }
+        }
 
         // Update derived values
         const container = input.closest('.characteristic-box') || input.parentElement;

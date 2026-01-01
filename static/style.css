@@ -3275,3 +3275,453 @@ footer {
     80% { transform: translate(-50%, -50%) scale(1) rotate(5deg); }
 }
 
+
+/* =============================================================================
+   Keeper Tools Styles
+   ============================================================================= */
+
+/* Dashboard */
+.keeper-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.keeper-tool-card {
+    background: var(--color-bg-card);
+    border: 2px solid var(--color-border);
+    border-radius: 1rem;
+    transition: all var(--transition-quick);
+    cursor: pointer;
+}
+
+.keeper-tool-card:hover {
+    border-color: var(--color-accent-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.keeper-tool-icon {
+    font-size: 3rem;
+    color: var(--color-accent-primary);
+}
+
+.keeper-tool-icon i {
+    display: block;
+}
+
+/* Chase Tracker */
+.chase-tracker {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Chase Track Visualization */
+.chase-track {
+    padding: 1rem 0;
+    overflow-x: auto;
+}
+
+.track-positions {
+    display: flex;
+    gap: 4px;
+    min-width: max-content;
+    padding: 1rem;
+}
+
+.track-position {
+    width: 60px;
+    height: 80px;
+    background: var(--color-bg-secondary);
+    border: 2px solid var(--color-border);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 4px;
+    position: relative;
+    transition: all var(--transition-quick);
+}
+
+.track-position.start {
+    border-color: var(--color-accent-primary);
+    background: rgba(99, 199, 77, 0.1);
+}
+
+.track-position.end {
+    border-color: var(--color-accent-danger);
+    background: rgba(232, 74, 95, 0.1);
+}
+
+.track-position.has-hazard {
+    border-color: var(--color-accent-secondary);
+    background: rgba(247, 183, 49, 0.1);
+}
+
+.position-number {
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--color-text-muted);
+}
+
+.hazard-marker {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    color: var(--color-accent-secondary);
+    font-size: 1rem;
+}
+
+.position-participants {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+    justify-content: center;
+    margin-top: 4px;
+}
+
+.track-participant {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: white;
+}
+
+.track-participant.investigator {
+    background: var(--color-accent-primary);
+}
+
+.track-participant.enemy {
+    background: var(--color-accent-danger);
+}
+
+.track-participant.npc {
+    background: var(--color-accent-cyan);
+}
+
+.track-legend {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* Participants List */
+.participants-list {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.participant-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    transition: background var(--transition-quick);
+}
+
+.participant-item:hover {
+    background: var(--color-bg-secondary);
+}
+
+.participant-item:last-child {
+    border-bottom: none;
+}
+
+/* Combat Tracker */
+.combat-tracker {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+/* Initiative List */
+.initiative-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.initiative-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+    transition: all var(--transition-quick);
+}
+
+.initiative-item:hover {
+    background: var(--color-bg-secondary);
+}
+
+.initiative-item:last-child {
+    border-bottom: none;
+}
+
+.initiative-item.active-turn {
+    background: rgba(232, 74, 95, 0.15);
+    border-left: 4px solid var(--color-accent-danger);
+}
+
+.initiative-item.combatant-unconscious {
+    opacity: 0.5;
+}
+
+.initiative-item.combatant-dead {
+    opacity: 0.3;
+    text-decoration: line-through;
+}
+
+.initiative-item.combatant-fled {
+    opacity: 0.5;
+    font-style: italic;
+}
+
+.initiative-number {
+    font-family: var(--font-heading);
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-accent-secondary);
+    min-width: 40px;
+    text-align: center;
+}
+
+/* HP Display */
+.hp-display {
+    text-align: center;
+}
+
+.hp-bar-container {
+    width: 100%;
+    height: 20px;
+    background: var(--color-bg-secondary);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid var(--color-border);
+}
+
+.hp-bar {
+    height: 100%;
+    background: var(--color-accent-primary);
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.hp-text {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--color-text-primary);
+}
+
+/* Mini HP bar for initiative list */
+.hp-mini {
+    width: 80px;
+    position: relative;
+}
+
+.hp-mini-bar {
+    height: 16px;
+    border-radius: 8px;
+    transition: width 0.3s ease, background 0.3s ease;
+}
+
+.hp-mini-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    line-height: 16px;
+}
+
+/* Action Buttons */
+.action-btn {
+    min-width: 80px;
+}
+
+/* Action Log */
+.action-log {
+    max-height: 250px;
+    overflow-y: auto;
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+}
+
+.log-entry {
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.log-entry:last-child {
+    border-bottom: none;
+}
+
+.log-time {
+    color: var(--color-text-muted);
+    font-size: 0.75rem;
+    margin-right: 0.5rem;
+}
+
+.log-entry.log-important {
+    background: rgba(99, 199, 77, 0.1);
+    font-weight: bold;
+    color: var(--color-accent-primary);
+}
+
+.log-entry.log-round {
+    background: rgba(247, 183, 49, 0.1);
+    font-weight: bold;
+    color: var(--color-accent-secondary);
+}
+
+.log-entry.log-success {
+    color: var(--color-accent-primary);
+}
+
+.log-entry.log-failure {
+    color: var(--color-accent-danger);
+}
+
+.log-entry.log-hazard {
+    color: var(--color-accent-secondary);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .track-position {
+        width: 50px;
+        height: 70px;
+    }
+
+    .track-participant {
+        width: 20px;
+        height: 20px;
+        font-size: 0.6rem;
+    }
+
+    .keeper-tool-icon {
+        font-size: 2.5rem;
+    }
+
+    .hp-mini {
+        width: 60px;
+    }
+}
+
+/* =============================================================================
+   Keeper Tools - Contrast Fixes
+   ============================================================================= */
+
+/* Card headers in keeper section */
+.keeper-dashboard .card-header,
+.chase-tracker .card-header,
+.combat-tracker .card-header {
+    background: var(--color-bg-card) !important;
+    color: var(--color-text-primary) !important;
+    border-bottom: 2px solid var(--color-border);
+    font-weight: 600;
+}
+
+.keeper-dashboard .card-header i,
+.chase-tracker .card-header i,
+.combat-tracker .card-header i {
+    color: var(--color-accent-primary);
+}
+
+/* Card body text */
+.keeper-dashboard .card-body,
+.chase-tracker .card-body,
+.combat-tracker .card-body {
+    background: var(--color-bg-card);
+    color: var(--color-text-primary);
+}
+
+/* Form labels */
+.chase-tracker .form-label,
+.combat-tracker .form-label {
+    color: var(--color-text-primary) !important;
+    font-weight: 500;
+}
+
+/* Quick tips section */
+.keeper-dashboard .card-body h6 {
+    color: var(--color-text-primary) !important;
+}
+
+.keeper-dashboard .card-body ul {
+    color: var(--color-text-secondary) !important;
+}
+
+.keeper-dashboard .card-body li {
+    color: var(--color-text-secondary) !important;
+}
+
+/* Input fields in keeper */
+.chase-tracker .form-control,
+.combat-tracker .form-control,
+.chase-tracker .form-select,
+.combat-tracker .form-select {
+    background: var(--color-bg-input) !important;
+    color: var(--color-text-primary) !important;
+    border: 2px solid var(--color-border) !important;
+}
+
+.chase-tracker .form-control:focus,
+.combat-tracker .form-control:focus,
+.chase-tracker .form-select:focus,
+.combat-tracker .form-select:focus {
+    border-color: var(--color-accent-primary) !important;
+    box-shadow: 0 0 0 2px rgba(99, 199, 77, 0.2) !important;
+}
+
+/* Damage input styling */
+.damage-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.damage-input {
+    width: 70px !important;
+    text-align: center;
+    font-weight: bold;
+}
+
+/* Target select */
+.target-select {
+    min-width: 150px;
+}
+
+/* Roll input for chase */
+.roll-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--color-bg-secondary);
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.roll-input {
+    width: 60px !important;
+    text-align: center;
+}
+
+/* Major wound checkbox */
+.major-wound-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
